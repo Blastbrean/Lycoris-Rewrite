@@ -1,3 +1,4 @@
-# Lycoris
+# Lycoris-Rewrite
 
-A Deepwoken Script, mostly a recode from SouHub.
+Rewritten Lycoris - better logging, optimizations, error handling, faster prototyping, and more.
+Powered & inspired by parts of Serenity's framework rewritten to the new coding style.
