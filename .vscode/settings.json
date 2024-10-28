@@ -35,4 +35,8 @@
         "base64"
     ],
     "editor.formatOnSave": true,
+    "robloxLsp.suggestedImports.importIgnore": [
+        "**/_Index/**",
+        "Output/"
+    ],
 }
