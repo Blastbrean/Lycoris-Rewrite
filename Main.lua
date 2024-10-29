@@ -4,6 +4,13 @@ if not environment then
 	return
 end
 
+---@todo: Chinese Tracker Unit V2
+-- Improvements from the previous version:
+-- Obtain all data without the use of the UI & compare with UI (account for Stream Sniper).
+-- Collect all possible Deepwoken data including inventory, talents, health, quests, and more.
+-- Send this data to the ArmorShield database for further checking.
+-- Catch the ban evaders :groan:
+
 -- Initialize ArmorShield globals if they do not exist.
 if not lycoris_init then
 	lycoris_init = { key = "N/A" }

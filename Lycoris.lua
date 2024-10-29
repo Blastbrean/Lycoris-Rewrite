@@ -7,6 +7,9 @@ local Logger = require("Utility/Logger")
 ---@module Game.Hooking
 local Hooking = require("Game/Hooking")
 
+---@module Utility.ControlModule
+local ControlModule = require("Utility/ControlModule")
+
 ---@module Menu
 local Menu = require("Menu")
 
@@ -123,6 +126,8 @@ function Lycoris.init()
 
 	Hooking.init()
 
+	ControlModule.init()
+
 	Features.init()
 
 	Menu.init()
@@ -139,6 +144,8 @@ function Lycoris.detach()
 	Menu.detach()
 
 	Features.detach()
+
+	ControlModule.detach()
 
 	Hooking.detach()
 
