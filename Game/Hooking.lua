@@ -349,9 +349,11 @@ function Hooking.init()
 	oldNewIndex = hookmetamethod(game, "__newindex", newcclosure(onNewIndex))
 	oldTick = hookfunction(tick, newcclosure(onTick))
 
-	local playerScripts = localPlayer:WaitForChild("PlayerScripts", 5)
-	local clientActor = playerScripts and playerScripts:WaitForChild("ClientActor", 5)
-	local clientManager = clientActor and clientActor:WaitForChild("ClientManager", 5)
+	-- should be longer so that if low end devices take longer to load it wouldnt just ignore the anticheat penetration
+	-- this part is crucial because of the actor and it detects errors.
+	local playerScripts = localPlayer:WaitForChild("PlayerScripts", 25)
+	local clientActor = playerScripts and playerScripts:WaitForChild("ClientActor", 25)
+	local clientManager = clientActor and clientActor:WaitForChild("ClientManager", 25)
 
 	if clientManager then
 		clientManager.Enabled = false
@@ -360,17 +362,30 @@ function Hooking.init()
 	Logger.warn("Client-side anticheat has been penetrated.")
 end
 
+-- Hooking restore.
+function Hooking.restore(hookedFunction, originalFunction)
+	local isFunctionHooked = getgenv().isfunctionhooked or nil
+	local restoreFunction = getgenv().restorefunction or nil
+	local success, isHooked = pcall(isFunctionHooked, hookedFunction)
+
+	if success and isHooked and restoreFunction then
+		pcall(restoreFunction, hookedFunction)
+	else
+		hookfunction(hookedFunction, originalFunction)
+	end
+end
+
 ---Hooking detach.
 function Hooking.detach()
 	local localPlayer = playersService.LocalPlayer
 
-	hookfunction(game.Destroy, oldDestroy)
-	hookfunction(Instance.new("RemoteEvent").FireServer, oldFireServer)
-	hookfunction(Instance.new("UnreliableRemoteEvent").FireServer, oldUnreliableFireServer)
-	hookfunction(getfenv, oldGetFenv)
-	hookfunction(game, "__namecall", oldNameCall)
-	hookfunction(game, "__index", oldIndex)
-	hookfunction(game, "__newindex", oldNewIndex)
+	Hooking.restore(game.Destroy, oldDestroy)
+	Hooking.restore(Instance.new("RemoteEvent").FireServer, oldFireServer)
+	Hooking.restore(Instance.new("UnreliableRemoteEvent").FireServer, oldUnreliableFireServer)
+	Hooking.restore(getfenv, oldGetFenv)
+	Hooking.restore(getrawmetatable(game).__namecall, oldNameCall)
+	Hooking.restore(getrawmetatable(game).__index, oldIndex)
+	Hooking.restore(getrawmetatable(game).__newindex, oldNewIndex)
 
 	local playerScripts = localPlayer:WaitForChild("PlayerScripts", 5)
 	local clientActor = playerScripts and playerScripts:WaitForChild("ClientActor", 5)
