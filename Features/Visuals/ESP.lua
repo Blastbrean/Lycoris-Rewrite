@@ -26,8 +26,11 @@ local Maid = require("Utility/Maid")
 ---@module Utility.Signal
 local Signal = require("Utility/Signal")
 
----@module Visuals.Objects.BasicESP
-local BasicESP = require("Visuals/Objects/BasicESP")
+---@module Features.Visuals.Objects.BasicESP
+local BasicESP = require("Features/Visuals/Objects/BasicESP")
+
+---@module Features.Visuals.Objects.HumanoidESP
+local HumanoidESP = require("Features/Visuals/Objects/HumanoidESP")
 
 ---@module Menu.VisualsTab
 local VisualsTab = require("Menu/VisualsTab")
@@ -37,6 +40,7 @@ local ESP = {}
 
 -- Services.
 local runService = game:GetService("RunService")
+local players = game:GetService("Players")
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -51,15 +55,51 @@ local espObjects = {}
 
 -- Constants.
 local ESP_DISTANCE_FORMAT = "%s [%i]"
+local ESP_DISTANCE_HUMANOID_FORMAT = "%s [%i/%i] [%i]"
+local ESP_HUMANOID_FORMAT = "%s [%i/%i]"
 
--- Chest ESP name callback.
----@param self BasicESP
-local function chestESPNameCallback(self)
+---Humanoid ESP name callback.
+---@param self HumanoidESP
+---@param humanoid Humanoid
+---@param distance number
+local function humanoidESPNameCallback(self, humanoid, distance)
+	local health = math.floor(humanoid.Health)
+	local maxHealth = math.floor(humanoid.MaxHealth)
+	local name = self.instance:GetAttribute("CharacterName") or self.instance.Name
+
 	if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
-		return ESP_DISTANCE_FORMAT:format("Chest", self.distance)
+		return ESP_DISTANCE_HUMANOID_FORMAT:format(name, health, maxHealth, distance)
 	else
-		return "Chest"
+		return ESP_HUMANOID_FORMAT:format(name, health, maxHealth)
 	end
+end
+
+---Area Marker ESP name callback.
+---@param self BasicESP
+---@param distance number
+---@param parent Instance
+local function areaMarkerESPNameCallback(self, distance, parent)
+	local areaMarkerName = self.instance.Parent.Name or "Unidentified Area Marker"
+
+	if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
+		return ESP_DISTANCE_FORMAT:format(areaMarkerName, distance)
+	else
+		return areaMarkerName
+	end
+end
+
+---Create ESP name callback.
+---@param espName string
+local function createESPNameCallback(espName)
+	local function nameCallback(self, distance, _)
+		if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
+			return ESP_DISTANCE_FORMAT:format(espName, distance)
+		else
+			return espName
+		end
+	end
+
+	return nameCallback
 end
 
 -- Update ESP.
@@ -72,9 +112,46 @@ end
 -- On descendant added.
 ---@param descendant Instance
 local function onDescendantAdded(descendant)
-	if descendant:FindFirstChild("LootUpdated") then
-		espObjects[descendant] = BasicESP.new("Chest", descendant, chestESPNameCallback)
+	local isPlayerCharacter = players:GetPlayerFromCharacter(descendant)
+	local isInLiveFolder = descendant.Parent == workspace:WaitForChild("Live")
+
+	if descendant:IsA("Model") then
+		if isInLiveFolder and isPlayerCharacter then
+			espObjects[descendant] = HumanoidESP.new("Player", descendant, humanoidESPNameCallback)
+		end
+
+		if isInLiveFolder and not isPlayerCharacter then
+			espObjects[descendant] = HumanoidESP.new("Mob", descendant, humanoidESPNameCallback)
+		end
+
+		if descendant.Parent == workspace:WaitForChild("NPCs") then
+			espObjects[descendant] = HumanoidESP.new("NPC", descendant, humanoidESPNameCallback)
+		end
 	end
+
+	if descendant:FindFirstChild("LootUpdated") then
+		espObjects[descendant] = BasicESP.new("Chest", descendant, createESPNameCallback("Chest"))
+	end
+
+	if descendant.Name == "AreaMarker" then
+		espObjects[descendant] = BasicESP.new("AreaMarker", descendant, areaMarkerESPNameCallback)
+	end
+
+	espObjects[descendant] = BasicESP.new("JobBoard", descendant, createESPNameCallback("Job Board"))
+	espObjects[descendant] = BasicESP.new("Artifact", descendant, createESPNameCallback("Artifact"))
+	espObjects[descendant] = BasicESP.new("Whirlpool", descendant, createESPNameCallback("Whirlpool"))
+	espObjects[descendant] = BasicESP.new("ExplosiveBarrel", descendant, createESPNameCallback("Explosive Barrel"))
+	espObjects[descendant] = BasicESP.new("OwlFeathers", descendant, createESPNameCallback("Owl Feathers"))
+	espObjects[descendant] = BasicESP.new("GuildDoor", descendant, createESPNameCallback("Guild Door"))
+	espObjects[descendant] = BasicESP.new("GuildBanner", descendant, createESPNameCallback("Guild Banner"))
+	espObjects[descendant] = BasicESP.new("Obelisk", descendant, createESPNameCallback("Obelisk"))
+	espObjects[descendant] = BasicESP.new("Ingredient", descendant, createESPNameCallback("Ingredient"))
+	espObjects[descendant] = BasicESP.new("ArmorBrick", descendant, createESPNameCallback("Armor Brick"))
+	espObjects[descendant] = BasicESP.new("BellMeteor", descendant, createESPNameCallback("Bell Meteor"))
+	espObjects[descendant] = BasicESP.new("RareObelisk", descendant, createESPNameCallback("Rare Obelisk"))
+	espObjects[descendant] = BasicESP.new("HealBrick", descendant, createESPNameCallback("Heal Brick"))
+	espObjects[descendant] = BasicESP.new("MantraObelisk", descendant, createESPNameCallback("Mantra Obelisk"))
+	espObjects[descendant] = BasicESP.new("BRWeapon", descendant, createESPNameCallback("BR Weapon"))
 end
 
 -- On descendant removing.

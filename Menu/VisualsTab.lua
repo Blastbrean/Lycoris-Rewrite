@@ -60,10 +60,14 @@ function VisualsTab.initHumanoidESPSection(groupbox, identifier)
 		Default = false,
 	})
 
-	groupbox:AddToggle(VisualsTab.identify(identifier, "Box"), {
-		Text = "Show Boxes",
-		Default = false,
-	})
+	groupbox
+		:AddToggle(VisualsTab.identify(identifier, "Box"), {
+			Text = "Show Boxes",
+			Default = false,
+		})
+		:AddColorPicker(VisualsTab.identify(identifier, "BoxColor"), {
+			Default = Color3.new(1, 1, 1),
+		})
 end
 
 -- Initialize tab.
@@ -77,14 +81,14 @@ function VisualsTab.init(window)
 	VisualsTab.initHumanoidESPSection("Mob", createGroupbox(tab, "Mob ESP"))
 	VisualsTab.initHumanoidESPSection("NPC", createGroupbox(tab, "NPC ESP"))
 	VisualsTab.initBasicESPSection("Chest", createGroupbox(tab, "Chest ESP"))
-	VisualsTab.initBasicESPSection("Area", createGroupbox(tab, "Area ESP"))
-	VisualsTab.initBasicESPSection("JobBoard", createGroupbox(tab, "JobBoard ESP"))
+	VisualsTab.initBasicESPSection("AreaMarker", createGroupbox(tab, "Area Marker ESP"))
+	VisualsTab.initBasicESPSection("JobBoard", createGroupbox(tab, "Job Board ESP"))
 	VisualsTab.initBasicESPSection("Artifact", createGroupbox(tab, "Artifact ESP"))
 	VisualsTab.initBasicESPSection("Whirlpool", createGroupbox(tab, "Whirlpool ESP"))
-	VisualsTab.initBasicESPSection("Explosive", createGroupbox(tab, "Explosive ESP"))
-	VisualsTab.initBasicESPSection("Owl", createGroupbox(tab, "Owl ESP"))
-	VisualsTab.initBasicESPSection("Door", createGroupbox(tab, "Door ESP"))
-	VisualsTab.initBasicESPSection("Banner", createGroupbox(tab, "Banner ESP"))
+	VisualsTab.initBasicESPSection("ExplosiveBarrel", createGroupbox(tab, "Explosive Barrel ESP"))
+	VisualsTab.initBasicESPSection("OwlFeathers", createGroupbox(tab, "Owl Feathers ESP"))
+	VisualsTab.initBasicESPSection("GuildDoor", createGroupbox(tab, "Guild Door ESP"))
+	VisualsTab.initBasicESPSection("GuildBanner", createGroupbox(tab, "Guild Banner ESP"))
 	VisualsTab.initBasicESPSection("Obelisk", createGroupbox(tab, "Obelisk ESP"))
 	VisualsTab.initBasicESPSection("Ingredient", createGroupbox(tab, "Ingredient ESP"))
 	VisualsTab.initBasicESPSection("ArmorBrick", createGroupbox(tab, "Armor Brick ESP"))

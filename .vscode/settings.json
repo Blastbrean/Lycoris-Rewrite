@@ -34,7 +34,9 @@
         "Lycoris",
         "base64",
         "cloneref",
-        "sethiddenproperty"
+        "sethiddenproperty",
+        "isfunctionhooked",
+        "restorefunction"
     ],
     "editor.formatOnSave": true,
     "robloxLsp.suggestedImports.importIgnore": [

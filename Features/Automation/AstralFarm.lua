@@ -22,8 +22,8 @@ local InstanceWrapper = require("Utility/InstanceWrapper")
 ---@module Utility.SendInput
 local SendInput = require("Utility/SendInput")
 
----@module Utility.Players
-local Players = require("Utility/Players")
+---@module Utility.Entitites
+local Entitites = require("Utility/Entitites")
 
 -- Services.
 local runService = game:GetService("RunService")
@@ -118,60 +118,6 @@ local function foodStage(food)
 	end
 
 	SendInput.mb1(0, 50)
-end
-
----Find the nearest mob to the local player
----@return Model?
-local function findNearestMob()
-	local nearestMob = nil
-	local nearestDistance = nil
-
-	local live = workspace:FindFirstChild("Live")
-	if not live then
-		return
-	end
-
-	local character = playersService.LocalPlayer.Character
-	if not character then
-		return
-	end
-
-	local rootPart = character:FindFirstChild("HumanoidRootPart")
-	if not rootPart then
-		return
-	end
-
-	for _, instance in pairs(live:GetChildren()) do
-		if not instance:FindFirstChild("HumanoidRootPart") then
-			continue
-		end
-
-		if not instance:FindFirstChild("Humanoid") then
-			continue
-		end
-
-		if not instance:FindFirstChild("CustomRig") then
-			continue
-		end
-
-		local torso = instance:FindFirstChild("Torso")
-		if torso and torso:FindFirstChild("RagdollAttach") then
-			continue
-		end
-
-		if instance == character then
-			continue
-		end
-
-		local distance = (instance.HumanoidRootPart.Position - rootPart.Position).Magnitude
-
-		if not nearestDistance or distance < nearestDistance then
-			nearestDistance = distance
-			nearestMob = instance
-		end
-	end
-
-	return nearestMob
 end
 
 ---Find food tool(s) in the inventory.
@@ -309,7 +255,7 @@ local function astralFarmLoop()
 	local waterThreshold = Options.AstralWaterLevel.Value / 100
 
 	if foodPercentage <= foodThreshold and waterPercentage <= waterThreshold then
-		local nearestMob = findNearestMob()
+		local nearestMob = Entitites.findNearestMob()
 
 		if isCarnivore and nearestMob then
 			return carnivoreStage(nearestMob, bodyVelocity)
@@ -330,7 +276,7 @@ local function astralFarmLoop()
 			continue
 		end
 
-		if Players.isNear(instance:GetPivot().Position) then
+		if Entitites.isNear(instance:GetPivot().Position) then
 			continue
 		end
 

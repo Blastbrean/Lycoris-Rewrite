@@ -19,6 +19,9 @@ local Movement = require("Features/Player/Movement")
 ---@module Features.Player.Removal
 local Removal = require("Features/Player/Removal")
 
+---@module Features.Player.Exploits
+local Exploits = require("Features/Player/Exploits")
+
 ---Initialize features.
 function Features.init()
 	AstralFarm.init()
@@ -27,6 +30,7 @@ function Features.init()
 	IntelligenceFarm.init()
 	Movement.init()
 	Removal.init()
+	Exploits.init()
 end
 
 ---Detach features.
@@ -37,6 +41,7 @@ function Features.detach()
 	IntelligenceFarm.detach()
 	Movement.detach()
 	Removal.detach()
+	Exploits.detach()
 end
 
 -- Return Features module.

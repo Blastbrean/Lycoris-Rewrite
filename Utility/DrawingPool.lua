@@ -36,7 +36,7 @@ end
 ---get drawing from pool
 ---@param identifier string
 ---@return Drawing
-function DrawingPool:get_drawing(identifier)
+function DrawingPool:getDrawing(identifier)
 	return self.drawings[identifier]
 end
 

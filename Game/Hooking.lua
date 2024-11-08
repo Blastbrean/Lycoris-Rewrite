@@ -349,8 +349,8 @@ function Hooking.init()
 	oldNewIndex = hookmetamethod(game, "__newindex", newcclosure(onNewIndex))
 	oldTick = hookfunction(tick, newcclosure(onTick))
 
-	-- should be longer so that if low end devices take longer to load it wouldnt just ignore the anticheat penetration
-	-- this part is crucial because of the actor and it detects errors.
+	---@note: This is longer for lower-end devices.
+	---@note: This part is crucial because of the Actor and the error detection.
 	local playerScripts = localPlayer:WaitForChild("PlayerScripts", 25)
 	local clientActor = playerScripts and playerScripts:WaitForChild("ClientActor", 25)
 	local clientManager = clientActor and clientActor:WaitForChild("ClientManager", 25)
@@ -364,15 +364,13 @@ end
 
 -- Hooking restore.
 function Hooking.restore(hookedFunction, originalFunction)
-	local isFunctionHooked = getgenv().isfunctionhooked or nil
-	local restoreFunction = getgenv().restorefunction or nil
-	local success, isHooked = pcall(isFunctionHooked, hookedFunction)
+	local success, hooked = pcall(isfunctionhooked, hookedFunction)
 
-	if success and isHooked and restoreFunction then
-		pcall(restoreFunction, hookedFunction)
-	else
-		hookfunction(hookedFunction, originalFunction)
+	if success and hooked and restorefunction then
+		return pcall(restorefunction, hookedFunction)
 	end
+
+	hookfunction(hookedFunction, originalFunction)
 end
 
 ---Hooking detach.
@@ -387,12 +385,12 @@ function Hooking.detach()
 	Hooking.restore(getrawmetatable(game).__index, oldIndex)
 	Hooking.restore(getrawmetatable(game).__newindex, oldNewIndex)
 
-	local playerScripts = localPlayer:WaitForChild("PlayerScripts", 5)
-	local clientActor = playerScripts and playerScripts:WaitForChild("ClientActor", 5)
-	local clientManager = clientActor and clientActor:WaitForChild("ClientManager", 5)
+	local playerScripts = localPlayer:FindFirstChild("PlayerScripts")
+	local clientActor = playerScripts and playerScripts:FindFirstChild("ClientActor")
+	local clientManager = clientActor and clientActor:FindFirstChild("ClientManager")
 
 	if clientManager then
-		clientManager.Enabled = false
+		clientManager.Enabled = true
 	end
 
 	Logger.warn("Pulled out of client-side anticheat.")
