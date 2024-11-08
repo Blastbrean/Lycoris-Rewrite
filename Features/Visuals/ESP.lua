@@ -5,6 +5,7 @@
 
 ---The name callback(s) feel very messy and should be thought up in a different way in the future.
 ---Also, the way we're handling ESP objects is very messy and should be thought up in a differently too.
+---We'll do that later though.
 
 ---@module Utility.Maid
 local Maid = require("Utility/Maid")
