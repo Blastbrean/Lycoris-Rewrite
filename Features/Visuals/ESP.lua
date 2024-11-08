@@ -1,24 +1,10 @@
--- We have these ESP objects to handle:
--- Player
--- Mob
--- NPC
--- Chest
--- Area
--- JobBoard
--- Artifact
--- Whirlpool
--- Explosive
--- Owl
--- Door
--- Banner
--- Obelisk
--- Ingredient
--- Armor_Brick
--- Bell_Meteor
--- Rare_Obelisk
--- Heal_Brick
--- Mantra_Obelisk
--- BR_Weapon
+---@note: This isn't the greatest way to do things.
+---Preferably, each ESP object should have its own module and be created in a more organized manner.
+---But that's obviously way too time-consuming, repetitive, and boring.
+---So, I just took our previous way from our previous codebase to dynamically create ESP objects for many types.
+
+---The name callback(s) feel very messy and should be thought up in a different way in the future.
+---Also, the way we're handling ESP objects is very messy and should be thought up in a differently too.
 
 ---@module Utility.Maid
 local Maid = require("Utility/Maid")
@@ -129,12 +115,12 @@ local function onDescendantAdded(descendant)
 		end
 	end
 
-	if descendant:FindFirstChild("LootUpdated") then
-		espObjects[descendant] = BasicESP.new("Chest", descendant, createESPNameCallback("Chest"))
-	end
-
 	if descendant.Name == "AreaMarker" then
 		espObjects[descendant] = BasicESP.new("AreaMarker", descendant, areaMarkerESPNameCallback)
+	end
+
+	if descendant:FindFirstChild("LootUpdated") then
+		espObjects[descendant] = BasicESP.new("Chest", descendant, createESPNameCallback("Chest"))
 	end
 
 	espObjects[descendant] = BasicESP.new("JobBoard", descendant, createESPNameCallback("Job Board"))
