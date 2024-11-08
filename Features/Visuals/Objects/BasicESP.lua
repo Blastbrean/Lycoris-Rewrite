@@ -16,6 +16,11 @@ function BasicESP:update()
 		return self:setVisible(false)
 	end
 
+	local parent = self.instance.Parent
+	if not parent then
+		return self:setVisible(false)
+	end
+
 	local position = Vector3.zero
 
 	if self.usePivot then
@@ -24,13 +29,14 @@ function BasicESP:update()
 		position = self.instance.Position
 	end
 
-	local distance = (workspace.CurrentCamera.CFrame.Position - position).Magnitude
+	local currentCamera = workspace.CurrentCamera
+	local distance = (currentCamera.CFrame.Position - position).Magnitude
 
 	if distance > Options[VisualsTab.identify(self.identifier, "DistanceThreshold")].Value then
 		return self:setVisible(false)
 	end
 
-	local headPosition, onScreen = workspace.CurrentCamera:WorldToViewportPoint(position + Vector3.new(0, 3, 0))
+	local headPosition, onScreen = currentCamera:WorldToViewportPoint(position + Vector3.new(0, 3, 0))
 
 	if not onScreen then
 		return self:setVisible(false)
@@ -38,7 +44,7 @@ function BasicESP:update()
 
 	local text = self:getDrawing("baseText")
 	text:set("Position", headPosition)
-	text:set("Text", self.nameCallback(self))
+	text:set("Text", self.nameCallback(self, distance, parent))
 	text:set("Color", Options[VisualsTab.identify(self.identifier, "Color")].Value)
 	text:set("Visible", true)
 end

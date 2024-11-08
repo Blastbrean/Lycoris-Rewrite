@@ -34,7 +34,7 @@ end
 
 ---Cache an instance, clean the instance up through a maid, and automatically uncache on deletion.
 ---@param instanceMaid Maid
----@param identifier string
+---@param identifier any
 ---@param type string
 ---@param parent Instance
 ---@return Instance
