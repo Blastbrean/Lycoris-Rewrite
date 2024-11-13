@@ -24,7 +24,9 @@ local playersService = game:GetService("Players")
 -- Constants.
 local LOBBY_PLACE_ID = 4111023553
 
--- Handle server hop while in the main menu.
+---Handle server hop while in the main menu.
+---@param serverHopSlot string
+---@param serverHopJobId string
 local function handleMainMenuServerHop(serverHopSlot, serverHopJobId)
 	memStorageService:RemoveItem("ServerHop")
 
@@ -68,7 +70,7 @@ local function handleMainMenuServerHop(serverHopSlot, serverHopJobId)
 	end
 end
 
--- Handle start menu.
+---Handle start menu.
 local function handleStartMenu()
 	local localPlayer = playersService.LocalPlayer
 	if localPlayer.Character or localPlayer.Character:FindFirstChild("CharacterHandler") then
@@ -109,10 +111,12 @@ function Lycoris.init()
 	local loadStringQueueString =
 		'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c41b4fcdd3494b59bd6dc042e1bd2967.lua"))()'
 
-	if queue_on_teleport then
+	if lycoris_init.key ~= "N/A" and queue_on_teleport then
 		queue_on_teleport(scriptKeyQueueString .. "\n" .. loadStringQueueString)
 	else
-		Logger.warn("Script has failed to queue on teleport because the function does not exist.")
+		Logger.warn(
+			"Script has failed to queue on teleport because no key was provided or the function does not exist."
+		)
 	end
 
 	Logger.warn("Script has been queued for next teleport.")

@@ -1,6 +1,9 @@
 -- Logger module.
 local Logger = {}
 
+---@module GUI.Library
+local Library = require("GUI/Library")
+
 ---Build a string with a prefix.
 ---@param str string
 ---@return string

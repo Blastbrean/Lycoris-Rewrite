@@ -13,8 +13,11 @@ local Attributes = require("Utility/Attributes")
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
----@Module Utility.SendInput
+---@module Utility.SendInput
 local SendInput = require("Utility/SendInput")
+
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
 
 -- Services.
 local players = game:GetService("Players")
@@ -28,7 +31,7 @@ local autoCharismaMaid = Maid.new()
 
 ---Update charisma.
 local function updateCharisma()
-	if not Toggles.CharismaFarm.Value then
+	if not Configuration.expectToggleValue("CharismaFarm") then
 		return
 	end
 

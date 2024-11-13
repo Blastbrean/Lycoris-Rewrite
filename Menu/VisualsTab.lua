@@ -21,9 +21,9 @@ function VisualsTab.identify(identifier, topLevelIdentifier)
 end
 
 ---Initialize basic ESP section.
----@param groupbox table
 ---@param identifier string
-function VisualsTab.initBasicESPSection(groupbox, identifier)
+---@param groupbox table
+function VisualsTab.initBasicESPSection(identifier, groupbox)
 	groupbox
 		:AddToggle(VisualsTab.identify(identifier, "Enable"), {
 			Text = "Enable ESP",
@@ -50,10 +50,10 @@ function VisualsTab.initBasicESPSection(groupbox, identifier)
 end
 
 ---Initialize humanoid ESP section.
----@param groupbox table
 ---@param identifier string
-function VisualsTab.initHumanoidESPSection(groupbox, identifier)
-	VisualsTab.initBasicESPSection(groupbox, identifier)
+---@param groupbox table
+function VisualsTab.initHumanoidESPSection(identifier, groupbox)
+	VisualsTab.initBasicESPSection(identifier, groupbox)
 
 	groupbox:AddToggle(VisualsTab.identify(identifier, "HealthBar"), {
 		Text = "Show Health Bar",

@@ -12,8 +12,12 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Instances.
 local modules = replicatedStorage:WaitForChild("Modules")
-local clientManager = modules:WaitForChild("ClientManager")
-local keyHandler = clientManager:WaitForChild("KeyHandler")
+local clientModuleManager = modules:WaitForChild("ClientManager")
+local persistence = modules:WaitForChild("Persistence")
+
+-- Modules.
+local integrity = persistence:WaitForChild("Integrity")
+local keyHandler = clientModuleManager:WaitForChild("KeyHandler")
 
 ---Get the stack of the KeyHandler module.
 ---@return table
@@ -33,30 +37,43 @@ end
 ---@param remoteName string
 ---@return Instance|nil
 function KeyHandling.getRemote(remoteName)
-	local stack, getRemote, getRemoteKey = nil, nil, nil
+	local integrityModule = require(integrity)
+	local keyHandlerModule = require(keyHandler)
 
-	while not stack or not getRemote or not getRemoteKey do
-		stack = KeyHandling.getStack()
-		getRemote = stack[89]
-		getRemoteKey = stack[64]
-		task.wait(0.1)
+	if not integrityModule or not keyHandlerModule then
+		return
 	end
 
-	return getRemote(remoteName, getRemoteKey)
+	local keyHandlerKey = integrityModule()
+	local keyHandlerObject = keyHandlerModule()
+
+	if not keyHandlerKey or not keyHandlerObject then
+		return
+	end
+
+	local khGetRemote = keyHandlerObject[1]
+
+	if not khGetRemote then
+		return
+	end
+
+	return khGetRemote(remoteName, keyHandlerKey)
 end
 
----Wait for remote from a specific remote name.
----@param remoteName string
----@return Instance
-function KeyHandling.waitForRemote(remoteName)
-	local remote = nil
-
-	while not remote do
-		remote = KeyHandling.getRemote(remoteName)
-		task.wait(0.1)
+---Return the "khGetRemote" function.
+---@return function
+function KeyHandling.rawGetRemote()
+	local keyHandlerModule = require(keyHandler)
+	if not keyHandlerModule then
+		return
 	end
 
-	return remote
+	local keyHandlerObject = keyHandlerModule()
+	if not keyHandlerObject then
+		return
+	end
+
+	return keyHandlerObject[1]
 end
 
 -- Return KeyHandling module.

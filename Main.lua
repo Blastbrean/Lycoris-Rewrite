@@ -39,7 +39,8 @@ end
 ---@param error string
 local function onInitializeError(error)
 	-- Warn that an error happened while initializing.
-	warn("Failed to initialize.", error)
+	warn("Failed to initialize.")
+	warn(error)
 
 	-- Warn traceback.
 	warn(debug.traceback())
@@ -49,4 +50,6 @@ local function onInitializeError(error)
 end
 
 -- Safely profile and initialize the script aswell as handle errors.
-Profiler.run("Main_InitializeScript", xpcall(initializeScript, onInitializeError))
+Profiler.run("Main_InitializeScript", function(...)
+	return xpcall(initializeScript, onInitializeError, ...)
+end)

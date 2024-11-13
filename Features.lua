@@ -22,15 +22,23 @@ local Removal = require("Features/Player/Removal")
 ---@module Features.Player.Exploits
 local Exploits = require("Features/Player/Exploits")
 
+---@module Features.Visuals.ESP
+local ESP = require("Features/Visuals/ESP")
+
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 ---Initialize features.
 function Features.init()
+	ESP.init()
+	Movement.init()
+	Removal.init()
+	Exploits.init()
 	AstralFarm.init()
 	MaestroFarm.init()
 	CharismaFarm.init()
 	IntelligenceFarm.init()
-	Movement.init()
-	Removal.init()
-	Exploits.init()
+	Logger.warn("Features initialized.")
 end
 
 ---Detach features.
@@ -42,6 +50,8 @@ function Features.detach()
 	Movement.detach()
 	Removal.detach()
 	Exploits.detach()
+	ESP.detach()
+	Logger.warn("Features detached.")
 end
 
 -- Return Features module.

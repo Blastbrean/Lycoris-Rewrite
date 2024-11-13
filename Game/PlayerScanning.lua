@@ -10,6 +10,9 @@ local Maid = require("Utility/Maid")
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 -- Services.
 local players = game:GetService("Players")
 local httpService = game:GetService("HttpService")
@@ -102,7 +105,7 @@ function PlayerScanning.onPlayerAdded(player)
 
 	local scanData = { staffRank = staffRank }
 
-	if Toggles.NotifyMod.Value and scanData.staffRank then
+	if Configuration.expectToggleValue("NotifyMod") and scanData.staffRank then
 		local moderatorSound = Instance.new("Sound", game:GetService("CoreGui"))
 		moderatorSound.SoundId = "rbxassetid://247824088"
 		moderatorSound.PlaybackSpeed = 1
@@ -119,11 +122,14 @@ function PlayerScanning.onPlayerAdded(player)
 		task.wait()
 	until collectionService:HasTag(player.Backpack, "Loaded") and player.Backpack:GetChildren() >= 1
 
-	if Toggles.NotifyVoidWalker.Value and player.Backpack:FindFirstChild("Talent:Voidwalker Contract") then
+	if
+		Configuration.expectToggleValue("NotifyVoidWalker")
+		and player.Backpack:FindFirstChild("Talent:Voidwalker Contract")
+	then
 		Logger.notify("%s has the Voidwalker Contract talent.", player.Name)
 	end
 
-	if not Toggles.NotifyMythic.Value then
+	if not Configuration.expectToggleValue("NotifyMythic") then
 		return
 	end
 

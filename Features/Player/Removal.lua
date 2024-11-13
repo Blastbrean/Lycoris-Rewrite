@@ -10,6 +10,9 @@ local Signal = require("Utility/Signal")
 ---@module Game.KeyHandling
 local KeyHandling = require("Game/KeyHandling")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 -- Services.
 local runService = game:GetService("RunService")
 local players = game:GetService("Players")
@@ -245,37 +248,37 @@ local function updateRemoval()
 		return
 	end
 
-	if Toggles.Value.NoEchoModifiers then
+	if Configuration.expectToggleValue("NoEchoModifiers") then
 		updateNoEchoModifiers(localPlayer)
 	else
 		resetNoEchoModifiers(localPlayer)
 	end
 
-	if Toggles.Value.NoKillBricks then
+	if Configuration.expectToggleValue("NoKillBricks") then
 		updateNoKillBricks()
 	else
 		resetNoKillBricks()
 	end
 
-	if Toggles.Value.NoFog then
+	if Configuration.expectToggleValue("NoFog") then
 		updateNoFog()
 	else
 		resetNoFog()
 	end
 
-	if Toggles.Value.NoBlind then
+	if Configuration.expectToggleValue("NoBlind") then
 		updateNoBlind(localPlayer)
 	else
 		resetNoBlind(localPlayer)
 	end
 
-	if Toggles.Value.NoBlur then
+	if Configuration.expectToggleValue("NoBlur") then
 		updateNoBlur()
 	else
 		resetNoBlur()
 	end
 
-	if Toggles.Value.NoShadows then
+	if Configuration.expectToggleValue("NoShadows") then
 		lighting.GlobalShadows = false
 	else
 		lighting.GlobalShadows = true
@@ -285,29 +288,35 @@ end
 ---Update removal effects.
 ---@param effect table
 local function updateRemovalEffects(effect)
+	if not effect then
+		return
+	end
+
 	local stunEffects = { "Stun", "LightAttack", "Action", "MobileAction", "OffhandAttack" }
 
-	if Toggles.NoStun.Value and table.find(stunEffects, effect.Class) then
+	if Configuration.expectToggleValue("NoStun") and table.find(stunEffects, effect.Class) then
 		effect:Remove()
 	end
 
-	if effect.Class == "BeingWinded" and Toggles.AntiWind.Value then
+	if effect.Class == "BeingWinded" and Configuration.expectToggleValue("AntiWind") then
 		effect:Remove()
 	end
 
-	if (effect.Class == "NoJump" or effect.Class == "NoJumpAlt") and Toggles.NoJumpCooldown.Value then
+	if
+		(effect.Class == "NoJump" or effect.Class == "NoJumpAlt") and Configuration.expectToggleValue("NoJumpCooldown")
+	then
 		effect:Remove()
 	end
 
-	if effect.Class == "SpeedOverride" and effect.Value < 14 and Toggles.NoSpeedDebuff.Value then
+	if effect.Class == "SpeedOverride" and effect.Value < 14 and Configuration.expectToggleValue("NoSpeedDebuff") then
 		effect:Remove()
 	end
 
-	if effect.Class == "Speed" and effect.Value < 0 and Toggles.NoSpeedDebuff.Value then
+	if effect.Class == "Speed" and effect.Value < 0 and Configuration.expectToggleValue("NoSpeedDebuff") then
 		rawset(effect, "Value", 0)
 	end
 
-	if effect.Class == "Burning" and Toggles.AntiFire.Value then
+	if effect.Class == "Burning" and Configuration.expectToggleValue("AntiFire") then
 		local serverSlide = KeyHandling.getRemote("ServerSlide")
 		local serverSlideStop = KeyHandling.getRemote("ServerSlideStop")
 

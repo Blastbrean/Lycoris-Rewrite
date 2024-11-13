@@ -16,6 +16,9 @@ local Signal = require("Utility/Signal")
 ---@module Utility.InstanceWrapper
 local InstanceWrapper = require("Utility/InstanceWrapper")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 -- Services.
 local memStoreService = game:GetService("MemStorageService")
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -24,12 +27,7 @@ local runService = game:GetService("RunService")
 local httpService = game:GetService("HttpService")
 
 -- Instances.
-local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
 local virtualInputManager = Instance.new("VirtualInputManager")
-local npcs = workspace:WaitForChild("NPCs")
-
--- Modules.
-local effectReplicatorModule = require(effectReplicator)
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -69,6 +67,11 @@ end
 ---Talk stage.
 local function updateTalk()
 	local localPlayer = players.LocalPlayer
+
+	local npcs = workspace:FindFirstChild("NPCs")
+	if not npcs then
+		return
+	end
 
 	local maestro = npcs:FindFirstChild("Maestro Evengarde Rest")
 	if not maestro then
@@ -214,7 +217,7 @@ local function fightMaestro(maestro, hrp, humanoid)
 		return
 	end
 
-	if Toggles.MaestroUseCritical.Value then
+	if Configuration.expectToggleValue("MaestroUseCritical") then
 		virtualInputManager:SendKeyEvent(true, Enum.KeyCode.R, false, game)
 		virtualInputManager:SendKeyEvent(false, Enum.KeyCode.R, false, game)
 	end
@@ -282,6 +285,16 @@ local function updateFight()
 		return
 	end
 
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return
+	end
+
 	local maestro = live:FindFirstChild(".evengarde1")
 
 	if not effectReplicatorModule:FindEffect("Danger") then
@@ -316,7 +329,7 @@ function MaestroFarm.init()
 	local toolSplashClientEvent = Signal.new(toolSplash.OnClientEvent)
 
 	maestroFarmMaid:add(toolSplashClientEvent:connect("MaestroAutoFarm_FightStageLootLog", function(tool, amount)
-		if not Toggles.AutoMaestroFarm.Value then
+		if not Configuration.expectToggleValue("AutoMaestroFarm") then
 			return
 		end
 
@@ -333,7 +346,7 @@ function MaestroFarm.init()
 	end))
 
 	maestroFarmMaid:add(renderStepped:connect("MaestroAutoFarm_RenderStepped", function()
-		if not Toggles.AutoMaestroFarm.Value then
+		if not Configuration.expectToggleValue("AutoMaestroFarm") then
 			return
 		end
 

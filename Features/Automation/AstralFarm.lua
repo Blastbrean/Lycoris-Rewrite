@@ -25,6 +25,9 @@ local SendInput = require("Utility/SendInput")
 ---@module Utility.Entitites
 local Entitites = require("Utility/Entitites")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 -- Services.
 local runService = game:GetService("RunService")
 local playersService = game:GetService("Players")
@@ -201,7 +204,7 @@ end
 
 ---Astral farm loop.
 local function astralFarmLoop()
-	if not Toggles.AstralFarm.Value then
+	if not Configuration.expectToggleValue("AstralFarm") then
 		return
 	end
 
@@ -246,7 +249,7 @@ local function astralFarmLoop()
 	local bodyVelocity = InstanceWrapper.create(astralFarmMaid, "AstralBodyVelocity", "BodyVelocity")
 	bodyVelocity.MaxForce = Vector3.new(9e9, 0, 9e9)
 
-	local isCarnivore = Toggles.AstralCarnivore.Value
+	local isCarnivore = Configuration.expectToggleValue("AstralCarnivore")
 
 	local foodPercentage = stomach.Value / stomach.MaxValue
 	local waterPercentage = water.Value / water.MaxValue
@@ -299,7 +302,7 @@ local function astralFarmLoop()
 		return
 	end
 
-	if Toggles.NotifyAstral.Value then
+	if Configuration.expectToggleValue("NotifyAstral") then
 		request({
 			Url = Options.AstralWebhook.Value,
 			Method = "POST",

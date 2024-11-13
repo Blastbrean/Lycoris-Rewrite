@@ -19,17 +19,24 @@ local AutomationTab = require("Menu/AutomationTab")
 ---@module Menu.PlayerTab
 local PlayerTab = require("Menu/PlayerTab")
 
+---@module Menu.VisualsTab
+local VisualsTab = require("Menu/VisualsTab")
+
 ---@module Menu.SettingsTab
 local SettingsTab = require("Menu/SettingsTab")
+
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
 
 ---Initialize menu.
 function Menu.init()
 	-- Create window.
 	local window = Library:CreateWindow({
-		Title = "Lycoris 1.0",
+		Title = "ArmorShield Test",
 		Center = true,
+		AutoShow = true,
 		TabPadding = 8,
-		MenuFadeTime = 0.1,
+		MenuFadeTime = 0.0,
 	})
 
 	---@note: How the menu will be structured from now on:
@@ -43,15 +50,6 @@ function Menu.init()
 
 	---@note: Knocked ownership will be in the exploits section - it's not included as a player feature.
 
-	-- Initialize all tabs.
-	CombatTab.init(window)
-	AutomationTab.init(window)
-	PlayerTab.init(window)
-	SettingsTab.init(window)
-
-	-- Configure Library.
-	Library.ToggleKeybind = Options.MenuKeybind
-
 	-- Configure ThemeManager.
 	ThemeManager:SetLibrary(Library)
 	ThemeManager:SetFolder("Lycoris")
@@ -61,11 +59,25 @@ function Menu.init()
 	SaveManager:IgnoreThemeSettings()
 	SaveManager:SetFolder("Lycoris")
 	SaveManager:LoadAutoloadConfig()
+
+	-- Initialize all tabs.
+	CombatTab.init(window)
+	AutomationTab.init(window)
+	PlayerTab.init(window)
+	VisualsTab.init(window)
+	SettingsTab.init(window)
+
+	-- Configure Library.
+	Library.ToggleKeybind = Options.MenuKeybind
+
+	-- Log menu initialization.
+	Logger.warn("Menu initialized.")
 end
 
 ---Detach menu.
 function Menu.detach()
 	Library:Unload()
+	Logger.warn("Menu detached.")
 end
 
 -- Return Menu module.

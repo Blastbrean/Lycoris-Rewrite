@@ -1,12 +1,14 @@
 -- Hooking related stuff is handled here.
 local Hooking = {}
-Hooking.__index = Hooking
 
 ---@module Game.KeyHandling
 local KeyHandling = require("Game/KeyHandling")
 
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
+
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
 
 -- Services.
 local playersService = game:GetService("Players")
@@ -23,6 +25,16 @@ local oldGetFenv = nil
 local oldIndex = nil
 local oldNewIndex = nil
 local oldTick = nil
+local oldCoroutineWrap = nil
+local oldTaskSpawn = nil
+local oldGetRemote = nil
+local oldProtectedCall = nil
+local oldError = nil
+local oldToString = nil
+
+-- Last state.
+local lastErrorResult = nil
+local lastErrorLevel = nil
 
 ---Replicate gesture.
 ---@param gestureName string
@@ -111,7 +123,7 @@ local function onTick(...)
 		return oldTick(...)
 	end
 
-	if not Toggles.AutoSprint.Value then
+	if not Configuration.expectToggleValue("AutoSprint") then
 		return oldTick(...)
 	end
 
@@ -154,51 +166,39 @@ local function onNameCall(...)
 	local args = { ... }
 	local self = args[1]
 
-	local method = getnamecallmethod()
 	local heavenRemote, hellRemote = KeyHandling.getAntiCheatRemotes()
+	local method = getnamecallmethod()
 
-	if not checkcaller() then
-		if self == runService and method == "IsStudio" then
-			return true
-		end
+	if self == heavenRemote or self == hellRemote then
+		return
+	end
 
-		if self == heavenRemote or self == hellRemote then
-			return
-		end
+	if self.Name == "AcidCheck" and Configuration.expectToggleValue("NoAcid") then
+		return
+	end
 
-		if self.Name == "AcidCheck" and Toggles.NoAcid.Value then
-			return
-		end
+	if
+		typeof(args[2]) == "number"
+		and typeof(args[3]) == "boolean"
+		and Configuration.expectToggleValue("NoFallDamage")
+	then
+		return
+	end
 
-		if typeof(args[2]) == "number" and typeof(args[3]) == "boolean" and Toggles.NoFallDamage.Value then
-			return
-		end
+	if self == runService and method == "IsStudio" then
+		return true
+	end
 
-		if self.Name == "Gesture" and Toggles.UnlockEmotes.Value and typeof(args[2]) == "string" then
-			replicateGesture(args[2])
-		end
+	if self.Name == "Gesture" and Configuration.expectToggleValue("UnlockEmotes") and typeof(args[2]) == "string" then
+		replicateGesture(args[2])
+	end
 
-		if
-			self.Name == "ServerSprint"
-			and (self.ClassName == "UnreliableRemoteEvent" or self.ClassName == "RemoteEvent")
-			and Toggles.RunAttack.Value
-		then
-			return oldNameCall(self, true)
-		end
-	else
-		local leftClickRemote = KeyHandling.getRemote("LeftClick")
-		if not leftClickRemote then
-			return oldNameCall(...)
-		end
-
-		if self ~= leftClickRemote then
-			return oldNameCall(...)
-		end
-
-		---@todo: Auto-parry busy check. We'll do this way later.
-		if Toggles.BlockInput.Value then
-			return
-		end
+	if
+		self.Name == "ServerSprint"
+		and (self.ClassName == "UnreliableRemoteEvent" or self.ClassName == "RemoteEvent")
+		and Configuration.expectToggleValue("RunAttack")
+	then
+		return oldNameCall(self, true)
 	end
 
 	return oldNameCall(...)
@@ -287,11 +287,13 @@ local function onIndex(...)
 	local self = args[1]
 	local index = args[2]
 
-	if self == game and (index == "HttpGet" or index == "httpGet") then
-		return oldIndex(self, index)
+	local stripped_index = index:sub(1, 7)
+
+	if self == game and (stripped_index == "HttpGet" or stripped_index == "httpGet") then
+		return oldIndex(self, "HttpGet\255")
 	end
 
-	if self == game and index == "Demigure" then
+	if self == game and index == "Demiurge" then
 		return true
 	end
 
@@ -300,13 +302,15 @@ end
 
 ---Modify ambience color.
 ---@param value Color3
----@param args table
-local function modifyAmbienceColor(value, args)
-	if not Toggles.OriginalAmbienceColor.Value then
-		return Options.AmbienceColor.Value
+local function modifyAmbienceColor(value)
+	local ambienceColor = Configuration.expectOptionValue("AmbienceColor")
+	local shouldUseOriginalAmbienceColor = Configuration.expectToggleValue("OriginalAmbienceColor")
+
+	if not shouldUseOriginalAmbienceColor and ambienceColor then
+		return ambienceColor
 	end
 
-	local brightness = Options.OriginalAmbienceColorBrightness.Value
+	local brightness = Configuration.expectOptionValue("OriginalAmbienceColorBrightness") or 0.0
 	local red, green, blue = value.R, value.G, value.B
 
 	red = math.min(red + brightness, 255)
@@ -328,26 +332,127 @@ local function onNewIndex(...)
 		return
 	end
 
-	if self == lighting and index == "Ambient" and Toggles.ModifyAmbience.Value then
-		modifyAmbienceColor(value, args)
+	if self == lighting and index == "Ambient" and Configuration.expectToggleValue("ModifyAmbience") then
+		return oldNewIndex(self, index, modifyAmbienceColor(value))
 	end
 
 	return oldNewIndex(...)
 end
 
+---On coroutine wrap.
+---@return any
+local function onCoroutineWrap(...)
+	local args = { ... }
+
+	if debug.getinfo(3).source:match("InputClient") then
+		args[1] = function() end
+	end
+
+	return oldCoroutineWrap(unpack(args))
+end
+
+---On task spawn.
+---@return any
+local function onTaskSpawn(...)
+	local args = { ... }
+
+	if debug.getinfo(3).source:match("InputClient") then
+		args[1] = function() end
+	end
+
+	return oldTaskSpawn(unpack(args))
+end
+
+---On get remote.
+---@return any
+local function onGetRemote(...)
+	local args = { ... }
+	local index = args[1]
+
+	---@note: Prevent ban remotes from going through to the module because they will break the game.
+	if typeof(index) == "number" then
+		return {
+			FireServer = function(...) end,
+		}
+	end
+
+	return oldGetRemote(...)
+end
+
+---On pcall.
+---@return any
+local function onProtectedCall(...)
+	local callSuccess, callResult = oldProtectedCall(...)
+
+	if lastErrorLevel == 4 then
+		callSuccess, callResult = false, "LYCORIS_ON_TOP"
+	end
+
+	if lastErrorLevel == 9 then
+		callSuccess, callResult = false, lastErrorResult
+	end
+
+	if lastErrorLevel == 10 then
+		callSuccess, callResult = false, lastErrorResult
+	end
+
+	lastErrorLevel = nil
+	lastErrorResult = nil
+
+	return callSuccess, callResult
+end
+
+---On error.
+---@return any
+local function onError(...)
+	local args = { ... }
+
+	lastErrorResult = args[1]
+	lastErrorLevel = args[2]
+
+	return oldError(...)
+end
+
+---On tostring.
+---@return any
+local function onToString(...)
+	local args = { ... }
+	local variable = args[1]
+
+	if typeof(variable) == "string" and variable:match("EEKE") and checkcaller() then
+		return error("KeyHandler crash prevention system.")
+	end
+
+	return oldToString(...)
+end
+
 ---Hooking initialization.
+---@note: Careful with checkcaller() on hooks where it is called from us during KeyHandling phase.
 function Hooking.init()
 	local localPlayer = playersService.LocalPlayer
 
-	oldDestroy = hookfunction(game.Destroy, newcclosure(onDestroy))
-	oldFireServer = hookfunction(Instance.new("RemoteEvent").FireServer, newcclosure(onFireServer))
-	oldUnreliableFireServer =
-		hookfunction(Instance.new("UnreliableRemoteEvent").FireServer, newcclosure(onUnreliFireServer))
-	oldGetFenv = hookfunction(getfenv, newcclosure(onGetFunctionEnvironment))
-	oldNameCall = hookmetamethod(game, "__namecall", newcclosure(onNameCall))
-	oldIndex = hookmetamethod(game, "__index", newcclosure(onIndex))
-	oldNewIndex = hookmetamethod(game, "__newindex", newcclosure(onNewIndex))
-	oldTick = hookfunction(tick, newcclosure(onTick))
+	oldToString = hookfunction(tostring, onToString)
+	oldFireServer = hookfunction(Instance.new("RemoteEvent").FireServer, onFireServer)
+	oldUnreliableFireServer = hookfunction(Instance.new("UnreliableRemoteEvent").FireServer, onUnreliFireServer)
+	oldGetFenv = hookfunction(getfenv, onGetFunctionEnvironment)
+	oldProtectedCall = hookfunction(pcall, onProtectedCall)
+	oldError = hookfunction(error, onError)
+	oldCoroutineWrap = hookfunction(coroutine.wrap, onCoroutineWrap)
+	oldTaskSpawn = hookfunction(task.spawn, onTaskSpawn)
+	oldIndex = hookfunction(getrawmetatable(game).__index, onIndex)
+	oldNameCall = hookfunction(getrawmetatable(game).__namecall, onNameCall)
+	oldDestroy = hookfunction(game.Destroy, onDestroy)
+	oldNewIndex = hookfunction(getrawmetatable(game).__newindex, onNewIndex)
+	oldTick = hookfunction(tick, onTick)
+
+	local khGetRemote = KeyHandling.rawGetRemote()
+
+	while not khGetRemote do
+		khGetRemote = KeyHandling.rawGetRemote()
+		task.wait()
+	end
+
+	oldGetRemote = hookfunction(khGetRemote, onGetRemote)
 
 	---@note: This is longer for lower-end devices.
 	---@note: This part is crucial because of the Actor and the error detection.
@@ -362,28 +467,32 @@ function Hooking.init()
 	Logger.warn("Client-side anticheat has been penetrated.")
 end
 
--- Hooking restore.
-function Hooking.restore(hookedFunction, originalFunction)
-	local success, hooked = pcall(isfunctionhooked, hookedFunction)
-
-	if success and hooked and restorefunction then
-		return pcall(restorefunction, hookedFunction)
-	end
-
-	hookfunction(hookedFunction, originalFunction)
-end
-
 ---Hooking detach.
 function Hooking.detach()
 	local localPlayer = playersService.LocalPlayer
 
-	Hooking.restore(game.Destroy, oldDestroy)
-	Hooking.restore(Instance.new("RemoteEvent").FireServer, oldFireServer)
-	Hooking.restore(Instance.new("UnreliableRemoteEvent").FireServer, oldUnreliableFireServer)
-	Hooking.restore(getfenv, oldGetFenv)
-	Hooking.restore(getrawmetatable(game).__namecall, oldNameCall)
-	Hooking.restore(getrawmetatable(game).__index, oldIndex)
-	Hooking.restore(getrawmetatable(game).__newindex, oldNewIndex)
+	local khGetRemote = KeyHandling.rawGetRemote()
+
+	while not khGetRemote do
+		khGetRemote = KeyHandling.rawGetRemote()
+		task.wait()
+	end
+
+	oldGetRemote = hookfunction(khGetRemote, oldGetRemote)
+
+	hookfunction(tostring, oldToString)
+	hookfunction(tick, oldTick)
+	hookfunction(task.spawn, oldTaskSpawn)
+	hookfunction(pcall, oldProtectedCall)
+	hookfunction(coroutine.wrap, oldCoroutineWrap)
+	hookfunction(error, oldError)
+	hookfunction(getfenv, oldGetFenv)
+	hookfunction(game.Destroy, oldDestroy)
+	hookfunction(getrawmetatable(game).__namecall, oldNameCall)
+	hookfunction(getrawmetatable(game).__index, oldIndex)
+	hookfunction(getrawmetatable(game).__newindex, oldNewIndex)
+	hookfunction(Instance.new("RemoteEvent").FireServer, oldFireServer)
+	hookfunction(Instance.new("UnreliableRemoteEvent").FireServer, oldUnreliableFireServer)
 
 	local playerScripts = localPlayer:FindFirstChild("PlayerScripts")
 	local clientActor = playerScripts and playerScripts:FindFirstChild("ClientActor")

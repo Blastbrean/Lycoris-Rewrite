@@ -13,6 +13,9 @@ local InstanceWrapper = require("Utility/InstanceWrapper")
 ---@module Utility.ControlModule
 local ControlModule = require("Utility/ControlModule")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 -- Services.
 local runService = game:GetService("RunService")
 local players = game:GetService("Players")
@@ -125,7 +128,7 @@ local function updateNoClip(character, rootPart)
 	local effectReplicatorModule = require(effectReplicator)
 	local shouldCollide = false
 
-	if effectReplicatorModule:FindEffect("Knocked") and Toggles.NoClipCollisionsKnocked.Value then
+	if effectReplicatorModule:FindEffect("Knocked") and Configuration.expectToggleValue("NoClipCollisionsKnocked") then
 		shouldCollide = true
 	end
 
@@ -152,7 +155,7 @@ local function updateSpeedHack(rootPart, humanoid)
 		return
 	end
 
-	if Toggles.Fly.Value then
+	if Configuration.expectToggleValue("Fly") then
 		return
 	end
 
@@ -169,7 +172,7 @@ end
 ---Update infinite jump.
 ---@param rootPart BasePart
 local function updateInfiniteJump(rootPart)
-	if Toggles.Fly.Value then
+	if Configuration.expectToggleValue("Fly") then
 		return
 	end
 
@@ -345,37 +348,37 @@ local function updateMovement()
 		return
 	end
 
-	if Toggles.AttachToBack.Value then
+	if Configuration.expectToggleValue("AttachToBack") then
 		updateAttachToBack(rootPart)
 	else
 		attachTarget = nil
 	end
 
-	if Toggles.Fly.Value then
+	if Configuration.expectToggleValue("Fly") then
 		updateFlyHack(rootPart)
 	end
 
-	if Toggles.Speedhack.Value then
+	if Configuration.expectToggleValue("Speedhack") then
 		updateSpeedHack(rootPart, humanoid)
 	end
 
-	if Toggles.InfiniteJump.Value then
+	if Configuration.expectToggleValue("InfiniteJump") then
 		updateInfiniteJump(humanoid)
 	end
 
-	if Toggles.NoClip.Value then
+	if Configuration.expectToggleValue("NoClip") then
 		updateNoClip(character, rootPart)
 	elseif #originalCanCollideMap > 0 then
 		resetNoClip()
 	end
 
-	if Toggles.AgilitySpoof.Value then
+	if Configuration.expectToggleValue("AgilitySpoof") then
 		updateAgilitySpoofer(character)
 	else
 		resetAgilitySpoofer(character)
 	end
 
-	if Toggles.TweenToObjectives.Value then
+	if Configuration.expectToggleValue("TweenToObjective") then
 		updateTweenToObjectives(rootPart)
 	else
 		movementMaid["altarTween"] = nil

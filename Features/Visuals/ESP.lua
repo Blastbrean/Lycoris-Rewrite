@@ -105,40 +105,112 @@ local function onDescendantAdded(descendant)
 	if descendant:IsA("Model") then
 		if isInLiveFolder and isPlayerCharacter then
 			espObjects[descendant] = HumanoidESP.new("Player", descendant, humanoidESPNameCallback)
+			return
 		end
 
 		if isInLiveFolder and not isPlayerCharacter then
 			espObjects[descendant] = HumanoidESP.new("Mob", descendant, humanoidESPNameCallback)
+			return
 		end
 
 		if descendant.Parent == workspace:WaitForChild("NPCs") then
 			espObjects[descendant] = HumanoidESP.new("NPC", descendant, humanoidESPNameCallback)
+			return
 		end
 	end
 
 	if descendant.Name == "AreaMarker" then
 		espObjects[descendant] = BasicESP.new("AreaMarker", descendant, areaMarkerESPNameCallback)
+		return
 	end
 
-	if descendant:FindFirstChild("LootUpdated") then
-		espObjects[descendant] = BasicESP.new("Chest", descendant, createESPNameCallback("Chest"))
+	if descendant.Name == "LootUpdated" then
+		espObjects[descendant] = BasicESP.new("Chest", descendant.Parent, createESPNameCallback("Chest"))
+		return
 	end
 
-	espObjects[descendant] = BasicESP.new("JobBoard", descendant, createESPNameCallback("Job Board"))
-	espObjects[descendant] = BasicESP.new("Artifact", descendant, createESPNameCallback("Artifact"))
-	espObjects[descendant] = BasicESP.new("Whirlpool", descendant, createESPNameCallback("Whirlpool"))
-	espObjects[descendant] = BasicESP.new("ExplosiveBarrel", descendant, createESPNameCallback("Explosive Barrel"))
-	espObjects[descendant] = BasicESP.new("OwlFeathers", descendant, createESPNameCallback("Owl Feathers"))
-	espObjects[descendant] = BasicESP.new("GuildDoor", descendant, createESPNameCallback("Guild Door"))
-	espObjects[descendant] = BasicESP.new("GuildBanner", descendant, createESPNameCallback("Guild Banner"))
-	espObjects[descendant] = BasicESP.new("Obelisk", descendant, createESPNameCallback("Obelisk"))
-	espObjects[descendant] = BasicESP.new("Ingredient", descendant, createESPNameCallback("Ingredient"))
-	espObjects[descendant] = BasicESP.new("ArmorBrick", descendant, createESPNameCallback("Armor Brick"))
-	espObjects[descendant] = BasicESP.new("BellMeteor", descendant, createESPNameCallback("Bell Meteor"))
-	espObjects[descendant] = BasicESP.new("RareObelisk", descendant, createESPNameCallback("Rare Obelisk"))
-	espObjects[descendant] = BasicESP.new("HealBrick", descendant, createESPNameCallback("Heal Brick"))
-	espObjects[descendant] = BasicESP.new("MantraObelisk", descendant, createESPNameCallback("Mantra Obelisk"))
-	espObjects[descendant] = BasicESP.new("BRWeapon", descendant, createESPNameCallback("BR Weapon"))
+	if descendant.Name == "JobBoard" then
+		espObjects[descendant] = BasicESP.new("JobBoard", descendant, createESPNameCallback("Job Board"))
+		return
+	end
+
+	if descendant.Name == "BigArtifact" then
+		espObjects[descendant] = BasicESP.new("Artifact", descendant, createESPNameCallback("Artifact"))
+		return
+	end
+
+	if descendant.Name == "DepthsWhirlpool" then
+		espObjects[descendant] = BasicESP.new("Whirlpool", descendant, createESPNameCallback("Whirlpool"))
+		return
+	end
+
+	if descendant.Name == "ExplodeCrate" then
+		espObjects[descendant] = BasicESP.new("ExplosiveBarrel", descendant, createESPNameCallback("Explosive Barrel"))
+		return
+	end
+
+	if descendant.Name == "EventFeatherRef" then
+		espObjects[descendant] = BasicESP.new("OwlFeathers", descendant, createESPNameCallback("Owl Feathers"))
+		return
+	end
+
+	if descendant.Name:match("GuildDoor") then
+		espObjects[descendant] = BasicESP.new("GuildDoor", descendant, createESPNameCallback("Guild Door"))
+		return
+	end
+
+	if descendant.Name == "GuildBanner" then
+		espObjects[descendant] = BasicESP.new("GuildBanner", descendant, createESPNameCallback("Guild Banner"))
+		return
+	end
+
+	if descendant.Name == "Obelisk" then
+		espObjects[descendant] = BasicESP.new("Obelisk", descendant, createESPNameCallback("Obelisk"))
+		return
+	end
+
+	if descendant.Parent == workspace.Ingredients then
+		espObjects[descendant] = BasicESP.new("Ingredient", descendant, createESPNameCallback(descendant.Name))
+		return
+	end
+
+	if descendant.Name:match("ArmorBrick") then
+		local billboardGui = descendant:FindFirstChild("BillboardGui")
+		local armorBrickLabel = billboardGui and billboardGui:FindFirstChild("TextLabel")
+		local armorBrickName = armorBrickLabel and armorBrickLabel.Text
+
+		if not armorBrickLabel then
+			armorBrickName = "Unknown Armor Brick"
+		end
+
+		espObjects[descendant] = BasicESP.new("ArmorBrick", descendant, createESPNameCallback(armorBrickName))
+		return
+	end
+
+	if descendant.Name == "BellMeteor" then
+		espObjects[descendant] = BasicESP.new("BellMeteor", descendant, createESPNameCallback("Bell Meteor"))
+		return
+	end
+
+	if descendant.Name == "RareObelisk" then
+		espObjects[descendant] = BasicESP.new("RareObelisk", descendant, createESPNameCallback("Rare Obelisk"))
+		return
+	end
+
+	if descendant.Name == "HealBrick" then
+		espObjects[descendant] = BasicESP.new("HealBrick", descendant, createESPNameCallback("Heal Brick"))
+		return
+	end
+
+	if descendant.Name == "MantraObelisk" then
+		espObjects[descendant] = BasicESP.new("MantraObelisk", descendant, createESPNameCallback("Mantra Obelisk"))
+		return
+	end
+
+	if descendant:IsA("MeshPart") and descendant:FindFirstChild("InteractPrompt") then
+		espObjects[descendant] = BasicESP.new("BRWeapon", descendant, createESPNameCallback(descendant.Name))
+		return
+	end
 end
 
 -- On descendant removing.

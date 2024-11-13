@@ -4,13 +4,6 @@ local PlayerTab = {}
 ---Initialize movement section.
 ---@param groupbox table
 function PlayerTab.initMovementSection(groupbox)
-	local atbDepBox = groupbox:AddDependencyBox()
-	local speedDepBox = groupbox:AddDependencyBox()
-	local flyDepBox = groupbox:AddDependencyBox()
-	local noclipDepBox = groupbox:AddDependencyBox()
-	local infiniteJumpDepBox = groupbox:AddDependencyBox()
-	local agilitySpoofDepBox = groupbox:AddDependencyBox()
-
 	groupbox
 		:AddToggle("Speedhack", {
 			Text = "Speedhack",
@@ -19,12 +12,14 @@ function PlayerTab.initMovementSection(groupbox)
 		})
 		:AddKeyPicker("SpeedhackKeybind", { Default = "X", SyncToggleState = true, Text = "Speedhack" })
 
+	local speedDepBox = groupbox:AddDependencyBox()
+
 	speedDepBox:AddSlider("SpeedhackSpeed", {
 		Text = "Speedhack Speed",
 		Default = 200,
 		Min = 0,
 		Max = 300,
-		Suffix = "studs/s",
+		Suffix = "studs",
 		Rounding = 0,
 	})
 
@@ -36,12 +31,14 @@ function PlayerTab.initMovementSection(groupbox)
 		})
 		:AddKeyPicker("FlyKeybind", { Default = "CapsLock", SyncToggleState = true, Text = "Fly" })
 
+	local flyDepBox = groupbox:AddDependencyBox()
+
 	flyDepBox:AddSlider("FlySpeed", {
 		Text = "Fly Speed",
 		Default = 200,
 		Min = 0,
 		Max = 300,
-		Suffix = "studs/s",
+		Suffix = "studs",
 		Rounding = 0,
 	})
 
@@ -50,7 +47,7 @@ function PlayerTab.initMovementSection(groupbox)
 		Default = 150,
 		Min = 0,
 		Max = 300,
-		Suffix = "studs/s",
+		Suffix = "studs",
 		Rounding = 0,
 	})
 
@@ -61,6 +58,8 @@ function PlayerTab.initMovementSection(groupbox)
 			Default = false,
 		})
 		:AddKeyPicker("NoClipKeybind", { Default = "CapsLock", SyncToggleState = true, Text = "NoClip" })
+
+	local noclipDepBox = groupbox:AddDependencyBox()
 
 	noclipDepBox:AddToggle("NoClipCollisionsKnocked", {
 		Text = "Collisions While Knocked",
@@ -76,20 +75,7 @@ function PlayerTab.initMovementSection(groupbox)
 		})
 		:AddKeyPicker("AttachToBackKeybind", { Default = "[", SyncToggleState = true, Text = "Attach To Back" })
 
-	groupbox:AddToggle("InfiniteJump", {
-		Text = "Infinite Jump",
-		Tooltip = "Boost your velocity while the jump key is held.",
-		Default = false,
-	})
-
-	infiniteJumpDepBox:AddSlider("InfiniteJumpBoost", {
-		Text = "Infinite Jump Boost",
-		Default = 50,
-		Min = 0,
-		Max = 500,
-		Suffix = "studs/s",
-		Rounding = 0,
-	})
+	local atbDepBox = groupbox:AddDependencyBox()
 
 	atbDepBox:AddSlider("BackOffset", {
 		Text = "Distance To Entity",
@@ -109,11 +95,30 @@ function PlayerTab.initMovementSection(groupbox)
 		Rounding = 0,
 	})
 
+	groupbox:AddToggle("InfiniteJump", {
+		Text = "Infinite Jump",
+		Tooltip = "Boost your velocity while the jump key is held.",
+		Default = false,
+	})
+
+	local infiniteJumpDepBox = groupbox:AddDependencyBox()
+
+	infiniteJumpDepBox:AddSlider("InfiniteJumpBoost", {
+		Text = "Infinite Jump Boost",
+		Default = 50,
+		Min = 0,
+		Max = 500,
+		Suffix = "studs",
+		Rounding = 0,
+	})
+
 	groupbox:AddToggle("AgilitySpoof", {
 		Text = "Agility Spoofer",
 		Tooltip = "Set your Agility investment points to boost movement realistically.",
 		Default = false,
 	})
+
+	local agilitySpoofDepBox = groupbox:AddDependencyBox()
 
 	agilitySpoofDepBox:AddSlider("AgilitySpoof", {
 		Text = "Agility Value",
@@ -140,8 +145,6 @@ function PlayerTab.initMovementSection(groupbox)
 		Tooltip = "Instantly invoke a sprint when pressing a key in any direction.",
 		Default = false,
 	})
-
-	---@todo: After, add ESP.
 
 	infiniteJumpDepBox:SetupDependencies({
 		{ Toggles.InfiniteJump, true },
@@ -254,7 +257,7 @@ function PlayerTab.initRemovalSection(groupbox)
 			Default = false,
 		})
 		:AddColorPicker("AmbienceColor", {
-			Default = Color3.new(150, 150, 150),
+			Default = Color3.fromHex("FFFFFF"),
 		})
 
 	groupbox:AddToggle("OriginalAmbienceColor", {

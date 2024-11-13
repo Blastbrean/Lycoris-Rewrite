@@ -4,14 +4,13 @@ local AutomationTab = {}
 ---Attribute section.
 ---@param groupbox table
 function AutomationTab.initAttributeSection(groupbox)
-	local charismaDepbox = groupbox:AddDependencyBox()
-	local intelDepBox = groupbox:AddDependencyBox()
-
 	groupbox:AddToggle("AutoCharisma", {
 		Text = "Auto Charisma Farm",
 		Default = false,
 		Tooltip = "Using the 'How To Make Friends' book - automatically train the 'Charisma' attribute.",
 	})
+
+	local charismaDepbox = groupbox:AddDependencyBox()
 
 	charismaDepbox:AddInput("CharismaCap", {
 		Text = "Charisma Cap",
@@ -21,11 +20,13 @@ function AutomationTab.initAttributeSection(groupbox)
 		Default = "75",
 	})
 
-	charismaDepbox:AddToggle("AutoIntelligence", {
+	groupbox:AddToggle("AutoIntelligence", {
 		Text = "Auto Intelligence",
 		Tooltip = "Using the 'Math Textbook' book - automatically train the 'Intelligence' attribute.",
 		Default = false,
 	})
+
+	local intelDepBox = groupbox:AddDependencyBox()
 
 	intelDepBox:AddInput("IntelligenceCap", {
 		Text = "Intelligence Cap",
@@ -40,22 +41,21 @@ function AutomationTab.initAttributeSection(groupbox)
 	})
 
 	intelDepBox:SetupDependencies({
-		{ Toggles.AutoMath, true },
+		{ Toggles.AutoIntelligence, true },
 	})
 end
 
 ---Fishing section.
 ---@param groupbox table
 function AutomationTab.initFishingSection(groupbox)
-	local fishDepBox = groupbox:AddDependencyBox()
-	local fishWhDepBox = groupbox:AddDependencyBox()
-
 	---@todo: Port and fix AutoFish.
 	groupbox:AddToggle("AutoFish", {
 		Text = "Auto Fish",
 		Tooltip = "Using the 'Fishing Rod' item - automatically fish for you.",
 		Default = false,
 	})
+
+	local fishDepBox = groupbox:AddDependencyBox()
 
 	fishDepBox:AddSlider("AutoFishDelay", {
 		Text = "Hold Time",
@@ -79,7 +79,9 @@ function AutomationTab.initFishingSection(groupbox)
 		Default = false,
 	})
 
-	fishWhDepBox:AddInput("AutoFishWebhook", {
+	local fishWhSubDepBox = fishDepBox:AddDependencyBox()
+
+	fishWhSubDepBox:AddInput("AutoFishWebhook", {
 		Text = "Webhook Link",
 		Tooltip = "The webhook that will receive 'Auto Fish' data.",
 		Placeholder = "Enter your webhook link here.",
@@ -90,7 +92,7 @@ function AutomationTab.initFishingSection(groupbox)
 		{ Toggles.AutoFish, true },
 	})
 
-	fishWhDepBox:SetupDependencies({
+	fishWhSubDepBox:SetupDependencies({
 		{ Toggles.AutoFishWebhookSend, true },
 	})
 end
@@ -98,13 +100,13 @@ end
 ---Maestro section.
 ---@param groupbox table
 function AutomationTab.initMaestroSection(groupbox)
-	local maestroDepBox = groupbox:AddDependencyBox()
-
 	groupbox:AddToggle("AutoMaestro", {
 		Text = "Auto Maestro Fight",
 		Tooltip = "Automatically fight 'Maestro' for you. You have to already have fought him once before using this feature.",
 		Default = false,
 	})
+
+	local maestroDepBox = groupbox:AddDependencyBox()
 
 	maestroDepBox:AddToggle("MaestroUseCritical", {
 		Text = "Use Critical",
@@ -133,14 +135,13 @@ end
 ---Astral section.
 ---@param groupbox table
 function AutomationTab.initAstralSection(groupbox)
-	local astralDepBox = groupbox:AddDependencyBox()
-	local astralNotifyDepBox = groupbox:AddDependencyBox()
-
 	groupbox:AddToggle("AutoAstral", {
 		Text = "Auto Astral Farm",
 		Toolip = "You must be in the 'Void Sea' and have 'Carnivore' or 'Food' in your inventory to use this feature.",
 		Default = false,
 	})
+
+	local astralDepBox = groupbox:AddDependencyBox()
 
 	astralDepBox:AddSlider("AstralSpeed", {
 		Text = "Astral Speed",
@@ -168,7 +169,7 @@ function AutomationTab.initAstralSection(groupbox)
 		Suffix = "%",
 	})
 
-	astralDepBox:newSlider("AstralWaterLevel", {
+	astralDepBox:AddSlider("AstralWaterLevel", {
 		Text = "Water Level",
 		Tooltip = "At what percentage of water should we drink water?",
 		Default = 33,
@@ -178,13 +179,15 @@ function AutomationTab.initAstralSection(groupbox)
 		Suffix = "%",
 	})
 
-	astralDepBox:newToggle("NotifyAstral", {
+	astralDepBox:AddToggle("NotifyAstral", {
 		Text = "Astral Webhook Notification",
 		Tooltip = "Send a notification to a Webhook when the 'Astral' event is detected.",
 		Default = false,
 	})
 
-	astralNotifyDepBox:newTextbox("AstralWebhook", {
+	local astralNotifySubDepBox = astralDepBox:AddDependencyBox()
+
+	astralNotifySubDepBox:AddInput("AstralWebhook", {
 		Text = "Astral Webhook",
 		Tooltip = "The webhook that will receive 'Astral' notifications.",
 		Numeric = false,
@@ -196,7 +199,7 @@ function AutomationTab.initAstralSection(groupbox)
 		{ Toggles.AutoAstral, true },
 	})
 
-	astralNotifyDepBox:SetupDependencies({
+	astralNotifySubDepBox:SetupDependencies({
 		{ Toggles.NotifyAstral, true },
 	})
 end
@@ -208,10 +211,10 @@ function AutomationTab.init(window)
 	local tab = window:AddTab("Automation")
 
 	-- Initialize sections.
-	AutomationTab.initAttributeSection(tab:AddLeftTabbox("Attributes"))
-	AutomationTab.initFishingSection(tab:AddRightTabbox("Fishing"))
-	AutomationTab.initMaestroSection(tab:AddLeftTabbox("Maestro"))
-	AutomationTab.initAstralSection(tab:AddRightTabbox("Astral"))
+	AutomationTab.initAttributeSection(tab:AddLeftGroupbox("Attributes"))
+	AutomationTab.initFishingSection(tab:AddRightGroupbox("Fishing"))
+	AutomationTab.initMaestroSection(tab:AddLeftGroupbox("Maestro"))
+	AutomationTab.initAstralSection(tab:AddRightGroupbox("Astral"))
 	---@note: Don't port the Echo Farm or Wipe Farm - it will be reworked.
 end
 

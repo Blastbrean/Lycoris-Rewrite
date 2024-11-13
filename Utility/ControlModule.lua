@@ -6,8 +6,6 @@ local ControlModule = {
 	rightValue = 0,
 }
 
-ControlModule.__index = ControlModule
-
 ---@module Utility.Profiler
 local Profiler = require("Utility/Profiler")
 
@@ -34,9 +32,23 @@ local function bindActionWrapper(actionName, callback, createTouchButton, ...)
 		Logger.trace("onBindActionWrapperError - (%s) - %s", actionName, error)
 	end
 
-	local actionWrapperCallback = callback and Profiler.wrap(xpcall(callback, onBindActionWrapperError))
+	local actionWrapperCallback = callback
+		and Profiler.wrap(string.format("ControlModule_BindActionWrapper_%s", actionName), function(...)
+			local success, result = xpcall(callback, onBindActionWrapperError, ...)
 
-	controlMaid:add(ContextActionService:BindAction(actionName, actionWrapperCallback, createTouchButton, ...))
+			if not success then
+				return nil
+			end
+
+			return result
+		end)
+
+	---@note: This is a hot-fix and should be handled properly in the future.
+	controlMaid:add(function()
+		ContextActionService:UnbindAction(actionName)
+	end)
+
+	ContextActionService:BindAction(actionName, actionWrapperCallback, createTouchButton, ...)
 end
 
 ---Initialize control module.
@@ -60,11 +72,14 @@ function ControlModule.init()
 		ControlModule.rightValue = (inputState == Enum.UserInputState.Begin) and 1 or 0
 		return Enum.ContextActionResult.Pass
 	end, false, Enum.KeyCode.D)
+
+	Logger.warn("Control module initialized.")
 end
 
 ---Detach control module.
 function ControlModule.detach()
 	controlMaid:clean()
+	Logger.warn("Control module detached.")
 end
 
 ---Get move vector.

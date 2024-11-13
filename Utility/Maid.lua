@@ -7,7 +7,7 @@ Maid.__type = "maid"
 ---@return Maid
 function Maid.new()
 	return setmetatable({
-		Tasks = {},
+		_tasks = {},
 	}, Maid)
 end
 

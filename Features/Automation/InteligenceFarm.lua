@@ -16,6 +16,9 @@ local Logger = require("Utility/Logger")
 ---@Module Utility.SendInput
 local SendInput = require("Utility/SendInput")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 -- Services.
 local players = game:GetService("Players")
 local runService = game:GetService("RunService")
@@ -28,7 +31,7 @@ local autoIntelligenceMaid = Maid.new()
 
 ---Update inteligence.
 local function updateInteligence()
-	if not Toggles.InteligenceFarm.Value then
+	if not Configuration.expectToggleValue("IntelligenceFarm") then
 		return
 	end
 
