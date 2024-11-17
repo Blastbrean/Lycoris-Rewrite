@@ -34,7 +34,7 @@ function Menu.init()
 	local window = Library:CreateWindow({
 		Title = "ArmorShield Test",
 		Center = true,
-		AutoShow = true,
+		AutoShow = false,
 		TabPadding = 8,
 		MenuFadeTime = 0.0,
 	})

@@ -4,6 +4,9 @@ local DrawingPool = require("Utility/DrawingPool")
 ---@module Menu.VisualsTab
 local VisualsTab = require("Menu/VisualsTab")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 ---@class BasicESP: DrawingPool
 ---@field identifier string
 ---@field instance Instance
@@ -12,7 +15,7 @@ BasicESP.__index = BasicESP
 
 ---Update basic esp.
 function BasicESP:update()
-	if not Toggles[VisualsTab.identify(self.identifier, "Enable")].Value then
+	if not Configuration.expectToggleValue(VisualsTab.identify(self.identifier, "Enable")) then
 		return self:setVisible(false)
 	end
 
@@ -32,7 +35,7 @@ function BasicESP:update()
 	local currentCamera = workspace.CurrentCamera
 	local distance = (currentCamera.CFrame.Position - position).Magnitude
 
-	if distance > Options[VisualsTab.identify(self.identifier, "DistanceThreshold")].Value then
+	if distance > Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "DistanceThreshold")) then
 		return self:setVisible(false)
 	end
 

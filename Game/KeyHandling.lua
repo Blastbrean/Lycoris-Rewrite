@@ -60,21 +60,5 @@ function KeyHandling.getRemote(remoteName)
 	return khGetRemote(remoteName, keyHandlerKey)
 end
 
----Return the "khGetRemote" function.
----@return function
-function KeyHandling.rawGetRemote()
-	local keyHandlerModule = require(keyHandler)
-	if not keyHandlerModule then
-		return
-	end
-
-	local keyHandlerObject = keyHandlerModule()
-	if not keyHandlerObject then
-		return
-	end
-
-	return keyHandlerObject[1]
-end
-
 -- Return KeyHandling module.
 return KeyHandling

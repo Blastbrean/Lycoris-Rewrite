@@ -1,11 +1,11 @@
----@class Drawing
+---@class DrawingWrapper
 ---@field object table Underlying drawing object
 -- Wrapper of multiple drawing object types & allows for the use of default properties.
-local Drawing = {}
-Drawing.__index = Drawing
+local DrawingWrapper = {}
+DrawingWrapper.__index = DrawingWrapper
 
 ---Remove drawing from being rendered and delete itself.
-function Drawing:remove()
+function DrawingWrapper:remove()
 	self.object:Remove()
 	self = nil
 end
@@ -13,22 +13,22 @@ end
 ---Get drawing object.
 ---@param key string
 ---@return any
-function Drawing:get(key)
+function DrawingWrapper:get(key)
 	return self.object[key]
 end
 
 ---Set key in drawing object.
 ---@param key string
 ---@param value any
-function Drawing:set(key, value)
+function DrawingWrapper:set(key, value)
 	self.object[key] = value
 end
 
 ---Create new drawing object.
 ---@param data table
 ---@return Drawing
-function Drawing.new(data)
-	local self = setmetatable({}, Drawing)
+function DrawingWrapper.new(data)
+	local self = setmetatable({}, DrawingWrapper)
 	self.object = Drawing.new(data.type)
 
 	self:set("Visible", data.visible ~= nil and data.visible or true)
@@ -38,5 +38,5 @@ function Drawing.new(data)
 	return self
 end
 
--- Return Drawing module.
-return Drawing
+-- Return DrawingWrapper module.
+return DrawingWrapper

@@ -40,13 +40,17 @@ do
 				return {
 					type = "ColorPicker",
 					idx = idx,
-					value = object.Value:ToHex(),
+					hue = object.Hue,
+					sat = object.Sat,
+					vib = object.Vib,
 					transparency = object.Transparency,
+					rainbow = object.Rainbow,
 				}
 			end,
 			Load = function(idx, data)
 				if Options[idx] then
-					Options[idx]:SetValueRGB(Color3.fromHex(data.value), data.transparency)
+					Options[idx].Rainbow = data.rainbow
+					Options[idx]:SetValue({ data.hue, data.sat, data.vib }, data.transparency)
 				end
 			end,
 		},

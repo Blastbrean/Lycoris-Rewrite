@@ -62,14 +62,20 @@ do
 			return
 		end
 
-		-- custom themes are just regular dictionaries instead of an array with { index, dictionary }
+		for idx, themeData in next, customThemeData or data[2] do
+			if type(themeData) == "string" then
+				self.Library[idx] = Color3.fromHex(themeData)
 
-		local scheme = data[2]
-		for idx, col in next, customThemeData or scheme do
-			self.Library[idx] = Color3.fromHex(col)
+				if Options[idx] then
+					Options[idx]:SetValueRGB(Color3.fromHex(themeData))
+				end
+			else
+				self.Library[idx] = Color3.fromHSV(themeData.hue, themeData.sat, themeData.vib)
 
-			if Options[idx] then
-				Options[idx]:SetValueRGB(Color3.fromHex(col))
+				if Options[idx] then
+					Options[idx].Rainbow = themeData.rainbow
+					Options[idx]:SetValue({ themeData.hue, themeData.sat, themeData.vib }, themeData.transparency)
+				end
 			end
 		end
 
@@ -220,7 +226,16 @@ do
 		local fields = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
 
 		for _, field in next, fields do
-			theme[field] = Options[field].Value:ToHex()
+			local option = Options[field]
+
+			theme[field] = {
+				type = "ColorPicker",
+				hue = option.Hue,
+				sat = option.Sat,
+				vib = option.Vib,
+				transparency = option.Transparency,
+				rainbow = option.Rainbow,
+			}
 		end
 
 		writefile(self.Folder .. "/themes/" .. file .. ".json", httpService:JSONEncode(theme))

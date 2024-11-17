@@ -21,7 +21,7 @@ function SettingsTab.initUISettingsSection(groupbox)
 	end)
 
 	local menuBindLabel = groupbox:AddLabel("Menu Bind")
-	menuBindLabel:AddKeyPicker("MenuKeybind", { Default = "LeftAlt", NoUI = true, Text = "Menu Keybind" })
+	menuBindLabel:AddKeyPicker("MenuKeybind", { Default = "Insert", NoUI = true, Text = "Menu Keybind" })
 end
 
 ---Initialize tab.

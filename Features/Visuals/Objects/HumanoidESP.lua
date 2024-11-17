@@ -4,13 +4,16 @@ local BasicESP = require("Features/Visuals/Objects/BasicESP")
 ---@module Menu.VisualsTab
 local VisualsTab = require("Menu/VisualsTab")
 
+---@module GUI.Configuration
+local Configuration = require("GUI/Configuration")
+
 ---@class HumanoidESP: BasicESP
 local HumanoidESP = setmetatable({}, { __index = BasicESP })
 HumanoidESP.__index = HumanoidESP
 
 ---Update humanoid esp.
 function HumanoidESP:update()
-	if not Toggles[VisualsTab.identify(self.identifier, "Enable")].Value then
+	if not Configuration.expectToggleValue(VisualsTab.identify(self.identifier, "Enable")) then
 		return self:setVisible(false)
 	end
 
@@ -35,7 +38,7 @@ function HumanoidESP:update()
 	local currentCamera = workspace.CurrentCamera
 	local distance = (currentCamera.CFrame.Position - position).Magnitude
 
-	if distance > Options[VisualsTab.identify(self.identifier, "DistanceThreshold")].Value then
+	if distance > Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "DistanceThreshold")) then
 		return self:setVisible(false)
 	end
 
@@ -50,12 +53,12 @@ function HumanoidESP:update()
 	local text = self:getDrawing("baseText")
 	text:set("Position", headPosition)
 	text:set("Text", self.nameCallback(self, humanoid, distance))
-	text:set("Color", Options[VisualsTab.identify(self.identifier, "Color")].Value)
+	text:set("Color", Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "Color")))
 	text:set("Visible", true)
 
 	local baseBox = self:getDrawing("baseBox")
-	baseBox:set("Visible", Options[VisualsTab.identify(self.identifier, "Box")].Value)
-	baseBox:set("Color", Options[VisualsTab.identify(self.identifier, "BoxColor")].Value)
+	baseBox:set("Visible", Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "Box")))
+	baseBox:set("Color", Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "BoxColor")))
 	baseBox:set("Size", Vector2.new(1000 / viewportPosition.Z, headPosition.Y - legPosition.Y))
 	baseBox:set(
 		"Position",
@@ -68,7 +71,7 @@ function HumanoidESP:update()
 	local healthPercentage = humanoid.Health / humanoid.MaxHealth
 
 	local healthBarOutline = self:getDrawing("healthBarOutline")
-	healthBarOutline:set("Visible", Options[VisualsTab.identify(self.identifier, "HealthBar")].Value)
+	healthBarOutline:set("Visible", Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "HealthBar")))
 	healthBarOutline:set("Thickness", 123 / distance + 2)
 	healthBarOutline:set("From", ((healthBarOffset * 0.5) - Vector2.xAxis * 5) - Vector2.yAxis)
 	healthBarOutline:set("To", (healthBarOffset * Vector2.new(0.5, -0.5)) + Vector2.yAxis)

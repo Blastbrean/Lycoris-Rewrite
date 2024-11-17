@@ -16,6 +16,12 @@ local ControlModule = require("Utility/ControlModule")
 ---@module GUI.Configuration
 local Configuration = require("GUI/Configuration")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
+---@module Game.KeyHandling
+local KeyHandling = require("Game/KeyHandling")
+
 -- Services.
 local runService = game:GetService("RunService")
 local players = game:GetService("Players")

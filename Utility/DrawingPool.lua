@@ -3,8 +3,8 @@
 local DrawingPool = {}
 DrawingPool.__index = DrawingPool
 
----@module Utility.Drawing
-local Drawing = require("Utility/Drawing")
+---@module Utility.DrawingWrapper
+local DrawingWrapper = require("Utility/DrawingWrapper")
 
 ---Detach by removing drawing objects.
 function DrawingPool:detach()
@@ -26,7 +26,7 @@ end
 ---@param data table
 ---@return Drawing
 function DrawingPool:createDrawing(identifier, data)
-	local drawingObject = Drawing.new(data)
+	local drawingObject = DrawingWrapper.new(data)
 
 	self.drawings[identifier] = drawingObject
 

@@ -36,7 +36,8 @@
         "cloneref",
         "sethiddenproperty",
         "isfunctionhooked",
-        "restorefunction"
+        "restorefunction",
+        "getconnections"
     ],
     "editor.formatOnSave": true,
     "robloxLsp.suggestedImports.importIgnore": [

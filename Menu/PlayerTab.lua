@@ -170,8 +170,6 @@ end
 ---Initialize removal section.
 ---@param groupbox table
 function PlayerTab.initRemovalSection(groupbox)
-	local umacDepBox = groupbox:AddDependencyBox()
-
 	groupbox:AddToggle("NoEchoModifiers", {
 		Text = "No Echo Modifiers",
 		Tooltip = "Remove any 'Echo Modifiers' instances on the client.",
@@ -265,6 +263,8 @@ function PlayerTab.initRemovalSection(groupbox)
 		Tooltip = "Use the game's original ambience color instead of a custom one.",
 		Default = false,
 	})
+
+	local umacDepBox = groupbox:AddDependencyBox()
 
 	umacDepBox:AddSlider("OriginalAmbienceColorBrightness", {
 		Text = "Original Ambience Brightness",

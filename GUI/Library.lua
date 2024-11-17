@@ -20,6 +20,7 @@ ScreenGui.Parent = CoreGui
 
 local Toggles = {}
 local Options = {}
+local ColorPickers = {}
 
 getgenv().Toggles = Toggles
 getgenv().Options = Options
@@ -66,6 +67,12 @@ table.insert(
 
 			Library.CurrentRainbowHue = Hue
 			Library.CurrentRainbowColor = Color3.fromHSV(Hue, 0.8, 1)
+
+			for _, ColorPicker in next, ColorPickers do
+				if ColorPicker.Rainbow then
+					ColorPicker:Display()
+				end
+			end
 		end
 	end)
 )
@@ -423,6 +430,7 @@ do
 			Type = "ColorPicker",
 			Title = type(Info.Title) == "string" and Info.Title or "Color picker",
 			Callback = Info.Callback or function(Color) end,
+			Rainbow = Info.Rainbow or false,
 		}
 
 		function ColorPicker:SetHSVFromRGB(Color)
@@ -765,6 +773,11 @@ do
 				end)
 			end
 
+			ContextMenu:AddOption("Rainbow toggle", function()
+				ColorPicker.Rainbow = not ColorPicker.Rainbow
+				ColorPicker:Display()
+			end)
+
 			ContextMenu:AddOption("Copy color", function()
 				Library.ColorClipboard = ColorPicker.Value
 				Library:Notify("Copied color!", 2)
@@ -841,6 +854,10 @@ do
 		function ColorPicker:Display()
 			ColorPicker.Value = Color3.fromHSV(ColorPicker.Hue, ColorPicker.Sat, ColorPicker.Vib)
 			SatVibMap.BackgroundColor3 = Color3.fromHSV(ColorPicker.Hue, 1, 1)
+
+			if ColorPicker.Rainbow then
+				ColorPicker.Value = Library.CurrentRainbowColor
+			end
 
 			Library:Create(DisplayFrame, {
 				BackgroundColor3 = ColorPicker.Value,
@@ -1007,6 +1024,7 @@ do
 		ColorPicker.DisplayFrame = DisplayFrame
 
 		Options[Idx] = ColorPicker
+		ColorPickers[Idx] = ColorPicker
 
 		return self
 	end

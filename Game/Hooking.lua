@@ -17,7 +17,6 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local lighting = game:GetService("Lighting")
 
 -- Old hooked functions.
-local oldDestroy = nil
 local oldFireServer = nil
 local oldUnreliableFireServer = nil
 local oldNameCall = nil
@@ -242,32 +241,6 @@ local function onFireServer(...)
 	return oldFireServer(...)
 end
 
----On destroy.
----@return any
-local function onDestroy(...)
-	local localPlayer = playersService.LocalPlayer
-	if not localPlayer then
-		return oldDestroy(...)
-	end
-
-	local character = localPlayer.Character
-	if not character then
-		return oldDestroy(...)
-	end
-
-	local characterHandler = character:FindFirstChild("CharacterHandler")
-	if not characterHandler then
-		return oldDestroy(...)
-	end
-
-	local args = { ... }
-	local self = args[1]
-
-	if self ~= characterHandler then
-		return oldDestroy(...)
-	end
-end
-
 ---On get function environment.
 ---@return any
 local function onGetFunctionEnvironment(...)
@@ -328,10 +301,6 @@ local function onNewIndex(...)
 	local index = args[2]
 	local value = args[3]
 
-	if self.Name == "CharacterHandler" and (index == "Parent" or index == "parent") then
-		return
-	end
-
 	if self == lighting and index == "Ambient" and Configuration.expectToggleValue("ModifyAmbience") then
 		return oldNewIndex(self, index, modifyAmbienceColor(value))
 	end
@@ -344,8 +313,20 @@ end
 local function onCoroutineWrap(...)
 	local args = { ... }
 
+	local func = args[1]
+	local consts = debug.getconstants(func)
+
+	---@note: Prevent InputClient detection 16.2 from happening so the Disconnect call never happens.
 	if debug.getinfo(3).source:match("InputClient") then
-		args[1] = function() end
+		local function onCoroutineCall(arg1)
+			if arg1 == "" then
+				return ""
+			else
+				return "LYCORIS_ON_TOP"
+			end
+		end
+
+		args[1] = onCoroutineCall
 	end
 
 	return oldCoroutineWrap(unpack(args))
@@ -356,27 +337,14 @@ end
 local function onTaskSpawn(...)
 	local args = { ... }
 
-	if debug.getinfo(3).source:match("InputClient") then
+	local func = args[1]
+	local consts = debug.getconstants(func)
+
+	if debug.getinfo(3).source:match("InputClient") and (#consts == 0 or consts[2] == "Parent") then
 		args[1] = function() end
 	end
 
 	return oldTaskSpawn(unpack(args))
-end
-
----On get remote.
----@return any
-local function onGetRemote(...)
-	local args = { ... }
-	local index = args[1]
-
-	---@note: Prevent ban remotes from going through to the module because they will break the game.
-	if typeof(index) == "number" then
-		return {
-			FireServer = function(...) end,
-		}
-	end
-
-	return oldGetRemote(...)
 end
 
 ---On pcall.
@@ -420,7 +388,8 @@ local function onToString(...)
 	local variable = args[1]
 
 	if typeof(variable) == "string" and variable:match("EEKE") and checkcaller() then
-		return error("KeyHandler crash prevention system.")
+		warn("Crash has been deferred.")
+		return error("KeyHandler crash prevention hook.")
 	end
 
 	return oldToString(...)
@@ -430,6 +399,7 @@ end
 ---@note: Careful with checkcaller() on hooks where it is called from us during KeyHandling phase.
 function Hooking.init()
 	local localPlayer = playersService.LocalPlayer
+	local playerScripts = localPlayer.PlayerScripts
 
 	oldToString = hookfunction(tostring, onToString)
 	oldFireServer = hookfunction(Instance.new("RemoteEvent").FireServer, onFireServer)
@@ -441,22 +411,12 @@ function Hooking.init()
 	oldTaskSpawn = hookfunction(task.spawn, onTaskSpawn)
 	oldIndex = hookfunction(getrawmetatable(game).__index, onIndex)
 	oldNameCall = hookfunction(getrawmetatable(game).__namecall, onNameCall)
-	oldDestroy = hookfunction(game.Destroy, onDestroy)
 	oldNewIndex = hookfunction(getrawmetatable(game).__newindex, onNewIndex)
 	oldTick = hookfunction(tick, onTick)
 
-	local khGetRemote = KeyHandling.rawGetRemote()
-
-	while not khGetRemote do
-		khGetRemote = KeyHandling.rawGetRemote()
-		task.wait()
-	end
-
-	oldGetRemote = hookfunction(khGetRemote, onGetRemote)
-
 	---@note: This is longer for lower-end devices.
 	---@note: This part is crucial because of the Actor and the error detection.
-	local playerScripts = localPlayer:WaitForChild("PlayerScripts", 25)
+	---@improvement: Add a listener for this script.
 	local clientActor = playerScripts and playerScripts:WaitForChild("ClientActor", 25)
 	local clientManager = clientActor and clientActor:WaitForChild("ClientManager", 25)
 
@@ -471,15 +431,6 @@ end
 function Hooking.detach()
 	local localPlayer = playersService.LocalPlayer
 
-	local khGetRemote = KeyHandling.rawGetRemote()
-
-	while not khGetRemote do
-		khGetRemote = KeyHandling.rawGetRemote()
-		task.wait()
-	end
-
-	oldGetRemote = hookfunction(khGetRemote, oldGetRemote)
-
 	hookfunction(tostring, oldToString)
 	hookfunction(tick, oldTick)
 	hookfunction(task.spawn, oldTaskSpawn)
@@ -487,7 +438,6 @@ function Hooking.detach()
 	hookfunction(coroutine.wrap, oldCoroutineWrap)
 	hookfunction(error, oldError)
 	hookfunction(getfenv, oldGetFenv)
-	hookfunction(game.Destroy, oldDestroy)
 	hookfunction(getrawmetatable(game).__namecall, oldNameCall)
 	hookfunction(getrawmetatable(game).__index, oldIndex)
 	hookfunction(getrawmetatable(game).__newindex, oldNewIndex)
