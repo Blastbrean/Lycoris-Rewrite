@@ -40,6 +40,8 @@ local function fetchRobloxData(url)
 			break
 		end
 
+		Logger.notify("Player scanning is being rate limited - results will be delayed.")
+
 		task.wait(30)
 	end
 
@@ -81,7 +83,7 @@ function PlayerScanning.getStaffRank(player)
 	local responseData =
 		fetchRobloxData(("https://groups.roblox.com/v2/users/%i/groups/roles?includeLocked=true"):format(player.UserId))
 
-	for _, groupData in pairs(responseData.data) do
+	for _, groupData in next, responseData.data do
 		if groupData.group.id ~= 5212858 then
 			continue
 		end
@@ -103,9 +105,9 @@ function PlayerScanning.onPlayerAdded(player)
 		return
 	end
 
-	local success, result = pcall(PlayerScanning.getStaffRank(player))
+	local success, result = pcall(PlayerScanning.getStaffRank, player)
 	if not success then
-		Logger.warn("Failure to get staff rank for %s due to error %s", player.Name, result)
+		Logger.warn("Failure to get staff rank for %s due to error '%s'", player.Name, result)
 		return Logger.longNotify("Failed to get staff rank for %s - this server is potentially unsafe.", player.Name)
 	end
 
@@ -126,7 +128,7 @@ function PlayerScanning.onPlayerAdded(player)
 
 	repeat
 		task.wait()
-	until collectionService:HasTag(player.Backpack, "Loaded") and player.Backpack:GetChildren() >= 1
+	until collectionService:HasTag(player.Backpack, "Loaded") and #player.Backpack:GetChildren() >= 1
 
 	if
 		Configuration.expectToggleValue("NotifyVoidWalker")
