@@ -43,8 +43,18 @@ local function fetchRobloxData(url)
 		task.wait(30)
 	end
 
-	if not response or not response.Success or not response.Body then
+	if not response then
 		return error("Failed to fetch Roblox data.")
+	end
+
+	if not response.Success then
+		return error(
+			string.format("Failed to successfully fetch Roblox data with status code %i.", response.StatusCode)
+		)
+	end
+
+	if not response.Body then
+		return error("Failed to find Roblox data.")
 	end
 
 	return httpService:JSONDecode(response.Body)
@@ -68,13 +78,8 @@ end
 ---@param player Player
 ---@return string?
 function PlayerScanning.getStaffRank(player)
-	local responseData = fetchRobloxData({
-		Url = ("https://groups.roblox.com/v2/users/%i/groups/roles?includeLocked=true"):format(player.UserId),
-		Method = "GET",
-		Headers = {
-			["Content-Type"] = "application/json",
-		},
-	})
+	local responseData =
+		fetchRobloxData(("https://groups.roblox.com/v2/users/%i/groups/roles?includeLocked=true"):format(player.UserId))
 
 	for _, groupData in pairs(responseData.data) do
 		if groupData.group.id ~= 5212858 then
@@ -98,12 +103,13 @@ function PlayerScanning.onPlayerAdded(player)
 		return
 	end
 
-	local success, staffRank = pcall(PlayerScanning.getStaffRank(player))
+	local success, result = pcall(PlayerScanning.getStaffRank(player))
 	if not success then
-		return Logger.notify("Failed to get staff rank for %s - this server is potentially unsafe.", player.Name)
+		Logger.warn("Failure to get staff rank for %s due to error %s", player.Name, result)
+		return Logger.longNotify("Failed to get staff rank for %s - this server is potentially unsafe.", player.Name)
 	end
 
-	local scanData = { staffRank = staffRank }
+	local scanData = { staffRank = result }
 
 	if Configuration.expectToggleValue("NotifyMod") and scanData.staffRank then
 		local moderatorSound = Instance.new("Sound", game:GetService("CoreGui"))

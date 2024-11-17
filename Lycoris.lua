@@ -137,9 +137,9 @@ function Lycoris.init()
 
 	Features.init()
 
-	PlayerScanning.init()
-
 	Menu.init()
+
+	PlayerScanning.init()
 
 	if memStorageService:HasItem("HandleStartMenu") then
 		handleStartMenu()
@@ -152,9 +152,9 @@ end
 function Lycoris.detach()
 	Menu.detach()
 
-	Features.detach()
-
 	PlayerScanning.detach()
+
+	Features.detach()
 
 	ControlModule.detach()
 

@@ -11,10 +11,16 @@ local function buildPrefixString(str)
 	return string.format("[%s %s] [lycoris recode]: %s", os.date("%x"), os.date("%X"), str)
 end
 
----Notify message with a default cooldown to create consistent cooldowns between files.
+---Notify message with a default short cooldown to create consistent cooldowns between files.
 ---@param str string
 function Logger.notify(str, ...)
 	Library:Notify(string.format(str, ...), 3.0)
+end
+
+---Notify message with a default long cooldown to create consistent cooldowns between files.
+---@param str string
+function Logger.longNotify(str, ...)
+	Library:Notify(string.format(str, ...), 30.0)
 end
 
 ---Warn message.
