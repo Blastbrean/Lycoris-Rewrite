@@ -135,7 +135,7 @@ local function updateInteligence()
 
 	humanoid:UnequipTools()
 
-	Logger.notify("Intelligence AutoFarm Stopped")
+	Logger.longNotify("Intelligence AutoFarm is automatically stopping.")
 end
 
 ---Intelligence farming.

@@ -112,10 +112,6 @@ end
 ---Reset noclip.
 local function resetNoClip()
 	for instance, canCollide in pairs(originalCanCollideMap) do
-		if not instance:IsA("BasePart") then
-			continue
-		end
-
 		instance.CanCollide = canCollide
 	end
 
@@ -157,37 +153,38 @@ end
 ---@param rootPart BasePart
 ---@param humanoid Humanoid
 local function updateSpeedHack(rootPart, humanoid)
+	if Configuration.expectToggleValue("Fly") then
+		return
+	end
+
 	if not humanoid then
 		return
 	end
 
-	rootPart.AssemblyAngularVelocity = rootPart.AssemblyAngularVelocity * Vector3.new(0, 1, 0)
+	rootPart.AssemblyLinearVelocity = rootPart.AssemblyLinearVelocity * Vector3.new(0, 1, 0)
 
 	local moveDirection = humanoid.MoveDirection
 	if moveDirection.Magnitude <= 0.001 then
 		return
 	end
 
-	rootPart.AssemblyAngularVelocity = rootPart.AssemblyAngularVelocity
+	rootPart.AssemblyLinearVelocity = rootPart.AssemblyLinearVelocity
 		+ moveDirection.Unit * Configuration.expectOptionValue("SpeedhackSpeed")
 end
 
 ---Update infinite jump.
 ---@param rootPart BasePart
 local function updateInfiniteJump(rootPart)
+	if Configuration.expectToggleValue("Fly") then
+		return
+	end
+
 	if not userInputService:IsKeyDown(Enum.KeyCode.Space) then
 		return
 	end
 
-	local manipulationInst = rootPart:FindFirstChildOfClass("BodyVelocity")
-		or rootPart:FindFirstChildOfClass("BodyPosition")
-
-	if manipulationInst and manipulationInst ~= movementMaid["FlyBodyVelocity"] then
-		manipulationInst:Destroy()
-	end
-
-	rootPart.AssemblyAngularVelocity = rootPart.AssemblyAngularVelocity * Vector3.new(0, 1, 0)
-	rootPart.AssemblyAngularVelocity = rootPart.AssemblyAngularVelocity
+	rootPart.AssemblyLinearVelocity = rootPart.AssemblyLinearVelocity * Vector3.new(0, 1, 0)
+	rootPart.AssemblyLinearVelocity = rootPart.AssemblyLinearVelocity
 		+ Vector3.new(0, Configuration.expectOptionValue("InfiniteJumpBoost"), 0)
 end
 
@@ -199,7 +196,9 @@ local function updateFlyHack(rootPart)
 		return
 	end
 
-	local flyBodyVelocity = InstanceWrapper.create(movementMaid, "FlyBodyVelocity", "BodyVelocity", rootPart)
+	local flyBodyVelocity = InstanceWrapper.create(movementMaid, "flyBodyVelocity", "BodyVelocity", rootPart)
+	flyBodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+
 	local flyVelocity =
 		camera.CFrame:VectorToWorldSpace(ControlModule.getMoveVector() * Configuration.expectOptionValue("FlySpeed"))
 
@@ -356,6 +355,8 @@ local function updateMovement()
 
 	if Configuration.expectToggleValue("Fly") then
 		updateFlyHack(rootPart)
+	else
+		movementMaid["flyBodyVelocity"] = nil
 	end
 
 	if Configuration.expectToggleValue("Speedhack") then

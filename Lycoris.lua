@@ -139,20 +139,18 @@ function Lycoris.init()
 
 	Menu.init()
 
-	PlayerScanning.init()
-
 	if memStorageService:HasItem("HandleStartMenu") then
 		handleStartMenu()
 	end
 
 	Logger.notify("Script has been initialized.")
+
+	PlayerScanning.init()
 end
 
 ---Detach instance.
 function Lycoris.detach()
 	Menu.detach()
-
-	PlayerScanning.detach()
 
 	Features.detach()
 
@@ -161,6 +159,8 @@ function Lycoris.detach()
 	Hooking.detach()
 
 	Logger.warn("Script has been detached.")
+
+	PlayerScanning.detach()
 end
 
 -- Return Lycoris module.

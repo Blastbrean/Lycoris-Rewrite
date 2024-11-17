@@ -28,6 +28,9 @@ local Entitites = require("Utility/Entitites")
 ---@module GUI.Configuration
 local Configuration = require("GUI/Configuration")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 -- Services.
 local runService = game:GetService("RunService")
 local playersService = game:GetService("Players")
@@ -308,10 +311,12 @@ local function astralFarmLoop()
 			Method = "POST",
 			Headers = { ["Content-Type"] = "application/json" },
 			Body = game:GetService("HttpService"):JSONEncode({
-				content = "@everyone Astral meteor was found - pausing farm until it's toggled again.",
+				content = "@everyone Astral meteor was found.",
 			}),
 		})
 	end
+
+	Logger.longNotify("Astral Farm is automatically stopping.")
 
 	Toggles.AstralFarm:SetValue(false)
 end

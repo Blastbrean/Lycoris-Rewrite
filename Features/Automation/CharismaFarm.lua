@@ -92,7 +92,7 @@ local function updateCharisma()
 
 	humanoid:UnequipTools()
 
-	Logger.notify("Intelligence AutoFarm Stopped")
+	Logger.longNotify("Charisma AutoFarm is automatically stopping.")
 end
 
 ---Charisma farming.

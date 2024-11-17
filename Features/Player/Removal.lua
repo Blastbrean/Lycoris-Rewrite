@@ -350,7 +350,6 @@ function Removal.detach()
 	removalMaid:clean()
 
 	resetNoKillBricks()
-	resetNoEchoModifiers()
 	resetNoFog()
 
 	local localPlayer = players.LocalPlayer
@@ -358,6 +357,7 @@ function Removal.detach()
 		return
 	end
 
+	resetNoEchoModifiers(localPlayer)
 	resetNoBlind(localPlayer)
 end
 

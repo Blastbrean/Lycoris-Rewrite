@@ -105,6 +105,8 @@ function PlayerScanning.onPlayerAdded(player)
 		return
 	end
 
+	Logger.warn("Scanning player %s for notifiers.", player.Name)
+
 	local success, result = pcall(PlayerScanning.getStaffRank, player)
 	if not success then
 		Logger.warn("Failure to get staff rank for %s due to error '%s'", player.Name, result)
@@ -121,7 +123,7 @@ function PlayerScanning.onPlayerAdded(player)
 		moderatorSound.PlayOnRemove = true
 		moderatorSound:Destroy()
 
-		Logger.notify("%s is a staff member with the rank %s.", player.Name, scanData.staffRank)
+		Logger.notify("%s is a staff member with the rank '%s' in group.", player.Name, scanData.staffRank)
 	end
 
 	PlayerScanning.scanDataCache[player] = scanData
@@ -216,6 +218,9 @@ function PlayerScanning.init()
 	for _, player in next, players:GetPlayers() do
 		PlayerScanning.onPlayerAdded(player)
 	end
+
+	-- Log initialization.
+	Logger.notify("Player scanning has finished initial scan.")
 end
 
 ---Detach PlayerScanning.

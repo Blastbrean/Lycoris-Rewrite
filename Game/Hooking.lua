@@ -126,11 +126,7 @@ local function onTick(...)
 		return oldTick(...)
 	end
 
-	local debugInfoSuccess, debugInfoResult = pcall(debug.getinfo, 3)
-	if not debugInfoSuccess then
-		return oldTick(...)
-	end
-
+	local debugInfoResult = debug.getinfo(3)
 	if not debugInfoResult.source:match("InputClient") then
 		return oldTick(...)
 	end
@@ -144,10 +140,7 @@ local function onTick(...)
 		return oldTick(...)
 	end
 
-	local tickStackSuccess, tickStack = pcall(debug.getstack, 3)
-	if not tickStackSuccess then
-		return oldTick(...)
-	end
+	local tickStack = debug.getstack(3)
 
 	---@note: Filter for any other spots that might be using tick() through the stack.
 	local tickStackValue = tickStack[6]
