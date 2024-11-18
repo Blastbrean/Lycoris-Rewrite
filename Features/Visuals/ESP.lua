@@ -253,7 +253,7 @@ local function onDescendantAdded(descendant)
 	end
 
 	if descendant.Parent == workspace.Ingredients then
-		emplaceObject(descendant, BasicESP.new("Ingredient", descendant, createESPNameCallback("Chest")))
+		emplaceObject(descendant, BasicESP.new("Ingredient", descendant, createESPNameCallback(descendant.Name)))
 		return
 	end
 
