@@ -82,7 +82,24 @@ function VisualsTab.initPlayerAlertsSection(groupbox)
 	})
 end
 
--- Initialize tab.
+---Initialize ESP adjustment section.
+---@param groupbox table
+function VisualsTab.initESPAdjustment(groupbox)
+	groupbox:AddSlider("ESPFontSize", {
+		Text = "ESP Font Size",
+		Default = 16,
+		Min = 4,
+		Max = 24,
+		Rounding = 0,
+	})
+
+	groupbox:AddDropdown(
+		"ESPFont",
+		{ Text = "ESP Fonts", Default = 1, Values = { "Plex", "Monospace", "UI", "System" } }
+	)
+end
+
+---Initialize tab.
 ---@param window table
 function VisualsTab.init(window)
 	-- Create tab.
@@ -90,6 +107,7 @@ function VisualsTab.init(window)
 
 	-- Initialize Visual sections.
 	VisualsTab.initPlayerAlertsSection(createGroupbox(tab, "Player Alerts"))
+	VisualsTab.initESPAdjustment(createGroupbox(tab, "ESP Adjustment"))
 
 	-- Initialize ESP sections.
 	VisualsTab.initHumanoidESPSection("Player", createGroupbox(tab, "Player ESP"))

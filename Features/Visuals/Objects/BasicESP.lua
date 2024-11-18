@@ -51,7 +51,9 @@ function BasicESP:update()
 	local text = self:getDrawing("baseText")
 	text:set("Position", Vector2.new(instPosition.X, instPosition.Y))
 	text:set("Text", self.nameCallback(self, distance, parent))
-	text:set("Color", Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "Color")))
+	text:set("Size", Configuration.expectOptionValue("ESPFontSize"))
+	text:set("Font", Drawing.Fonts[Configuration.expectOptionValue("ESPFont")])
+	text:set("Color", Configuration.expectOptionValue(VisualsTab.identify(identifier, "Color")))
 	text:set("Visible", true)
 end
 

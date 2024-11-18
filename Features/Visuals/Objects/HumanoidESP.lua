@@ -52,6 +52,8 @@ function HumanoidESP:update()
 	local text = self:getDrawing("baseText")
 	text:set("Position", Vector2.new(headPosition.X, headPosition.Y))
 	text:set("Text", self.nameCallback(self, humanoid, distance))
+	text:set("Size", Configuration.expectOptionValue("ESPFontSize"))
+	text:set("Font", Drawing.Fonts[Configuration.expectOptionValue("ESPFont")])
 	text:set("Color", Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "Color")))
 	text:set("Visible", true)
 
