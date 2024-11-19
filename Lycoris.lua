@@ -27,6 +27,9 @@ local playersService = game:GetService("Players")
 -- Constants.
 local LOBBY_PLACE_ID = 4111023553
 
+-- Timestamp.
+local startTimestamp = os.clock()
+
 ---Handle server hop while in the main menu.
 ---@param serverHopSlot string
 ---@param serverHopJobId string
@@ -143,7 +146,7 @@ function Lycoris.init()
 		handleStartMenu()
 	end
 
-	Logger.notify("Script has been initialized.")
+	Logger.notify("Script has been initialized in %ims.", (os.clock() - startTimestamp) * 1000)
 
 	PlayerScanning.init()
 end

@@ -51,61 +51,72 @@ local espMap = {}
 -- Constants.
 local ESP_DISTANCE_FORMAT = "%s [%i]"
 local ESP_DISTANCE_HUMANOID_FORMAT = "%s [%i/%i] [%i]"
-local ESP_DISTANCE_PLAYER_FORMAT = "%s [%i/%i] [%i] [Power %i]"
 local ESP_HUMANOID_FORMAT = "%s [%i/%i]"
-local ESP_PLAYER_FORMAT = "%s [%i/%i] [Power %i]"
+
+local ESP_TEMPO_BLOOD_HP_BLOCK = "\n[%i%% tempo] [%i%% blood] [%i%% posture] [%i%% health] [%.1f bars]\n"
+local ESP_PLAYER_FORMAT = "%s [%i/%i] [Power %i]" .. ESP_TEMPO_BLOOD_HP_BLOCK
+local ESP_DISTANCE_PLAYER_FORMAT = "%s [%i/%i] [%i] [Power %i]" .. ESP_TEMPO_BLOOD_HP_BLOCK
 
 ---Player ESP name callback.
----@param self HumanoidESP
----@param humanoid Humanoid
----@param distance number
-local function playerESPNameCallback(self, humanoid, distance)
-	local health = math.floor(humanoid.Health)
-	local maxHealth = math.floor(humanoid.MaxHealth)
+---@param espName string
+---@param level number
+---@param tempoValue IntValue
+---@param bloodValue IntValue
+---@param breakMeterValue IntValue
+local function createPlayerESPNameCallback(espName, level, tempoValue, bloodValue, breakMeterValue)
+	local function nameCallback(self, humanoid, distance)
+		local health = humanoid.Health
+		local maxHealth = humanoid.MaxHealth
 
-	local player = players:GetPlayerFromCharacter(self.instance)
-	if not player then
-		return "No Player Found"
+		local healthPercentage = health / maxHealth
+		local healthInBars = math.clamp(healthPercentage / 0.20, 0, 5)
+
+		if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
+			return ESP_DISTANCE_PLAYER_FORMAT:format(
+				espName,
+				health,
+				maxHealth,
+				distance,
+				level,
+				(tempoValue.Value / tempoValue.MaxValue) * 100,
+				(bloodValue.Value / bloodValue.MaxValue) * 100,
+				(breakMeterValue.Value / breakMeterValue.MaxValue) * 100,
+				healthPercentage * 100,
+				healthInBars
+			)
+		else
+			return ESP_PLAYER_FORMAT:format(
+				espName,
+				health,
+				maxHealth,
+				level,
+				(tempoValue.Value / tempoValue.MaxValue) * 100,
+				(bloodValue.Value / bloodValue.MaxValue) * 100,
+				(breakMeterValue.Value / breakMeterValue.MaxValue) * 100,
+				healthPercentage * 100,
+				healthInBars
+			)
+		end
 	end
 
-	local name = player:GetAttribute("CharacterName") or self.instance.Name
-	local level = self.instance:GetAttribute("Level") or -1
-
-	if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
-		return ESP_DISTANCE_PLAYER_FORMAT:format(name, health, maxHealth, distance, level)
-	else
-		return ESP_PLAYER_FORMAT:format(name, health, maxHealth, level)
-	end
+	return nameCallback
 end
 
----Mob ESP name callback.
----@param self HumanoidESP
----@param humanoid Humanoid
----@param distance number
-local function mobESPNameCallback(self, humanoid, distance)
-	local health = math.floor(humanoid.Health)
-	local maxHealth = math.floor(humanoid.MaxHealth)
-	local name = self.instance:GetAttribute("MOB_rich_name") or self.instance.Name
+---Create Humanoid ESP name callback.
+---@param espName string
+local function createHumanoidESPNameCallback(espName)
+	local function nameCallback(self, humanoid, distance)
+		local health = math.floor(humanoid.Health)
+		local maxHealth = math.floor(humanoid.MaxHealth)
 
-	if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
-		return ESP_DISTANCE_HUMANOID_FORMAT:format(name, health, maxHealth, distance)
-	else
-		return ESP_HUMANOID_FORMAT:format(name, health, maxHealth)
+		if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
+			return ESP_DISTANCE_HUMANOID_FORMAT:format(espName, health, maxHealth, distance)
+		else
+			return ESP_HUMANOID_FORMAT:format(espName, health, maxHealth)
+		end
 	end
-end
 
----Area Marker ESP name callback.
----@param self BasicESP
----@param distance number
----@param parent Instance
-local function areaMarkerESPNameCallback(self, distance, parent)
-	local areaMarkerName = self.instance.Parent.Name or "Unidentified Area Marker"
-
-	if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
-		return ESP_DISTANCE_FORMAT:format(areaMarkerName, distance)
-	else
-		return areaMarkerName
-	end
+	return nameCallback
 end
 
 ---Create ESP name callback.
@@ -168,65 +179,68 @@ end
 ---On descendant added.
 ---@param descendant Instance
 local function onDescendantAdded(descendant)
-	local isInLiveFolder = descendant.Parent == workspace:WaitForChild("Live")
-	local playerFromCharacter = players:GetPlayerFromCharacter(descendant)
+	local isModel = descendant:IsA("Model")
+	local isBasePart = descendant:IsA("BasePart")
 
-	if descendant:IsA("Model") then
+	if not isBasePart and not isModel then
+		return
+	end
+
+	local name = descendant.Name
+	local parent = descendant.Parent
+
+	if isModel then
+		local isInLiveFolder = parent == workspace:WaitForChild("Live")
+		local playerFromCharacter = players:GetPlayerFromCharacter(descendant)
+
 		if isInLiveFolder and not playerFromCharacter then
-			emplaceObject(descendant, HumanoidESP.new("Mob", descendant, mobESPNameCallback))
-			return
+			local richName = descendant:GetAttribute("MOB_rich_name")
+			local nameCallback = createHumanoidESPNameCallback(richName or descendant.Name)
+			return emplaceObject(descendant, HumanoidESP.new("Mob", descendant, nameCallback))
 		end
 
-		if descendant.Parent == workspace:WaitForChild("NPCs") then
-			emplaceObject(descendant, BasicESP.new("NPC", descendant, createESPNameCallback(descendant.Name)))
-			return
+		if parent == workspace:WaitForChild("NPCs") then
+			return emplaceObject(descendant, BasicESP.new("NPC", descendant, createESPNameCallback(name)))
 		end
 	end
 
-	if descendant.Name == "JobBoard" then
-		emplaceObject(descendant, BasicESP.new("JobBoard", descendant, createESPNameCallback("Job Board")))
-		return
+	if name == "JobBoard" then
+		return emplaceObject(descendant, BasicESP.new("JobBoard", descendant, createESPNameCallback("Job Board")))
 	end
 
-	if descendant.Name == "BigArtifact" then
-		emplaceObject(descendant, BasicESP.new("Artifact", descendant, createESPNameCallback("Artifact")))
-		return
+	if name == "BigArtifact" then
+		return emplaceObject(descendant, BasicESP.new("Artifact", descendant, createESPNameCallback("Artifact")))
 	end
 
-	if descendant.Name == "DepthsWhirlpool" then
-		emplaceObject(descendant, BasicESP.new("Whirlpool", descendant, createESPNameCallback("Whirlpool")))
-		return
+	if name == "DepthsWhirlpool" then
+		return emplaceObject(descendant, BasicESP.new("Whirlpool", descendant, createESPNameCallback("Whirlpool")))
 	end
 
-	if descendant.Name == "ExplodeCrate" then
-		emplaceObject(
+	if name == "ExplodeCrate" then
+		return emplaceObject(
 			descendant,
 			BasicESP.new("ExplosiveBarrel", descendant, createESPNameCallback("Explosive Barrel"))
 		)
-		return
 	end
 
-	if descendant.Name == "EventFeatherRef" then
-		emplaceObject(descendant, BasicESP.new("OwlFeathers", descendant, createESPNameCallback("Owl Feathers")))
-		return
+	if name == "EventFeatherRef" then
+		return emplaceObject(descendant, BasicESP.new("OwlFeathers", descendant, createESPNameCallback("Owl Feathers")))
 	end
 
-	if descendant.Name:match("GuildDoor") then
-		emplaceObject(descendant, BasicESP.new("GuildDoor", descendant, createESPNameCallback(descendant.Name)))
-		return
+	if name:match("GuildDoor") then
+		local nameCallback = createESPNameCallback(descendant:GetAttribute("GuildName") or "Unidentified Guild Door")
+		return emplaceObject(descendant, BasicESP.new("GuildDoor", descendant, nameCallback))
 	end
 
-	if descendant.Name == "GuildBanner" then
-		emplaceObject(descendant, BasicESP.new("GuildBanner", descendant, createESPNameCallback("Guild Banner")))
-		return
+	if name == "GuildBanner" then
+		return emplaceObject(descendant, BasicESP.new("GuildBanner", descendant, createESPNameCallback("Guild Banner")))
 	end
 
-	if descendant.Name == "Obelisk" then
-		emplaceObject(descendant, BasicESP.new("Obelisk", descendant, createESPNameCallback("Obelisk")))
-		return
+	if name == "Obelisk" then
+		return emplaceObject(descendant, BasicESP.new("Obelisk", descendant, createESPNameCallback("Obelisk")))
 	end
 
-	if descendant.Name:match("ArmorBrick") then
+	if name:match("ArmorBrick") then
 		local billboardGui = descendant:FindFirstChild("BillboardGui")
 		local armorBrickLabel = billboardGui and billboardGui:FindFirstChild("TextLabel")
 		local armorBrickName = armorBrickLabel and armorBrickLabel.Text
@@ -235,48 +249,43 @@ local function onDescendantAdded(descendant)
 			armorBrickName = "Unknown Armor Brick"
 		end
 
-		emplaceObject(descendant, BasicESP.new("ArmorBrick", descendant, createESPNameCallback(armorBrickName)))
-		return
+		return emplaceObject(descendant, BasicESP.new("ArmorBrick", descendant, createESPNameCallback(armorBrickName)))
 	end
 
-	if descendant.Name == "AreaMarker" then
-		emplaceObject(descendant, BasicESP.new("AreaMarker", descendant.Parent, areaMarkerESPNameCallback))
-		return
+	if name == "AreaMarker" then
+		local nameCallback = createESPNameCallback(descendant.Parent.Name or "Unidentified Area Marker")
+		return emplaceObject(descendant, BasicESP.new("AreaMarker", descendant.Parent, nameCallback))
 	end
 
-	if descendant.Name == "LootUpdated" then
-		emplaceObject(descendant, BasicESP.new("Chest", descendant.Parent, createESPNameCallback("Chest")))
-		return
+	if name == "LootUpdated" then
+		return emplaceObject(descendant, BasicESP.new("Chest", descendant.Parent, createESPNameCallback("Chest")))
 	end
 
 	if descendant.Parent == workspace.Ingredients then
-		emplaceObject(descendant, BasicESP.new("Ingredient", descendant, createESPNameCallback(descendant.Name)))
-		return
+		return emplaceObject(descendant, BasicESP.new("Ingredient", descendant, createESPNameCallback(name)))
 	end
 
-	if descendant.Name == "BellMeteor" then
-		emplaceObject(descendant, BasicESP.new("BellMeteor", descendant, createESPNameCallback("Bell Meteor")))
-		return
+	if name == "BellMeteor" then
+		return emplaceObject(descendant, BasicESP.new("BellMeteor", descendant, createESPNameCallback("Bell Meteor")))
 	end
 
-	if descendant.Name == "RareObelisk" then
-		emplaceObject(descendant, BasicESP.new("RareObelisk", descendant, createESPNameCallback("Rare Obelisk")))
-		return
+	if name == "RareObelisk" then
+		return emplaceObject(descendant, BasicESP.new("RareObelisk", descendant, createESPNameCallback("Rare Obelisk")))
 	end
 
-	if descendant.Name == "HealBrick" then
-		emplaceObject(descendant, BasicESP.new("HealBrick", descendant, createESPNameCallback("Heal Brick")))
-		return
+	if name == "HealBrick" then
+		return emplaceObject(descendant, BasicESP.new("HealBrick", descendant, createESPNameCallback("Heal Brick")))
 	end
 
-	if descendant.Name == "MantraObelisk" then
-		emplaceObject(descendant, BasicESP.new("MantraObelisk", descendant, createESPNameCallback("Mantra Obelisk")))
-		return
+	if name == "MantraObelisk" then
+		return emplaceObject(
+			descendant,
+			BasicESP.new("MantraObelisk", descendant, createESPNameCallback("Mantra Obelisk"))
+		)
 	end
 
 	if descendant:IsA("MeshPart") and descendant:FindFirstChild("InteractPrompt") then
-		emplaceObject(descendant, BasicESP.new("BRWeapon", descendant, createESPNameCallback(descendant.Name)))
-		return
+		return emplaceObject(descendant, BasicESP.new("BRWeapon", descendant, createESPNameCallback(name)))
 	end
 end
 
@@ -314,7 +323,20 @@ local function onPlayerAdded(player)
 	end
 
 	local function onCharacterAdded(character)
-		emplaceObject(player, HumanoidESP.new("Player", character, playerESPNameCallback))
+		local level = character:GetAttribute("Level")
+		local breakMeterValue = character:WaitForChild("BreakMeter")
+		local bloodValue = character:WaitForChild("Blood")
+		local tempoValue = character:WaitForChild("Tempo")
+
+		local nameCallback = createPlayerESPNameCallback(
+			player:GetAttribute("CharacterName") or player.Name,
+			level,
+			tempoValue,
+			bloodValue,
+			breakMeterValue
+		)
+
+		emplaceObject(player, HumanoidESP.new("Player", character, nameCallback))
 	end
 
 	local characterAdded = Signal.new(player.CharacterAdded)
@@ -324,9 +346,12 @@ local function onPlayerAdded(player)
 	espMaid:add(characterAdded:connect("ESP_OnCharacterAdded", onCharacterAdded))
 	espMaid:add(characterRemoving:connect("ESP_OnCharacterRemoving", onPlayerRemoving))
 
-	if player.Character then
-		emplaceObject(player, HumanoidESP.new("Player", player.Character, playerESPNameCallback))
+	local character = player.Character
+	if not character then
+		return
 	end
+
+	onCharacterAdded(player.Character)
 end
 
 -- Initialize ESP.
