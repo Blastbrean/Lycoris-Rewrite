@@ -41,14 +41,21 @@ function HumanoidESP:update()
 	local distance = (currentCamera.CFrame.Position - position).Magnitude
 
 	if distance > Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "DistanceThreshold")) then
-		return self:setVisible(false)
+		if Configuration.expectToggleValue("ESPCheckDelayIgnoreHumanoid") then
+			return self:setVisible(false)
+		else
+			return self:setInvisibleAndDelayUpdate()
+		end
 	end
 
-	local viewportPosition, viewPortOnScreen = currentCamera:WorldToViewportPoint(position)
 	local headPosition, headOnScreen = currentCamera:WorldToViewportPoint(position + Vector3.new(0, 3, 0))
 
-	if not viewPortOnScreen or not headOnScreen then
-		return self:setVisible(false)
+	if not headOnScreen then
+		if Configuration.expectToggleValue("ESPCheckDelayIgnoreHumanoid") then
+			return self:setVisible(false)
+		else
+			return self:setInvisibleAndDelayUpdate()
+		end
 	end
 
 	local text = self:getDrawing("baseText")
@@ -58,44 +65,6 @@ function HumanoidESP:update()
 	text:set("Font", Drawing.Fonts[Configuration.expectOptionValue("ESPFont")])
 	text:set("Color", Configuration.expectOptionValue(VisualsTab.identify(self.identifier, "Color")))
 	text:set("Visible", true)
-
-	local frustrumHeight = math.tan(math.rad(currentCamera.FieldOfView * 0.5)) * 2 * viewportPosition.Z
-	local healthBarSize = currentCamera.ViewportSize.Y / frustrumHeight * Vector2.new(4, 4)
-
-	local viewportScreenPos = Vector2.new(viewportPosition.X, viewportPosition.Y)
-	local healthBarFrom = viewportScreenPos - (healthBarSize * 0.5) - Vector2.xAxis * 5
-	local healthBarTo = viewportScreenPos - (healthBarSize * Vector2.new(0.5, -0.5)) - Vector2.xAxis * 5
-
-	local healthBarOutline = self:getDrawing("healthBarOutline")
-	healthBarOutline:set("Visible", Configuration.expectToggleValue(VisualsTab.identify(self.identifier, "HealthBar")))
-	healthBarOutline:set("Thickness", 123 / distance + 2)
-	healthBarOutline:set("From", healthBarFrom - Vector2.yAxis)
-	healthBarOutline:set("To", healthBarTo + Vector2.yAxis)
-
-	local healthPercentage = humanoid.Health / humanoid.MaxHealth
-
-	local healthBar = self:getDrawing("healthBar")
-	healthBar:set("Thickness", 123 / distance + 1)
-	healthBar:set("Visible", healthBarOutline:get("Visible"))
-	healthBar:set("From", healthBarOutline:get("To"))
-	healthBar:set("To", healthBarOutline:get("To"):Lerp(healthBarOutline:get("From"), healthPercentage))
-	healthBar:set("Color", Color3.new(1, 0.2, 0.2):Lerp(Color3.new(0.2, 1, 0.45), healthPercentage))
-end
-
----Setup drawings of basic esp.
-function HumanoidESP:setupDrawings()
-	local healthBarOutline = self:createDrawing("healthBarOutline", {
-		type = "Line",
-		color = Color3.fromHex("000000"),
-	})
-
-	local healthBar = self:createDrawing("healthBar", {
-		type = "Line",
-		color = Color3.fromHex("000000"),
-	})
-
-	healthBarOutline:set("Thickness", 16)
-	healthBar:set("Thickness", 14)
 end
 
 ---Create new HumanoidESP object.
@@ -103,9 +72,7 @@ end
 ---@param instance Instance
 ---@param nameCallback function
 function HumanoidESP.new(identifier, instance, nameCallback)
-	local self = setmetatable(BasicESP.new(identifier, instance, nameCallback), HumanoidESP)
-	self:setupDrawings()
-	return self
+	return setmetatable(BasicESP.new(identifier, instance, nameCallback), HumanoidESP)
 end
 
 -- Return HumanoidESP module.

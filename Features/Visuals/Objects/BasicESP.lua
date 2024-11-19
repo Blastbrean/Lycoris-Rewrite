@@ -1,6 +1,9 @@
 ---@module Utility.DrawingPool
 local DrawingPool = require("Utility/DrawingPool")
 
+---@module Utility.Maid
+local Maid = require("Utility/Maid")
+
 ---@module Menu.VisualsTab
 local VisualsTab = require("Menu/VisualsTab")
 
@@ -10,8 +13,18 @@ local Configuration = require("GUI/Configuration")
 ---@class BasicESP: DrawingPool
 ---@field identifier string
 ---@field instance Instance
+---@field delayUpdate number?
 local BasicESP = setmetatable({}, { __index = DrawingPool })
 BasicESP.__index = BasicESP
+
+---Set visibility off and delay the next update.
+function BasicESP:setInvisibleAndDelayUpdate()
+	if Configuration.expectToggleValue("ESPCheckDelay") then
+		self.delayUpdate = os.clock() + (Configuration.expectOptionValue("ESPCheckDelayTime") or 1.0)
+	end
+
+	return self:setVisible(false)
+end
 
 ---Update basic esp.
 function BasicESP:update()
@@ -39,13 +52,13 @@ function BasicESP:update()
 	local distance = (currentCamera.CFrame.Position - position).Magnitude
 
 	if distance > Configuration.expectOptionValue(VisualsTab.identify(identifier, "DistanceThreshold")) then
-		return self:setVisible(false)
+		return self:setInvisibleAndDelayUpdate()
 	end
 
 	local instPosition, onScreen = currentCamera:WorldToViewportPoint(position)
 
 	if not onScreen then
-		return self:setVisible(false)
+		return self:setInvisibleAndDelayUpdate()
 	end
 
 	local text = self:getDrawing("baseText")

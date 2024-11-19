@@ -7,6 +7,9 @@
 ---Also, the way we're handling ESP objects is very messy and should be thought up in a differently too.
 ---We'll do that later though.
 
+-- Cached functions.
+local osClock = os.clock
+
 ---@module Utility.Maid
 local Maid = require("Utility/Maid")
 
@@ -54,16 +57,16 @@ local ESP_DISTANCE_HUMANOID_FORMAT = "%s [%i/%i] [%i]"
 local ESP_HUMANOID_FORMAT = "%s [%i/%i]"
 
 local ESP_TEMPO_BLOOD_HP_BLOCK = "\n[%i%% tempo] [%i%% blood] [%i%% posture] [%i%% health] [%.1f bars]\n"
-local ESP_PLAYER_FORMAT = "%s [%i/%i] [Power %i]" .. ESP_TEMPO_BLOOD_HP_BLOCK
-local ESP_DISTANCE_PLAYER_FORMAT = "%s [%i/%i] [%i] [Power %i]" .. ESP_TEMPO_BLOOD_HP_BLOCK
+local ESP_PLAYER_FORMAT = "%s [%i/%i] [Power %i]"
+local ESP_DISTANCE_PLAYER_FORMAT = "%s [%i/%i] [%i] [Power %i]"
 
 ---Player ESP name callback.
----@param espName string
+---@param player Player
 ---@param level number
 ---@param tempoValue IntValue
 ---@param bloodValue IntValue
 ---@param breakMeterValue IntValue
-local function createPlayerESPNameCallback(espName, level, tempoValue, bloodValue, breakMeterValue)
+local function createPlayerESPNameCallback(player, level, tempoValue, bloodValue, breakMeterValue)
 	local function nameCallback(self, humanoid, distance)
 		local health = humanoid.Health
 		local maxHealth = humanoid.MaxHealth
@@ -71,31 +74,32 @@ local function createPlayerESPNameCallback(espName, level, tempoValue, bloodValu
 		local healthPercentage = health / maxHealth
 		local healthInBars = math.clamp(healthPercentage / 0.20, 0, 5)
 
+		local espName = player:GetAttribute("CharacterName") or player.Name
+
+		if Toggles[VisualsTab.identify(self.identifier, "UseRobloxUsername")].Value then
+			espName = player.Name
+		end
+
+		local tempoBloodHp = ESP_TEMPO_BLOOD_HP_BLOCK:format(
+			tempoValue.Value / tempoValue.MaxValue * 100,
+			(bloodValue.Value / bloodValue.MaxValue) * 100,
+			(breakMeterValue.Value / breakMeterValue.MaxValue) * 100,
+			healthPercentage * 100,
+			healthInBars
+		)
+
+		local espString = nil
+
 		if Toggles[VisualsTab.identify(self.identifier, "Distance")].Value then
-			return ESP_DISTANCE_PLAYER_FORMAT:format(
-				espName,
-				health,
-				maxHealth,
-				distance,
-				level,
-				(tempoValue.Value / tempoValue.MaxValue) * 100,
-				(bloodValue.Value / bloodValue.MaxValue) * 100,
-				(breakMeterValue.Value / breakMeterValue.MaxValue) * 100,
-				healthPercentage * 100,
-				healthInBars
-			)
+			espString = ESP_DISTANCE_PLAYER_FORMAT:format(espName, health, maxHealth, distance, level)
 		else
-			return ESP_PLAYER_FORMAT:format(
-				espName,
-				health,
-				maxHealth,
-				level,
-				(tempoValue.Value / tempoValue.MaxValue) * 100,
-				(bloodValue.Value / bloodValue.MaxValue) * 100,
-				(breakMeterValue.Value / breakMeterValue.MaxValue) * 100,
-				healthPercentage * 100,
-				healthInBars
-			)
+			espString = ESP_PLAYER_FORMAT:format(espName, health, maxHealth, level)
+		end
+
+		if Toggles[VisualsTab.identify(self.identifier, "ShowExtraInformation")].Value then
+			return espString .. tempoBloodHp
+		else
+			return espString
 		end
 	end
 
@@ -134,9 +138,21 @@ local function createESPNameCallback(espName)
 end
 
 ---Update ESP.
-local function updateESP()
+local function updateESP(frameTime)
 	local function updateGroup(group)
 		for _, object in next, group.objects do
+			local delayUpdate = object.delayUpdate
+
+			if delayUpdate and osClock() <= delayUpdate then
+				continue
+			end
+
+			if Configuration.expectToggleValue("ESPSplitUpdates") then
+				object.delayUpdate = osClock() + frameTime * (Configuration.expectOptionValue("ESPSplitFrames") or 2)
+			else
+				object.delayUpdate = nil
+			end
+
 			Profiler.run(string.format("ESP_Update_%s", object.identifier), object.update, object)
 		end
 
@@ -328,13 +344,7 @@ local function onPlayerAdded(player)
 		local bloodValue = character:WaitForChild("Blood")
 		local tempoValue = character:WaitForChild("Tempo")
 
-		local nameCallback = createPlayerESPNameCallback(
-			player:GetAttribute("CharacterName") or player.Name,
-			level,
-			tempoValue,
-			bloodValue,
-			breakMeterValue
-		)
+		local nameCallback = createPlayerESPNameCallback(player, level, tempoValue, bloodValue, breakMeterValue)
 
 		emplaceObject(player, HumanoidESP.new("Player", character, nameCallback))
 	end

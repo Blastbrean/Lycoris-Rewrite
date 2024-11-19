@@ -44,4 +44,5 @@
         "**/_Index/**",
         "Output/"
     ],
+    "robloxLsp.diagnostics.disable": [],
 }

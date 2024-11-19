@@ -55,8 +55,22 @@ end
 function VisualsTab.initHumanoidESPSection(identifier, groupbox)
 	VisualsTab.initBasicESPSection(identifier, groupbox)
 
-	groupbox:AddToggle(VisualsTab.identify(identifier, "HealthBar"), {
-		Text = "Show Health Bar",
+	---@todo: Re-implement health bars and box ESP when we get actorization because these are so ugly
+end
+
+---Initialize player ESP section.
+---@param identifier string
+---@param groupbox table
+function VisualsTab.initPlayerESPSection(identifier, groupbox)
+	VisualsTab.initHumanoidESPSection(identifier, groupbox)
+
+	groupbox:AddToggle(VisualsTab.identify(identifier, "ShowExtraInformation"), {
+		Text = "Show Extra Information",
+		Default = false,
+	})
+
+	groupbox:AddToggle(VisualsTab.identify(identifier, "UseRobloxUsername"), {
+		Text = "Use Roblox Username",
 		Default = false,
 	})
 end
@@ -93,10 +107,55 @@ function VisualsTab.initESPAdjustment(groupbox)
 		Rounding = 0,
 	})
 
+	groupbox:AddToggle("ESPSplitUpdates", {
+		Text = "ESP Split Updates",
+		Tooltip = "This is an optimization where the ESP will split updating the object pool into multiple frames.",
+		Default = false,
+	})
+
+	local esuDepBox = groupbox:AddDependencyBox()
+
+	esuDepBox:AddSlider("ESPSplitFrames", {
+		Text = "ESP Split Frames",
+		Tooltip = "How many frames we have to split the object pool into.",
+		Suffix = "f",
+		Default = 2,
+		Min = 1,
+		Max = 4,
+		Rounding = 0,
+	})
+
+	groupbox:AddToggle("ESPCheckDelay", {
+		Text = "ESP Check Delay",
+		Tooltip = "This is an optimization where the ESP will delay updating the object if it's not visible or it's too far.",
+		Default = false,
+	})
+
+	local ecdDepBox = groupbox:AddDependencyBox()
+
+	ecdDepBox:AddToggle("ESPCheckDelayIgnoreHumanoid", {
+		Text = "ESP Check Delay Ignore Humanoid",
+		Tooltip = "Ignore Humanoid ESP types and don't delay updating them.",
+		Default = false,
+	})
+
+	ecdDepBox:AddSlider("ESPCheckDelayTime", {
+		Text = "ESP Check Delay Time",
+		Suffix = "s",
+		Default = 1,
+		Min = 0.1,
+		Max = 3,
+		Rounding = 2,
+	})
+
 	groupbox:AddDropdown(
 		"ESPFont",
 		{ Text = "ESP Fonts", Default = 1, Values = { "Plex", "Monospace", "UI", "System" } }
 	)
+
+	ecdDepBox:SetupDependencies({
+		{ Toggles.ESPCheckDelay, true },
+	})
 end
 
 ---Initialize world section.
@@ -152,7 +211,7 @@ function VisualsTab.init(window)
 	VisualsTab.initWorldSection(createGroupbox(tab, "World Visuals"))
 
 	-- Initialize ESP sections.
-	VisualsTab.initHumanoidESPSection("Player", createGroupbox(tab, "Player ESP"))
+	VisualsTab.initPlayerESPSection("Player", createGroupbox(tab, "Player ESP"))
 	VisualsTab.initHumanoidESPSection("Mob", createGroupbox(tab, "Mob ESP"))
 	VisualsTab.initBasicESPSection("NPC", createGroupbox(tab, "NPC ESP"))
 	VisualsTab.initBasicESPSection("Chest", createGroupbox(tab, "Chest ESP"))
