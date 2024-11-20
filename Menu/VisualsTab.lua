@@ -121,7 +121,7 @@ function VisualsTab.initESPAdjustment(groupbox)
 		Suffix = "f",
 		Default = 2,
 		Min = 1,
-		Max = 4,
+		Max = 8,
 		Rounding = 0,
 	})
 

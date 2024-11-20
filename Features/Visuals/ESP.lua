@@ -37,6 +37,7 @@ local ESP = {}
 -- Services.
 local runService = game:GetService("RunService")
 local players = game:GetService("Players")
+local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -138,29 +139,48 @@ local function createESPNameCallback(espName)
 end
 
 ---Update ESP.
-local function updateESP(frameTime)
+local function updateESP()
+	local function updateObject(object)
+		local delayUpdate = object.delayUpdate
+
+		if delayUpdate and osClock() <= delayUpdate then
+			return
+		end
+
+		Profiler.run(string.format("ESP_Update_%s", object.identifier), object.update, object)
+	end
+
 	local function updateGroup(group)
-		for _, object in next, group.objects do
-			local delayUpdate = object.delayUpdate
+		local stack = group.stack
 
-			if delayUpdate and osClock() <= delayUpdate then
-				continue
+		if Configuration.expectToggleValue("ESPSplitUpdates") then
+			local totalParts = (Configuration.expectOptionValue("ESPSplitFrames") or 2)
+			local objectsPerPart = math.ceil(#stack / totalParts)
+			local currentPart = group.currentPart or 1
+
+			local startIdx = (currentPart - 1) * objectsPerPart + 1
+			local endIdx = math.min(currentPart * objectsPerPart, #stack)
+
+			for i = startIdx, endIdx do
+				updateObject(stack[i])
 			end
 
-			if Configuration.expectToggleValue("ESPSplitUpdates") then
-				object.delayUpdate = osClock() + frameTime * (Configuration.expectOptionValue("ESPSplitFrames") or 2)
-			else
-				object.delayUpdate = nil
-			end
+			group.currentPart = currentPart + 1
 
-			Profiler.run(string.format("ESP_Update_%s", object.identifier), object.update, object)
+			if group.currentPart > totalParts then
+				group.currentPart = 1
+			end
+		else
+			for _, object in next, stack do
+				updateObject(object)
+			end
 		end
 
 		group.updating = true
 	end
 
 	local function setInvisibleGroup(group)
-		for _, object in next, group.objects do
+		for _, object in next, group.stack do
 			object:setVisible(false)
 		end
 
@@ -181,15 +201,17 @@ end
 ---@param object BasicESP
 local function emplaceObject(instance, object)
 	local groupData = {
-		objects = {},
+		stack = {},
 		updating = false,
+		currentPart = nil,
 	}
 
 	if not espMap[object.identifier] then
 		espMap[object.identifier] = groupData
 	end
 
-	espMap[object.identifier].objects[instance] = object
+	local stack = espMap[object.identifier].stack
+	stack[#stack + 1] = object
 end
 
 ---On descendant added.
@@ -270,7 +292,7 @@ local function onDescendantAdded(descendant)
 
 	if name == "AreaMarker" then
 		local nameCallback = createESPNameCallback(descendant.Parent.Name or "Unidentified Area Marker")
-		return emplaceObject(descendant, BasicESP.new("AreaMarker", descendant.Parent, nameCallback))
+		return emplaceObject(descendant, BasicESP.new("AreaMarker", descendant, nameCallback))
 	end
 
 	if name == "LootUpdated" then
@@ -309,12 +331,15 @@ end
 ---@param descendant Instance
 local function onDescendantRemoving(descendant)
 	for _, group in next, espMap do
-		if not group.objects[descendant] then
-			return
+		local stack = group.stack
+
+		local objectIdx = table.find(stack, descendant)
+		if not objectIdx then
+			continue
 		end
 
-		group.objects[descendant]:detach()
-		group.objects[descendant] = nil
+		stack[objectIdx]:detach()
+		stack[objectIdx] = nil
 	end
 end
 
@@ -322,12 +347,15 @@ end
 ---@param player Player
 local function onPlayerRemoving(player)
 	for _, group in next, espMap do
-		if not group.objects[player] then
-			return
+		local stack = group.stack
+
+		local objectIdx = table.find(stack, player)
+		if not objectIdx then
+			continue
 		end
 
-		group.objects[player]:detach()
-		group.objects[player] = nil
+		stack[objectIdx]:detach()
+		stack[objectIdx] = nil
 	end
 end
 
@@ -378,6 +406,11 @@ function ESP.init()
 		onDescendantAdded(descendant)
 	end
 
+	---@note: We only need to initially get the Area Markers just once.
+	for _, descendant in pairs(replicatedStorage:WaitForChild("MarkerWorkspace"):GetDescendants()) do
+		onDescendantAdded(descendant)
+	end
+
 	---@note: We need to seperate player scanning because they will not be detected when new characters are added.
 	for _, player in pairs(players:GetPlayers()) do
 		onPlayerAdded(player)
@@ -389,7 +422,7 @@ function ESP.detach()
 	espMaid:clean()
 
 	for _, group in next, espMap do
-		for _, object in next, group.objects do
+		for _, object in next, group.stack do
 			object:detach()
 		end
 	end

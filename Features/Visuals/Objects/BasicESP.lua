@@ -1,9 +1,6 @@
 ---@module Utility.DrawingPool
 local DrawingPool = require("Utility/DrawingPool")
 
----@module Utility.Maid
-local Maid = require("Utility/Maid")
-
 ---@module Menu.VisualsTab
 local VisualsTab = require("Menu/VisualsTab")
 
