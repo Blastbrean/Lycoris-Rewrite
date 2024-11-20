@@ -211,6 +211,7 @@ local function emplaceObject(instance, object)
 	end
 
 	local stack = espMap[object.identifier].stack
+
 	stack[#stack + 1] = object
 end
 
@@ -327,29 +328,28 @@ local function onDescendantAdded(descendant)
 	end
 end
 
+---Find instance in stack.
+---@param stack BasicESP[]
+---@param instance Instance
+local function findInstanceInStack(stack, instance)
+	for _, object in next, stack do
+		if object.instance ~= instance then
+			continue
+		end
+
+		return object
+	end
+end
+
 ---On descendant removing.
 ---@param descendant Instance
 local function onDescendantRemoving(descendant)
 	for _, group in next, espMap do
 		local stack = group.stack
 
-		local objectIdx = table.find(stack, descendant)
-		if not objectIdx then
-			continue
-		end
-
-		stack[objectIdx]:detach()
-		stack[objectIdx] = nil
-	end
-end
-
----On player removing.
----@param player Player
-local function onPlayerRemoving(player)
-	for _, group in next, espMap do
-		local stack = group.stack
-
-		local objectIdx = table.find(stack, player)
+		---@note: it's O(N) unless we want to manage a map and a stack at the same time :(
+		--- oh well, who cares.
+		local objectIdx = findInstanceInStack(stack, descendant)
 		if not objectIdx then
 			continue
 		end
@@ -382,7 +382,7 @@ local function onPlayerAdded(player)
 
 	---@note: Clean these up when the player is removed?
 	espMaid:add(characterAdded:connect("ESP_OnCharacterAdded", onCharacterAdded))
-	espMaid:add(characterRemoving:connect("ESP_OnCharacterRemoving", onPlayerRemoving))
+	espMaid:add(characterRemoving:connect("ESP_OnCharacterRemoving", onDescendantRemoving))
 
 	local character = player.Character
 	if not character then
@@ -398,7 +398,7 @@ function ESP.init()
 	espMaid:add(workspaceDescendantAdded:connect("ESP_DescendantAdded", onDescendantAdded))
 	espMaid:add(workspaceDescendantRemoving:connect("ESP_DescendantRemoving", onDescendantRemoving))
 	espMaid:add(playerAdded:connect("ESP_PlayerAdded", onPlayerAdded))
-	espMaid:add(playerRemoving:connect("ESP_PlayerRemoving", onPlayerRemoving))
+	espMaid:add(playerRemoving:connect("ESP_PlayerRemoving", onDescendantRemoving))
 
 	---@note: Massive freeze here while loading.
 	---When I'm not lazy, let's try to more specifically search for the instances we need.
