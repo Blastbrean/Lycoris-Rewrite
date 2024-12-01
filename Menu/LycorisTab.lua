@@ -29,7 +29,7 @@ end
 function LycorisTab.initUISettingsSection(groupbox)
 	local menuBindLabel = groupbox:AddLabel("Menu Bind")
 
-	menuBindLabel:AddKeyPicker("MenuKeybind", { Default = "Insert", NoUI = true, Text = "Menu Keybind" })
+	menuBindLabel:AddKeyPicker("MenuKeybind", { Default = "LeftAlt", NoUI = true, Text = "Menu Keybind" })
 
 	local keybindFrameLabel = groupbox:AddLabel("Keybind List Bind")
 
