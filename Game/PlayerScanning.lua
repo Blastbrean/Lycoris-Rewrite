@@ -81,7 +81,7 @@ local function runPlayerScans()
 
 		if not collectionService:HasTag(backpack, "Loaded") or #backpack:GetChildren() < 1 then
 			if not PlayerScanning.waitingForLoad[player] then
-				Logger.notify("Player scanning is waiting for %s to load in the game.", player.Name)
+				--Logger.notify("Player scanning is waiting for %s to load in the game.", player.Name)
 			end
 
 			PlayerScanning.waitingForLoad[player] = true
@@ -154,7 +154,7 @@ local function runPlayerScans()
 
 		PlayerScanning.scanQueue[player] = nil
 
-		Logger.notify("Player scanning finished scanning %s in queue.", player.Name)
+		--Logger.notify("Player scanning finished scanning %s in queue.", player.Name)
 
 		playerScanningMaid:add(task.spawn(function()
 			-- Perform a friend check that will yield.
