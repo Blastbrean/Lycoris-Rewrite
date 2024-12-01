@@ -87,9 +87,7 @@ local function updateNoClip(character, rootPart)
 			continue
 		end
 
-		local saved = instance.CanCollide
 		noClipMap:add(instance, "CanCollide", knockedRestore and noClipMap:get(instance):get() or false)
-		print("noclip iteration", instance, saved, instance.CanCollide)
 	end
 end
 
