@@ -10,7 +10,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	speedHackToggle:AddKeyPicker("SpeedhackKeybind", { Default = "X", SyncToggleState = true, Text = "Speedhack" })
+	speedHackToggle:AddKeyPicker("SpeedhackKeybind", { Default = "None", SyncToggleState = true, Text = "Speedhack" })
 
 	local speedDepBox = groupbox:AddDependencyBox()
 
@@ -29,7 +29,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	flyToggle:AddKeyPicker("FlyKeybind", { Default = "CapsLock", SyncToggleState = true, Text = "Fly" })
+	flyToggle:AddKeyPicker("FlyKeybind", { Default = "None", SyncToggleState = true, Text = "Fly" })
 
 	local flyDepBox = groupbox:AddDependencyBox()
 
@@ -57,7 +57,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	noclipToggle:AddKeyPicker("NoClipKeybind", { Default = "CapsLock", SyncToggleState = true, Text = "NoClip" })
+	noclipToggle:AddKeyPicker("NoClipKeybind", { Default = "None", SyncToggleState = true, Text = "NoClip" })
 
 	local noclipDepBox = groupbox:AddDependencyBox()
 
@@ -73,10 +73,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	atbToggle:AddKeyPicker(
-		"AttachToBackKeybind",
-		{ Default = "LeftBracket", SyncToggleState = true, Text = "Attach To Back" }
-	)
+	atbToggle:AddKeyPicker("AttachToBackKeybind", { Default = "None", SyncToggleState = true, Text = "Attach To Back" })
 
 	local atbDepBox = groupbox:AddDependencyBox()
 
@@ -104,7 +101,10 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	infJumpToggle:AddKeyPicker("InfiniteJumpKeybind", { Default = "U", SyncToggleState = true, Text = "Infinite Jump" })
+	infJumpToggle:AddKeyPicker(
+		"InfiniteJumpKeybind",
+		{ Default = "None", SyncToggleState = true, Text = "Infinite Jump" }
+	)
 
 	local infiniteJumpDepBox = groupbox:AddDependencyBox()
 
@@ -142,7 +142,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		})
 		:AddKeyPicker(
 			"TweenToObjectivesKeybind",
-			{ Default = "V", SyncToggleState = true, Text = "Tween To Objectives" }
+			{ Default = "None", SyncToggleState = true, Text = "Tween To Objectives" }
 		)
 
 	groupbox:AddToggle("AutoSprint", {

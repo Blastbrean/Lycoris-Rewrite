@@ -38,7 +38,8 @@
         "isfunctionhooked",
         "restorefunction",
         "getconnections",
-        "getexecutorname"
+        "getexecutorname",
+        "gethui"
     ],
     "editor.formatOnSave": true,
     "robloxLsp.suggestedImports.importIgnore": [
