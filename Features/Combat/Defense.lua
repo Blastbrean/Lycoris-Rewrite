@@ -4,17 +4,17 @@ local Signal = require("Utility/Signal")
 ---@module Utility.Maid
 local Maid = require("Utility/Maid")
 
----@module Features.Combat.Object.AnimationProtector
-local AnimationProtector = require("Features/Combat/Object/AnimationProtector")
+---@module Features.Combat.Object.AnimatorDefender
+local AnimatorDefender = require("Features/Combat/Object/AnimatorDefender")
 
 -- Handle all defense related functions.
-local Defense = { blockTimestamp = nil }
+local Defense = {}
 
 -- Maids.
 local defenseMaid = Maid.new()
 
--- Animation protector objects.
-local animationProtectorObjects = {}
+-- Animator defender objects.
+local arDefenderObjects = {}
 
 -- On live descendant added.
 local function onLiveDescendantAdded(child)
@@ -22,18 +22,18 @@ local function onLiveDescendantAdded(child)
 		return
 	end
 
-	animationProtectorObjects[child] = AnimationProtector.new(Defense, child)
+	arDefenderObjects[child] = AnimatorDefender.new(child)
 end
 
 -- On live descendant removed.
 local function onLiveDescendantRemoved(child)
-	local animationProtectorObject = animationProtectorObjects[child]
-	if not animationProtectorObject then
+	local arDefenderObject = arDefenderObjects[child]
+	if not arDefenderObject then
 		return
 	end
 
-	animationProtectorObject:detach()
-	animationProtectorObjects[child] = nil
+	arDefenderObject:detach()
+	arDefenderObjects[child] = nil
 end
 
 ---Initialize defense.
@@ -52,8 +52,8 @@ end
 
 ---Detach defense.
 function Defense.detach()
-	for _, animationProtectorObject in next, animationProtectorObjects do
-		animationProtectorObject:detach()
+	for _, arDefenderObject in next, arDefenderObjects do
+		arDefenderObject:detach()
 	end
 
 	defenseMaid:clean()

@@ -1,21 +1,13 @@
 ---@module Game.KeyHandling
 local KeyHandling = require("Game/KeyHandling")
 
----@module Utility.TaskSpawner
-local TaskSpawner = require("Utility/TaskSpawner")
-
----@module Utility.Maid
-local Maid = require("Utility/Maid")
-
 -- Services.
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
 
----@class Protector
----@field defense table
----@field actions Maid
-local Protector = {}
-Protector.__index = Protector
+---@class Defender
+local Defender = {}
+Defender.__index = Defender
 
 ---Check if table has non-boolean values.
 ---@param tbl table
@@ -72,14 +64,14 @@ local function fetchInputClientData()
 	end
 end
 
----Detach protector.
-function Protector:detach()
+---Detach defender.
+function Defender:detach()
 	self.maid:clean()
 end
 
 ---Parry action.
 ---@note: Re-created InputClient parry. We can't access the main proto or the input handler.
-function Protector:parry()
+function Defender:parry()
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
 		return
@@ -140,7 +132,7 @@ end
 ---@note: Re-created InputClient dodge. We can't access the main proto or input handler.
 ---@param hrp Instance
 ---@param humanoid Instance
-function Protector:dodge(hrp, humanoid)
+function Defender:dodge(hrp, humanoid)
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
 		return
@@ -197,14 +189,10 @@ function Protector:dodge(hrp, humanoid)
 	rollFunction(usePivotVelocityRoll and true or nil)
 end
 
----Create new Protector object.
----@param defense table
-function Protector.new(defense)
-	local self = setmetatable({}, { __index = Protector })
-	self.defense = defense
-	self.maid = Maid.new()
-	return self
+---Create new Defender object.
+function Defender.new()
+	return setmetatable({}, { __index = Defender })
 end
 
--- Return Protector module.
-return Protector
+-- Return Defender module.
+return Defender
