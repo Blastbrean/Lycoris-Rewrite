@@ -77,10 +77,15 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
         - Merge Config ❌
     - Keyframe ❌
         - Timing Name ❌
-        - Animation ID ❌
+        - Timing Type ❌
+            - Undefined ❌
+            - Critical ❌
+            - Mantra ❌
+            - M1 ❌
         - Hitbox Length ❌
         - Hitbox Width ❌
         - Hitbox Height ❌
+        - Animation ID ❌
         - Delay Until In Hitbox ❌
         - Keyframe Window ❌
         - Keyframe Timeline (0.0 - Track Length) ❌
@@ -97,10 +102,15 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
             - Remove Actions From List ❌
     - Animation ❌
         - Timing Name ❌
-        - Animation ID ❌
+        - Timing Type ❌
+            - Undefined ❌
+            - Critical ❌
+            - Mantra ❌
+            - M1 ❌
         - Hitbox Length ❌
         - Hitbox Width ❌
         - Hitbox Height ❌
+        - Animation ID ❌
         - Delay Until In Hitbox ❌
         - Repeat Parry Until Animation End ❌
             - Repeat Parry Delay ❌
@@ -116,6 +126,11 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
             - Remove Actions From List ❌
     - Part ❌
         - Timing Name ❌
+        - Timing Type ❌
+            - Undefined ❌
+            - Critical ❌
+            - Mantra ❌
+            - M1 ❌
         - Part Name ❌
         - Part Content Filter ❌
         - Part Content Name ❌
@@ -139,6 +154,11 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
         - Remove Actions From List ❌
     - Sound ❌
         - Timing Name ❌
+        - Timing Type ❌
+            - Undefined ❌
+            - Critical ❌
+            - Mantra ❌
+            - M1 ❌
         - Sound ID ❌
         - Hitbox Length ❌
         - Hitbox Width ❌
@@ -158,6 +178,11 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
             - Remove Actions From List ❌
     - Effect ❌
         - Timing Name ❌
+        - Timing Type ❌
+            - Undefined ❌
+            - Critical ❌
+            - Mantra ❌
+            - M1 ❌
         - Effect Name ❌
         - Hitbox Length ❌
         - Hitbox Width ❌
