@@ -38,7 +38,7 @@ function PositionESP:build(label, tags)
 	for _, tag in next, tags do
 		local line = lines[#lines] or label
 
-		if #line > Configuration.optionValue("ESPSplitLineLength") then
+		if not start and #line > Configuration.optionValue("ESPSplitLineLength") then
 			lines[#lines + 1] = tag
 			continue
 		end
