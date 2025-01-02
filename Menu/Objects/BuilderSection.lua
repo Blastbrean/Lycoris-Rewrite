@@ -164,6 +164,10 @@ function BuilderSection:baction(base)
 			return Logger.longNotify("Please enter a valid action name.")
 		end
 
+		if not self.actionDelay.Value or self.actionDelay.Value <= 0 then
+			return Logger.longNotify("Please enter a valid action delay.")
+		end
+
 		if self.container:find(self.actionName.Value) then
 			return Logger.longNotify("The action '%s' already exists in the list.", self.actionName.Value)
 		end
