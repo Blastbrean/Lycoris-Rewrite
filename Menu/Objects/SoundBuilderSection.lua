@@ -1,6 +1,9 @@
 ---@module Menu.Objects.BuilderSection
 local BuilderSection = require("Menu/Objects/BuilderSection")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 ---@class SoundBuilderSection: BuilderSection
 ---@field soundId table
 ---@field repeatUntilParryEnd table
@@ -8,6 +11,16 @@ local BuilderSection = require("Menu/Objects/BuilderSection")
 ---@field timing SoundTiming
 local SoundBuilderSection = setmetatable({}, { __index = BuilderSection })
 SoundBuilderSection.__index = SoundBuilderSection
+
+---Check before writing.
+---@return boolean
+function SoundBuilderSection:check()
+	if not self.soundId.Value or #self.soundId.Value <= 0 then
+		return Logger.longNotify("Please enter a valid sound ID.")
+	end
+
+	return true
+end
 
 ---Add extra elements to the builder tab.
 ---@param tab table

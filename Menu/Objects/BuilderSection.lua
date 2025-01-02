@@ -29,6 +29,12 @@ local Logger = require("Utility/Logger")
 local BuilderSection = {}
 BuilderSection.__index = BuilderSection
 
+---Check before writing timing to list. Override me.
+---@return boolean
+function BuilderSection:check()
+	return true
+end
+
 ---Add extra elements to the builder tab. Override me.
 ---@param tab table
 function BuilderSection:extra(tab) end
@@ -256,6 +262,10 @@ function BuilderSection:builder()
 	tab:AddButton("Write Timing To List", function()
 		if #self.timingName.Value <= 0 then
 			return Logger.longNotify("Please enter a valid timing name.")
+		end
+
+		if not self:check() then
+			return
 		end
 
 		self:write()

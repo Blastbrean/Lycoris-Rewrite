@@ -1,6 +1,9 @@
 ---@module Menu.Objects.BuilderSection
 local BuilderSection = require("Menu/Objects/BuilderSection")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 ---@class AnimationBuilderSection: BuilderSection
 ---@field animationId table
 ---@field repeatUntilParryEnd table
@@ -8,6 +11,16 @@ local BuilderSection = require("Menu/Objects/BuilderSection")
 ---@field timing AnimationTiming
 local AnimationBuilderSection = setmetatable({}, { __index = BuilderSection })
 AnimationBuilderSection.__index = AnimationBuilderSection
+
+---Check before writing.
+---@return boolean
+function AnimationBuilderSection:check()
+	if not self.animationId.Value or #self.animationId.Value <= 0 then
+		return Logger.longNotify("Please enter a valid animation ID.")
+	end
+
+	return true
+end
 
 ---Add extra elements to the builder tab.
 ---@param tab table

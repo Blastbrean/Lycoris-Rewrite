@@ -15,6 +15,16 @@ local Logger = require("Utility/Logger")
 local PartBuilderSection = setmetatable({}, { __index = BuilderSection })
 PartBuilderSection.__index = PartBuilderSection
 
+---Check before writing.
+---@return boolean
+function PartBuilderSection:check()
+	if not self.partName.Value or #self.partName.Value <= 0 then
+		return Logger.longNotify("Please enter a valid part name.")
+	end
+
+	return true
+end
+
 ---Add extra elements to the builder tab.
 ---@param tab table
 function PartBuilderSection:extra(tab)

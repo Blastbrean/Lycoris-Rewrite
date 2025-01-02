@@ -1,6 +1,9 @@
 ---@module Menu.Objects.BuilderSection
 local BuilderSection = require("Menu/Objects/BuilderSection")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 ---@class EffectBuilderSection: BuilderSection
 ---@field effectName table
 ---@field repeatUntilParryEnd table
@@ -8,6 +11,16 @@ local BuilderSection = require("Menu/Objects/BuilderSection")
 ---@field timing EffectTiming
 local EffectBuilderSection = setmetatable({}, { __index = BuilderSection })
 EffectBuilderSection.__index = EffectBuilderSection
+
+---Check before writing.
+---@return boolean
+function EffectBuilderSection:check()
+	if not self.effectName.Value or #self.effectName.Value <= 0 then
+		return Logger.longNotify("Please enter a valid effect name.")
+	end
+
+	return true
+end
 
 ---Add extra elements to the builder tab.
 ---@param tab table
