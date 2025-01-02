@@ -67,7 +67,7 @@ function SaveManager.merge(name, type)
 		return Logger.warn("Timing manager ran into the error '%s' while attempting to read config %s.", result, name)
 	end
 
-	success, result = pcall(Deserializer.at, result)
+	success, result = pcall(Deserializer.unmarshal_one, result)
 
 	if not success then
 		Logger.longNotify("Failed to deserialize config file %s.", name)
@@ -175,7 +175,7 @@ function SaveManager.load(name)
 		return Logger.warn("Timing manager ran into the error '%s' while attempting to read config %s.", result, name)
 	end
 
-	success, result = pcall(Deserializer.at, result)
+	success, result = pcall(Deserializer.unmarshal_one, result)
 
 	if not success then
 		Logger.longNotify("Failed to deserialize config file %s.", name)

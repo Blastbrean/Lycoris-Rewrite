@@ -69,11 +69,10 @@ function BuilderSection:write()
 end
 
 ---Overwrite the timing. Add or update the timing.
----@param timing Timing
-function BuilderSection:overwrite(timing)
+function BuilderSection:overwrite()
 	local config = self.pair:config()
 
-	config:overwrite(timing:clone())
+	config:overwrite(self.timing:clone())
 
 	self:refresh()
 end
@@ -255,7 +254,12 @@ function BuilderSection:builder()
 	self:extra(tab)
 
 	tab:AddButton("Write Timing To List", function()
-		self:overwrite(self:write())
+		if #self.timingName.Value <= 0 then
+			return Logger.longNotify("Please enter a valid timing name.")
+		end
+
+		self:write()
+		self:overwrite()
 	end)
 
 	tab:AddButton("Remove Timing From List", function()
