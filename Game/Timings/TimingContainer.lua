@@ -57,6 +57,11 @@ function TimingContainer:overwrite(timing)
 	self.timings[id] = timing
 end
 
+---Clear all timings.
+function TimingContainer:clear()
+	self.timings = {}
+end
+
 ---Load from partial values.
 ---@param values table
 function TimingContainer:load(values)

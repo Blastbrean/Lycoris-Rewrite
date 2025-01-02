@@ -65,7 +65,7 @@ function Timing:serialize()
 			Y = self.hitbox.Y,
 			Z = self.hitbox.Z,
 		},
-		actions = self.actions,
+		actions = self.actions:serialize(),
 	}
 end
 

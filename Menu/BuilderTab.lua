@@ -26,7 +26,31 @@ local PartTiming = require("Game/Timings/PartTiming")
 local SoundTiming = require("Game/Timings/SoundTiming")
 
 -- BuilderTab module.
-local BuilderTab = {}
+local BuilderTab = {
+	abs = nil,
+	ebs = nil,
+	pbs = nil,
+	sbs = nil,
+}
+
+---Refresh builder lists.
+function BuilderTab.refresh()
+	if BuilderTab.abs then
+		BuilderTab.abs:refresh()
+	end
+
+	if BuilderTab.ebs then
+		BuilderTab.ebs:refresh()
+	end
+
+	if BuilderTab.pbs then
+		BuilderTab.pbs:refresh()
+	end
+
+	if BuilderTab.sbs then
+		BuilderTab.sbs:refresh()
+	end
+end
 
 ---Initialize save manager section.
 ---@param groupbox table
@@ -51,6 +75,7 @@ function BuilderTab.initSaveManagerSection(groupbox)
 			DoubleClick = true,
 			Func = function()
 				SaveManager.load(configList.Value)
+				BuilderTab.refresh()
 			end,
 		})
 
@@ -131,10 +156,10 @@ function BuilderTab.init(window)
 	local stb = tab:AddDynamicTabbox()
 
 	-- Initalize builder sections.
-	AnimationBuilderSection.new("Animation", atb, SaveManager.as, AnimationTiming.new()):init()
-	EffectBuilderSection.new("Effect", etb, SaveManager.es, EffectTiming.new()):init()
-	PartBuilderSection.new("Part", ptb, SaveManager.ps, PartTiming.new()):init()
-	SoundBuilderSection.new("Sound", stb, SaveManager.ss, SoundTiming.new()):init()
+	BuilderTab.abs = AnimationBuilderSection.new("Animation", atb, SaveManager.as, AnimationTiming.new()):init()
+	BuilderTab.ebs = EffectBuilderSection.new("Effect", etb, SaveManager.es, EffectTiming.new()):init()
+	BuilderTab.pbs = PartBuilderSection.new("Part", ptb, SaveManager.ps, PartTiming.new()):init()
+	BuilderTab.sbs = SoundBuilderSection.new("Sound", stb, SaveManager.ss, SoundTiming.new()):init()
 end
 
 -- Return CombatTab module.

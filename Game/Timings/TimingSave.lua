@@ -1,8 +1,17 @@
 ---@module Game.Timings.TimingContainer
 local TimingContainer = require("Game/Timings/TimingContainer")
 
----@module Game.Timings.Timing
-local Timing = require("Game/Timings/Timing")
+---@module Game.Timings.AnimationTiming
+local AnimationTiming = require("Game/Timings/AnimationTiming")
+
+---@module Game.Timings.EffectTiming
+local EffectTiming = require("Game/Timings/EffectTiming")
+
+---@module Game.Timings.PartTiming
+local PartTiming = require("Game/Timings/PartTiming")
+
+---@module Game.Timings.SoundTiming
+local SoundTiming = require("Game/Timings/SoundTiming")
 
 ---@class TimingSave
 ---@field _data TimingContainer[]
@@ -21,6 +30,13 @@ local TIMING_SAVE_VERSION = 1
 ---@return TimingContainer[]
 function TimingSave:get()
 	return self._data
+end
+
+---Clear timing containers.
+function TimingSave:clear()
+	for _, container in next, self._data do
+		container:clear()
+	end
 end
 
 ---Merge with another TimingSave object.
@@ -80,10 +96,10 @@ function TimingSave.new(values)
 	local self = setmetatable({}, TimingSave)
 
 	self._data = {
-		animation = TimingContainer.new(Timing),
-		effect = TimingContainer.new(Timing),
-		part = TimingContainer.new(Timing),
-		sound = TimingContainer.new(Timing),
+		animation = TimingContainer.new(AnimationTiming),
+		effect = TimingContainer.new(EffectTiming),
+		part = TimingContainer.new(PartTiming),
+		sound = TimingContainer.new(SoundTiming),
 	}
 
 	if values then

@@ -25,6 +25,28 @@ local Serializer = require("Utility/Serializer")
 -- Manager filesystem.
 local fs = Filesystem.new("Lycoris-Rewrite-Timings")
 
+-- Generate mapping.
+local charByteMap = {}
+
+for idx = 0, 255 do
+	charByteMap[string.char(idx)] = idx
+end
+
+---String to byte array.
+---@param str string
+---@return string
+local function stringToByteArray(str)
+	local chars = {}
+	local idx = 1
+
+	repeat
+		chars[idx] = charByteMap[str:sub(idx, idx)]
+		idx = idx + 1
+	until idx == #str + 1
+
+	return chars
+end
+
 ---Get save files list.
 ---@return table
 function SaveManager.list()
@@ -59,6 +81,10 @@ end
 ---@param name string
 ---@param type MergeType
 function SaveManager.merge(name, type)
+	if not name or #name <= 0 then
+		return Logger.longNotify("Config name cannot be empty.")
+	end
+
 	local success, result = pcall(fs.read, fs, name .. ".bin")
 
 	if not success then
@@ -67,7 +93,7 @@ function SaveManager.merge(name, type)
 		return Logger.warn("Timing manager ran into the error '%s' while attempting to read config %s.", result, name)
 	end
 
-	success, result = pcall(Deserializer.unmarshal_one, result)
+	success, result = pcall(Deserializer.unmarshal_one, stringToByteArray(result))
 
 	if not success then
 		Logger.longNotify("Failed to deserialize config file %s.", name)
@@ -99,6 +125,10 @@ end
 ---Set config name as auto-load.
 ---@param name string
 function SaveManager.autoload(name)
+	if not name or #name <= 0 then
+		return Logger.longNotify("Config name cannot be empty.")
+	end
+
 	local success, result = pcall(fs.write, fs, "autoload.txt", name)
 
 	if not success then
@@ -137,7 +167,7 @@ end
 ---Write timing as config name.
 ---@param name string
 function SaveManager.write(name)
-	if #name <= 0 then
+	if not name or #name <= 0 then
 		return Logger.longNotify("Config name cannot be empty.")
 	end
 
@@ -167,6 +197,10 @@ end
 ---Load timing from config name.
 ---@param name string
 function SaveManager.load(name)
+	if not name or #name <= 0 then
+		return Logger.longNotify("Config name cannot be empty.")
+	end
+
 	local success, result = pcall(fs.read, fs, name .. ".bin")
 
 	if not success then
@@ -175,7 +209,7 @@ function SaveManager.load(name)
 		return Logger.warn("Timing manager ran into the error '%s' while attempting to read config %s.", result, name)
 	end
 
-	success, result = pcall(Deserializer.unmarshal_one, result)
+	success, result = pcall(Deserializer.unmarshal_one, stringToByteArray(result))
 
 	if not success then
 		Logger.longNotify("Failed to deserialize config file %s.", name)
@@ -192,6 +226,8 @@ function SaveManager.load(name)
 
 		return Logger.warn("Timing manager failed to load config %s with result %s.", name, tostring(result))
 	end
+
+	SaveManager.config:clear()
 
 	SaveManager.config:load(result)
 
