@@ -25,7 +25,7 @@ end
 function Action:clone()
 	local clone = Action.new()
 
-	clone._type = self._type
+	clone.a = self.a
 	clone.when = self.when
 	clone.name = self.name
 

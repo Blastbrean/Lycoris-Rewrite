@@ -124,7 +124,7 @@ do
 			return false, "no config file is selected"
 		end
 
-		local fullPath = self.Folder .. "/settings/" .. name .. ".json"
+		local fullPath = self.Folder .. "/" .. name .. ".json"
 
 		local data = {
 			objects = {},
@@ -164,7 +164,7 @@ do
 			return false, "no config file is selected"
 		end
 
-		local file = self.Folder .. "/settings/" .. name .. ".json"
+		local file = self.Folder .. "/" .. name .. ".json"
 		if not isfile(file) then
 			return false, "invalid file"
 		end
@@ -205,8 +205,6 @@ do
 	function SaveManager:BuildFolderTree()
 		local paths = {
 			self.Folder,
-			self.Folder .. "/themes",
-			self.Folder .. "/settings",
 		}
 
 		for i = 1, #paths do
@@ -218,7 +216,7 @@ do
 	end
 
 	function SaveManager:RefreshConfigList()
-		local list = listfiles(self.Folder .. "/settings")
+		local list = listfiles(self.Folder)
 
 		local out = {}
 		for i = 1, #list do
@@ -249,8 +247,8 @@ do
 	end
 
 	function SaveManager:LoadAutoloadConfig()
-		if isfile(self.Folder .. "/settings/autoload.txt") then
-			local name = readfile(self.Folder .. "/settings/autoload.txt")
+		if isfile(self.Folder .. "/autoload.txt") then
+			local name = readfile(self.Folder .. "/autoload.txt")
 
 			local success, err = self:Load(name)
 			if not success then
@@ -321,15 +319,15 @@ do
 
 		section:AddButton("Set as autoload", function()
 			local name = Options.SaveManager_ConfigList.Value
-			writefile(self.Folder .. "/settings/autoload.txt", name)
+			writefile(self.Folder .. "/autoload.txt", name)
 			SaveManager.AutoloadLabel:SetText("Current autoload config: " .. name)
 			self.Library:Notify(string.format("Set %q to auto load", name))
 		end)
 
 		SaveManager.AutoloadLabel = section:AddLabel("Current autoload config: none", true)
 
-		if isfile(self.Folder .. "/settings/autoload.txt") then
-			local name = readfile(self.Folder .. "/settings/autoload.txt")
+		if isfile(self.Folder .. "/autoload.txt") then
+			local name = readfile(self.Folder .. "/autoload.txt")
 			SaveManager.AutoloadLabel:SetText("Current autoload config: " .. name)
 		end
 

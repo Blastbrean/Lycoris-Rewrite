@@ -1,4 +1,4 @@
----@module Game.Timings.TimingSave
+---@module Game.Timings.TimingContainer
 local TimingContainer = require("Game/Timings/TimingContainer")
 
 ---@module Game.Timings.Timing

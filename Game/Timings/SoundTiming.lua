@@ -1,26 +1,26 @@
 ---@module Game.Timings.Timing
 local Timing = require("Game/Timings/Timing")
 
----@class EffectTiming: Timing
----@field ename string Effect name.
+---@class SoundTiming: Timing
+---@field id string Sound ID.
 ---@field rpue boolean Repeat parry until end.
 ---@field rpd number Delay between each repeat parry.
-local EffectTiming = {}
-EffectTiming.__index = EffectTiming
+local SoundTiming = setmetatable({}, { __index = Timing })
+SoundTiming.__index = SoundTiming
 
 ---Timing ID.
 ---@return string
-function EffectTiming:id()
-	return self.ename
+function SoundTiming:id()
+	return self._id
 end
 
 ---Load from partial values.
 ---@param values table
-function EffectTiming:load(values)
+function SoundTiming:load(values)
 	Timing.load(self, values)
 
-	if typeof(values.ename) == "string" then
-		self.ename = values.ename
+	if typeof(values._id) == "string" then
+		self._id = values._id
 	end
 
 	if typeof(values.rpue) == "boolean" then
@@ -33,36 +33,36 @@ function EffectTiming:load(values)
 end
 
 ---Clone timing.
----@return EffectTiming
-function EffectTiming:clone()
-	local clone = setmetatable(Timing.clone(self), EffectTiming)
+---@return SoundTiming
+function SoundTiming:clone()
+	local clone = setmetatable(Timing.clone(self), SoundTiming)
 
-	clone.id = self.id
 	clone.rpd = self.rpd
 	clone.rpue = self.rpue
+	clone.id = self.id
 
 	return clone
 end
 
 ---Return a serializable table.
----@return EffectTiming
-function EffectTiming:serialize()
+---@return SoundTiming
+function SoundTiming:serialize()
 	local serializable = Timing.serialize(self)
 
-	serializable.id = self.id
+	serializable._id = self._id
 	serializable.rpue = self.rpue
 	serializable.rpd = self.rpd
 
 	return serializable
 end
 
----Create a new effect timing.
+---Create a new sound timing.
 ---@param values table?
----@return EffectTiming
-function EffectTiming.new(values)
-	local self = setmetatable(Timing.new(), EffectTiming)
+---@return SoundTiming
+function SoundTiming.new(values)
+	local self = setmetatable(Timing.new(), SoundTiming)
 
-	self.id = ""
+	self._id = ""
 	self.rpue = false
 	self.rpd = 0
 
@@ -73,5 +73,5 @@ function EffectTiming.new(values)
 	return self
 end
 
--- Return EffectTiming module.
-return EffectTiming
+-- Return SoundTiming module.
+return SoundTiming

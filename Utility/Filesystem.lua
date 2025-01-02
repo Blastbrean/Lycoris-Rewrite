@@ -1,16 +1,16 @@
 ---@class Filesystem
----@field path string
+---@field _path string
 local Filesystem = {}
 Filesystem.__index = Filesystem
 
 ---Create and get the current path.
 ---@return string
 function Filesystem:path()
-	if not isfolder(self.path) then
-		makefolder(self.path)
+	if not isfolder(self._path) then
+		makefolder(self._path)
 	end
 
-	return self.path
+	return self._path
 end
 
 ---Append path to current path.
@@ -24,7 +24,7 @@ end
 ---@param filename string
 ---@return boolean
 function Filesystem:file(filename)
-	return isfile(self:append_path(filename))
+	return isfile(self:append(filename))
 end
 
 ---Read file from path.
@@ -76,7 +76,7 @@ end
 ---@return Filesystem
 function Filesystem.new(path)
 	local self = setmetatable({}, Filesystem)
-	self.path = path
+	self._path = path
 	return self
 end
 

@@ -46,9 +46,9 @@ function TimingContainer:remove(timing)
 	self.timings[id] = nil
 end
 
----Push a timing to the list.
+---Overwrite a timing to the list.
 ---@param timing Timing
-function TimingContainer:push(timing)
+function TimingContainer:overwrite(timing)
 	local id = timing:id()
 	if not id then
 		return

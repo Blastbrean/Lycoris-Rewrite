@@ -1,6 +1,3 @@
----@module Game.Timings.Action
-local Action = require("Game/Timings/Action")
-
 ---@module Game.Timings.ActionContainer
 local ActionContainer = require("Game/Timings/ActionContainer")
 
@@ -90,3 +87,6 @@ function Timing.new(values)
 
 	return self
 end
+
+-- Return Timing module.
+return Timing

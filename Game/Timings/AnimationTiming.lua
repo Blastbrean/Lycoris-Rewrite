@@ -5,13 +5,13 @@ local Timing = require("Game/Timings/Timing")
 ---@field id string Animation ID.
 ---@field rpue boolean Repeat parry until end.
 ---@field rpd number Delay between each repeat parry.
-local AnimationTiming = {}
+local AnimationTiming = setmetatable({}, { __index = Timing })
 AnimationTiming.__index = AnimationTiming
 
 ---Timing ID.
 ---@return string
 function AnimationTiming:id()
-	return self.id
+	return self._id
 end
 
 ---Load from partial values.
@@ -19,8 +19,8 @@ end
 function AnimationTiming:load(values)
 	Timing.load(self, values)
 
-	if typeof(values.id) == "string" then
-		self.id = values.id
+	if typeof(values._id) == "string" then
+		self._id = values._id
 	end
 
 	if typeof(values.rpue) == "boolean" then
@@ -49,7 +49,7 @@ end
 function AnimationTiming:serialize()
 	local serializable = Timing.serialize(self)
 
-	serializable.id = self.id
+	serializable._id = self._id
 	serializable.rpue = self.rpue
 	serializable.rpd = self.rpd
 
@@ -62,7 +62,7 @@ end
 function AnimationTiming.new(values)
 	local self = setmetatable(Timing.new(), AnimationTiming)
 
-	self.id = ""
+	self._id = ""
 	self.rpue = false
 	self.rpd = 0
 

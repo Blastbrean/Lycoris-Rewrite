@@ -19,7 +19,7 @@ local GameTab = require("Menu/GameTab")
 ---@module Menu.AutomationTab
 local AutomationTab = require("Menu/AutomationTab")
 
----@moduile Menu.BuilderTab
+---@module Menu.BuilderTab
 local BuilderTab = require("Menu/BuilderTab")
 
 ---@module Menu.VisualsTab

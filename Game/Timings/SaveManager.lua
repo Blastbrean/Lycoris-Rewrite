@@ -137,6 +137,10 @@ end
 ---Write timing as config name.
 ---@param name string
 function SaveManager.write(name)
+	if #name <= 0 then
+		return Logger.longNotify("Config name cannot be empty.")
+	end
+
 	local success, result = pcall(Serializer.marshal, SaveManager.config:serialize())
 
 	if not success then
@@ -211,16 +215,13 @@ function SaveManager.init()
 	SaveManager.as = TimingContainerPair.new(SaveManager.default:get().animation, SaveManager.config:get().animation)
 
 	-- Effect stack.
-	SaveManager.es:push(SaveManager.default:get().effect)
-	SaveManager.es:push(SaveManager.config:get().effect)
+	SaveManager.es = TimingContainerPair.new(SaveManager.default:get().effect, SaveManager.config:get().effect)
 
 	-- Part stack.
-	SaveManager.ps:push(SaveManager.default:get().part)
-	SaveManager.ps:push(SaveManager.config:get().part)
+	SaveManager.ps = TimingContainerPair.new(SaveManager.default:get().part, SaveManager.config:get().part)
 
 	-- Sound stack.
-	SaveManager.ss:push(SaveManager.default:get().sound)
-	SaveManager.ss:push(SaveManager.config:get().sound)
+	SaveManager.ss = TimingContainerPair.new(SaveManager.default:get().sound, SaveManager.config:get().sound)
 end
 
 -- Return SaveManager module.
