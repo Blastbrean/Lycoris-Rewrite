@@ -213,9 +213,7 @@ function BuilderSection:baction(base)
 		action._type = self.actionType.Value
 		action.name = self.actionName.Value
 		action.when = actionDelay
-		action.hitbox.X = self.hitboxWidth.Value
-		action.hitbox.Y = self.hitboxHeight.Value
-		action.hitbox.Z = self.hitboxLength.Value
+		action.hitbox = Vector3.new(self.hitboxWidth.Value, self.hitboxHeight.Value, self.hitboxLength.Value)
 
 		self.container:push(action)
 		self:crefresh()
@@ -274,7 +272,7 @@ function BuilderSection:builder()
 		Min = 0,
 		Max = 300,
 		Suffix = "s",
-		Default = 10,
+		Default = 0,
 		Rounding = 0,
 	})
 

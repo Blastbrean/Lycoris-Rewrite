@@ -87,15 +87,6 @@ function BuilderTab.initSaveManagerSection(groupbox)
 		end,
 	})
 
-	groupbox:AddButton({
-		Text = "Delete Config",
-		DoubleClick = true,
-		Func = function()
-			SaveManager.delete(configList.Value)
-			SaveManager.refresh(configList)
-		end,
-	})
-
 	groupbox:AddButton("Refresh List", function()
 		SaveManager.refresh(configList)
 	end)
