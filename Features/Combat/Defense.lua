@@ -53,7 +53,6 @@ end
 ---Detach defense.
 function Defense.detach()
 	for _, animationDefenderObject in next, animationDefenderObjects do
-		print(animationDefenderObject, animationDefenderObject.detach)
 		animationDefenderObject:detach()
 	end
 

@@ -16,6 +16,9 @@ local Menu = require("Menu")
 ---@module Features
 local Features = require("Features")
 
+---@module Game.InputClient
+local InputClient = require("Game/InputClient")
+
 ---@module Game.PlayerScanning
 local PlayerScanning = require("Game/PlayerScanning")
 
@@ -141,6 +144,8 @@ function Lycoris.init()
 
 	SaveManager.init()
 
+	InputClient.init()
+
 	ControlModule.init()
 
 	Features.init()
@@ -183,6 +188,8 @@ function Lycoris.detach()
 	Menu.detach()
 
 	Features.detach()
+
+	InputClient.detach()
 
 	ControlModule.detach()
 

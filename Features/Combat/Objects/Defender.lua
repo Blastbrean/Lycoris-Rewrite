@@ -1,6 +1,9 @@
 ---@module Game.KeyHandling
 local KeyHandling = require("Game/KeyHandling")
 
+---@module Game.InputClient
+local InputClient = require("Game/InputClient")
+
 -- Services.
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local runService = game:GetService("RunService")
@@ -8,61 +11,6 @@ local runService = game:GetService("RunService")
 ---@class Defender
 local Defender = {}
 Defender.__index = Defender
-
----Check if table has non-boolean values.
----@param tbl table
----@return boolean
-local function hasNonBooleans(tbl)
-	for _, value in next, tbl do
-		if typeof(value) == "boolean" then
-			continue
-		end
-
-		return false
-	end
-
-	return true
-end
-
----Fetch InputClient data.
----@return table?, table?
-local function fetchInputClientData()
-	for _, connection in next, getconnections(runService.RenderStepped) do
-		local func = connection.Function
-		if not func then
-			continue
-		end
-
-		local consts = debug.getconstants(func)
-		if not table.find(consts, ".lastHBCheck") then
-			continue
-		end
-
-		local upvalues = debug.getupvalues(func)
-		local inputs = nil
-
-		---@note: Only table with boolean values is the input table. Find a better way to filter this?
-		for _, upvalue in next, upvalues do
-			if typeof(upvalue) ~= "table" or getrawmetatable(upvalue) then
-				continue
-			end
-
-			if not hasNonBooleans(upvalues) then
-				continue
-			end
-
-			inputs = upvalue
-			break
-		end
-
-		local env = getfenv(func)
-		if not env or getrawmetatable(env) then
-			continue
-		end
-
-		return env, inputs
-	end
-end
 
 ---Detach function. Override me.
 function Defender:detach() end
@@ -87,10 +35,10 @@ function Defender:parry()
 		return
 	end
 
-	local environment, inputs = fetchInputClientData()
-	local sprintFunction = environment and environment.Sprint
+	local sprintFunction = InputClient.sprintFunctionCache
+	local inputData = InputClient.getInputData()
 
-	if not environment or not inputs or not sprintFunction then
+	if not sprintFunction or not inputData then
 		return
 	end
 
@@ -105,7 +53,7 @@ function Defender:parry()
 
 	blockRemote:FireServer()
 
-	inputs["f"] = true
+	inputData["f"] = true
 
 	sprintFunction(false)
 
@@ -121,7 +69,7 @@ function Defender:parry()
 
 	unblockRemote:FireServer()
 
-	inputs["f"] = false
+	inputData["f"] = false
 
 	sprintFunction(false)
 end
@@ -141,10 +89,8 @@ function Defender:dodge(hrp, humanoid)
 		return
 	end
 
-	local environment, inputs = fetchInputClientData()
-	local rollFunction = environment and environment.Roll
-
-	if not environment or not inputs or not rollFunction then
+	local rollFunction = InputClient.rollFunctionCache
+	if not rollFunction then
 		return
 	end
 
