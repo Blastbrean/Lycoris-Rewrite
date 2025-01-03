@@ -27,13 +27,13 @@ local players = game:GetService("Players")
 ---Process animation track.
 ---@param track AnimationTrack
 function AnimatorDefender:process(track)
-	local target = Targeting.find(self.entity)
-	if not target then
+	local timing = SaveManager.as:index(tostring(track.Animation.AnimationId))
+	if not timing then
 		return
 	end
 
-	local timing = SaveManager.as:index(tostring(track.Animation.AnimationId))
-	if not timing then
+	local target = Targeting.find(self.entity)
+	if not target then
 		return
 	end
 
