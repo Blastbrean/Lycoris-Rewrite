@@ -13,6 +13,9 @@ local Configuration = require("Utility/Configuration")
 ---@module Features.Game.Monitoring
 local Monitoring = require("Features/Game/Monitoring")
 
+---@module Game.InputClient
+local InputClient = require("Game/InputClient")
+
 -- Services.
 local playersService = game:GetService("Players")
 local runService = game:GetService("RunService")
@@ -337,8 +340,12 @@ local function onTaskSpawn(...)
 	local func = args[1]
 	local consts = debug.getconstants(func)
 
-	if debug.getinfo(3).source:match("InputClient") and (#consts == 0 or consts[2] == "Parent") then
-		args[1] = function() end
+	if debug.getinfo(3).source:match("InputClient") then
+		if #consts == 0 or consts[2] == "Parent" then
+			args[1] = function() end
+		else
+			InputClient.update(consts)
+		end
 	end
 
 	return oldTaskSpawn(unpack(args))

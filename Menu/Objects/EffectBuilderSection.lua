@@ -1,0 +1,106 @@
+---@module Menu.Objects.BuilderSection
+local BuilderSection = require("Menu/Objects/BuilderSection")
+
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
+---@class EffectBuilderSection: BuilderSection
+---@field effectName table
+---@field repeatStartDelay table
+---@field repeatUntilParryEnd table
+---@field repeatParryDelay table
+---@field timing EffectTiming
+local EffectBuilderSection = setmetatable({}, { __index = BuilderSection })
+EffectBuilderSection.__index = EffectBuilderSection
+
+---Check before writing.
+---@return boolean
+function EffectBuilderSection:check()
+	if not self.effectName.Value or #self.effectName.Value <= 0 then
+		return Logger.longNotify("Please enter a valid effect name.")
+	end
+
+	local found = self.pair:config().timings[self.effectName.Value]
+
+	if found then
+		return Logger.longNotify("The timing '%s' already has the same effect name.", found.name)
+	end
+
+	return true
+end
+
+---Add extra elements to the builder tab.
+---@param tab table
+function EffectBuilderSection:extra(tab)
+	self.effectName = tab:AddInput(nil, {
+		Text = "Effect Name",
+	})
+end
+
+---Initialize action tab.
+function EffectBuilderSection:action()
+	local tab = self.tabbox:AddTab("Action")
+
+	self.repeatUntilParryEnd = tab:AddToggle(nil, {
+		Text = "Repeat Parry Until End",
+		Default = false,
+	})
+
+	local depBoxOn = tab:AddDependencyBox()
+
+	self.repeatStartDelay = depBoxOn:AddInput(nil, {
+		Text = "Repeat Start Delay",
+		Default = false,
+	})
+
+	self.repeatParryDelay = depBoxOn:AddInput(nil, {
+		Text = "Repeat Parry Delay",
+		Numeric = true,
+	})
+
+	local depBoxOff = tab:AddDependencyBox()
+
+	self:baction(depBoxOff)
+
+	depBoxOn:SetupDependencies({
+		{ self.repeatUntilParryEnd, true },
+	})
+
+	depBoxOff:SetupDependencies({
+		{ self.repeatUntilParryEnd, false },
+	})
+end
+
+---Load the timing.
+---@param timing EffectTiming
+function EffectBuilderSection:load(timing)
+	BuilderSection.load(self, timing)
+
+	self.effectName:SetValue(timing.ename)
+	self.repeatUntilParryEnd:SetValue(timing.rpue)
+	self.repeatParryDelay:SetValue(timing.rpd)
+	self.repeatStartDelay:SetValue(timing.rsd)
+end
+
+---Write to the current timing.
+function EffectBuilderSection:write()
+	BuilderSection.write(self)
+
+	self.timing.ename = self.effectName.Value
+	self.timing.rsd = self.repeatStartDelay.Value
+	self.timing.rpue = self.repeatUntilParryEnd.Value
+	self.timing.rpd = self.repeatParryDelay.Value
+end
+
+---Create new EffectBuilderSection object.
+---@param name string
+---@param tabbox table
+---@param pair TimingContainerPair
+---@param timing EffectTiming
+---@return EffectBuilderSection
+function EffectBuilderSection.new(name, tabbox, pair, timing)
+	return setmetatable(BuilderSection.new(name, tabbox, pair, timing), EffectBuilderSection)
+end
+
+-- Return EffectBuilderSection module.
+return EffectBuilderSection

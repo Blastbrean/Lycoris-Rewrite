@@ -1,5 +1,5 @@
----@module Menu.VisualsTab
-local VisualsTab = require("Menu/VisualsTab")
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
 
 ---@class FilteredESP
 ---@note: This is a wrapper object
@@ -48,9 +48,9 @@ function FilteredESP:update()
 	local identifier = self.identifier
 	local label = object.label
 
-	if VisualsTab.toggleValue(identifier, "FilterObjects") then
-		local filterLabelList = VisualsTab.optionValues(identifier, "FilterLabelList")
-		local filterLabelListType = VisualsTab.optionValue(identifier, "FilterLabelListType")
+	if Configuration.idToggleValue(identifier, "FilterObjects") then
+		local filterLabelList = Configuration.idOptionValues(identifier, "FilterLabelList")
+		local filterLabelListType = Configuration.idOptionValue(identifier, "FilterLabelListType")
 		local filterLabelListIndex = partialStringFind(filterLabelList, label)
 
 		if filterLabelListType == "Hide Labels Out Of List" and not filterLabelListIndex then

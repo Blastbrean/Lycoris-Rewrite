@@ -37,6 +37,7 @@ local echoModifiersMap = removalMaid:mark(OriginalStoreManager.new())
 local noFogMap = removalMaid:mark(OriginalStoreManager.new())
 local noBlindMap = removalMaid:mark(OriginalStoreManager.new())
 local killBricksMap = removalMaid:mark(OriginalStoreManager.new())
+local lightBarrierMap = removalMaid:mark(OriginalStoreManager.new())
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -46,7 +47,12 @@ local workspaceDescendantRemoving = Signal.new(workspace.DescendantRemoving)
 ---Update no echo modifiers.
 ---@param localPlayer Player
 local function updateNoEchoModifiers(localPlayer)
-	for _, instance in pairs(localPlayer.Backpack:GetChildren()) do
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return
+	end
+
+	for _, instance in pairs(backpack:GetChildren()) do
 		if not instance.Name:match("EchoMod") then
 			continue
 		end
@@ -67,10 +73,22 @@ local function updateNoKillBricks()
 	end
 end
 
+---Update no light barrier.
+local function updateNoLightBarrier()
+	for _, store in next, lightBarrierMap:data() do
+		local data = store.data
+		if not data then
+			continue
+		end
+
+		store:set(store.data, "CFrame", CFrame.new(math.huge, math.huge, math.huge))
+	end
+end
+
 ---Update no fog.
 local function updateNoFog()
-	noFogMap:add(lighting, "FogStart", 0)
-	noFogMap:add(lighting, "FogEnd", 0)
+	noFogMap:add(lighting, "FogStart", math.huge)
+	noFogMap:add(lighting, "FogEnd", math.huge)
 
 	local atmosphere = lighting:FindFirstChildOfClass("Atmosphere")
 	if not atmosphere then
@@ -96,7 +114,11 @@ local function updateNoBlind(localPlayer)
 	noBlindMap:add(sanityDof, "Enabled", false)
 	noBlindMap:add(sanityCorrect, "Enabled", false)
 
-	local backpack = localPlayer.Backpack
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return
+	end
+
 	local blindInstance = backpack:FindFirstChild("Talent:Blinded") or backpack:FindFirstChild("Flaw:Blind")
 	if not blindInstance then
 		return
@@ -132,6 +154,12 @@ local function updateRemoval()
 		updateNoKillBricks()
 	else
 		killBricksMap:restore()
+	end
+
+	if Configuration.expectToggleValue("NoCastleLightBarrier") then
+		updateNoLightBarrier()
+	else
+		lightBarrierMap:restore()
 	end
 
 	if Configuration.expectToggleValue("NoFog") then
@@ -227,21 +255,26 @@ local function onWorkspaceDescendantAdded(descendant)
 		return
 	end
 
-	local killInstance = descendant.Name == "KillBrick" or descendant.Name == "KillPlane"
-	local killChasm = descendant.Name:match("Chasm") and descendant:FindFirstChildOfClass("TouchTransmitter")
-	local superWall = descendant.Name == "SuperWall"
+	local lightBarrierInstance = descendant.Name == "LifeField"
 
-	if not killInstance and not killChasm and not superWall then
-		return
+	if lightBarrierInstance then
+		lightBarrierMap:mark(descendant, "CFrame")
 	end
 
-	killBricksMap:mark(descendant, "CFrame")
+	local killInstance = descendant.Name == "KillBrick" or descendant.Name == "KillPlane"
+	local killChasm = descendant.Name:match("Chasm")
+	local superWall = descendant.Name == "SuperWall"
+
+	if killInstance or killChasm or superWall then
+		killBricksMap:mark(descendant, "CFrame")
+	end
 end
 
 ---On workspace descendant removing.
 ---@param descendant Instance
 local function onWorkspaceDescendantRemoving(descendant)
 	killBricksMap:forget(descendant)
+	lightBarrierMap:forget(descendant)
 end
 
 ---Initalize removal.

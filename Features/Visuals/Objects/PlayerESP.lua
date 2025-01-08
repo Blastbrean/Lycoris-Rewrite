@@ -1,8 +1,8 @@
 ---@module Features.Visuals.Objects.PositionESP
 local PositionESP = require("Features/Visuals/Objects/PositionESP")
 
----@module Menu.VisualsTab
-local VisualsTab = require("Menu/VisualsTab")
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
 
 ---@module Game.PlayerScanning
 local PlayerScanning = require("Game/PlayerScanning")
@@ -16,12 +16,16 @@ local PlayerESP = setmetatable({}, { __index = PositionESP })
 PlayerESP.__index = PlayerESP
 PlayerESP.__type = "PlayerESP"
 
+-- Services.
+local players = game:GetService("Players")
+
 -- Formats.
 local ESP_HEALTH = "[%i/%i]"
 local ESP_POWER = "[Power %i]"
 local ESP_TEMPO = "[%i%% tempo]"
 local ESP_BLOOD = "[%i%% blood]"
 local ESP_POSTURE = "[%i%% posture]"
+local ESP_VIEW_ANGLE = "[%.2f view angle vs. %.2f]"
 local ESP_HEALTH_PERCENTAGE = "[%i%% health]"
 local ESP_HEALTH_BARS = "[%.1f bars]"
 
@@ -37,7 +41,7 @@ function PlayerESP:update()
 	end
 
 	local level = model:GetAttribute("Level") or -1
-	local playerNameType = VisualsTab.optionValue(identifier, "PlayerNameType")
+	local playerNameType = Configuration.idOptionValue(identifier, "PlayerNameType")
 	local playerName = "Unknown Player"
 
 	if playerNameType == "Character Name" then
@@ -55,30 +59,30 @@ function PlayerESP:update()
 
 	local tags = { ESP_HEALTH:format(health or -1, maxHealth or -1), ESP_POWER:format(level) }
 
-	if VisualsTab.toggleValue(identifier, "ShowTempo") then
+	if Configuration.idToggleValue(identifier, "ShowTempo") then
 		local tempoValue = model:FindFirstChild("Tempo")
 		local percentage = tempoValue and (tempoValue.Value / tempoValue.MaxValue * 100)
 		tags[#tags + 1] = tempoValue and ESP_TEMPO:format(percentage) or "[Unknown Tempo]"
 	end
 
-	if VisualsTab.toggleValue(identifier, "ShowBlood") then
+	if Configuration.idToggleValue(identifier, "ShowBlood") then
 		local bloodValue = model:FindFirstChild("Blood")
 		local percentage = bloodValue and (bloodValue.Value / bloodValue.MaxValue * 100)
 		tags[#tags + 1] = bloodValue and ESP_BLOOD:format(percentage) or "[Unknown Blood]"
 	end
 
-	if VisualsTab.toggleValue(identifier, "ShowPosture") then
+	if Configuration.idToggleValue(identifier, "ShowPosture") then
 		local breakMeterValue = model:FindFirstChild("BreakMeter")
 		local percentage = breakMeterValue and (breakMeterValue.Value / breakMeterValue.MaxValue * 100)
 		tags[#tags + 1] = breakMeterValue and ESP_POSTURE:format(percentage) or "[Unknown Posture]"
 	end
 
-	if VisualsTab.toggleValue(identifier, "ShowHealthPercentage") then
+	if Configuration.idToggleValue(identifier, "ShowHealthPercentage") then
 		local percentage = health / maxHealth * 100
 		tags[#tags + 1] = ESP_HEALTH_PERCENTAGE:format(percentage)
 	end
 
-	if VisualsTab.toggleValue(identifier, "ShowHealthBars") then
+	if Configuration.idToggleValue(identifier, "ShowHealthBars") then
 		local healthPercentage = health / maxHealth
 		local healthInBars = math.clamp(healthPercentage / 0.20, 0, 5)
 		tags[#tags + 1] = ESP_HEALTH_BARS:format(healthInBars)
@@ -100,9 +104,20 @@ function PlayerESP:update()
 		usedPosition = modelPosition
 	end
 
+	local currentCamera = workspace.CurrentCamera
+	local character = players.LocalPlayer.Character
+	local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+	if Configuration.idToggleValue(identifier, "ShowViewAngle") and rootPart then
+		tags[#tags + 1] = ESP_VIEW_ANGLE:format(
+			currentCamera.CFrame.LookVector:Dot((rootPart.Position - usedPosition).Unit) * -1,
+			math.cos(math.rad((Configuration.expectOptionValue("FOVLimit"))))
+		)
+	end
+
 	PositionESP.update(self, usedPosition, tags)
 
-	if not VisualsTab.toggleValue(identifier, "MarkAllies") then
+	if not Configuration.idToggleValue(identifier, "MarkAllies") then
 		return
 	end
 
@@ -111,7 +126,7 @@ function PlayerESP:update()
 	end
 
 	local baseText = self:getDrawing("baseText")
-	baseText:set("Color", VisualsTab.optionValue(identifier, "AllyColor"))
+	baseText:set("Color", Configuration.idOptionValue(identifier, "AllyColor"))
 end
 
 ---Create new PlayerESP object.

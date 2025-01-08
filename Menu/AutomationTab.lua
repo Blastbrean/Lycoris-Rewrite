@@ -230,7 +230,7 @@ end
 ---@param window table
 function AutomationTab.init(window)
 	-- Create tab.
-	local tab = window:AddTab("Automation")
+	local tab = window:AddTab("Auto")
 
 	-- Initialize sections.
 	--AutomationTab.initAstralSection(tab:AddDynamicGroupbox("Astral Farm"))

@@ -19,6 +19,9 @@ local GameTab = require("Menu/GameTab")
 ---@module Menu.AutomationTab
 local AutomationTab = require("Menu/AutomationTab")
 
+---@module Menu.BuilderTab
+local BuilderTab = require("Menu/BuilderTab")
+
 ---@module Menu.VisualsTab
 local VisualsTab = require("Menu/VisualsTab")
 
@@ -65,15 +68,17 @@ function Menu.init()
 
 	-- Configure ThemeManager.
 	ThemeManager:SetLibrary(Library)
-	ThemeManager:SetFolder("Lycoris-Rewrite")
+	ThemeManager:SetFolder("Lycoris-Rewrite-Themes")
 
 	-- Configure SaveManager.
 	SaveManager:SetLibrary(Library)
 	SaveManager:IgnoreThemeSettings()
-	SaveManager:SetFolder("Lycoris-Rewrite")
+	SaveManager:SetFolder("Lycoris-Rewrite-Configs")
+	SaveManager:SetIgnoreIndexes({ "Fly", "Noclip", "Speedhack", "InfiniteJump" })
 
 	-- Initialize all tabs.
 	CombatTab.init(window)
+	BuilderTab.init(window)
 	GameTab.init(window)
 	VisualsTab.init(window)
 	AutomationTab.init(window)

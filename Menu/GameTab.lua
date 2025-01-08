@@ -264,9 +264,9 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 
 	ppDepBox:AddSlider("PlayerProximityRange", {
 		Text = "Player Proximity Distance",
-		Default = 350,
+		Default = 1000,
 		Min = 50,
-		Max = 1000,
+		Max = 2500,
 		Suffix = "studs",
 		Rounding = 0,
 	})
@@ -334,6 +334,12 @@ function GameTab.initInstanceRemovalsSection(groupbox)
 	groupbox:AddToggle("NoKillBricks", {
 		Text = "No Kill Bricks",
 		Tooltip = "Remove any 'Kill Brick' parts on the client.",
+		Default = false,
+	})
+
+	groupbox:AddToggle("NoCastleLightBarrier", {
+		Text = "No Castle Light Barrier",
+		Tooltip = "Remove any 'Castle Light Barrier' parts on the client.",
 		Default = false,
 	})
 end

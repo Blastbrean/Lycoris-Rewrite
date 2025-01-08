@@ -119,7 +119,12 @@ local function updateFreestylerBandSpoof()
 		return
 	end
 
-	fakeFreestylerBand.Parent = localPlayer.Backpack
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return
+	end
+
+	fakeFreestylerBand.Parent = backpack
 end
 
 ---Update konga clutch ring spoof.
@@ -129,7 +134,12 @@ local function updateKongaClutchRingSpoof()
 		return
 	end
 
-	fakeKongaClutchRing.Parent = localPlayer.Backpack
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return
+	end
+
+	fakeKongaClutchRing.Parent = backpack
 end
 
 ---Update spoofing.

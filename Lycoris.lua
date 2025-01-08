@@ -16,8 +16,14 @@ local Menu = require("Menu")
 ---@module Features
 local Features = require("Features")
 
+---@module Game.InputClient
+local InputClient = require("Game/InputClient")
+
 ---@module Game.PlayerScanning
 local PlayerScanning = require("Game/PlayerScanning")
+
+---@module Game.Timings.SaveManager
+local SaveManager = require("Game/Timings/SaveManager")
 
 -- Services.
 local memStorageService = game:GetService("MemStorageService")
@@ -135,6 +141,10 @@ function Lycoris.init()
 	end
 
 	Hooking.init()
+
+	SaveManager.init()
+
+	InputClient.cache()
 
 	ControlModule.init()
 

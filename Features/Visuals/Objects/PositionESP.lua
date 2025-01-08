@@ -1,9 +1,6 @@
 ---@module Utility.DrawingPool
 local DrawingPool = require("Utility/DrawingPool")
 
----@module Menu.VisualsTab
-local VisualsTab = require("Menu/VisualsTab")
-
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
@@ -41,7 +38,7 @@ function PositionESP:build(label, tags)
 	for _, tag in next, tags do
 		local line = lines[#lines] or label
 
-		if #line > Configuration.optionValue("ESPSplitLineLength") then
+		if not start and #line > Configuration.optionValue("ESPSplitLineLength") then
 			lines[#lines + 1] = tag
 			continue
 		end
@@ -63,14 +60,14 @@ function PositionESP:update(position, tags)
 	local label = self.label
 	local identifier = self.identifier
 
-	if not VisualsTab.toggleValue(identifier, "Enable") then
+	if not Configuration.idToggleValue(identifier, "Enable") then
 		return self:setVisible(false)
 	end
 
 	local camera = workspace.CurrentCamera
 	local distance = (camera.CFrame.Position - position).Magnitude
 
-	if distance > VisualsTab.optionValue(identifier, "MaxDistance") then
+	if distance > Configuration.idOptionValue(identifier, "MaxDistance") then
 		return self:hide()
 	end
 
@@ -79,14 +76,14 @@ function PositionESP:update(position, tags)
 		return self:hide()
 	end
 
-	if VisualsTab.toggleValue(identifier, "ShowDistance") then
+	if Configuration.idToggleValue(identifier, "ShowDistance") then
 		label = ESP_DISTANCE_FORMAT:format(label, distance)
 	end
 
 	local text = self:getDrawing("baseText")
 	text:set("Text", self:build(label, tags))
 	text:set("Position", Vector2.new(screenPosition.X, screenPosition.Y))
-	text:set("Color", VisualsTab.optionValue(identifier, "Color"))
+	text:set("Color", Configuration.idOptionValue(identifier, "Color"))
 	text:set("Size", Configuration.optionValue("FontSize"))
 	text:set("Visible", true)
 	text:font(Configuration.optionValue("Font"))

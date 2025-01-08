@@ -40,7 +40,10 @@
         "getconnections",
         "getexecutorname",
         "gethui",
-        "Status"
+        "delfile",
+        "iscclosure",
+        "setidentity",
+        "setthreadidentity"
     ],
     "editor.formatOnSave": true,
     "robloxLsp.suggestedImports.importIgnore": [

@@ -880,8 +880,8 @@ do
 				math.floor(ColorPicker.Value.B * 255),
 			}, ", ")
 
-			Library:SafeCallback("ColorPicker_Callback" .. "_" .. Idx, ColorPicker.Callback, ColorPicker.Value)
-			Library:SafeCallback("ColorPicker_Changed" .. "_" .. Idx, ColorPicker.Changed, ColorPicker.Value)
+			Library:SafeCallback("ColorPicker_Callback" .. "_" .. (Idx or ""), ColorPicker.Callback, ColorPicker.Value)
+			Library:SafeCallback("ColorPicker_Changed" .. "_" .. (Idx or ""), ColorPicker.Changed, ColorPicker.Value)
 		end
 
 		function ColorPicker:OnChanged(Func)
@@ -1023,8 +1023,10 @@ do
 		ColorPicker:Display()
 		ColorPicker.DisplayFrame = DisplayFrame
 
-		Options[Idx] = ColorPicker
-		ColorPickers[Idx] = ColorPicker
+		if Idx then
+			Options[Idx] = ColorPicker
+			ColorPickers[Idx] = ColorPicker
+		end
 
 		return self
 	end
@@ -1260,8 +1262,8 @@ do
 				ParentObj:SetValue(not ParentObj.Value)
 			end
 
-			Library:SafeCallback("KeyPicker_Callback" .. "_" .. Idx, KeyPicker.Callback, KeyPicker.Toggled)
-			Library:SafeCallback("KeyPicker_Clicked" .. "_" .. Idx, KeyPicker.Clicked, KeyPicker.Toggled)
+			Library:SafeCallback("KeyPicker_Callback" .. "_" .. (Idx or ""), KeyPicker.Callback, KeyPicker.Toggled)
+			Library:SafeCallback("KeyPicker_Clicked" .. "_" .. (Idx or ""), KeyPicker.Clicked, KeyPicker.Toggled)
 		end
 
 		local Picking = false
@@ -1309,13 +1311,13 @@ do
 					KeyPicker.Value = Key
 
 					Library:SafeCallback(
-						"KeyPicker_ChangedCallback" .. "_" .. Idx,
+						"KeyPicker_ChangedCallback" .. "_" .. (Idx or ""),
 						KeyPicker.ChangedCallback,
 						Input.KeyCode or Input.UserInputType
 					)
 
 					Library:SafeCallback(
-						"KeyPicker_Changed" .. "_" .. Idx,
+						"KeyPicker_Changed" .. "_" .. (Idx or ""),
 						KeyPicker.Changed,
 						Input.KeyCode or Input.UserInputType
 					)
@@ -1388,7 +1390,9 @@ do
 
 		KeyPicker:Update()
 
-		Options[Idx] = KeyPicker
+		if Idx then
+			Options[Idx] = KeyPicker
+		end
 
 		return self
 	end
@@ -1591,7 +1595,7 @@ do
 					Button.Label.Text = "Are you sure?"
 					Button.Locked = true
 
-					local clicked = WaitForEvent(Button.Outer.InputBegan, 0.5, ValidateClick)
+					local clicked = WaitForEvent(Button.Outer.InputBegan, 2, ValidateClick)
 
 					Library:RemoveFromRegistry(Button.Label)
 					Library:AddToRegistry(Button.Label, { TextColor3 = "FontColor" })
@@ -1700,6 +1704,10 @@ do
 		Groupbox:Resize()
 	end
 
+	---Add input function.
+	---@param Idx string
+	---@param Info table
+	---@return any
 	function Funcs:AddInput(Idx, Info)
 		assert(Info.Text, "AddInput: Missing `Text` string.")
 
@@ -1809,8 +1817,8 @@ do
 			Textbox.Value = Text
 			Box.Text = Text
 
-			Library:SafeCallback("Textbox_Callback" .. "_" .. Idx, Textbox.Callback, Textbox.Value)
-			Library:SafeCallback("Textbox_Changed" .. "_" .. Idx, Textbox.Changed, Textbox.Value)
+			Library:SafeCallback("Textbox_Callback" .. "_" .. (Idx or ""), Textbox.Callback, Textbox.Value)
+			Library:SafeCallback("Textbox_Changed" .. "_" .. (Idx or ""), Textbox.Changed, Textbox.Value)
 		end
 
 		if Textbox.Finished then
@@ -1880,7 +1888,9 @@ do
 		Groupbox:AddBlank(5)
 		Groupbox:Resize()
 
-		Options[Idx] = Textbox
+		if Idx then
+			Options[Idx] = Textbox
+		end
 
 		return Textbox
 	end
@@ -1988,8 +1998,8 @@ do
 				end
 			end
 
-			Library:SafeCallback("Toggle_Callback" .. "_" .. Idx, Toggle.Callback, Toggle.Value)
-			Library:SafeCallback("Toggle_Changed" .. "_" .. Idx, Toggle.Changed, Toggle.Value)
+			Library:SafeCallback("Toggle_Callback" .. "_" .. (Idx or ""), Toggle.Callback, Toggle.Value)
+			Library:SafeCallback("Toggle_Changed" .. "_" .. (Idx or ""), Toggle.Changed, Toggle.Value)
 			Library:UpdateDependencyBoxes()
 		end
 
@@ -2014,7 +2024,9 @@ do
 		Toggle.Container = Container
 		setmetatable(Toggle, BaseAddons)
 
-		Toggles[Idx] = Toggle
+		if Idx then
+			Toggles[Idx] = Toggle
+		end
 
 		Library:UpdateDependencyBoxes()
 
@@ -2172,8 +2184,8 @@ do
 			Slider.Value = Num
 			Slider:Display()
 
-			Library:SafeCallback("Slider_Callback" .. "_" .. Idx, Slider.Callback, Slider.Value)
-			Library:SafeCallback("Slider_Changed" .. "_" .. Idx, Slider.Changed, Slider.Value)
+			Library:SafeCallback("Slider_Callback" .. "_" .. (Idx or ""), Slider.Callback, Slider.Value)
+			Library:SafeCallback("Slider_Changed" .. "_" .. (Idx or ""), Slider.Changed, Slider.Value)
 		end
 
 		SliderInner.InputBegan:Connect(function(Input)
@@ -2193,8 +2205,8 @@ do
 					Slider:Display()
 
 					if nValue ~= OldValue then
-						Library:SafeCallback("Slider_Callback" .. "_" .. Idx, Slider.Callback, Slider.Value)
-						Library:SafeCallback("Slider_Changed" .. "_" .. Idx, Slider.Changed, Slider.Value)
+						Library:SafeCallback("Slider_Callback" .. "_" .. (Idx or ""), Slider.Callback, Slider.Value)
+						Library:SafeCallback("Slider_Changed" .. "_" .. (Idx or ""), Slider.Changed, Slider.Value)
 					end
 
 					RenderStepped:Wait()
@@ -2208,7 +2220,9 @@ do
 		Groupbox:AddBlank(Info.BlankSize or 6)
 		Groupbox:Resize()
 
-		Options[Idx] = Slider
+		if Idx then
+			Options[Idx] = Slider
+		end
 
 		return Slider
 	end
@@ -2529,8 +2543,16 @@ do
 							Table:UpdateButton()
 							Dropdown:Display()
 
-							Library:SafeCallback("Dropdown_Callback" .. "_" .. Idx, Dropdown.Callback, Dropdown.Value)
-							Library:SafeCallback("Dropdown_Changed" .. "_" .. Idx, Dropdown.Changed, Dropdown.Value)
+							Library:SafeCallback(
+								"Dropdown_Callback" .. "_" .. (Idx or ""),
+								Dropdown.Callback,
+								Dropdown.Value
+							)
+							Library:SafeCallback(
+								"Dropdown_Changed" .. "_" .. (Idx or ""),
+								Dropdown.Changed,
+								Dropdown.Value
+							)
 
 							Library:AttemptSave()
 						end
@@ -2595,8 +2617,8 @@ do
 
 			Dropdown:BuildDropdownList()
 
-			Library:SafeCallback("Dropdown_Callback" .. "_" .. Idx, Dropdown.Callback, Dropdown.Value)
-			Library:SafeCallback("Dropdown_Changed" .. "_" .. Idx, Dropdown.Changed, Dropdown.Value)
+			Library:SafeCallback("Dropdown_Callback" .. "_" .. (Idx or ""), Dropdown.Callback, Dropdown.Value)
+			Library:SafeCallback("Dropdown_Changed" .. "_" .. (Idx or ""), Dropdown.Changed, Dropdown.Value)
 		end
 
 		DropdownOuter.InputBegan:Connect(function(Input)
@@ -2666,7 +2688,9 @@ do
 		Groupbox:AddBlank(Info.BlankSize or 5)
 		Groupbox:Resize()
 
-		Options[Idx] = Dropdown
+		if Idx then
+			Options[Idx] = Dropdown
+		end
 
 		return Dropdown
 	end
@@ -3153,9 +3177,13 @@ function Library:CreateWindow(...)
 		WindowLabel.Text = Title
 	end
 
+	---Add a tab to the window.
+	---@param Name string
+	---@return table
 	function Window:AddTab(Name)
 		local Tab = {
 			GroupboxCount = 0,
+			TabboxCount = 0,
 			Groupboxes = {},
 			Tabboxes = {},
 		}
@@ -3370,7 +3398,7 @@ function Library:CreateWindow(...)
 		end
 
 		function Tab:AddDynamicGroupbox(Name)
-			if Tab.GroupboxCount % 2 == 0 then
+			if (Tab.GroupboxCount + Tab.TabboxCount) % 2 == 0 then
 				return Tab:AddLeftGroupbox(Name)
 			else
 				return Tab:AddRightGroupbox(Name)
@@ -3574,6 +3602,7 @@ function Library:CreateWindow(...)
 			end
 
 			Tab.Tabboxes[Info.Name or ""] = Tabbox
+			Tab.TabboxCount = Tab.TabboxCount + 1
 
 			return Tabbox
 		end
@@ -3584,6 +3613,14 @@ function Library:CreateWindow(...)
 
 		function Tab:AddRightTabbox(Name)
 			return Tab:AddTabbox({ Name = Name, Side = 2 })
+		end
+
+		function Tab:AddDynamicTabbox(Name)
+			if (Tab.GroupboxCount + Tab.TabboxCount) % 2 == 0 then
+				return Tab:AddLeftTabbox(Name)
+			else
+				return Tab:AddRightTabbox(Name)
+			end
 		end
 
 		TabButton.InputBegan:Connect(function(Input)

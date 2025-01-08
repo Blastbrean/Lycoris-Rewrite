@@ -1,40 +1,11 @@
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
 -- Visuals tab.
 local VisualsTab = {}
-
----Identify ESP object.
----@param identifier string
----@param topLevelIdentifier string
----@return string
-function VisualsTab.identify(identifier, topLevelIdentifier)
-	return identifier .. topLevelIdentifier
-end
-
----Fetch ESP toggle value.
----@param identifier string
----@param topLevelIdentifier string
----@return any
-function VisualsTab.toggleValue(identifier, topLevelIdentifier)
-	return Toggles[identifier .. topLevelIdentifier].Value
-end
-
----Fetch ESP option value.
----@param identifier string
----@param topLevelIdentifier string
----@return any
-function VisualsTab.optionValue(identifier, topLevelIdentifier)
-	return Options[identifier .. topLevelIdentifier].Value
-end
-
----Fetch ESP option values.
----@param identifier string
----@param topLevelIdentifier string
----@return any
-function VisualsTab.optionValues(identifier, topLevelIdentifier)
-	return Options[identifier .. topLevelIdentifier].Values
-end
 
 ---Initialize ESP Customization section.
 ---@param groupbox table
@@ -203,28 +174,28 @@ end
 ---@param groupbox table
 ---@return string, table, table
 function VisualsTab.initBaseESPSection(identifier, groupbox)
-	local enableToggle = groupbox:AddToggle(VisualsTab.identify(identifier, "Enable"), {
+	local enableToggle = groupbox:AddToggle(Configuration.identify(identifier, "Enable"), {
 		Text = "Enable ESP",
 		Default = false,
 	})
 
-	enableToggle:AddColorPicker(VisualsTab.identify(identifier, "Color"), {
+	enableToggle:AddColorPicker(Configuration.identify(identifier, "Color"), {
 		Default = Color3.new(1, 1, 1),
 	})
 
 	local enableDepBox = groupbox:AddDependencyBox()
 
-	enableDepBox:AddToggle(VisualsTab.identify(identifier, "ShowDistance"), {
+	enableDepBox:AddToggle(Configuration.identify(identifier, "ShowDistance"), {
 		Text = "Show Distance",
 		Default = false,
 	})
 
-	enableDepBox:AddSlider(VisualsTab.identify(identifier, "MaxDistance"), {
+	enableDepBox:AddSlider(Configuration.identify(identifier, "MaxDistance"), {
 		Text = "Distance Threshold",
 		Tooltip = "If the distance is greater than this value, the ESP object will not be shown.",
 		Default = 2000,
 		Min = 0,
-		Max = 10000,
+		Max = 100000,
 		Suffix = "studs",
 		Rounding = 0,
 	})
@@ -240,41 +211,46 @@ end
 ---@param identifier string
 ---@param depbox table
 function VisualsTab.addPlayerESP(identifier, depbox)
-	local markAlliesToggle = depbox:AddToggle(VisualsTab.identify(identifier, "MarkAllies"), {
+	local markAlliesToggle = depbox:AddToggle(Configuration.identify(identifier, "MarkAllies"), {
 		Text = "Mark Allies",
 		Default = false,
 	})
 
-	markAlliesToggle:AddColorPicker(VisualsTab.identify(identifier, "AllyColor"), {
+	markAlliesToggle:AddColorPicker(Configuration.identify(identifier, "AllyColor"), {
 		Default = Color3.new(1, 1, 1),
 	})
 
-	depbox:AddToggle(VisualsTab.identify(identifier, "ShowBlood"), {
+	depbox:AddToggle(Configuration.identify(identifier, "ShowBlood"), {
 		Text = "Show Blood Tag",
 		Default = false,
 	})
 
-	depbox:AddToggle(VisualsTab.identify(identifier, "ShowPosture"), {
+	depbox:AddToggle(Configuration.identify(identifier, "ShowPosture"), {
 		Text = "Show Posture Tag",
 		Default = false,
 	})
 
-	depbox:AddToggle(VisualsTab.identify(identifier, "ShowTempo"), {
+	depbox:AddToggle(Configuration.identify(identifier, "ShowTempo"), {
 		Text = "Show Tempo Tag",
 		Default = false,
 	})
 
-	depbox:AddToggle(VisualsTab.identify(identifier, "ShowHealthPercentage"), {
+	depbox:AddToggle(Configuration.identify(identifier, "ShowViewAngle"), {
+		Text = "Show View Angle",
+		Default = false,
+	})
+
+	depbox:AddToggle(Configuration.identify(identifier, "ShowHealthPercentage"), {
 		Text = "Show Health Percentage",
 		Default = false,
 	})
 
-	depbox:AddToggle(VisualsTab.identify(identifier, "ShowHealthBars"), {
+	depbox:AddToggle(Configuration.identify(identifier, "ShowHealthBars"), {
 		Text = "Show Health In Bars",
 		Default = false,
 	})
 
-	depbox:AddDropdown(VisualsTab.identify(identifier, "PlayerNameType"), {
+	depbox:AddDropdown(Configuration.identify(identifier, "PlayerNameType"), {
 		Text = "Player Name Type",
 		Default = 1,
 		Values = { "Character Name", "Roblox Display Name", "Roblox Username" },
@@ -285,14 +261,14 @@ end
 ---@param identifier string
 ---@param depbox table
 function VisualsTab.addFilterESP(identifier, depbox)
-	local filterObjectsToggle = depbox:AddToggle(VisualsTab.identify(identifier, "FilterObjects"), {
+	local filterObjectsToggle = depbox:AddToggle(Configuration.identify(identifier, "FilterObjects"), {
 		Text = "Filter Objects",
 		Default = false,
 	})
 
 	local foDepBox = depbox:AddDependencyBox()
 
-	local filterLabelList = foDepBox:AddDropdown(VisualsTab.identify(identifier, "FilterLabelList"), {
+	local filterLabelList = foDepBox:AddDropdown(Configuration.identify(identifier, "FilterLabelList"), {
 		Text = "Filter Label List",
 		Default = {},
 		SaveValues = true,
@@ -300,12 +276,12 @@ function VisualsTab.addFilterESP(identifier, depbox)
 		Values = {},
 	})
 
-	local filterLabel = foDepBox:AddInput(VisualsTab.identify(identifier, "FilterLabel"), {
+	local filterLabel = foDepBox:AddInput(Configuration.identify(identifier, "FilterLabel"), {
 		Text = "Filter Label",
 		Placeholder = "Partial or exact object label.",
 	})
 
-	foDepBox:AddDropdown(VisualsTab.identify(identifier, "FilterLabelListType"), {
+	foDepBox:AddDropdown(Configuration.identify(identifier, "FilterLabelListType"), {
 		Text = "Filter List Type",
 		Default = 1,
 		Values = { "Hide Labels Out Of List", "Hide Labels In List" },

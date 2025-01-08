@@ -99,6 +99,7 @@ local function onSpectateInputBegan(player, input)
 end
 
 ---Update spectating.
+---@todo: Start streaming around the player when spectating.
 local function updateSpectating()
 	local leaderboardMap, updateLeaderboard = getLeaderboardData()
 	if not leaderboardMap or not updateLeaderboard then
@@ -139,6 +140,11 @@ local function updatePlayerProximity()
 		return
 	end
 
+	local backpack = players.LocalPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return
+	end
+
 	for player, _ in next, Monitoring.seen do
 		local isInPlayerRange = table.find(playersInRange, player)
 
@@ -158,7 +164,7 @@ local function updatePlayerProximity()
 
 		if
 			Configuration.expectToggleValue("PlayerProximityVW")
-			and not player.Backpack:FindFirstChild("Talent:Voidwalker Contract")
+			and not backpack:FindFirstChild("Talent:Voidwalker Contract")
 		then
 			continue
 		end
@@ -177,6 +183,7 @@ local function updatePlayerProximity()
 		Monitoring.seen[player] = true
 	end
 end
+
 ---Update monitoring.
 local function updateMonitoring()
 	if Configuration.expectToggleValue("PlayerSpectating") then

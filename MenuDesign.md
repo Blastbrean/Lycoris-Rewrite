@@ -10,22 +10,20 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
 # Ordered Menu Design
 - Combat ✅
     - Combat Targeting ✅
-        - Player Selection Type ❌
-            - Closest In Distance ❌ 
-            - Closest To Crosshair ❌
-            - Least Health ❌
-        - Player Whitelist ❌
-            - Username List ❌
-            - Username Input Box ❌
-            - Add Username To Whitelist ❌
-            - Remove Selected Username ❌
-        - FOV Limit ❌
-        - Distance Limit ❌
-        - Visible Check ❌
-        - Ignore Mobs ❌
-        - Ignore Friends ❌
-        - Must Face Target ❌
-        - Max Targets ❌
+        - Player Selection Type ✅
+            - Closest In Distance ✅ 
+            - Closest To Crosshair ✅
+            - Least Health ✅
+        - Player Whitelist ✅
+            - Username List ✅
+            - Username Input Box ✅
+            - Add Username To Whitelist ✅
+            - Remove Selected Username ✅
+        - FOV Limit ✅
+        - Distance Limit ✅
+        - Ignore Mobs ✅
+        - Ignore Friends ✅
+        - Max Targets ✅
     - Auto Defense ✅
         - Enable Auto Defense ❌
         - Auto Defense Configuration ❌
@@ -61,146 +59,141 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
 
     Hold Block For Auto Defense
 
-- Builder ❌
-    - Save Manager ❌
-        - Config Name ❌
-        - Config List ❌
-        - Create Config & Load Config ❌
-        - Overwrite Config ❌
-        - Refresh Config ❌
-        - Set To Auto Load ❌
-    - Merge Manager ❌
-        - Config Name ❌
-        - Config List ❌
+- Builder ✅
+    - Save Manager ✅
+        - Config Name ✅
+        - Config List ✅
+        - Create Config & Load Config ✅
+        - Overwrite Config ✅
+        - Refresh Config List ✅
+        - Set To Auto Load ✅
+    - Merge Manager ✅
+        - Config List ✅
         - Merge Config Type
-            - Add New Timings ❌
-            - Overwrite Timings ❌
-        - Merge Config ❌
-    - Keyframe ❌
-        - Timing Name ❌
-        - Timing Type ❌
-            - Undefined ❌
-            - Critical ❌
-            - Mantra ❌
-            - M1 ❌
-        - Hitbox Length ❌
-        - Hitbox Width ❌
-        - Hitbox Height ❌
-        - Animation ID ❌
-        - Delay Until In Hitbox ❌
-        - Keyframe Window ❌
-        - Keyframe Timeline (0.0 - Track Length) ❌
-        - Repeat Parry Until Animation End ❌
-            - Repeat Parry Delay ❌
-        - No Repeat Parry Until Animation End ❌
-            - Keyframe Actions ❌
-            - Keyframe Action Type ❌
-                - Parry ❌
-                - Dodge ❌
-                - Start Block ❌
-                - End Block ❌
-            - Add Action To List ❌
-            - Remove Actions From List ❌
-    - Animation ❌
-        - Timing Name ❌
-        - Timing Type ❌
-            - Undefined ❌
-            - Critical ❌
-            - Mantra ❌
-            - M1 ❌
-        - Hitbox Length ❌
-        - Hitbox Width ❌
-        - Hitbox Height ❌
-        - Animation ID ❌
-        - Delay Until In Hitbox ❌
-        - Repeat Parry Until Animation End ❌
-            - Repeat Parry Delay ❌
-        - No Repeat Parry Until Animation End ❌
-            - Animation Actions ❌
-            - Animation Action Delay ❌
-            - Animation Action Type ❌
-                - Parry ❌
-                - Dodge ❌
-                - Start Block ❌
-                - End Block ❌
-            - Add Action To List ❌
-            - Remove Actions From List ❌
-    - Part ❌
-        - Timing Name ❌
-        - Timing Type ❌
-            - Undefined ❌
-            - Critical ❌
-            - Mantra ❌
-            - M1 ❌
-        - Part Name ❌
-        - Part Content Filter ❌
-        - Part Content Name ❌
-        - Add Name To Filter ❌
-        - Remove Selected From Filter ❌
-        - Hitbox Length ❌
-        - Hitbox Width ❌
-        - Hitbox Height ❌
-        - Delay Until In Hitbox ❌
-        - No Delay Until In Hitbox ❌
-            - Timing Delay ❌
-        - Initial Minimum Distance ❌
-        - Part Actions ❌
-        - Part Action Delay ❌
-        - Part Action Type ❌
-            - Parry ❌
-            - Dodge ❌
-            - Start Block ❌
-            - End Block ❌
-        - Add Action To List ❌
-        - Remove Actions From List ❌
-    - Sound ❌
-        - Timing Name ❌
-        - Timing Type ❌
-            - Undefined ❌
-            - Critical ❌
-            - Mantra ❌
-            - M1 ❌
-        - Sound ID ❌
-        - Hitbox Length ❌
-        - Hitbox Width ❌
-        - Hitbox Height ❌
-        - Delay Until In Hitbox ❌
-        - Repeat Parry Until Sound End ❌
-            - Repeat Parry Delay ❌
-        - No Repeat Parry Until Sound End ❌
-            - Sound Actions ❌
-            - Sound Action Delay ❌
-            - Sound Action Type ❌
-                - Parry ❌
-                - Dodge ❌
-                - Start Block ❌
-                - End Block ❌
-            - Add Action To List ❌
-            - Remove Actions From List ❌
-    - Effect ❌
-        - Timing Name ❌
-        - Timing Type ❌
-            - Undefined ❌
-            - Critical ❌
-            - Mantra ❌
-            - M1 ❌
-        - Effect Name ❌
-        - Hitbox Length ❌
-        - Hitbox Width ❌
-        - Hitbox Height ❌
-        - Delay Until In Hitbox ❌
-        - Repeat Parry Until Effect End ❌
-            - Repeat Parry Delay ❌
-        - No Repeat Parry Until Effect End ❌
-            - Effect Actions ❌
-            - Effect Action Delay ❌
-            - Effect Action Type ❌
-                - Parry ❌
-                - Dodge ❌
-                - Start Block ❌
-                - End Block ❌
-            - Add Action To List ❌
-            - Remove Actions From List ❌
+            - Add New Timings ✅
+            - Overwrite Timings ✅
+        - Merge With Current Config ✅
+    - Logger ✅
+        - Show Logger ✅
+        - Show Animation Visualizer ❌
+        - Animation Visualizer ID ❌
+    - Animation ✅
+        - Timing List ✅
+        - Timing Name ✅
+        - Timing Tag ✅
+            - Undefined ✅
+            - Critical ✅
+            - Mantra ✅
+            - M1 ✅
+        - Hitbox Length ✅
+        - Hitbox Width ✅
+        - Hitbox Height ✅
+        - Delay Until In Hitbox ✅
+        - Animation ID ✅
+        - Repeat Parry Until Animation End ✅
+            - Repeat Parry Delay ✅
+        - No Repeat Parry Until Animation End ✅
+            - Animation Actions ✅
+            - Animation Action Name ✅
+            - Animation Action Delay ✅
+            - Animation Action Type ✅
+                - Parry ✅
+                - Dodge ✅
+                - Start Block ✅
+                - End Block ✅
+            - Add Action To List ✅
+            - Remove Action From List ✅
+        - Write Timing To List ✅
+        - Remove Selected Timing ✅
+    - Part ✅
+        - Timing List ✅
+        - Timing Name ✅
+        - Timing Tag ✅
+            - Undefined ✅
+            - Critical ✅
+            - Mantra ✅
+            - M1 ✅
+        - Hitbox Length ✅
+        - Hitbox Width ✅
+        - Hitbox Height ✅
+        - Delay Until In Hitbox ✅
+        - No Delay Until In Hitbox ✅
+            - Timing Delay ✅
+        - Part Name ✅
+        - Part Content Filter ✅
+        - Part Content Name ✅
+        - Add Name To Filter ✅
+        - Remove Selected From Filter ✅
+        - Initial Minimum Distance ✅
+        - Initial Maximum Distance ✅
+        - Part Actions ✅
+        - Part Action Name ✅
+        - Part Action Delay ✅
+        - Part Action Type ✅
+            - Parry ✅
+            - Dodge ✅
+            - Start Block ✅
+            - End Block ✅
+        - Add Action To List ✅
+        - Remove Action From List ✅
+        - Write Timing To List ✅
+        - Remove Selected Timing ✅
+    - Sound ✅
+        - Timing List ✅
+        - Timing Name ✅
+        - Timing Tag ✅
+            - Undefined ✅
+            - Critical ✅
+            - Mantra ✅
+            - M1 ✅
+        - Hitbox Length ✅
+        - Hitbox Width ✅
+        - Hitbox Height ✅
+        - Delay Until In Hitbox ✅
+        - Sound ID ✅
+        - Repeat Parry Until Sound End ✅
+            - Repeat Parry Delay ✅
+        - No Repeat Parry Until Sound End ✅
+            - Sound Actions ✅
+            - Sound Action Name ✅
+            - Sound Action Delay ✅
+            - Sound Action Type ✅
+                - Parry ✅
+                - Dodge ✅
+                - Start Block ✅
+                - End Block ✅
+            - Add Action To List ✅
+            - Remove Action From List ✅
+        - Write Timing To List ✅
+        - Remove Selected Timing ✅
+    - Effect ✅
+        - Timing List ✅
+        - Timing Name ✅
+        - Timing Tag ✅
+            - Undefined ✅
+            - Critical ✅
+            - Mantra ✅
+            - M1 ✅
+        - Hitbox Length ✅
+        - Hitbox Width ✅
+        - Hitbox Height ✅
+        - Delay Until In Hitbox ✅
+        - Effect Name ✅
+        - Repeat Parry Until Effect End ✅
+            - Repeat Parry Delay ✅
+        - No Repeat Parry Until Effect End ✅
+            - Effect Actions ✅
+            - Effect Action Name ✅
+            - Effect Action Delay ✅
+            - Effect Action Type ✅
+                - Parry ✅
+                - Dodge ✅
+                - Start Block ✅
+                - End Block ✅
+            - Add Action To List ✅
+            - Remove Action From List ✅
+        - Write Timing To List ✅
+        - Remove Selected Timing ✅
 
 - Game ✅
     - Local Character ✅

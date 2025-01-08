@@ -57,8 +57,13 @@ local function updateInteligence()
 		return
 	end
 
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return
+	end
+
 	local characterBook = localPlayerCharacter:FindFirstChild("Math Textbook")
-	local backpackBook = localPlayer.BackPack:FindFirstChild("Math Textbook")
+	local backpackBook = backpack:FindFirstChild("Math Textbook")
 
 	if not characterBook and backpackBook then
 		return humanoid:EquipTool(backpackBook)

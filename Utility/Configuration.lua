@@ -50,5 +50,37 @@ function Configuration.optionValue(key)
 	return Options[key].Value
 end
 
+---Identify element.
+---@param identifier string
+---@param topLevelIdentifier string
+---@return string
+function Configuration.identify(identifier, topLevelIdentifier)
+	return identifier .. topLevelIdentifier
+end
+
+---Fetch toggle value.
+---@param identifier string
+---@param topLevelIdentifier string
+---@return any
+function Configuration.idToggleValue(identifier, topLevelIdentifier)
+	return Toggles[identifier .. topLevelIdentifier].Value
+end
+
+---Fetch option value.
+---@param identifier string
+---@param topLevelIdentifier string
+---@return any
+function Configuration.idOptionValue(identifier, topLevelIdentifier)
+	return Options[identifier .. topLevelIdentifier].Value
+end
+
+---Fetch option values.
+---@param identifier string
+---@param topLevelIdentifier string
+---@return any
+function Configuration.idOptionValues(identifier, topLevelIdentifier)
+	return Options[identifier .. topLevelIdentifier].Values
+end
+
 -- Return Configuration module.
 return Configuration

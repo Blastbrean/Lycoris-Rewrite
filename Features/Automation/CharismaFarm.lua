@@ -57,8 +57,13 @@ local function updateCharisma()
 		return
 	end
 
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return
+	end
+
 	local characterBook = localPlayerCharacter:FindFirstChild("How to Make Friends")
-	local backpackBook = localPlayer.BackPack:FindFirstChild("How to Make Friends")
+	local backpackBook = backpack:FindFirstChild("How to Make Friends")
 
 	if not characterBook and backpackBook then
 		return humanoid:EquipTool(backpackBook)

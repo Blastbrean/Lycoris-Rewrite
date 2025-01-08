@@ -172,7 +172,7 @@ local function onWorkspaceChildAdded(child)
 		return emplaceObject(child, ModelESP.new("JobBoard", child, "Job Board"))
 	end
 
-	if name == "BigArtifact" then
+	if name == "BigArtifact" and child:IsA("BasePart") then
 		return emplaceObject(child, PartESP.new("Artifact", child, "Artifact"))
 	end
 

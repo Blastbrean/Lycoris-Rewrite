@@ -4,9 +4,6 @@ local ReferencedMap = require("Utility/ReferencedMap")
 ---@module Utility.Profiler
 local Profiler = require("Utility/Profiler")
 
----@module Menu.VisualsTab
-local VisualsTab = require("Menu/VisualsTab")
-
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
@@ -35,7 +32,7 @@ end
 function Group:update()
 	local map = self:data()
 
-	if not VisualsTab.toggleValue(self.identifier, "Enable") then
+	if not Configuration.idToggleValue(self.identifier, "Enable") then
 		return self:hide()
 	end
 
