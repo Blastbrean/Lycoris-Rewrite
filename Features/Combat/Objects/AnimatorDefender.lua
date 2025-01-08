@@ -28,7 +28,7 @@ local InstanceWrapper = require("Utility/InstanceWrapper")
 ---@class AnimatorDefender: Defender
 ---@field animator Animator
 ---@field entity Model
----@field hits Instance[]
+---@field heffects Instance[]
 ---@field track AnimationTrack?
 ---@field tasks Maid
 ---@field maid Maid
@@ -110,8 +110,8 @@ function AnimatorDefender:valid(action)
 	end
 
 	if
-		#self.hits >= 1
-		and (players:GetPlayerFromCharacter(self.entity) or self.entity:FindFirstChild("HumanoidController"))
+		#self.heffects >= 1
+		and (players:GetPlayerFromCharacter(self.entity) or self.entity:FindFirstChild("HumanController"))
 	then
 		return Logger.notify("Entity got attack cancelled.")
 	end
@@ -190,7 +190,7 @@ function AnimatorDefender:process(track)
 
 	self.tasks:clean()
 	self.track = track
-	self.hits = {}
+	self.heffects = {}
 
 	for _, action in next, timing.actions:get() do
 		local dataPingInSeconds = dataPingItem:GetValue() / 1000
@@ -218,6 +218,7 @@ end
 function AnimatorDefender:detach()
 	self.maid:clean()
 	self.tasks:clean()
+	self = nil
 end
 
 ---Create new AnimatorDefender object.
@@ -237,16 +238,21 @@ function AnimatorDefender.new(animator)
 	self.animator = animator
 	self.entity = entity
 
-	self.hits = {}
+	self.heffects = {}
 	self.maid = Maid.new()
 	self.tasks = Maid.new()
 
 	self.maid:mark(entityDescendantAdded:connect("AnimatorDefender_OnDescendantAdded", function(descendant)
-		if descendant.Name ~= "PunchBlood" and descendant.Name ~= "PunchEffect" and descendant.Name ~= "BloodSpray" then
+		if
+			descendant.Name ~= "PunchBlood"
+			and descendant.Name ~= "PunchEffect"
+			and descendant.Name ~= "BloodSpray"
+			and not (descendant:IsA("ParticleEmitter") and descendant.Texture == "rbxassetid://7216855595")
+		then
 			return
 		end
 
-		self.hits[#self.hits + 1] = descendant
+		self.heffects[#self.heffects + 1] = descendant
 	end))
 
 	self.maid:mark(animationPlayed:connect("AnimatorDefender_OnAnimationPlayed", function(track)
