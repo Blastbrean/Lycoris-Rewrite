@@ -64,6 +64,24 @@ function ActionContainer:names()
 	return names
 end
 
+---Get action count.
+---@return number
+function ActionContainer:count()
+	local count = 0
+
+	for _, _ in next, self._data do
+		count = count + 1
+	end
+
+	return count
+end
+
+---Get action data.
+---@return table<string, Action>
+function ActionContainer:get()
+	return self._data
+end
+
 ---Return a serializable table.
 ---@return table
 function ActionContainer:serialize()

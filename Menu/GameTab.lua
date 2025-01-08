@@ -336,6 +336,12 @@ function GameTab.initInstanceRemovalsSection(groupbox)
 		Tooltip = "Remove any 'Kill Brick' parts on the client.",
 		Default = false,
 	})
+
+	groupbox:AddToggle("NoCastleLightBarrier", {
+		Text = "No Castle Light Barrier",
+		Tooltip = "Remove any 'Castle Light Barrier' parts on the client.",
+		Default = false,
+	})
 end
 
 ---Initialize tab.

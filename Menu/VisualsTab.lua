@@ -235,6 +235,11 @@ function VisualsTab.addPlayerESP(identifier, depbox)
 		Default = false,
 	})
 
+	depbox:AddToggle(Configuration.identify(identifier, "ShowViewAngle"), {
+		Text = "Show View Angle",
+		Default = false,
+	})
+
 	depbox:AddToggle(Configuration.identify(identifier, "ShowHealthPercentage"), {
 		Text = "Show Health Percentage",
 		Default = false,

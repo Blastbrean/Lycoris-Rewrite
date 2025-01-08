@@ -1,9 +1,15 @@
 ---@class Action
 ---@field _type string
----@field when number The point at which the action occurs. This may be a point in time or a point in a track. Up to the caller to determine what that's used for.
+---@field _when number When the action will occur in miliseconds. Never access directly.
 ---@field hitbox Vector3 The hitbox of the action.
 local Action = {}
 Action.__index = Action
+
+---Getter for when in seconds.
+---@return number
+function Action:when()
+	return self._when / 1000
+end
 
 ---Load from partial values.
 ---@param values table
@@ -13,7 +19,7 @@ function Action:load(values)
 	end
 
 	if typeof(values.when) == "number" then
-		self.when = values.when
+		self._when = values.when
 	end
 
 	if typeof(values.name) == "string" then
@@ -31,7 +37,7 @@ function Action:clone()
 	local clone = Action.new()
 
 	clone._type = self._type
-	clone.when = self.when
+	clone._when = self._when
 	clone.name = self.name
 	clone.hitbox = self.hitbox
 
@@ -43,7 +49,7 @@ end
 function Action:serialize()
 	return {
 		_type = self._type,
-		when = self.when,
+		when = self._when,
 		name = self.name,
 		hitbox = {
 			X = self.hitbox.X,
@@ -60,7 +66,7 @@ function Action.new(values)
 	local self = setmetatable({}, Action)
 
 	self._type = "N/A"
-	self.when = 0
+	self._when = 0
 	self.name = ""
 	self.hitbox = Vector3.zero
 

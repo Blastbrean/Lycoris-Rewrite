@@ -4,7 +4,8 @@ local Timing = require("Game/Timings/Timing")
 ---@class SoundTiming: Timing
 ---@field id string Sound ID.
 ---@field rpue boolean Repeat parry until end.
----@field rpd number Delay between each repeat parry.
+---@field _rsd number Repeat start delay in miliseconds. Never access directly.
+---@field _rpd number Delay between each repeat parry in miliseconds. Never access directly.
 local SoundTiming = setmetatable({}, { __index = Timing })
 SoundTiming.__index = SoundTiming
 
@@ -12,6 +13,18 @@ SoundTiming.__index = SoundTiming
 ---@return string
 function SoundTiming:id()
 	return self._id
+end
+
+-- Getter for repeat start delay in seconds.
+---@return number
+function SoundTiming:rsd()
+	return self._rsd / 1000
+end
+
+-- Getter for repeat start delay in seconds.
+---@return number
+function SoundTiming:rpd()
+	return self._rpd / 1000
 end
 
 ---Load from partial values.
@@ -23,12 +36,16 @@ function SoundTiming:load(values)
 		self._id = values._id
 	end
 
+	if type(values.rsd) == "number" then
+		self._rsd = values.rsd
+	end
+
 	if typeof(values.rpue) == "boolean" then
 		self.rpue = values.rpue
 	end
 
 	if typeof(values.rpd) == "number" then
-		self.rpd = values.rpd
+		self._rpd = values.rpd
 	end
 end
 
@@ -37,8 +54,9 @@ end
 function SoundTiming:clone()
 	local clone = setmetatable(Timing.clone(self), SoundTiming)
 
-	clone.rpd = self.rpd
+	clone._rpd = self._rpd
 	clone.rpue = self.rpue
+	clone._rsd = self._rsd
 	clone._id = self._id
 
 	return clone
@@ -51,7 +69,8 @@ function SoundTiming:serialize()
 
 	serializable._id = self._id
 	serializable.rpue = self.rpue
-	serializable.rpd = self.rpd
+	serializable.rsd = self._rsd
+	serializable.rpd = self._rpd
 
 	return serializable
 end
@@ -64,7 +83,8 @@ function SoundTiming.new(values)
 
 	self._id = ""
 	self.rpue = false
-	self.rpd = 0
+	self._rsd = 0
+	self._rpd = 0
 
 	if values then
 		self:load(values)

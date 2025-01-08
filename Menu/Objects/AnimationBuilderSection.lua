@@ -6,6 +6,7 @@ local Logger = require("Utility/Logger")
 
 ---@class AnimationBuilderSection: BuilderSection
 ---@field animationId table
+---@field repeatStartDelay table
 ---@field repeatUntilParryEnd table
 ---@field repeatParryDelay table
 ---@field timing AnimationTiming
@@ -47,6 +48,11 @@ function AnimationBuilderSection:action()
 
 	local depBoxOn = tab:AddDependencyBox()
 
+	self.repeatStartDelay = depBoxOn:AddInput(nil, {
+		Text = "Repeat Start Delay",
+		Default = false,
+	})
+
 	self.repeatParryDelay = depBoxOn:AddInput(nil, {
 		Text = "Repeat Parry Delay",
 		Numeric = true,
@@ -71,6 +77,7 @@ function AnimationBuilderSection:load(timing)
 	BuilderSection.load(self, timing)
 
 	self.animationId:SetValue(timing._id)
+	self.repeatStartDelay:SetValue(timing.rsd)
 	self.repeatUntilParryEnd:SetValue(timing.rpue)
 	self.repeatParryDelay:SetValue(timing.rpd)
 end
@@ -80,6 +87,7 @@ function AnimationBuilderSection:write()
 	BuilderSection.write(self)
 
 	self.timing._id = self.animationId.Value
+	self.timing.rsd = self.repeatStartDelay.Value
 	self.timing.rpue = self.repeatUntilParryEnd.Value
 	self.timing.rpd = self.repeatParryDelay.Value
 end

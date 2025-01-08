@@ -1,139 +1,63 @@
----@module Game.KeyHandling
-local KeyHandling = require("Game/KeyHandling")
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
 
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
--- Services.
-local replicatedStorage = game:GetService("ReplicatedStorage")
-
 ---@class Defender
+---@field maid Maid
 local Defender = {}
 Defender.__index = Defender
 
----Detach function. Override me.
-function Defender:detach() end
+-- Services.
+local players = game:GetService("Players")
 
----Parry action.
----@note: Re-created InputClient parry. We can't access the main proto or the input handler.
-function Defender:parry()
-	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
-	if not effectReplicator then
-		return
-	end
-
-	local effectReplicatorModule = require(effectReplicator)
-	if not effectReplicatorModule then
-		return
-	end
-
-	local blockRemote = KeyHandling.getRemote("Block")
-	local unblockRemote = KeyHandling.getRemote("Unblock")
-
-	if not blockRemote or not unblockRemote then
-		return
-	end
-
-	local sprintFunction = InputClient.sprintFunctionCache
-	local inputData = InputClient.getInputData()
-
-	if not sprintFunction or not inputData then
-		return
-	end
-
-	local bufferEffect = effectReplicatorModule:FindEffect("M1Buffering")
-	if bufferEffect then
-		bufferEffect:Remove()
-	end
-
-	if effectReplicatorModule:HasEffect("CastingSpell") then
-		return
-	end
-
-	blockRemote:FireServer()
-
-	inputData["f"] = true
-
-	sprintFunction(false)
-
-	while not effectReplicatorModule:HasEffect("Blocking") do
-		task.wait()
-
-		if effectReplicatorModule:FindEffect("Action") or effectReplicatorModule:FindEffect("Knocked") then
-			continue
-		end
-
-		blockRemote:FireServer()
-	end
-
-	unblockRemote:FireServer()
-
-	inputData["f"] = false
-
-	sprintFunction(false)
+---Check if we're in a valid state to proceed with action handling. Extend me.
+---@param action Action
+---@return boolean
+function Defender:valid(action)
+	return true
 end
 
----Dodge action.
----@note: Re-created InputClient dodge. We can't access the main proto or input handler.
----@param hrp Part
----@param humanoid Humanoid
-function Defender:dodge(hrp, humanoid)
-	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
-	if not effectReplicator then
+---Handle action.
+---@param action Action
+function Defender:handle(action)
+	if not self:valid(action) then
 		return
 	end
 
-	local effectReplicatorModule = require(effectReplicator)
-	if not effectReplicatorModule then
+	Logger.notify("Action type '%s' is being executed.", action._type)
+
+	if action._type == "Parry" then
+		InputClient.parry()
+	end
+
+	if action._type == "Start Block" then
+		InputClient.bstart()
+	end
+
+	if action._type == "End Block" then
+		InputClient.bend()
+	end
+
+	local character = players.LocalPlayer.Character
+	if not character then
 		return
 	end
 
-	local rollFunction = InputClient.rollFunctionCache
-	if not rollFunction then
+	local root = character:FindFirstChild("HumanoidRootPart")
+	if not root then
 		return
 	end
 
-	local lastRollMoveDirection = debug.getupvalue(rollFunction, 14) or Vector3.zero
-	if lastRollMoveDirection and typeof(lastRollMoveDirection) ~= "Vector3" then
+	local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+	if not humanoid then
 		return
 	end
 
-	effectReplicatorModule:CreateEffect("DodgeInputted"):Debris(0.35)
-
-	local bufferEffect = effectReplicatorModule:FindEffect("M1Buffering")
-	if bufferEffect then
-		bufferEffect:Remove()
+	if action._type == "Dodge" then
+		InputClient.dodge(root, humanoid)
 	end
-
-	local pivotVelocity = effectReplicatorModule:FindEffect("PivotVelocity")
-	local usePivotVelocityRoll = false
-
-	local lookVector = hrp.CFrame.LookVector
-	local moveDirection = humanoid.MoveDirection
-
-	if moveDirection.Magnitude < 0.1 then
-		moveDirection = -lookVector
-	end
-
-	if pivotVelocity and lastRollMoveDirection:Dot(moveDirection) < 0 then
-		if effectReplicatorModule:FindEffect("NoRoll") then
-			effectReplicatorModule:FindEffect("NoRoll"):Remove()
-		end
-
-		if effectReplicatorModule:FindEffect("PivotStepRESET") then
-			effectReplicatorModule:FindEffect("PivotStepRESET"):Remove()
-		end
-
-		pivotVelocity.Value:Destroy()
-		pivotVelocity:Remove()
-		usePivotVelocityRoll = true
-	end
-
-	setthreadidentity(2)
-
-	rollFunction(usePivotVelocityRoll and true or nil)
-
-	setthreadidentity(7)
 end
 
 ---Create new Defender object.

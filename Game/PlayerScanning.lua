@@ -19,9 +19,6 @@ local Logger = require("Utility/Logger")
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
----@module Utility.TaskSpawner
-local TaskSpawner = require("Utility.TaskSpawner")
-
 -- Services.
 local players = game:GetService("Players")
 local httpService = game:GetService("HttpService")
@@ -157,33 +154,9 @@ local function runPlayerScans()
 
 		PlayerScanning.scanQueue[player] = nil
 
+		PlayerScanning.friendCache[player] = localPlayer:GetFriendStatus(player) == Enum.FriendStatus.Friend
+
 		Logger.warn("Player scanning finished scanning %s in queue.", player.Name)
-
-		playerScanningMaid:add(TaskSpawner.spawn("PlayerScanning_FriendCheck", function()
-			-- Perform a friend check that will yield.
-			local success, result = pcall(localPlayer.IsFriendsWith, localPlayer, player.UserId)
-
-			-- Check success.
-			if not success then
-				Logger.longNotify("Failed to check if player '%s' is a friend.", player.Name)
-
-				return Logger.warn(
-					"Player scanning ran into error '%s' while checking if %s is a friend.",
-					result,
-					player.Name
-				)
-			end
-
-			-- Cache result.
-			PlayerScanning.friendCache[player] = result
-
-			-- Log result.
-			Logger.warn(
-				"Player scanning finished friend check on %s and found that they are %s.",
-				player.Name,
-				PlayerScanning.friendCache[player] and "a friend" or "not a friend"
-			)
-		end))
 	end
 end
 
@@ -294,6 +267,13 @@ function PlayerScanning.update()
 	return error(result)
 end
 
+---On friend status changed.
+---@param player Player
+---@param status Enum.FriendStatus
+function PlayerScanning.friend(player, status)
+	PlayerScanning.friendCache[player] = status == Enum.FriendStatus.Friend
+end
+
 ---On player added.
 ---@param player Player
 function PlayerScanning.onPlayerAdded(player)
@@ -319,8 +299,10 @@ function PlayerScanning.init()
 	local playerAddedSignal = Signal.new(players.PlayerAdded)
 	local playerRemovingSignal = Signal.new(players.PlayerRemoving)
 	local renderSteppedSignal = Signal.new(runService.RenderStepped)
+	local friendStatusChanged = Signal.new(players.LocalPlayer.FriendStatusChanged)
 
 	-- Connect events.
+	playerScanningMaid:add(friendStatusChanged:connect("PlayerScanning_OnFriendStatusChanged", PlayerScanning.friend))
 	playerScanningMaid:add(renderSteppedSignal:connect("PlayerScanning_Update", PlayerScanning.update))
 	playerScanningMaid:add(playerAddedSignal:connect("PlayerScanning_OnPlayerAdded", PlayerScanning.onPlayerAdded))
 	playerScanningMaid:add(

@@ -16,12 +16,16 @@ local PlayerESP = setmetatable({}, { __index = PositionESP })
 PlayerESP.__index = PlayerESP
 PlayerESP.__type = "PlayerESP"
 
+-- Services.
+local players = game:GetService("Players")
+
 -- Formats.
 local ESP_HEALTH = "[%i/%i]"
 local ESP_POWER = "[Power %i]"
 local ESP_TEMPO = "[%i%% tempo]"
 local ESP_BLOOD = "[%i%% blood]"
 local ESP_POSTURE = "[%i%% posture]"
+local ESP_VIEW_ANGLE = "[%.2f view angle vs. %.2f]"
 local ESP_HEALTH_PERCENTAGE = "[%i%% health]"
 local ESP_HEALTH_BARS = "[%.1f bars]"
 
@@ -98,6 +102,17 @@ function PlayerESP:update()
 		tags[#tags + 1] = "[Unknown Height]"
 	else
 		usedPosition = modelPosition
+	end
+
+	local currentCamera = workspace.CurrentCamera
+	local character = players.LocalPlayer.Character
+	local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+
+	if Configuration.idToggleValue(identifier, "ShowViewAngle") and rootPart then
+		tags[#tags + 1] = ESP_VIEW_ANGLE:format(
+			currentCamera.CFrame.LookVector:Dot((rootPart.Position - usedPosition).Unit) * -1,
+			math.cos(math.rad((Configuration.expectOptionValue("FOVLimit"))))
+		)
 	end
 
 	PositionESP.update(self, usedPosition, tags)

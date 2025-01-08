@@ -3,7 +3,7 @@ local Timing = require("Game/Timings/Timing")
 
 ---@class PartTiming: Timing
 ---@field pname string Part name.
----@field td number Timing delay.
+---@field _td number Timing delay in miliseconds.
 ---@field filter string[] Part names to look for.
 local PartTiming = setmetatable({}, { __index = Timing })
 PartTiming.__index = PartTiming
@@ -12,6 +12,12 @@ PartTiming.__index = PartTiming
 ---@return string
 function PartTiming:id()
 	return self.pname
+end
+
+-- Getter for timing delay in seconds.
+---@return number
+function PartTiming:td()
+	return self._td / 1000
 end
 
 ---Load from partial values.
@@ -24,7 +30,7 @@ function PartTiming:load(values)
 	end
 
 	if typeof(values.td) == "number" then
-		self.td = values.td
+		self._td = values.td
 	end
 
 	if typeof(values.filter) == "table" then
@@ -38,7 +44,7 @@ function PartTiming:clone()
 	local clone = setmetatable(Timing.clone(self), PartTiming)
 
 	clone.pname = self.pname
-	clone.td = self.td
+	clone._td = self._td
 	clone.filter = self.filter
 
 	return clone
@@ -50,7 +56,7 @@ function PartTiming:serialize()
 	local serializable = Timing.serialize(self)
 
 	serializable.pname = self.pname
-	serializable.td = self.td
+	serializable.td = self._td
 	serializable.filter = self.filter
 
 	return serializable
@@ -64,7 +70,7 @@ function PartTiming.new(values)
 
 	self.pname = ""
 	self.filter = {}
-	self.td = 0
+	self._td = 0
 
 	if values then
 		self:load(values)

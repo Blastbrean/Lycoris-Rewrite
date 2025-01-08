@@ -37,6 +37,7 @@ local echoModifiersMap = removalMaid:mark(OriginalStoreManager.new())
 local noFogMap = removalMaid:mark(OriginalStoreManager.new())
 local noBlindMap = removalMaid:mark(OriginalStoreManager.new())
 local killBricksMap = removalMaid:mark(OriginalStoreManager.new())
+local lightBarrierMap = removalMaid:mark(OriginalStoreManager.new())
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -63,6 +64,18 @@ end
 ---Update no kill bricks.
 local function updateNoKillBricks()
 	for _, store in next, killBricksMap:data() do
+		local data = store.data
+		if not data then
+			continue
+		end
+
+		store:set(store.data, "CFrame", CFrame.new(math.huge, math.huge, math.huge))
+	end
+end
+
+---Update no light barrier.
+local function updateNoLightBarrier()
+	for _, store in next, lightBarrierMap:data() do
 		local data = store.data
 		if not data then
 			continue
@@ -141,6 +154,12 @@ local function updateRemoval()
 		updateNoKillBricks()
 	else
 		killBricksMap:restore()
+	end
+
+	if Configuration.expectToggleValue("NoCastleLightBarrier") then
+		updateNoLightBarrier()
+	else
+		lightBarrierMap:restore()
 	end
 
 	if Configuration.expectToggleValue("NoFog") then
@@ -236,21 +255,26 @@ local function onWorkspaceDescendantAdded(descendant)
 		return
 	end
 
-	local killInstance = descendant.Name == "KillBrick" or descendant.Name == "KillPlane"
-	local killChasm = descendant.Name:match("Chasm") and descendant:FindFirstChildOfClass("TouchTransmitter")
-	local superWall = descendant.Name == "SuperWall"
+	local lightBarrierInstance = descendant.Name == "LifeField"
 
-	if not killInstance and not killChasm and not superWall then
-		return
+	if lightBarrierInstance then
+		lightBarrierMap:mark(descendant, "CFrame")
 	end
 
-	killBricksMap:mark(descendant, "CFrame")
+	local killInstance = descendant.Name == "KillBrick" or descendant.Name == "KillPlane"
+	local killChasm = descendant.Name:match("Chasm")
+	local superWall = descendant.Name == "SuperWall"
+
+	if killInstance or killChasm or superWall then
+		killBricksMap:mark(descendant, "CFrame")
+	end
 end
 
 ---On workspace descendant removing.
 ---@param descendant Instance
 local function onWorkspaceDescendantRemoving(descendant)
 	killBricksMap:forget(descendant)
+	lightBarrierMap:forget(descendant)
 end
 
 ---Initalize removal.

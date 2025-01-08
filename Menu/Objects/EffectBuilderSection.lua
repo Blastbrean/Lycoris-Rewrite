@@ -6,6 +6,7 @@ local Logger = require("Utility/Logger")
 
 ---@class EffectBuilderSection: BuilderSection
 ---@field effectName table
+---@field repeatStartDelay table
 ---@field repeatUntilParryEnd table
 ---@field repeatParryDelay table
 ---@field timing EffectTiming
@@ -47,6 +48,11 @@ function EffectBuilderSection:action()
 
 	local depBoxOn = tab:AddDependencyBox()
 
+	self.repeatStartDelay = depBoxOn:AddInput(nil, {
+		Text = "Repeat Start Delay",
+		Default = false,
+	})
+
 	self.repeatParryDelay = depBoxOn:AddInput(nil, {
 		Text = "Repeat Parry Delay",
 		Numeric = true,
@@ -73,6 +79,7 @@ function EffectBuilderSection:load(timing)
 	self.effectName:SetValue(timing.ename)
 	self.repeatUntilParryEnd:SetValue(timing.rpue)
 	self.repeatParryDelay:SetValue(timing.rpd)
+	self.repeatStartDelay:SetValue(timing.rsd)
 end
 
 ---Write to the current timing.
@@ -80,6 +87,7 @@ function EffectBuilderSection:write()
 	BuilderSection.write(self)
 
 	self.timing.ename = self.effectName.Value
+	self.timing.rsd = self.repeatStartDelay.Value
 	self.timing.rpue = self.repeatUntilParryEnd.Value
 	self.timing.rpd = self.repeatParryDelay.Value
 end

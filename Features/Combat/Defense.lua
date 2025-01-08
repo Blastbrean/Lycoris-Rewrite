@@ -10,11 +10,14 @@ local AnimatorDefender = require("Features/Combat/Objects/AnimatorDefender")
 -- Handle all defense related functions.
 local Defense = {}
 
+-- Services.
+local players = game:GetService("Players")
+
 -- Maids.
 local defenseMaid = Maid.new()
 
--- Animation defender objects.
-local animationDefenderObjects = {}
+-- Defender objects.
+local defenderObjects = {}
 
 -- On live descendant added.
 local function onLiveDescendantAdded(child)
@@ -22,38 +25,46 @@ local function onLiveDescendantAdded(child)
 		return
 	end
 
-	animationDefenderObjects[child] = AnimatorDefender.new(child)
+	local localCharacter = players.LocalPlayer.Character
+
+	if localCharacter and child:IsDescendantOf(players.LocalPlayer.Character) then
+		return
+	end
+
+	defenderObjects[child] = AnimatorDefender.new(child)
 end
 
 -- On live descendant removed.
 local function onLiveDescendantRemoved(child)
-	local animationDefenderObject = animationDefenderObjects[child]
-	if not animationDefenderObject then
+	local defenderObject = defenderObjects[child]
+	if not defenderObject then
 		return
 	end
 
-	animationDefenderObject:detach()
-	animationDefenderObject[child] = nil
+	defenderObject:detach()
+	defenderObject[child] = nil
 end
 
 ---Initialize defense.
 function Defense.init()
 	local live = workspace:WaitForChild("Live")
-	local liveDescendantAdded = Signal.new(live.ChildAdded)
-	local liveDescendantRemoved = Signal.new(live.ChildRemoved)
+
+	-- Signals.
+	local liveDescendantAdded = Signal.new(live.DescendantAdded)
+	local liveDescendantRemoved = Signal.new(live.DescendantRemoving)
 
 	defenseMaid:add(liveDescendantAdded:connect("Defense_LiveDescendantAdded", onLiveDescendantAdded))
 	defenseMaid:add(liveDescendantRemoved:connect("Defense_LiveDescendantRemoved", onLiveDescendantRemoved))
 
-	for _, child in next, live:GetDescendants() do
-		onLiveDescendantAdded(child)
+	for _, descendant in next, live:GetDescendants() do
+		onLiveDescendantAdded(descendant)
 	end
 end
 
 ---Detach defense.
 function Defense.detach()
-	for _, animationDefenderObject in next, animationDefenderObjects do
-		animationDefenderObject:detach()
+	for _, defenderObject in next, defenderObjects do
+		defenderObject:detach()
 	end
 
 	defenseMaid:clean()

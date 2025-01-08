@@ -4,7 +4,8 @@ local Timing = require("Game/Timings/Timing")
 ---@class EffectTiming: Timing
 ---@field ename string Effect name.
 ---@field rpue boolean Repeat parry until end.
----@field rpd number Delay between each repeat parry.
+---@field _rsd number Repeat start delay in miliseconds. Never access directly.
+---@field _rpd number Delay between each repeat parry in miliseconds. Never access directly.
 local EffectTiming = setmetatable({}, { __index = Timing })
 EffectTiming.__index = EffectTiming
 
@@ -12,6 +13,18 @@ EffectTiming.__index = EffectTiming
 ---@return string
 function EffectTiming:id()
 	return self.ename
+end
+
+-- Getter for repeat start delay in seconds.
+---@return number
+function EffectTiming:rsd()
+	return self._rsd / 1000
+end
+
+-- Getter for repeat start delay in seconds.
+---@return number
+function EffectTiming:rpd()
+	return self._rpd / 1000
 end
 
 ---Load from partial values.
@@ -23,12 +36,16 @@ function EffectTiming:load(values)
 		self.ename = values.ename
 	end
 
+	if type(values.rsd) == "number" then
+		self._rsd = values.rsd
+	end
+
 	if typeof(values.rpue) == "boolean" then
 		self.rpue = values.rpue
 	end
 
 	if typeof(values.rpd) == "number" then
-		self.rpd = values.rpd
+		self._rpd = values.rpd
 	end
 end
 
@@ -38,7 +55,8 @@ function EffectTiming:clone()
 	local clone = setmetatable(Timing.clone(self), EffectTiming)
 
 	clone.ename = self.ename
-	clone.rpd = self.rpd
+	clone._rpd = self._rpd
+	clone._rsd = self._rsd
 	clone.rpue = self.rpue
 
 	return clone
@@ -51,7 +69,8 @@ function EffectTiming:serialize()
 
 	serializable.ename = self.ename
 	serializable.rpue = self.rpue
-	serializable.rpd = self.rpd
+	serializable.rsd = self._rsd
+	serializable.rpd = self._rpd
 
 	return serializable
 end
@@ -64,7 +83,8 @@ function EffectTiming.new(values)
 
 	self.ename = ""
 	self.rpue = false
-	self.rpd = 0
+	self._rsd = 0
+	self._rpd = 0
 
 	if values then
 		self:load(values)

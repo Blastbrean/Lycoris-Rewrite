@@ -4,7 +4,8 @@ local Timing = require("Game/Timings/Timing")
 ---@class AnimationTiming: Timing
 ---@field id string Animation ID.
 ---@field rpue boolean Repeat parry until end.
----@field rpd number Delay between each repeat parry.
+---@field _rsd number Repeat start delay in miliseconds. Never access directly.
+---@field _rpd number Delay between each repeat parry in miliseconds. Never access directly.
 local AnimationTiming = setmetatable({}, { __index = Timing })
 AnimationTiming.__index = AnimationTiming
 
@@ -12,6 +13,18 @@ AnimationTiming.__index = AnimationTiming
 ---@return string
 function AnimationTiming:id()
 	return self._id
+end
+
+-- Getter for repeat start delay in seconds
+---@return number
+function AnimationTiming:rsd()
+	return self._rsd / 1000
+end
+
+-- Getter for repeat start delay in seconds.
+---@return number
+function AnimationTiming:rpd()
+	return self._rpd / 1000
 end
 
 ---Load from partial values.
@@ -23,12 +36,16 @@ function AnimationTiming:load(values)
 		self._id = values._id
 	end
 
-	if typeof(values.rpue) == "boolean" then
-		self.rpue = values.rpue
+	if type(values.rsd) == "number" then
+		self._rsd = values.rsd
 	end
 
 	if typeof(values.rpd) == "number" then
-		self.rpd = values.rpd
+		self._rpd = values.rpd
+	end
+
+	if typeof(values.rpue) == "boolean" then
+		self.rpue = values.rpue
 	end
 end
 
@@ -37,9 +54,10 @@ end
 function AnimationTiming:clone()
 	local clone = setmetatable(Timing.clone(self), AnimationTiming)
 
-	clone.rpd = self.rpd
-	clone.rpue = self.rpue
+	clone._rsd = self._rsd
+	clone._rpd = self._rpd
 	clone._id = self._id
+	clone.rpue = self.rpue
 
 	return clone
 end
@@ -50,8 +68,9 @@ function AnimationTiming:serialize()
 	local serializable = Timing.serialize(self)
 
 	serializable._id = self._id
+	serializable.rsd = self._rsd
+	serializable.rpd = self._rpd
 	serializable.rpue = self.rpue
-	serializable.rpd = self.rpd
 
 	return serializable
 end
@@ -63,8 +82,9 @@ function AnimationTiming.new(values)
 	local self = setmetatable(Timing.new(), AnimationTiming)
 
 	self._id = ""
+	self._rsd = 0
+	self._rpd = 0
 	self.rpue = false
-	self.rpd = 0
 
 	if values then
 		self:load(values)

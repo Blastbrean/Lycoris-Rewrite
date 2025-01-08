@@ -20,8 +20,8 @@ function CombatTab.initCombatTargetingSection(tab)
 	tab:AddSlider("FOVLimit", {
 		Text = "FOV Limit",
 		Min = 0,
-		Max = 360,
-		Default = 360,
+		Max = 180,
+		Default = 180,
 		Suffix = "°",
 		Rounding = 0,
 	})
@@ -41,6 +41,12 @@ function CombatTab.initCombatTargetingSection(tab)
 		Max = 64,
 		Default = 4,
 		Rounding = 0,
+	})
+
+	tab:AddToggle("CheckTargetingValue", {
+		Text = "Check Targeting Value",
+		Default = false,
+		Tooltip = "If found in a valid target, the script will check if we're currently being targeted.",
 	})
 
 	tab:AddToggle("IgnoreMobs", {

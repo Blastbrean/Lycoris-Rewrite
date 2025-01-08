@@ -6,6 +6,7 @@ local Logger = require("Utility/Logger")
 
 ---@class SoundBuilderSection: BuilderSection
 ---@field soundId table
+---@field repeatStartDelay table
 ---@field repeatUntilParryEnd table
 ---@field repeatParryDelay table
 ---@field timing SoundTiming
@@ -47,6 +48,11 @@ function SoundBuilderSection:action()
 
 	local depBoxOn = tab:AddDependencyBox()
 
+	self.repeatStartDelay = depBoxOn:AddInput(nil, {
+		Text = "Repeat Start Delay",
+		Default = false,
+	})
+
 	self.repeatParryDelay = depBoxOn:AddInput(nil, {
 		Text = "Repeat Parry Delay",
 		Numeric = true,
@@ -72,6 +78,7 @@ function SoundBuilderSection:load(timing)
 
 	self.soundId:SetValue(timing._id)
 	self.repeatUntilParryEnd:SetValue(timing.rpue)
+	self.repeatStartDelay:SetValue(timing.rsd)
 	self.repeatParryDelay:SetValue(timing.rpd)
 end
 
@@ -81,6 +88,7 @@ function SoundBuilderSection:write()
 
 	self.timing._id = self.soundId.Value
 	self.timing.rpue = self.repeatUntilParryEnd.Value
+	self.timing.rsd = self.repeatStartDelay.Value
 	self.timing.rpd = self.repeatParryDelay.Value
 end
 

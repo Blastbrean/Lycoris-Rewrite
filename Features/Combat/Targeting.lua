@@ -86,6 +86,10 @@ function Targeting.viable()
 			continue
 		end
 
+		if humanoid.Health <= 0 then
+			continue
+		end
+
 		local displayNameFound = playerFromCharacter
 			and table.find(Configuration.expectOptionValue("UsernameList"), playerFromCharacter.DisplayName)
 
@@ -100,10 +104,12 @@ function Targeting.viable()
 			continue
 		end
 
-		local cameraDifference = currentCamera.CFrame.Position - rootPart.Position
-		local fieldOfViewToEntity = math.deg(math.acos(currentCamera.CFrame.LookVector:Dot(cameraDifference.Unit)))
+		local fieldOfViewToEntity =
+			currentCamera.CFrame.LookVector:Dot((localRootPart.Position - rootPart.Position).Unit)
 
-		if fieldOfViewToEntity >= Configuration.expectOptionValue("FOVLimit") then
+		local fieldOfViewLimit = Configuration.expectOptionValue("FOVLimit")
+
+		if fieldOfViewLimit <= 0 or (fieldOfViewToEntity * -1) <= math.cos(math.rad(fieldOfViewLimit)) then
 			continue
 		end
 
