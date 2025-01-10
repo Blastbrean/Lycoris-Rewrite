@@ -426,7 +426,7 @@ local function onGetRemote(...)
 
 	---@note: Return a fake remote event to block the input.
 	if (identifier == "LeftClick" or identifier == "CriticalClick") and Defense.active() then
-		return Instance.new("RemoteEvent")
+		return Instance.new("UnreliableRemoteEvent")
 	end
 
 	return oldGetRemote(...)
