@@ -181,7 +181,7 @@ local function updateAgilitySpoofer(character)
 	---@note: For every 10 investment points, there are two real agility points.
 	-- With 40 investment points, we can have 16 real agility points.
 	-- However, with 30 investment points, we can only have 14 real agility points.
-	-- This means that the starting value must be 8 and we must increase by 2 for every
+	-- This means that the starting value must be 8 and we must increase by 2 for every point we have.
 	agilitySpoofer:set(agility, "Value", 8 + (Options.AgilitySpoof.Value / 10) * 2)
 end
 
