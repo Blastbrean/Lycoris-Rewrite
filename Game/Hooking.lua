@@ -341,7 +341,7 @@ local function onTaskSpawn(...)
 	local consts = debug.getconstants(func)
 
 	if debug.getinfo(3).source:match("InputClient") then
-		if (#consts == 0 or consts[2] == "Parent") and consts[7] ~= "LightAttack" then
+		if (#consts == 0 or consts[2] == "Parent") and not table.find(consts, "LightAttack") then
 			args[1] = function() end
 		else
 			InputClient.update(consts)
