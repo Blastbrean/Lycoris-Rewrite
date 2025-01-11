@@ -49,7 +49,7 @@ local function getLeaderboardData()
 		end
 
 		local info = debug.getinfo(func)
-		if info.name ~= nil then
+		if info.name ~= nil and info.name ~= "" then
 			continue
 		end
 

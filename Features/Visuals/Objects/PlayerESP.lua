@@ -28,6 +28,7 @@ local ESP_POSTURE = "[%i%% posture]"
 local ESP_VIEW_ANGLE = "[%.2f view angle vs. %.2f]"
 local ESP_HEALTH_PERCENTAGE = "[%i%% health]"
 local ESP_HEALTH_BARS = "[%.1f bars]"
+local ESP_DANGER_TIME = "[%s on timer]"
 
 ---Update PlayerESP.
 function PlayerESP:update()
@@ -113,6 +114,14 @@ function PlayerESP:update()
 			currentCamera.CFrame.LookVector:Dot((rootPart.Position - usedPosition).Unit) * -1,
 			math.cos(math.rad((Configuration.expectOptionValue("FOVLimit"))))
 		)
+	end
+
+	local dangerTime = humanoid:GetAttribute("DangerExpiration")
+	local dangerTimeLeft = math.ceil(dangerTime - workspace:GetServerTimeNow())
+
+	if Configuration.idToggleValue(identifier, "ShowDangerTime") and dangerTime and dangerTime >= 0 then
+		tags[#tags + 1] = dangerTimeLeft >= 60 and ESP_DANGER_TIME:format(os.date("%Mm %Ss", dangerTimeLeft))
+			or ESP_DANGER_TIME:format(os.date("%Ss", dangerTimeLeft))
 	end
 
 	PositionESP.update(self, usedPosition, tags)

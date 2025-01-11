@@ -240,6 +240,11 @@ function VisualsTab.addPlayerESP(identifier, depbox)
 		Default = false,
 	})
 
+	depbox:AddToggle(Configuration.identify(identifier, "ShowDangerTime"), {
+		Text = "Show Danger Time",
+		Default = false,
+	})
+
 	depbox:AddToggle(Configuration.identify(identifier, "ShowHealthPercentage"), {
 		Text = "Show Health Percentage",
 		Default = false,

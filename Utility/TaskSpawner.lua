@@ -28,8 +28,8 @@ function TaskSpawner.delay(label, delay, callback, ...)
 			-- Run callback.
 			callback(...)
 
-			-- Kill task.
-			task.cancel(taskReference)
+			-- Kill task on the next cycle.
+			task.defer(task.cancel, taskReference)
 		end, onTaskFunctionError, ...)
 	end)
 
@@ -60,8 +60,8 @@ function TaskSpawner.spawn(label, callback, ...)
 			-- Run callback.
 			callback(...)
 
-			-- Kill task.
-			task.cancel(taskReference)
+			-- Kill task on the next cycle.
+			task.defer(task.cancel, taskReference)
 		end, onTaskFunctionError, ...)
 	end)
 
