@@ -170,8 +170,11 @@ local function onNameCall(...)
 		return
 	end
 
-	---@note: Mantra block input.
-	if self.Name == "ActivateMantra" and Defense.blocking() then
+	if
+		self.Name == "ActivateMantra"
+		and Configuration.expectToggleValue("BlockPunishableMantras")
+		and Defense.blocking()
+	then
 		return
 	end
 
@@ -424,9 +427,14 @@ local function onGetRemote(...)
 		return oldGetRemote(...)
 	end
 
-	---@note: Return a fake remote event to block the input.
-	if (identifier == "LeftClick" or identifier == "CriticalClick") and Defense.blocking() then
-		return Instance.new("UnreliableRemoteEvent")
+	if identifier == "LeftClick" then
+		return (Configuration.expectToggleValue("BlockPunishableM1s") and Defense.blocking())
+			and Instance.new("UnreliableRemoteEvent")
+	end
+
+	if identifier == "CriticalClick" then
+		return (Configuration.expectToggleValue("BlockPunishableCriticals") and Defense.blocking())
+			and Instance.new("UnreliableRemoteEvent")
 	end
 
 	return oldGetRemote(...)

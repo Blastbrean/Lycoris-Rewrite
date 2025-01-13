@@ -117,7 +117,27 @@ end
 
 -- Initialize auto defense section.
 ---@param groupbox table
-function CombatTab.initAutoDefenseSection(groupbox) end
+function CombatTab.initAutoDefenseSection(groupbox)
+	groupbox:AddToggle("EnableAutoDefense", {
+		Text = "Enable Auto Defense",
+		Default = false,
+	})
+
+	groupbox:AddToggle("EnableNotifications", {
+		Text = "Enable Notifications",
+		Default = false,
+	})
+
+	groupbox:AddToggle("EnableVisualizations", {
+		Text = "Enable Visualizations",
+		Default = false,
+	})
+
+	groupbox:AddToggle("RollOnParryCooldown", {
+		Text = "Roll On Parry Cooldown",
+		Default = false,
+	})
+end
 
 -- Initialize feint detection section.
 ---@param groupbox table
@@ -125,7 +145,41 @@ function CombatTab.initFeintDetectionSection(groupbox) end
 
 -- Initialize attack assistance section.
 ---@param groupbox table
-function CombatTab.initAttackAssistanceSection(groupbox) end
+function CombatTab.initAttackAssistanceSection(groupbox)
+	groupbox:AddToggle("FeintM1WhileDefending", {
+		Text = "Feint M1 While Defending",
+		Default = false,
+	})
+
+	groupbox:AddToggle("FeintMantrasWhileDefending", {
+		Text = "Feint Mantras While Defending",
+		Default = false,
+	})
+
+	groupbox:AddToggle("BlockPunishableM1s", {
+		Text = "Block Punishable M1s",
+		Default = false,
+	})
+
+	groupbox:AddToggle("BlockPunishableCriticals", {
+		Text = "Block Punishable Criticals",
+		Default = false,
+	})
+
+	groupbox:AddToggle("BlockPunishableMantras", {
+		Text = "Block Punishable Mantras",
+		Default = false,
+	})
+
+	groupbox:AddSlider("PunishableWindow", {
+		Text = "Punishable Window",
+		Min = 0,
+		Max = 2,
+		Default = 0.6,
+		Suffix = "s",
+		Rounding = 0,
+	})
+end
 
 -- Initialize input assistance section.
 ---@param groupbox table

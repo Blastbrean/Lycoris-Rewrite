@@ -1,6 +1,9 @@
 ---@module Utility.TaskSpawner
 local TaskSpawner = require("Utility/TaskSpawner")
 
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
 ---@class Task
 ---@field thread thread
 ---@field when number A timestamp when the task will be executed.
@@ -19,8 +22,8 @@ function Task:blocking()
 		return false
 	end
 
-	---@note: Allow us to do inputs up until a certain amount of time (0.6s) before the task happens.
-	return os.clock() >= self.when - 0.6
+	---@note: Allow us to do inputs up until a certain amount of time before the task happens.
+	return os.clock() >= self.when - Configuration.expectOptionValue("PunishableWindow")
 end
 
 ---Cancel task.

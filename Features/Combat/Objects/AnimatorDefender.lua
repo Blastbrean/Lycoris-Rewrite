@@ -33,7 +33,7 @@ local Task = require("Features/Combat/Objects/Task")
 ---@field entity Model
 ---@field heffects Instance[]
 ---@field manimations table<number, Animation>
----@field track AnimationTrack?
+---@field track AnimationTrack? Don't be confused. This is the **valid && last** animation track played.
 ---@field maid Maid
 local AnimatorDefender = setmetatable({}, { __index = Defender })
 AnimatorDefender.__index = AnimatorDefender
@@ -43,25 +43,26 @@ local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 ---Check if we're in a valid state to proceed with the action.
+---@param timing AnimationTiming
 ---@param action Action
 ---@return boolean
-function AnimatorDefender:valid(action)
+function AnimatorDefender:valid(timing, action)
 	if not self.track then
-		return Logger.notify("No current track.")
+		return self:notify(timing, "No current track.")
 	end
 
 	if not self.entity then
-		return Logger.notify("No entity found.")
+		return self:notify(timing, "No entity found.")
 	end
 
 	local target = Targeting.find(self.entity)
 	if not target then
-		return Logger.notify("Not a viable target.")
+		return self:notify(timing, "Not a viable target.")
 	end
 
 	local character = players.LocalPlayer.Character
 	if not character then
-		return Logger.notify("No character found.")
+		return self:notify(timing, "No character found.")
 	end
 
 	local hbStartPosition = target.root.CFrame * CFrame.new(0, 0, -(action.hitbox.Z / 2))
@@ -70,46 +71,50 @@ function AnimatorDefender:valid(action)
 	overlapParams.FilterDescendantsInstances = { character }
 	overlapParams.FilterType = Enum.RaycastFilterType.Include
 
-	local visualizationPart = InstanceWrapper.create(self.maid, "VisualizationPart", "Part")
-	visualizationPart.Size = action.hitbox
-	visualizationPart.CFrame = hbStartPosition
-	visualizationPart.Transparency = 0.85
-	visualizationPart.Color = Color3.fromRGB(255, 0, 0)
-	visualizationPart.Parent = workspace
-	visualizationPart.Anchored = true
-	visualizationPart.CanCollide = false
-	visualizationPart.Material = Enum.Material.SmoothPlastic
+	---@todo: Make the visualizations better. This is just for debugging. Right now, they don't clear up properly.
+	if Configuration.expectToggleValue("EnableVisualizations") then
+		local visualizationPart = InstanceWrapper.create(self.maid, "VisualizationPart", "Part")
+		visualizationPart.Size = action.hitbox
+		visualizationPart.CFrame = hbStartPosition
+		visualizationPart.Transparency = 0.85
+		visualizationPart.Color = Color3.fromRGB(255, 0, 0)
+		visualizationPart.Parent = workspace
+		visualizationPart.Anchored = true
+		visualizationPart.CanCollide = false
+		visualizationPart.Material = Enum.Material.SmoothPlastic
+	end
 
 	if #workspace:GetPartBoundsInBox(hbStartPosition, action.hitbox, overlapParams) <= 0 then
-		return Logger.notify("Not inside of the hitbox.")
+		return self:notify(timing, "Not inside of the hitbox.")
 	end
 
 	local targetInstance = self.entity:FindFirstChild("Target")
 	if targetInstance and targetInstance.Value ~= self.entity and Configuration.toggleValue("CheckTargetingValue") then
-		return Logger.notify("Not being targeted.")
+		return self:notify(timing, "Not being targeted.")
 	end
 
 	if not self.track.IsPlaying then
-		return Logger.notify("Animation stopped playing.")
+		return self:notify(timing, "Animation stopped playing.")
 	end
 
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
-		return Logger.notify("No effect replicator found.")
+		return self:notify(timing, "No effect replicator found.")
 	end
 
 	local effectReplicatorModule = require(effectReplicator)
 	if not effectReplicatorModule then
-		return Logger.notify("No effect replicator module found.")
+		return self:notify(timing, "No effect replicator module found.")
 	end
 
-	---@todo: Hyperarmor check.
+	---@note: Hyperarmor check can be improved.
 
 	if
 		#self.heffects >= 1
+		and (not self.entity:FindFirstChildWhichIsA("Highlight"))
 		and (players:GetPlayerFromCharacter(self.entity) or self.entity:FindFirstChild("HumanController"))
 	then
-		return Logger.notify("Entity got attack cancelled.")
+		return self:notify(timing, "Entity got attack cancelled.")
 	end
 
 	return true
@@ -183,6 +188,7 @@ function AnimatorDefender:rpue(track, timing, index)
 end
 
 ---Process animation track.
+---@todo: Logger module.
 ---@param track AnimationTrack
 function AnimatorDefender:process(track)
 	if track.Priority == Enum.AnimationPriority.Core then
@@ -244,7 +250,11 @@ function AnimatorDefender:process(track)
 
 	-- Stop! We need to feint if we're currently attacking. Input block will handle the rest.
 	-- Assume, we cannot react in time. Example: we attacked just right before this process call.
-	if not effectReplicatorModule:FindEffect("FeintCool") and midAttackCanFeint then
+	local shouldFeintAttack = midAttackCanFeint and Configuration.expectToggleValue("FeintM1WhileDefending")
+	local shouldFeintMantra = effectReplicatorModule:FindEffect("CastingSpell")
+		and Configuration.expectToggleValue("FeintMantrasWhileDefending")
+
+	if not effectReplicatorModule:FindEffect("FeintCool") and (shouldFeintAttack or shouldFeintMantra) then
 		InputClient.feint(humanoidRootPart)
 	end
 

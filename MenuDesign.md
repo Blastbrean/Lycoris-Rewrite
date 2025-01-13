@@ -25,10 +25,10 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
         - Ignore Friends ✅
         - Max Targets ✅
     - Auto Defense ✅
-        - Enable Auto Defense ❌
-        - Auto Defense Configuration ❌
-        - Auto Defense Notifications ❌
-        - Auto Defense Visualizations ❌
+        - Enable Auto Defense ✅
+        - Enable Notifications ✅
+        - Enable Visualizations ✅
+        - Roll On Parry Cooldown ✅
     - Feint Detection ✅
         - Detect M1 Feints ❌
         - Detect Mantra Feints ❌
@@ -38,11 +38,12 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
                 - Parry ❌
             - Feint Reaction Chance ❌
     - Attack Assistance ✅
-        - Feint M1 While Defending ❌
-        - Feint Mantras While Defending ❌
-        - Block Punishable M1s ❌
-        - Block Punishable Criticals❌
-        - Block Punishable Mantras ❌
+        - Feint M1 While Defending ✅
+        - Feint Mantras While Defending ✅
+        - Block Punishable M1s ✅
+        - Block Punishable Criticals ✅
+        - Block Punishable Mantras ✅
+        - Punishable Window (0s to 0.6s to 2s) ✅
     - Combat Assistance ✅
         - Silent Aim ❌
         - Allow Flourish Feints ❌

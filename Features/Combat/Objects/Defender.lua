@@ -1,6 +1,9 @@
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
@@ -15,18 +18,24 @@ Defender.__index = Defender
 -- Services.
 local players = game:GetService("Players")
 local stats = game:GetService("Stats")
+local replicatedStorage = game:GetService("ReplicatedStorage")
 
 ---Check if we're in a valid state to proceed with action handling. Extend me.
+---@param timing Timing
 ---@param action Action
 ---@return boolean
-function Defender:valid(action)
+function Defender:valid(timing, action)
 	return true
 end
 
 ---Logger notify.
 ---@param timing Timing
 ---@param str string
-function Defender:log(timing, str, ...)
+function Defender:notify(timing, str, ...)
+	if not Configuration.expectToggleValue("EnableNotifications") then
+		return
+	end
+
 	Logger.notify("[%s] %s", timing.name, string.format(str, ...))
 end
 
@@ -52,24 +61,21 @@ function Defender:ping()
 end
 
 ---Handle action.
+---@param timing Timing
 ---@param action Action
-function Defender:handle(action)
-	if not self:valid(action) then
+function Defender:handle(timing, action)
+	if not self:valid(timing, action) then
 		return
 	end
 
-	Logger.notify("Action type '%s' is being executed.", action._type)
-
-	if action._type == "Parry" then
-		InputClient.parry()
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return
 	end
 
-	if action._type == "Start Block" then
-		InputClient.bstart()
-	end
-
-	if action._type == "End Block" then
-		InputClient.bend()
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return
 	end
 
 	local character = players.LocalPlayer.Character
@@ -87,9 +93,26 @@ function Defender:handle(action)
 		return
 	end
 
-	if action._type == "Dodge" then
-		InputClient.dodge(root, humanoid)
+	Logger.notify("Action type '%s' is being executed.", action._type)
+
+	if action._type == "Start Block" then
+		return InputClient.bstart()
 	end
+
+	if action._type == "End Block" then
+		return InputClient.bend()
+	end
+
+	if action._type == "Dodge" then
+		return InputClient.dodge(root, humanoid)
+	end
+
+	---@note: Okay, we'll assume that we're in the parry state. There's no other type.
+	if effectReplicatorModule:FindEffect("ParryCool") and Configuration.expectToggleValue("RollOnParryCooldown") then
+		return InputClient.dodge(root, humanoid)
+	end
+
+	InputClient.parry()
 end
 
 ---Check if we have input blocking tasks.
@@ -129,7 +152,9 @@ function Defender:actions(timing)
 		local ping = self:ping()
 
 		-- Add action.
-		self:mark(Task.new(string.format("Action_%s", action._type), action:when() - ping, self.handle, self, action))
+		self:mark(
+			Task.new(string.format("Action_%s", action._type), action:when() - ping, self.handle, self, timing, action)
+		)
 
 		-- Log.
 		self:log(timing, "Added action '%s' (%.2fs) with ping '%.2f' subtracted.", action.name, action:when(), ping)
