@@ -268,7 +268,7 @@ function AnimatorDefender:process(track)
 
 	if not effectReplicatorModule:FindEffect("FeintCool") and (shouldFeintAttack or shouldFeintMantra) then
 		-- Log.
-		self:log(timing, "Automatically feinting for block input.")
+		self:notify(timing, "Automatically feinting attack.")
 
 		-- Feint.
 		InputClient.feint(humanoidRootPart)
