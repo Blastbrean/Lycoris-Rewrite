@@ -1302,6 +1302,14 @@ do
 						Key = "MB2"
 					end
 
+					if
+						Input.KeyCode == Enum.KeyCode.Escape
+						or Input.KeyCode == Enum.KeyCode.Backspace
+						or Input.KeyCode == Enum.KeyCode.Delete
+					then
+						Key = "N/A"
+					end
+
 					Break = true
 					Picking = false
 

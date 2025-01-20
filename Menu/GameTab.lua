@@ -10,7 +10,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	speedHackToggle:AddKeyPicker("SpeedhackKeybind", { Default = "None", SyncToggleState = true, Text = "Speedhack" })
+	speedHackToggle:AddKeyPicker("SpeedhackKeybind", { Default = "N/A", SyncToggleState = true, Text = "Speedhack" })
 
 	local speedDepBox = groupbox:AddDependencyBox()
 
@@ -29,7 +29,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	flyToggle:AddKeyPicker("FlyKeybind", { Default = "None", SyncToggleState = true, Text = "Fly" })
+	flyToggle:AddKeyPicker("FlyKeybind", { Default = "N/A", SyncToggleState = true, Text = "Fly" })
 
 	local flyDepBox = groupbox:AddDependencyBox()
 
@@ -57,7 +57,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	noclipToggle:AddKeyPicker("NoClipKeybind", { Default = "None", SyncToggleState = true, Text = "NoClip" })
+	noclipToggle:AddKeyPicker("NoClipKeybind", { Default = "N/A", SyncToggleState = true, Text = "NoClip" })
 
 	local noclipDepBox = groupbox:AddDependencyBox()
 
@@ -73,7 +73,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	atbToggle:AddKeyPicker("AttachToBackKeybind", { Default = "None", SyncToggleState = true, Text = "Attach To Back" })
+	atbToggle:AddKeyPicker("AttachToBackKeybind", { Default = "N/A", SyncToggleState = true, Text = "Attach To Back" })
 
 	local atbDepBox = groupbox:AddDependencyBox()
 
