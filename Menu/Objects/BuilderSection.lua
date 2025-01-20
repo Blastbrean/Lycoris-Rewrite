@@ -52,6 +52,9 @@ function BuilderSection:reset()
 	self.initialMinimumDistance:SetRawValue(0)
 	self.delayUntilInHitbox:SetRawValue(false)
 
+	-- Reset action list.
+	self:arefresh(nil)
+
 	-- Reset action elements.
 	self:raction()
 end
@@ -103,9 +106,9 @@ function BuilderSection:refresh()
 end
 
 ---Refresh action list.
----@param timing Timing
+---@param timing Timing?
 function BuilderSection:arefresh(timing)
-	self.actionList:SetValues(timing.actions:names())
+	self.actionList:SetValues(timing and timing.actions:names() or {})
 	self.actionList:SetValue(nil)
 	self.actionList:Display()
 end
@@ -345,11 +348,6 @@ function BuilderSection:timing()
 
 			-- Reset elements.
 			self:reset()
-
-			-- Reset action list.
-			self.actionList:SetValues({})
-			self.actionList:SetRawValue(nil)
-			self.actionList:Display()
 		end,
 	})
 
