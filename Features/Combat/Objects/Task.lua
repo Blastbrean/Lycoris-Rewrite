@@ -17,9 +17,9 @@ function Task:blocking()
 		return false
 	end
 
-	-- We've exceeded the execution time.
+	-- We've exceeded the execution time. Block if we're within the after window.
 	if os.clock() >= self.when then
-		return false
+		return os.clock() <= self.when + Configuration.expectOptionValue("AfterWindow")
 	end
 
 	---@note: Allow us to do inputs up until a certain amount of time before the task happens.

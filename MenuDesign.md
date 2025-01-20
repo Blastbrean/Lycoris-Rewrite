@@ -44,6 +44,7 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
         - Block Punishable Criticals ✅
         - Block Punishable Mantras ✅
         - Punishable Window (0s to 0.6s to 2s) ✅
+        - After Window (0s to 0.1s to 0.5s) ✅
     - Combat Assistance ✅
         - Silent Aim ❌
         - Allow Flourish Feints ❌
