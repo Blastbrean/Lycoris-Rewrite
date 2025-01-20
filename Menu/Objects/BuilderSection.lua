@@ -91,9 +91,6 @@ function BuilderSection:raction()
 	self.hitboxHeight:SetRawValue(0)
 	self.hitboxLength:SetRawValue(0)
 	self.hitboxWidth:SetRawValue(0)
-	self.actionList:SetValues({})
-	self.actionList:SetValue(nil)
-	self.actionList:Display()
 end
 
 ---Refresh timing list.
@@ -333,6 +330,11 @@ function BuilderSection:timing()
 
 			-- Reset elements.
 			self:reset()
+
+			-- Reset action list.
+			self.actionList:SetValues({})
+			self.actionList:SetRawValue(nil)
+			self.actionList:Display()
 		end,
 	})
 
@@ -364,9 +366,6 @@ function BuilderSection:timing()
 
 			-- Load extra elements.
 			self:exload(found)
-
-			-- Reset action elements.
-			self:raction()
 
 			-- Refresh action list.
 			self:arefresh(found)
