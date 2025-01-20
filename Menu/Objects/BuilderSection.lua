@@ -117,11 +117,6 @@ end
 ---@param callback function(Timing, ...)
 function BuilderSection:tnc(callback)
 	return function(...)
-		-- Check timing type.
-		if self.timingType.Value == "Internal" then
-			return Logger.longNotify("Internal timing. Changes not replicated. You must clone it to the config first.")
-		end
-
 		-- If no value, return.
 		if not self.timingList.Value then
 			return Logger.warn("No timing selected.")
@@ -133,6 +128,11 @@ function BuilderSection:tnc(callback)
 			return Logger.longNotify("You must select a valid timing to perform this action.")
 		end
 
+		-- Check timing type.
+		if self.timingType.Value == "Internal" then
+			return Logger.longNotify("Internal timing. Changes not replicated. You must clone it to the config first.")
+		end
+
 		-- Fire callback.
 		callback(timing, ...)
 	end
@@ -142,11 +142,6 @@ end
 ---@param callback function(Action, ...)
 function BuilderSection:anc(callback)
 	return function(...)
-		-- Check timing type.
-		if self.timingType.Value == "Internal" then
-			return Logger.longNotify("Internal timing. Changes not replicated. You must clone it to the config first.")
-		end
-
 		-- If no value, return.
 		if not self.timingList.Value then
 			return Logger.warn("No timing selected.")
@@ -167,6 +162,11 @@ function BuilderSection:anc(callback)
 		local action = timing.actions:find(self.actionList.Value)
 		if not action then
 			return Logger.longNotify("You must select a valid action to perform this action.")
+		end
+
+		-- Check timing type.
+		if self.timingType.Value == "Internal" then
+			return Logger.longNotify("Internal timing. Changes not replicated. You must clone it to the config first.")
 		end
 
 		-- Fire callback.
