@@ -2035,6 +2035,8 @@ do
 					Addon:Update()
 				end
 			end
+
+			Library:UpdateDependencyBoxes()
 		end
 
 		function Toggle:SetValue(Bool)

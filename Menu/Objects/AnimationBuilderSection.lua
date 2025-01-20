@@ -28,8 +28,8 @@ end
 ---@param timing Timing
 function AnimationBuilderSection:exload(timing)
 	self.animationId:SetRawValue(timing._id)
-	self.repeatStartDelay:SetRawValue(timing._rsd)
 	self.repeatUntilParryEnd:SetRawValue(timing.rpue)
+	self.repeatStartDelay:SetRawValue(timing._rsd)
 	self.repeatParryDelay:SetRawValue(timing._rpd)
 end
 
