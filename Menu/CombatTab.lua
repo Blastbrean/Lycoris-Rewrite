@@ -22,7 +22,7 @@ function CombatTab.initCombatTargetingSection(tab)
 	})
 
 	tab:AddSlider("FOVLimit", {
-		Text = "FOV Limit",
+		Text = "Player FOV Limit",
 		Min = 0,
 		Max = 180,
 		Default = 180,

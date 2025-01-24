@@ -276,7 +276,9 @@ function InputClient.dodge(hrp, humanoid)
 		usePivotVelocityRoll = true
 	end
 
-	return InputClient.roll(hrp, humanoid, usePivotVelocityRoll and true or nil)
+	---@note: Run this in a seperate task because the roll movement must still continue even when detached and destroyed. Else, it will behave wrong.
+	--- This is OK. Before any yields occur, we fetch the remotes beforehand. Also, the clean-up is done at the very end of the function.
+	task.spawn(InputClient.roll, hrp, humanoid, usePivotVelocityRoll and true or nil)
 end
 
 ---Re-created feint function.
@@ -862,7 +864,6 @@ function InputClient.roll(hrp, humanoid, pivotStep)
 
 		if tick() - rollTimestamp < rollTimeSeconds then
 			---@note: Again, exempt crouch boolean flag.
-
 			humanoid:LoadAnimation(landingAnim):Play()
 
 			local airDashBodyVelocity = Instance.new("BodyVelocity")
