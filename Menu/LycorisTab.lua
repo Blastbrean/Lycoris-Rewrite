@@ -34,12 +34,24 @@ function LycorisTab.initUISettingsSection(groupbox)
 	local keybindFrameLabel = groupbox:AddLabel("Keybind List Bind")
 
 	keybindFrameLabel:AddKeyPicker("KeybindList", {
-		Default = "Backquote",
+		Default = "N/A",
 		Mode = "Always",
 		NoUI = true,
 		Text = "Keybind List",
 		Callback = function(Value)
 			Library.KeybindFrame.Visible = Value
+		end,
+	})
+
+	local watermarkFrameLabel = groupbox:AddLabel("Watermark Bind")
+
+	watermarkFrameLabel:AddKeyPicker("Watermark", {
+		Default = "N/A",
+		Mode = "Always",
+		NoUI = true,
+		Text = "Watermark",
+		Callback = function(Value)
+			Library:SetWatermarkVisibility(Value)
 		end,
 	})
 end

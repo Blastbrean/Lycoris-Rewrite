@@ -174,7 +174,7 @@ local function updatePlayerProximity()
 			local beepSound = Instance.new("Sound", game:GetService("CoreGui"))
 			beepSound.SoundId = "rbxassetid://100849623977896"
 			beepSound.PlaybackSpeed = 1
-			beepSound.Volume = 0.1
+			beepSound.Volume = Configuration.expectOptionValue("PlayerProximityBeepVolume") or 0.1
 			beepSound.PlayOnRemove = true
 			beepSound:Destroy()
 		end

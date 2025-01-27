@@ -31,25 +31,25 @@ local autoCharismaMaid = Maid.new()
 
 ---Update charisma.
 local function updateCharisma()
-	local charismaFarm = Configuration.expectToggleValue("CharismaFarm")
-	if not charismaFarm then
+	local charismaFarm = Toggles["AutoCharisma"]
+	if not charismaFarm or not charismaFarm.Value then
 		return
 	end
 
-	local charismaFarmCap = Configuration.expectOptionValue("CharismaFarmCap")
+	local charismaFarmCap = Options["CharismaCap"]
 	if not charismaFarmCap then
 		return
-	end
-
-	if not Attributes.isNotAtCap("Stat_Charisma", charismaFarmCap) then
-		Logger.longNotify("Charisma AutoFarm is automatically stopping.")
-		return charismaFarm:SetValue(false)
 	end
 
 	local localPlayer = players.LocalPlayer
 	local localPlayerCharacter = localPlayer.Character
 	if not localPlayerCharacter then
 		return
+	end
+
+	if not Attributes.isNotAtCap(localPlayerCharacter, "Stat_Charisma", charismaFarmCap.Value) then
+		Logger.longNotify("Charisma AutoFarm is automatically stopping.")
+		return charismaFarm:SetValue(false)
 	end
 
 	local humanoid = localPlayerCharacter:FindFirstChild("Humanoid")
@@ -98,7 +98,7 @@ local function updateCharisma()
 
 	choice:InvokeServer(charismaLine)
 
-	if Attributes.isNotAtCap("Stat_Charisma", charismaFarmCap) then
+	if Attributes.isNotAtCap(localPlayerCharacter, "Stat_Charisma", charismaFarmCap.Value) then
 		return
 	end
 

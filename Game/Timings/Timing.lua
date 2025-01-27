@@ -6,6 +6,8 @@ local ActionContainer = require("Game/Timings/ActionContainer")
 ---@field tag string
 ---@field imdd number Initial minimum distance from position.
 ---@field imxd number Initial maximum distance from position.
+---@field punishable number Punishable window in seconds.
+---@field after number After window in seconds.
 ---@field duih boolean Delay until in hitbox.
 ---@field actions ActionContainer
 local Timing = {}
@@ -46,6 +48,14 @@ function Timing:load(values)
 		self.duih = values.duih
 	end
 
+	if typeof(values.punishable) == "number" then
+		self.punishable = values.punishable
+	end
+
+	if typeof(values.after) == "number" then
+		self.after = values.after
+	end
+
 	if typeof(values.actions) == "table" then
 		self.actions:load(values.actions)
 	end
@@ -61,6 +71,8 @@ function Timing:clone()
 	clone.duih = self.duih
 	clone.imdd = self.imdd
 	clone.imxd = self.imxd
+	clone.punishable = self.punishable
+	clone.after = self.after
 	clone.actions = self.actions:clone()
 
 	return clone
@@ -75,6 +87,8 @@ function Timing:serialize()
 		imdd = self.imdd,
 		imxd = self.imxd,
 		duih = self.duih,
+		punishable = self.punishable,
+		after = self.after,
 		actions = self.actions:serialize(),
 	}
 end
@@ -89,6 +103,8 @@ function Timing.new(values)
 	self.name = "N/A"
 	self.imdd = 0
 	self.imxd = 0
+	self.punishable = 0
+	self.after = 0
 	self.duih = false
 	self.actions = ActionContainer.new()
 

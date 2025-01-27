@@ -31,25 +31,25 @@ local autoIntelligenceMaid = Maid.new()
 
 ---Update inteligence.
 local function updateInteligence()
-	local inteligenceFarm = Configuration.expectToggleValue("IntelligenceFarm")
-	if not inteligenceFarm then
+	local inteligenceFarm = Toggles["AutoIntelligence"]
+	if not inteligenceFarm or not inteligenceFarm.Value then
 		return
 	end
 
-	local inteligenceFarmCap = Configuration.expectOptionValue("IntelligenceFarmCap")
+	local inteligenceFarmCap = Options["IntelligenceCap"]
 	if not inteligenceFarmCap then
 		return
-	end
-
-	if not Attributes.isNotAtCap("Stat_Intelligence", inteligenceFarmCap) then
-		Logger.longNotify("Intelligence AutoFarm is automatically stopping.")
-		return inteligenceFarm:SetValue(false)
 	end
 
 	local localPlayer = players.LocalPlayer
 	local localPlayerCharacter = localPlayer.Character
 	if not localPlayerCharacter then
 		return
+	end
+
+	if not Attributes.isNotAtCap(localPlayerCharacter, "Stat_Intelligence", inteligenceFarmCap.Value) then
+		Logger.longNotify("Intelligence AutoFarm is automatically stopping.")
+		return inteligenceFarm:SetValue(false)
 	end
 
 	local humanoid = localPlayerCharacter:FindFirstChild("Humanoid")
@@ -59,7 +59,7 @@ local function updateInteligence()
 
 	local backpack = localPlayer:FindFirstChild("Backpack")
 	if not backpack then
-		return
+		return Logger.warn("Backpack not found.")
 	end
 
 	local characterBook = localPlayerCharacter:FindFirstChild("Math Textbook")
@@ -76,39 +76,39 @@ local function updateInteligence()
 
 	local choiceFrame = choicePrompt:FindFirstChild("ChoiceFrame")
 	if not choiceFrame then
-		return
+		return Logger.warn("Choice frame not found.")
 	end
 
 	local descSheet = choiceFrame:FindFirstChild("DescSheet")
 	if not descSheet then
-		return
+		return Logger.warn("Desc sheet not found.")
+	end
+
+	local options = choiceFrame:FindFirstChild("Options")
+	if not options then
+		return Logger.warn("Options not found.")
 	end
 
 	local desc = descSheet:FindFirstChild("Desc")
 	if not desc then
-		return
-	end
-
-	local options = descSheet:FindFirstChild("Options")
-	if not options then
-		return
+		return Logger.warn("Desc not found.")
 	end
 
 	local isMathChoice = options:FindFirstChildOfClass("TextButton")
 	if not isMathChoice or (isMathChoice and not tonumber(isMathChoice.Name)) then
-		return
+		return Logger.warn("Math choice not found.")
 	end
 
 	local choice = choicePrompt:FindFirstChild("Choice")
 	if not choice then
-		return
+		return Logger.warn("Choice not found.")
 	end
 
 	local operation = desc.Text:lower()
 	local text = desc.Text:split(" ")
 
 	local expected = nil
-	local numberOne, numberTwo = tonumber(text[3]), tonumber(text[5]:gsub("?", ""))
+	local numberOne, numberTwo = tonumber(text[3]), tonumber(table.pack(text[5]:gsub("?", ""))[1])
 
 	if operation:match("times") then
 		expected = numberOne * numberTwo
@@ -118,6 +118,10 @@ local function updateInteligence()
 		expected = numberOne + numberTwo
 	elseif operation:match("divided") then
 		expected = numberOne / numberTwo
+	end
+
+	if not expected then
+		return Logger.warn("Expected value not found.")
 	end
 
 	local deltaTable = {}
@@ -141,7 +145,7 @@ local function updateInteligence()
 
 	choice:FireServer(buttonMap[deltaTable[1]])
 
-	if Attributes.isNotAtCap("Stat_Intelligence", inteligenceFarmCap) then
+	if Attributes.isNotAtCap(localPlayerCharacter, "Stat_Intelligence", inteligenceFarmCap.Value) then
 		return
 	end
 

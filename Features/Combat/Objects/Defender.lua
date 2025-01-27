@@ -10,13 +10,19 @@ local InputClient = require("Game/InputClient")
 ---@module Features.Combat.Objects.Task
 local Task = require("Features/Combat/Objects/Task")
 
+---@module Utility.Maid
+local Maid = require("Utility/Maid")
+
+---@module Utility.InstanceWrapper
+local InstanceWrapper = require("Utility/InstanceWrapper")
+
 ---@class Defender
 ---@field tasks Task[]
 local Defender = {}
 Defender.__index = Defender
+Defender.__type = "Defender"
 
 -- Services.
-local players = game:GetService("Players")
 local stats = game:GetService("Stats")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -26,6 +32,33 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 ---@return boolean
 function Defender:valid(timing, action)
 	return true
+end
+
+---Run hitbox check. Returns wheter if the hitbox is being touched.
+---@note: This check can fail when players suddenly look...
+---@param cframe CFrame
+---@param size Vector3
+---@param filter Instance[]
+---@return boolean
+function Defender:hitbox(cframe, size, filter)
+	local overlapParams = OverlapParams.new()
+	overlapParams.FilterDescendantsInstances = filter
+	overlapParams.FilterType = Enum.RaycastFilterType.Include
+
+	---@todo: Make the visualizations better. This is just for debugging. Right now, they don't clear up properly.
+	if Configuration.expectToggleValue("EnableVisualizations") then
+		local visualizationPart = InstanceWrapper.create(self.maid, "VisualizationPart", "Part")
+		visualizationPart.Size = size
+		visualizationPart.CFrame = cframe
+		visualizationPart.Transparency = 0.85
+		visualizationPart.Color = Color3.fromRGB(0, 255, 0)
+		visualizationPart.Parent = workspace
+		visualizationPart.Anchored = true
+		visualizationPart.CanCollide = false
+		visualizationPart.Material = Enum.Material.SmoothPlastic
+	end
+
+	return #workspace:GetPartBoundsInBox(cframe, size, overlapParams) > 0
 end
 
 ---Logger notify.
@@ -139,7 +172,16 @@ function Defender:actions(timing)
 
 		-- Add action.
 		self:mark(
-			Task.new(string.format("Action_%s", action._type), action:when() - ping, self.handle, self, timing, action)
+			Task.new(
+				string.format("Action_%s", action._type),
+				action:when() - ping,
+				timing.punishable,
+				timing.after,
+				self.handle,
+				self,
+				timing,
+				action
+			)
 		)
 
 		-- Log.
@@ -147,10 +189,18 @@ function Defender:actions(timing)
 	end
 end
 
+---Detach defender object.
+function Defender:detach()
+	self:clean()
+	self.maid:clean()
+	self = nil
+end
+
 ---Create new Defender object.
 function Defender.new()
 	local self = setmetatable({}, Defender)
 	self.tasks = {}
+	self.maid = Maid.new()
 	return self
 end
 

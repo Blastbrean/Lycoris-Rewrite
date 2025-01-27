@@ -5,6 +5,8 @@ local Timing = require("Game/Timings/Timing")
 ---@field pname string Part name.
 ---@field _td number Timing delay in miliseconds.
 ---@field filter string[] Part names to look for.
+---@field linked string[] Linked animation IDs to filter with.
+---@field hitbox Vector3 The main hitbox of the part while it moves.
 local PartTiming = setmetatable({}, { __index = Timing })
 PartTiming.__index = PartTiming
 
@@ -36,6 +38,14 @@ function PartTiming:load(values)
 	if typeof(values.filter) == "table" then
 		self.filter = values.filter
 	end
+
+	if typeof(values.linked) == "table" then
+		self.linked = values.linked
+	end
+
+	if typeof(values.hitbox) == "table" then
+		self.hitbox = Vector3.new(values.hitbox.X, values.hitbox.Y, values.hitbox.Z)
+	end
 end
 
 ---Clone timing.
@@ -46,6 +56,8 @@ function PartTiming:clone()
 	clone.pname = self.pname
 	clone._td = self._td
 	clone.filter = self.filter
+	clone.linked = self.linked
+	clone.hitbox = self.hitbox
 
 	return clone
 end
@@ -58,6 +70,12 @@ function PartTiming:serialize()
 	serializable.pname = self.pname
 	serializable.td = self._td
 	serializable.filter = self.filter
+	serializable.linked = self.linked
+	serializable.hitbox = {
+		X = self.hitbox.X,
+		Y = self.hitbox.Y,
+		Z = self.hitbox.Z,
+	}
 
 	return serializable
 end
@@ -71,6 +89,8 @@ function PartTiming.new(values)
 	self.pname = ""
 	self.filter = {}
 	self._td = 0
+	self.linked = {}
+	self.hitbox = Vector3.zero
 
 	if values then
 		self:load(values)

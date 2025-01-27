@@ -37,6 +37,7 @@ local Task = require("Features/Combat/Objects/Task")
 ---@field maid Maid
 local AnimatorDefender = setmetatable({}, { __index = Defender })
 AnimatorDefender.__index = AnimatorDefender
+AnimatorDefender.__type = "AnimatorDefender"
 
 -- Services.
 local players = game:GetService("Players")
@@ -65,27 +66,7 @@ function AnimatorDefender:valid(timing, action)
 		return self:notify(timing, "No character found.")
 	end
 
-	local hbStartPosition = target.root.CFrame * CFrame.new(0, 0, -(action.hitbox.Z / 2))
-
-	local overlapParams = OverlapParams.new()
-	overlapParams.FilterDescendantsInstances = { character }
-	overlapParams.FilterType = Enum.RaycastFilterType.Include
-
-	---@todo: Make the visualizations better. This is just for debugging. Right now, they don't clear up properly.
-	if Configuration.expectToggleValue("EnableVisualizations") then
-		local visualizationPart = InstanceWrapper.create(self.maid, "VisualizationPart", "Part")
-		visualizationPart.Size = action.hitbox
-		visualizationPart.CFrame = hbStartPosition
-		visualizationPart.Transparency = 0.85
-		visualizationPart.Color = Color3.fromRGB(255, 0, 0)
-		visualizationPart.Parent = workspace
-		visualizationPart.Anchored = true
-		visualizationPart.CanCollide = false
-		visualizationPart.Material = Enum.Material.SmoothPlastic
-	end
-
-	---@note: This check can fail when players suddenly look...
-	if #workspace:GetPartBoundsInBox(hbStartPosition, action.hitbox, overlapParams) <= 0 then
+	if not self:hitbox(target.root.CFrame * CFrame.new(0, 0, -(action.hitbox.Z / 2)), action.hitbox, { character }) then
 		return self:notify(timing, "Not inside of the hitbox.")
 	end
 
@@ -108,11 +89,9 @@ function AnimatorDefender:valid(timing, action)
 		return self:notify(timing, "No effect replicator module found.")
 	end
 
-	---@note: Hyperarmor check can be improved.
-
 	if
-		#self.heffects >= 1
-		and (not self.entity:FindFirstChildWhichIsA("Highlight"))
+		timing.ha
+		and #self.heffects >= 1
 		and (players:GetPlayerFromCharacter(self.entity) or self.entity:FindFirstChild("HumanController"))
 	then
 		return self:notify(timing, "Entity got attack cancelled.")
@@ -171,6 +150,8 @@ function AnimatorDefender:rpue(track, timing, index)
 		Task.new(
 			string.format("RPUE_%s_%i", timing.name, index),
 			timing:rpd() - self:ping(),
+			timing.punishable,
+			timing.after,
 			self.rpue,
 			self,
 			track,
@@ -288,7 +269,17 @@ function AnimatorDefender:process(track)
 	end
 
 	self:mark(
-		Task.new(string.format("RPUE_%s", timing.name), timing:rsd() - self:ping(), self.rpue, self, track, timing, 0)
+		Task.new(
+			string.format("RPUE_%s", timing.name),
+			timing:rsd() - self:ping(),
+			timing.punishable,
+			timing.after,
+			self.rpue,
+			self,
+			track,
+			timing,
+			0
+		)
 	)
 
 	self:notify(
@@ -298,16 +289,6 @@ function AnimatorDefender:process(track)
 		timing:rsd(),
 		timing:rpd()
 	)
-end
-
----Detach AnimatorDefender object.
-function AnimatorDefender:detach()
-	-- Clean tasks.
-	self:clean()
-
-	-- Clean maid and object.
-	self.maid:clean()
-	self = nil
 end
 
 ---Create new AnimatorDefender object.
@@ -330,7 +311,6 @@ function AnimatorDefender.new(animator, manimations)
 
 	self.track = nil
 	self.heffects = {}
-	self.maid = Maid.new()
 
 	self.maid:mark(entityDescendantAdded:connect("AnimatorDefender_OnDescendantAdded", function(descendant)
 		if

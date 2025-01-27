@@ -31,6 +31,7 @@ function AnimationBuilderSection:exload(timing)
 	self.repeatUntilParryEnd:SetRawValue(timing.rpue)
 	self.repeatStartDelay:SetRawValue(timing._rsd)
 	self.repeatParryDelay:SetRawValue(timing._rpd)
+	self.hyperarmor:SetRawValue(timing.ha)
 end
 
 ---Reset the elements. Extend me.
@@ -40,6 +41,7 @@ function AnimationBuilderSection:reset()
 	self.repeatParryDelay:SetRawValue(0)
 	self.repeatStartDelay:SetRawValue(0)
 	self.repeatUntilParryEnd:SetRawValue(false)
+	self.hyperarmor:SetRawValue(false)
 end
 
 ---Check before creating new timing. Override me.
@@ -67,6 +69,19 @@ function AnimationBuilderSection:create()
 	timing.name = self.timingName.Value
 	timing._id = self.animationId.Value
 	return timing
+end
+
+---Initialize extra tab.
+---@param tab table
+function AnimationBuilderSection:extra(tab)
+	self.hyperarmor = tab:AddToggle(nil, {
+		Text = "Hyperarmor Flag",
+		Tooltip = "Is this timing not able to be interrupted by attacks during the animation?",
+		Default = false,
+		Callback = self:tnc(function(timing, value)
+			timing.ha = value
+		end),
+	})
 end
 
 ---Initialize action tab.

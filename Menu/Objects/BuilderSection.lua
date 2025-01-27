@@ -18,6 +18,9 @@ local Timing = require("Game/Timings/Timing")
 ---@field hitboxLength table
 ---@field hitboxWidth table
 ---@field hitboxHeight table
+---@field timingType table
+---@field punishableWindow table
+---@field afterWindow table
 ---@field delayUntilInHitbox table
 ---@field initialMinimumDistance table
 ---@field initialMaximumDistance table
@@ -47,8 +50,11 @@ function BuilderSection:exload(timing) end
 function BuilderSection:reset()
 	-- Reset timing elements.
 	self.timingName:SetRawValue("")
+	self.timingType:SetRawValue("Config")
 	self.timingTag:SetRawValue("Undefined")
 	self.initialMaximumDistance:SetRawValue(0)
+	self.punishableWindow:SetRawValue(0)
+	self.afterWindow:SetRawValue(0)
 	self.initialMinimumDistance:SetRawValue(0)
 	self.delayUntilInHitbox:SetRawValue(false)
 
@@ -504,6 +510,30 @@ function BuilderSection:builder()
 		Rounding = 0,
 		Callback = self:tnc(function(timing, value)
 			timing.imxd = value
+		end),
+	})
+
+	self.punishableWindow = tab:AddSlider(nil, {
+		Text = "Punishable Window",
+		Min = 0,
+		Max = 2,
+		Default = 0.6,
+		Suffix = "s",
+		Rounding = 1,
+		Callback = self:tnc(function(timing, value)
+			timing.punishable = value
+		end),
+	})
+
+	self.afterWindow = tab:AddSlider(nil, {
+		Text = "After Window",
+		Min = 0,
+		Max = 1,
+		Default = 0.1,
+		Suffix = "s",
+		Rounding = 2,
+		Callback = self:tnc(function(timing, value)
+			timing.after = value
 		end),
 	})
 

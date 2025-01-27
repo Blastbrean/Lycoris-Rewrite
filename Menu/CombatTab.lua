@@ -209,24 +209,6 @@ function CombatTab.initAttackAssistanceSection(groupbox)
 		Text = "Block Punishable Mantras",
 		Default = false,
 	})
-
-	groupbox:AddSlider("PunishableWindow", {
-		Text = "Punishable Window",
-		Min = 0,
-		Max = 2,
-		Default = 0.6,
-		Suffix = "s",
-		Rounding = 1,
-	})
-
-	groupbox:AddSlider("AfterWindow", {
-		Text = "After Window",
-		Min = 0,
-		Max = 1,
-		Default = 0.1,
-		Suffix = "s",
-		Rounding = 2,
-	})
 end
 
 -- Initialize input assistance section.

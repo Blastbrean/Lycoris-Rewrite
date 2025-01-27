@@ -283,6 +283,21 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 		Default = false,
 	})
 
+	local ppbDepBox = ppDepBox:AddDependencyBox()
+
+	ppbDepBox:AddSlider("PlayerProximityBeepVolume", {
+		Text = "Beep Sound Volume",
+		Default = 0.1,
+		Min = 0,
+		Max = 10,
+		Suffix = "v",
+		Rounding = 2,
+	})
+
+	ppbDepBox:SetupDependencies({
+		{ Toggles.PlayerProximityBeep, true },
+	})
+
 	ppDepBox:SetupDependencies({
 		{ Toggles.PlayerProximity, true },
 	})

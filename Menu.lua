@@ -42,6 +42,7 @@ local Signal = require("Utility/Signal")
 
 -- Services.
 local runService = game:GetService("RunService")
+local stats = game:GetService("Stats")
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -49,11 +50,8 @@ local renderStepped = Signal.new(runService.RenderStepped)
 -- Maids.
 local menuMaid = Maid.new()
 
--- Timestamp.
-local sloganTimestamp = os.clock()
-
 -- Constants.
-local MENU_TITLE = "Biggie Smalls Hack"
+local MENU_TITLE = "Linoria V2 | Deepwoken"
 
 ---Initialize menu.
 function Menu.init()
@@ -85,35 +83,28 @@ function Menu.init()
 	ExploitTab.init(window)
 	LycorisTab.init(window)
 
-	-- Slogans.
-	local slogans = {
-		"0Y4mKsTiRbldLocloTolM1",
-		"5S46E2UNGDYcwZ26yj6aNr",
-		"49sbpteBVjEyW4M6P38SM4",
-		"0a66FPlQojQPT28qLEI952",
-		"3oi79iqWmUfOObQ0MOw3xF",
-		"2nNvk9siGRLiWP2RV0XDW2",
-		"4d83G18cx4DDJMPGE9BB4M",
-		"43nqv4QZLdroszZ03wKCCh",
-		"58E4qtpkOmMqbJxHM1dm6I",
-		"6udE9waINs3SYdNoGTotm9",
-	}
+	-- Update watermark.
+	menuMaid:add(renderStepped:connect("Menu_WatermarkUpdate", function()
+		-- Get stats.
+		local networkStats = stats:FindFirstChild("Network")
+		local workspaceStats = stats:FindFirstChild("Workspace")
+		local performanceStats = stats:FindFirstChild("PerformanceStats")
+		local serverStats = networkStats and networkStats:FindFirstChild("ServerStatsItem") or nil
 
-	-- Slogan loop.
-	menuMaid:add(renderStepped:connect("Menu_SloganLoop", function()
-		-- Check if we can change the slogan.
-		if os.clock() - sloganTimestamp < 5 then
-			return
-		end
+		-- Get data.
+		local pingData = serverStats and serverStats:FindFirstChild("Data Ping") or nil
+		local heartbeatData = workspaceStats and workspaceStats:FindFirstChild("Heartbeat") or nil
+		local cpuData = performanceStats and performanceStats:FindFirstChild("CPU") or nil
+		local gpuData = performanceStats and performanceStats:FindFirstChild("GPU") or nil
 
-		-- Get random slogan.
-		local slogan = string.format("%s - %s", MENU_TITLE, slogans[math.random(1, #slogans)])
+		-- Set values.
+		local ping = pingData and pingData:GetValue() or 0.0
+		local fps = heartbeatData and heartbeatData:GetValue() or 0.0
+		local cpu = cpuData and cpuData:GetValue() or 0.0
+		local gpu = gpuData and gpuData:GetValue() or 0.0
 
-		-- Log slogan.
-		window:SetWindowTitle(slogan)
-
-		-- Update timestamp.
-		sloganTimestamp = os.clock()
+		-- Set watermark.
+		Library:SetWatermark(string.format("%s | %.2fms | %.1f/s | %.1fms | %.1fms", MENU_TITLE, ping, fps, cpu, gpu))
 	end))
 
 	-- Configure Library.

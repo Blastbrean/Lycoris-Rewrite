@@ -142,11 +142,11 @@ function Lycoris.init()
 
 	Hooking.init()
 
-	SaveManager.init()
-
 	InputClient.cache()
 
 	ControlModule.init()
+
+	SaveManager.init()
 
 	Features.init()
 

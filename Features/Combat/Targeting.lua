@@ -11,35 +11,12 @@ local PlayerScanning = require("Game/PlayerScanning")
 ---@module Features.Combat.Objects.Target
 local Target = require("Features/Combat/Objects/Target")
 
+---@module Utility.Table
+local Table = require("Utility/Table")
+
 -- Services.
 local players = game:GetService("Players")
 local userInputService = game:GetService("UserInputService")
-
----Take a chunk out of an array into a new array.
----@param input any[]
----@param start number
----@param stop number
----@return any[]
-local function sliceArray(input, start, stop)
-	local out = {}
-
-	if start == nil then
-		start = 1
-	elseif start < 0 then
-		start = #input + start + 1
-	end
-	if stop == nil then
-		stop = #input
-	elseif stop < 0 then
-		stop = #input + stop + 1
-	end
-
-	for idx = start, stop do
-		table.insert(out, input[idx])
-	end
-
-	return out
-end
 
 ---Get a list of all viable targets.
 ---@return Target[]
@@ -156,7 +133,7 @@ function Targeting.best()
 
 	table.sort(targets, sortFunction)
 
-	return sliceArray(targets, 1, Configuration.expectOptionValue("MaxTargets"))
+	return Table.slice(targets, 1, Configuration.expectOptionValue("MaxTargets"))
 end
 
 ---Find our model from a list of best targets.

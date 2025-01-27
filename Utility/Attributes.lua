@@ -11,8 +11,8 @@ function Attributes.isNotAtCap(playerCharacter, attribute, cap)
 	local maxStat = useDefault and 100 or tonumber(cap)
 	local statCap = maxStat == 0 and 100 or maxStat
 
-	local currentStat = tonumber(playerCharacter:GetAttribute(attribute))
-	if currentStat >= statCap then
+	local currentStat = tonumber(playerCharacter:GetAttribute(attribute) or 0)
+	if not currentStat or currentStat >= statCap then
 		return false
 	end
 

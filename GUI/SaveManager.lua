@@ -129,6 +129,7 @@ do
 		local data = {
 			objects = {},
 			keybindFramePosition = uDIm2Export(self.Library.KeybindFrame.Position),
+			watermarkFramePosition = uDIm2Export(self.Library.Watermark.Position),
 		}
 
 		for idx, toggle in next, Toggles do
@@ -176,6 +177,10 @@ do
 
 		if decoded.keybindFramePosition then
 			self.Library.KeybindFrame.Position = uDim2Import(decoded.keybindFramePosition)
+		end
+
+		if decoded.watermarkFramePosition then
+			self.Library.Watermark.Position = uDim2Import(decoded.watermarkFramePosition)
 		end
 
 		for _, option in next, decoded.objects do

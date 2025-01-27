@@ -6,6 +6,7 @@ local Timing = require("Game/Timings/Timing")
 ---@field rpue boolean Repeat parry until end.
 ---@field _rsd number Repeat start delay in miliseconds. Never access directly.
 ---@field _rpd number Delay between each repeat parry in miliseconds. Never access directly.
+---@param ha boolean Flag to see whether or not this timing can be cancelled by a hit.
 local AnimationTiming = setmetatable({}, { __index = Timing })
 AnimationTiming.__index = AnimationTiming
 
@@ -47,6 +48,10 @@ function AnimationTiming:load(values)
 	if typeof(values.rpue) == "boolean" then
 		self.rpue = values.rpue
 	end
+
+	if typeof(values.ha) == "boolean" then
+		self.ha = values.ha
+	end
 end
 
 ---Clone timing.
@@ -58,6 +63,7 @@ function AnimationTiming:clone()
 	clone._rpd = self._rpd
 	clone._id = self._id
 	clone.rpue = self.rpue
+	clone.ha = self.ha
 
 	return clone
 end
@@ -71,6 +77,7 @@ function AnimationTiming:serialize()
 	serializable.rsd = self._rsd
 	serializable.rpd = self._rpd
 	serializable.rpue = self.rpue
+	serializable.ha = self.ha
 
 	return serializable
 end
@@ -85,6 +92,7 @@ function AnimationTiming.new(values)
 	self._rsd = 0
 	self._rpd = 0
 	self.rpue = false
+	self.ha = false
 
 	if values then
 		self:load(values)

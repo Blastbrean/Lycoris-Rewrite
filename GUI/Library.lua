@@ -21,6 +21,9 @@ ScreenGui.Parent = CoreGui
 local Toggles = {}
 local Options = {}
 local ColorPickers = {}
+local ContextMenus = {}
+local Tooltips = {}
+local ModeSelectFrames = {}
 
 getgenv().Toggles = Toggles
 getgenv().Options = Options
@@ -223,6 +226,8 @@ function Library:AddToolTip(InfoStr, HoverInstance)
 	Library:AddToRegistry(Label, {
 		TextColor3 = "FontColor",
 	})
+
+	Tooltips[#Tooltips + 1] = Tooltip
 
 	local IsHovering = false
 
@@ -466,7 +471,6 @@ do
 		-- Thus the color picker would never show
 
 		local PickerFrameOuter = Library:Create("Frame", {
-			Name = "Color",
 			BackgroundColor3 = Color3.new(1, 1, 1),
 			BorderColor3 = Color3.new(0, 0, 0),
 			Position = UDim2.fromOffset(DisplayFrame.AbsolutePosition.X, DisplayFrame.AbsolutePosition.Y + 18),
@@ -680,7 +684,6 @@ do
 			ContextMenu.Container = Library:Create("Frame", {
 				BorderColor3 = Color3.new(),
 				ZIndex = 14,
-
 				Visible = false,
 				Parent = ScreenGui,
 			})
@@ -693,6 +696,8 @@ do
 				ZIndex = 15,
 				Parent = ContextMenu.Container,
 			})
+
+			ContextMenus[#ContextMenus + 1] = ContextMenu
 
 			Library:Create("UIListLayout", {
 				Name = "Layout",
@@ -1093,6 +1098,8 @@ do
 			ZIndex = 14,
 			Parent = ScreenGui,
 		})
+
+		ModeSelectFrames[#ModeSelectFrames + 1] = ModeSelectOuter
 
 		ToggleLabel:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
 			ModeSelectOuter.Position = UDim2.fromOffset(
@@ -2425,6 +2432,7 @@ do
 			BorderColor3 = Color3.new(0, 0, 0),
 			ZIndex = 20,
 			Visible = false,
+			Name = "ListOuter",
 			Parent = ScreenGui,
 		})
 
@@ -2911,7 +2919,7 @@ do
 
 	local WatermarkInner = Library:Create("Frame", {
 		BackgroundColor3 = Library.MainColor,
-		BorderColor3 = Library.AccentColor,
+		BorderColor3 = Library.OutlineColor,
 		BorderMode = Enum.BorderMode.Inset,
 		Size = UDim2.new(1, 0, 1, 0),
 		ZIndex = 201,
@@ -2919,8 +2927,20 @@ do
 	})
 
 	Library:AddToRegistry(WatermarkInner, {
-		BorderColor3 = "AccentColor",
+		BorderColor3 = "OutlineColor",
 	})
+
+	local ColorFrame = Library:Create("Frame", {
+		BackgroundColor3 = Library.AccentColor,
+		BorderSizePixel = 0,
+		Size = UDim2.new(1, 0, 0, 2),
+		ZIndex = 204,
+		Parent = WatermarkInner,
+	})
+
+	Library:AddToRegistry(ColorFrame, {
+		BackgroundColor3 = "AccentColor",
+	}, true)
 
 	local InnerFrame = Library:Create("Frame", {
 		BackgroundColor3 = Color3.new(1, 1, 1),
@@ -2950,13 +2970,18 @@ do
 	})
 
 	local WatermarkLabel = Library:CreateLabel({
-		Position = UDim2.new(0, 5, 0, 0),
+		Position = UDim2.new(0, 5, 0, 1),
 		Size = UDim2.new(1, -4, 1, 0),
+		TextColor3 = Library.AccentColor,
 		TextSize = 14,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		ZIndex = 203,
 		Parent = InnerFrame,
 	})
+
+	Library:AddToRegistry(WatermarkLabel, {
+		TextColor3 = "AccentColor",
+	}, true)
 
 	Library.Watermark = WatermarkOuter
 	Library.WatermarkText = WatermarkLabel
@@ -3002,11 +3027,16 @@ do
 		Size = UDim2.new(1, 0, 0, 20),
 		Position = UDim2.fromOffset(5, 2),
 		TextXAlignment = Enum.TextXAlignment.Left,
-
-		Text = "Keybinds",
+		TextSize = 14,
+		TextColor3 = Library.AccentColor,
+		Text = "Keybind List",
 		ZIndex = 104,
 		Parent = KeybindInner,
 	})
+
+	Library:AddToRegistry(KeybindLabel, {
+		TextColor3 = "AccentColor",
+	}, true)
 
 	local KeybindContainer = Library:Create("Frame", {
 		BackgroundTransparency = 1,
@@ -3039,7 +3069,6 @@ end
 function Library:SetWatermark(Text)
 	local X, Y = Library:GetTextBounds(Text, Library.Font, 14)
 	Library.Watermark.Size = UDim2.new(0, X + 15, 0, (Y * 1.5) + 3)
-	Library:SetWatermarkVisibility(true)
 	Library.WatermarkText.Text = Text
 end
 
@@ -3216,9 +3245,14 @@ function Library:CreateWindow(...)
 		Position = UDim2.new(0, 7, 0, 0),
 		Size = UDim2.new(0, 0, 0, 25),
 		Text = Config.Title or "",
+		TextColor3 = Library.AccentColor,
 		TextXAlignment = Enum.TextXAlignment.Left,
 		ZIndex = 1,
 		Parent = Inner,
+	})
+
+	Library:AddToRegistry(WindowLabel, {
+		TextColor3 = "AccentColor",
 	})
 
 	local MainSectionOuter = Library:Create("Frame", {
@@ -3768,6 +3802,24 @@ function Library:CreateWindow(...)
 
 		if Toggled then
 			Outer.Visible = true
+		end
+
+		if not Toggled then
+			for _, ColorPicker in next, ColorPickers do
+				ColorPicker:Hide()
+			end
+
+			for _, ContextMenu in next, ContextMenus do
+				ContextMenu:Hide()
+			end
+
+			for _, Tooltip in next, Tooltips do
+				Tooltip.Visible = false
+			end
+
+			for _, ModeSelectFrame in next, ModeSelectFrames do
+				ModeSelectFrame.Visible = false
+			end
 		end
 
 		for _, Desc in next, Outer:GetDescendants() do
