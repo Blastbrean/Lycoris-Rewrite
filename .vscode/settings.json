@@ -47,7 +47,8 @@
         "create_comm_channel",
         "getactors",
         "run_on_actor",
-        "get_comm_channel"
+        "get_comm_channel",
+        "firetouchinterest"
     ],
     "editor.formatOnSave": false,
     "robloxLsp.suggestedImports.importIgnore": [

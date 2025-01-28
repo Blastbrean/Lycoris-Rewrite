@@ -151,6 +151,33 @@ local function updateFlyHack(rootPart)
 	flyBodyVelocity.Velocity = flyVelocity
 end
 
+---Update anti air bypass
+---@param rootPart BasePart
+local function updateAABypass(rootPart)
+	if not Configuration.expectToggleValue("Fly") then
+		return
+	end
+
+	local modOffice = workspace:FindFirstChild("ModOffice")
+	if not modOffice then
+		return
+	end
+	
+	modOffice.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
+
+	local officeCreature = modOffice:FindFirstChild("OfficeCreature")
+	if not officeCreature then
+		players.LocalPlayer:RequestStreamAroundAsync(modOffice:GetPivot().p, 100)
+		return
+	end
+
+	officeCreature.CollisionGroup = 'Default'
+	officeCreature.CanCollide = true
+
+	firetouchinterest(officeCreature, rootPart, 0);
+    firetouchinterest(officeCreature, rootPart, 1);
+end
+
 ---Update attach to back.
 ---@param rootPart BasePart
 local function updateAttachToBack(rootPart)
@@ -279,6 +306,10 @@ local function updateMovement()
 		updateFlyHack(rootPart)
 	else
 		movementMaid["flyBodyVelocity"] = nil
+	end
+
+	if Configuration.expectToggleValue("AABypass") then
+		updateAABypass(rootPart)
 	end
 
 	if Configuration.expectToggleValue("Speedhack") then

@@ -130,6 +130,14 @@ function Lycoris.init()
 			"Script has failed to queue on teleport because no key was provided or the function does not exist."
 		)
 	end
+	
+	-- Move this wherever u want as long as its in init
+	getgenv().request_body = function(Url)
+		return request({
+			Url = Url,
+			Method = "GET"
+		}).Body
+	end
 
 	Logger.warn("Script has been queued for next teleport.")
 
@@ -162,14 +170,14 @@ function Lycoris.init()
 
 	local modules = replicatedStorage:FindFirstChild("Modules")
 	local bloxstrapRPC = modules and modules:FindFirstChild("BloxstrapRPC")
-	local bloxstrapRPCModule = bloxstrapRPC and require(bloxstrapRPC)
+	local bloxstrapRPCModule = bloxstrapRPC and require(bloxstrapRPC) -- use getgenv, it errors on non literal require.
 
 	if not bloxstrapRPCModule then
 		return
 	end
 
 	bloxstrapRPCModule.SetRichPresence({
-		details = "Biggie Smalls Hack (Attached)",
+		details = "Linoria V2 (Attached)",
 		state = "No, I'm not idling on VSCode.",
 		timeStart = os.time(),
 		largeImage = {
@@ -206,7 +214,7 @@ function Lycoris.detach()
 	end
 
 	bloxstrapRPCModule.SetRichPresence({
-		details = "Biggie Smalls Hack (Detached)",
+		details = "Linoria V2 (Detached)",
 		state = "Yes, I'm too lazy to make it properly reset.",
 		timeStart = os.time(),
 		largeImage = {

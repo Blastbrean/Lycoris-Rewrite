@@ -25,6 +25,9 @@ local Monitoring = require("Features/Game/Monitoring")
 ---@module Features.Game.Spoofing
 local Spoofing = require("Features/Game/Spoofing")
 
+---@module Features.Game.Bestiary
+local Bestiary = require("Features/Game/Bestiary")
+
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
@@ -33,13 +36,14 @@ local Defense = require("Features/Combat/Defense")
 
 ---Initialize features.
 function Features.init()
-	Defense.init()
+	Defense.init() -- use getgenv, it errors on non literal require.
 	Visuals.init()
 	Movement.init()
 	Monitoring.init()
 	Removal.init()
 	Exploits.init()
 	Spoofing.init()
+	Bestiary.init()
 	CharismaFarm.init()
 	IntelligenceFarm.init()
 	Logger.warn("Features initialized.")
@@ -51,6 +55,7 @@ function Features.detach()
 	CharismaFarm.detach()
 	IntelligenceFarm.detach()
 	Spoofing.detach()
+	Bestiary.detach()
 	Movement.detach()
 	Removal.detach()
 	Monitoring.detach()
