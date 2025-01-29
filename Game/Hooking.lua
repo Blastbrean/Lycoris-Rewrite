@@ -367,11 +367,12 @@ local function onTaskSpawn(...)
 	local args = { ... }
 	local func = args[1]
 	local consts = debug.getconstants(func)
+	local stack = debug.getstack(3)
 
 	if debug.getinfo(3).source:match("InputClient") then
 		if (#consts == 0 or consts[2] == "Parent") and not table.find(consts, "LightAttack") then
 			args[1] = function() end
-		else
+		elseif stack and stack[2] ~= Enum.HumanoidStateType.Landed then
 			InputClient.update(consts)
 		end
 	end
