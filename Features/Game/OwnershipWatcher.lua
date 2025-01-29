@@ -87,7 +87,7 @@ local function updateOwnership()
 
         -- Visualization.
         local netVisual = InstanceWrapper.create(partMaid, "NetworkVisual", "Part", model)
-        netVisual.Anchored = false
+        netVisual.Anchored = true
         netVisual.CanCollide = false
         netVisual.Size = Vector3.new(5, 5, 2)
         netVisual.Transparency = Configuration.expectToggleValue("ShowOwnership") and 0.8 or 1.0
