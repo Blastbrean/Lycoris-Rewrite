@@ -75,10 +75,7 @@ local function onLiveRemoved(character)
 end
 
 local function updateOwnership()
-    if not Configuration.expectToggleValue("ShowOwnership") then
-        return
-    end
-
+    local ShowOwnership = Configuration.expectToggleValue("ShowOwnership")
     for _,v in next, ownershipHolder do
         local HumanoidRootPart = v:FindFirstChild("HumanoidRootPart")
         if not HumanoidRootPart then
@@ -86,19 +83,27 @@ local function updateOwnership()
         end
 
         local NetVisual = HumanoidRootPart:FindFirstChild("NetworkVisual")
-        if not NetVisual then
+        
+        if not NetVisual and ShowOwnership then
             NetVisual = NetworkVisual:Clone()
             NetVisual.Weld.Part0 = HumanoidRootPart
             NetVisual.Parent = HumanoidRootPart
         end
 
+        if not ShowOwnership and NetVisual then
+            NetVisual:Destroy()
+            continue
+        end
+        
         local isNetworkOwner = hasNetworkOwnership(HumanoidRootPart)
         if not isNetworkOwner then
             NetVisual.Color = Color3.fromRGB(0, 0, 255)
+            v:RemoveTag('NetworkOwner')
             continue
         end
 
         NetVisual.Color = Color3.fromRGB(0, 255, 0)
+        v:AddTag('NetworkOwner')
     end
 end
 
