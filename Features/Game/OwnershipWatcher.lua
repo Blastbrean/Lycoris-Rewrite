@@ -68,7 +68,7 @@ end
 
 ---Update ownership.
 local function updateOwnership()
-    for _, model in next, OwnershipWatcher.modelsToScan do
+    for model, _ in next, OwnershipWatcher.modelsToScan do
         local humanoidRootPart = model:FindFirstChild("HumanoidRootPart")
         if not humanoidRootPart then
             continue
@@ -109,7 +109,7 @@ function OwnershipWatcher.init()
 
     ownershipMaid:add(liveChildAdded:connect("OwnershipWatcher_OnLiveChildAdded", onLiveAdded))
     ownershipMaid:add(liveChildRemoved:connect("OwnershipWatcher_OnLiveChildRemoved", onLiveRemoved))
-    ownershipMaid:add(renderStepped:connect("updateOwnership_RenderStepped", updateOwnership))
+    ownershipMaid:add(renderStepped:connect("OwnershipWatcher_RenderStepped", updateOwnership))
 
     for _, entity in next, live:GetChildren() do
         onLiveAdded(entity)
