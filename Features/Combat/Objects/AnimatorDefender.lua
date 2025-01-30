@@ -120,8 +120,6 @@ function AnimatorDefender:valid(timing, action)
 		return self:notify(timing, "User is pressing down on a key binded to Block.")
 	end
 
-	self:prepare(timing)
-
 	return true
 end
 
@@ -159,8 +157,6 @@ function AnimatorDefender:initial(timing)
 		return false
 	end
 
-	self:prepare(timing)
-
 	return true
 end
 
@@ -194,42 +190,6 @@ function AnimatorDefender:rpue(track, timing, index)
 	self:notify(timing, "(%i) Action 'RPUE Parry' is being executed.", index)
 
 	InputClient.parry()
-end
-
----Attempt to feint if we're attacking.
----@param timing AnimationTiming
-function AnimatorDefender:prepare(timing)
-	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
-	if not effectReplicator then
-		return
-	end
-
-	local effectReplicatorModule = require(effectReplicator)
-	if not effectReplicatorModule then
-		return
-	end
-
-	local midAttackEffect = effectReplicatorModule:FindEffect("MidAttack")
-	local midAttackData = midAttackEffect and midAttackEffect.index
-	local midAttackExpiry = midAttackData and midAttackData.Expiration
-	local midAttackCanFeint = midAttackExpiry and (os.clock() - midAttackExpiry) <= 0.45
-
-	-- Stop! We need to feint if we're currently attacking. Input block will handle the rest.
-	-- Assume, we cannot react in time. Example: we attacked just right before this process call.
-	local shouldFeintAttack = midAttackCanFeint and Configuration.expectToggleValue("FeintM1WhileDefending")
-	local shouldFeintMantra = effectReplicatorModule:FindEffect("CastingSpell")
-		and Configuration.expectToggleValue("FeintMantrasWhileDefending")
-
-	if effectReplicatorModule:FindEffect("FeintCool") or (not shouldFeintAttack and not shouldFeintMantra) then
-		return
-	end
-
-	-- Log.
-	self:notify(timing, "Automatically feinting attack.")
-
-	-- Feint.
-	InputClient.feint()
-
 end
 
 ---Process animation track.
@@ -280,6 +240,35 @@ function AnimatorDefender:process(track)
 	local humanoidRootPart = self.entity:FindFirstChild("HumanoidRootPart")
 	if not humanoidRootPart then
 		return
+	end
+
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return
+	end
+
+	local midAttackEffect = effectReplicatorModule:FindEffect("MidAttack")
+	local midAttackData = midAttackEffect and midAttackEffect.index
+	local midAttackExpiry = midAttackData and midAttackData.Expiration
+	local midAttackCanFeint = midAttackExpiry and (os.clock() - midAttackExpiry) <= 0.45
+
+	-- Stop! We need to feint if we're currently attacking. Input block will handle the rest.
+	-- Assume, we cannot react in time. Example: we attacked just right before this process call.
+	local shouldFeintAttack = midAttackCanFeint and Configuration.expectToggleValue("FeintM1WhileDefending")
+	local shouldFeintMantra = effectReplicatorModule:FindEffect("CastingSpell")
+		and Configuration.expectToggleValue("FeintMantrasWhileDefending")
+
+	if not effectReplicatorModule:FindEffect("FeintCool") and (shouldFeintAttack or shouldFeintMantra) then
+		-- Log.
+		self:notify(timing, "Automatically feinting attack.")
+
+		-- Feint.
+		InputClient.feint()
 	end
 
 	---@note: Clean up previous tasks that are still waiting or suspended because they're in a different track.
