@@ -25,12 +25,44 @@ Defender.__type = "Defender"
 -- Services.
 local stats = game:GetService("Stats")
 local replicatedStorage = game:GetService("ReplicatedStorage")
+local userInputService = game:GetService("UserInputService")
+local players = game:GetService("Players")
 
 ---Check if we're in a valid state to proceed with action handling. Extend me.
 ---@param timing Timing
 ---@param action Action
 ---@return boolean
 function Defender:valid(timing, action)
+	local keybinds = replicatedStorage:FindFirstChild("KeyBinds")
+	if not keybinds then
+		return self:notify(timing, "No keybinds instance found.")
+	end
+
+	local keybindsModule = require(keybinds)
+	if not keybindsModule or not keybindsModule.Current then
+		return self:notify(timing, "No keybinds module found.")
+	end
+
+	for _, keybind in next, keybindsModule.Current["Block"] or {} do
+		if not userInputService:IsKeyDown(Enum.KeyCode[tostring(keybind)]) then
+			continue
+		end
+
+		if not Configuration.expectToggleValue("CheckHoldingBlockInput") then
+			continue
+		end
+
+		return self:notify(timing, "User is pressing down on a key binded to Block.")
+	end
+
+	if Configuration.expectToggleValue("CheckTextboxFocus") and userInputService:GetFocusedTextBox() then
+		return self:notify(timing, "User is typing in a text box.")
+	end
+
+	if Configuration.expectToggleValue("CheckWindowActive") and not iswindowactive() then
+		return self:notify(timing, "Window is not active.")
+	end
+
 	return true
 end
 
@@ -45,11 +77,23 @@ function Defender:hitbox(cframe, size, filter)
 	overlapParams.FilterDescendantsInstances = filter
 	overlapParams.FilterType = Enum.RaycastFilterType.Include
 
+	local character = players.LocalPlayer.Character
+	if not character then
+		return nil
+	end
+
+	local root = character:FindFirstChild("HumanoidRootPart")
+	if not root then
+		return nil
+	end
+
+	local realCFrame = CFrame.lookAt(cframe.Position, root.Position)
+
 	---@todo: Make the visualizations better. This is just for debugging. Right now, they don't clear up properly.
 	if Configuration.expectToggleValue("EnableVisualizations") then
 		local visualizationPart = InstanceWrapper.create(self.maid, "VisualizationPart", "Part")
 		visualizationPart.Size = size
-		visualizationPart.CFrame = cframe
+		visualizationPart.CFrame = realCFrame
 		visualizationPart.Transparency = 0.85
 		visualizationPart.Color = Color3.fromRGB(0, 255, 0)
 		visualizationPart.Parent = workspace
@@ -58,7 +102,7 @@ function Defender:hitbox(cframe, size, filter)
 		visualizationPart.Material = Enum.Material.SmoothPlastic
 	end
 
-	return #workspace:GetPartBoundsInBox(cframe, size, overlapParams) > 0
+	return #workspace:GetPartBoundsInBox(realCFrame, size, overlapParams) > 0
 end
 
 ---Logger notify.

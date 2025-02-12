@@ -20,13 +20,15 @@ local TaskSpawner = require("Utility/TaskSpawner")
 local maid = Maid.new()
 
 -- Data.
-local savedData = { mobs = {}, players = {}}
+local savedData = { mobs = {}, players = {} }
 local selectedBestiary = nil
 local selectedTab = nil
 local viewingBestiary = nil
 
 -- Main GUI.
+---@type ScreenGui
 local bestiaryGui = maid:mark(Instance.new("ScreenGui"))
+bestiaryGui.ResetOnSpawn = true
 
 -- Constants.
 local BUTTON_SELECTED_COLOR = Color3.fromRGB(89, 121, 119)
@@ -45,7 +47,7 @@ local MOB_SCRAPER_LIST = {
 		Trait_MantraDamage = "SONG",
 		Trait_Health = "VIT",
 		Trait_WeaponDamage = "PROF",
-		Level = 'LVL',
+		Level = "LVL",
 		--Stat_Agility = 'AGL',
 		--Stat_Charisma = 'CHA',
 		--Stat_Fortitude = 'FTD',
@@ -63,7 +65,7 @@ local MOB_SCRAPER_LIST = {
 		Humanoid = "Health",
 		BreakMeter = "Posture",
 		Armor = "Stagger",
-		ExpMP = 'EXP',
+		ExpMP = "EXP",
 		Ether = "Ether",
 		Sanity = "Sanity",
 		Stomach = "Stomach",
@@ -718,7 +720,8 @@ end
 ---@param character Model
 local function onAddEntity(character)
 	local player = players:FindFirstChild(character.Name)
-	local name = player and string.format("%s (%s)", player.Name, player:GetAttribute("CharacterName")) or character:GetAttribute("MOB_rich_name")
+	local name = player and string.format("%s (%s)", player.Name, player:GetAttribute("CharacterName"))
+		or character:GetAttribute("MOB_rich_name")
 
 	if not name then
 		name = character.Name
@@ -820,7 +823,7 @@ function Bestiary.init()
 		mobs.BackgroundColor3 = BUTTON_SELECTED_COLOR
 		playersButton.AutoButtonColor = true
 		playersButton.BackgroundColor3 = BUTTON_INACTIVE_COLOR
-		mobScroll.CanvasSize = UDim2.new(0, 0, 0, playerList.AbsoluteContentSize.Y);
+		mobScroll.CanvasSize = UDim2.new(0, 0, 0, playerList.AbsoluteContentSize.Y)
 
 		-- Set the selected tab.
 		selectedTab = mobScroll
@@ -845,7 +848,7 @@ function Bestiary.init()
 		mobs.BackgroundColor3 = BUTTON_INACTIVE_COLOR
 		playersButton.AutoButtonColor = true
 		playersButton.BackgroundColor3 = BUTTON_SELECTED_COLOR
-		playerScroll.CanvasSize = UDim2.new(0, 0, 0, mobList.AbsoluteContentSize.Y);
+		playerScroll.CanvasSize = UDim2.new(0, 0, 0, mobList.AbsoluteContentSize.Y)
 
 		-- Set the selected tab.
 		selectedTab = playerScroll

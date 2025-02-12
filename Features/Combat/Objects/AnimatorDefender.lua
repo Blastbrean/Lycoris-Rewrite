@@ -39,7 +39,6 @@ AnimatorDefender.__type = "AnimatorDefender"
 -- Services.
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
-local userInputService = game:GetService("UserInputService")
 
 ---Override notify to include type.
 ---@param timing Timing
@@ -100,24 +99,6 @@ function AnimatorDefender:valid(timing, action)
 		and (players:GetPlayerFromCharacter(self.entity) or self.entity:FindFirstChild("HumanController"))
 	then
 		return self:notify(timing, "Entity got attack cancelled.")
-	end
-
-	local keybinds = replicatedStorage:FindFirstChild("KeyBinds")
-	if not keybinds then
-		return self:notify(timing, "No keybinds instance found.")
-	end
-
-	local keybindsModule = require(keybinds)
-	if not keybindsModule or not keybindsModule.Current then
-		return self:notify(timing, "No keybinds module found.")
-	end
-
-	for _, keybind in next, keybindsModule.Current["Block"] or {} do
-		if not userInputService:IsKeyDown(Enum.KeyCode[tostring(keybind)]) then
-			continue
-		end
-
-		return self:notify(timing, "User is pressing down on a key binded to Block.")
 	end
 
 	return true

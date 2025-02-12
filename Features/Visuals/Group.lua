@@ -46,8 +46,8 @@ function Group:update()
 		local startIdx = (currentPart - 1) * objectsPerPart + 1
 		local endIdx = math.min(currentPart * objectsPerPart, totalElements)
 
-		for i = startIdx, endIdx do
-			updateESPObject(map[i])
+		for idx = startIdx, endIdx do
+			updateESPObject(map[idx])
 		end
 
 		self.part = self.part + 1

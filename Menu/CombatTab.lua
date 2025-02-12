@@ -176,6 +176,24 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		Text = "Roll On Parry Cooldown",
 		Default = false,
 	})
+
+	groupbox:AddToggle("CheckHoldingBlockInput", {
+		Text = "Check If Holding Block Input",
+		Tooltip = "If we are holding the block input, stop the auto defense from proceeding.",
+		Default = false,
+	})
+
+	groupbox:AddToggle("CheckWindowActive", {
+		Text = "Check If Window Is Active",
+		Tooltip = "If Roblox isn't the active window, stop the auto defense from proceeding.",
+		Default = false,
+	})
+
+	groupbox:AddToggle("CheckTextboxFocused", {
+		Text = "Check If Textbox Is Focused",
+		Tooltip = "If a textbox is focused, stop the auto defense from proceeding.",
+		Default = false,
+	})
 end
 
 -- Initialize feint detection section.

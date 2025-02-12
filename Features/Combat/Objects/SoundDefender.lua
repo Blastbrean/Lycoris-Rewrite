@@ -53,11 +53,6 @@ end
 ---@param timing SoundTiming
 ---@return boolean
 function SoundDefender:initial(timing)
-	local entity = self.animator:FindFirstAncestorWhichIsA("Model")
-	if not entity then
-		return false
-	end
-
 	local localCharacter = players.LocalPlayer.Character
 	if not localCharacter then
 		return false

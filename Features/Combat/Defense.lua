@@ -13,6 +13,9 @@ local PartDefender = require("Features/Combat/Objects/PartDefender")
 ---@module Features.Combat.Objects.SoundDefender
 local SoundDefender = require("Features/Combat/Objects/SoundDefender")
 
+---@module Features.Combat.Objects.EffectDefender
+local EffectDefender = require("Features/Combat/Objects/EffectDefender")
+
 ---@module Game.Timings.SaveManager
 local SaveManager = require("Game/Timings/SaveManager")
 
@@ -38,6 +41,33 @@ local defenderObjects = {}
 
 -- Mob animations.
 local mobAnimations = {}
+
+---Iteratively find effect owner from effect data.
+---@param data table
+---@return Model?
+local function findEffectOwner(data)
+	local live = workspace:FindFirstChild("Live")
+	if not live then
+		return
+	end
+
+	local character = players.LocalPlayer.Character
+	if not character then
+		return
+	end
+
+	local owner = nil
+
+	for _, value in next, data do
+		if typeof(value) ~= "Instance" or value.Parent ~= live or value == character then
+			continue
+		end
+
+		return value
+	end
+
+	return owner
+end
 
 ---Add animator defender.
 ---@param animator Animator
@@ -125,21 +155,24 @@ local function onGameDescendantRemoved(descendant)
 	object[descendant] = nil
 end
 
----Check if objects have blocking tasks.
----@return boolean
-function Defense.blocking()
-	for _, object in next, defenderObjects do
-		if not object:blocking() then
-			continue
-		end
-
-		return true
+---On client effect event.
+---@param name string?
+---@param data table?
+local function onClientEffectEvent(name, data)
+	if not name or not data then
+		return
 	end
+
+	local owner = findEffectOwner(data)
+	if not owner then
+		return
+	end
+
+	defenderObjects[data] = EffectDefender.new(name, owner)
 end
 
----Update defense.
----@note: We're only updating the PartDefender objects.
-function Defense.update()
+---Update part defenders.
+local function updatePartDefenders()
 	if not Configuration.expectToggleValue("EnableAutoDefense") then
 		return
 	end
@@ -154,6 +187,18 @@ function Defense.update()
 		end
 
 		object:update()
+	end
+end
+
+---Check if objects have blocking tasks.
+---@return boolean
+function Defense.blocking()
+	for _, object in next, defenderObjects do
+		if not object:blocking() then
+			continue
+		end
+
+		return true
 	end
 end
 
@@ -172,14 +217,20 @@ function Defense.init()
 		mobAnimations[animation.AnimationId] = animation
 	end
 
+	-- Requests.
+	local requests = replicatedStorage:WaitForChild("Requests")
+	local clientEffect = requests:WaitForChild("ClientEffect")
+
 	-- Signals.
 	local gameDescendantAdded = Signal.new(game.DescendantAdded)
 	local gameDescendantRemoved = Signal.new(game.DescendantRemoving)
 	local postSimulation = Signal.new(runService.PostSimulation)
+	local clientEffectEvent = Signal.new(clientEffect.OnClientEvent)
 
 	defenseMaid:add(gameDescendantAdded:connect("Defense_OnDescendantAdded", onGameDescendantAdded))
 	defenseMaid:add(gameDescendantRemoved:connect("Defense_OnDescendantRemoved", onGameDescendantRemoved))
-	defenseMaid:add(postSimulation:connect("Defense_PostSimulation", Defense.update))
+	defenseMaid:add(postSimulation:connect("Defense_ProjectilePostSimulation", updatePartDefenders))
+	defenseMaid:add(clientEffectEvent:connect("Defense_ClientEffectEvent", onClientEffectEvent))
 
 	for _, descendant in next, game:GetDescendants() do
 		onGameDescendantAdded(descendant)

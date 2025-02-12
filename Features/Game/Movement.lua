@@ -23,6 +23,9 @@ local OriginalStore = require("Utility/OriginalStore")
 ---@module Utility.OriginalStoreManager
 local OriginalStoreManager = require("Utility/OriginalStoreManager")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 ---@module Utility.Entitites
 local Entitites = require("Utility/Entitites")
 
@@ -162,20 +165,19 @@ local function updateAABypass(rootPart)
 	if not modOffice then
 		return
 	end
-	
+
 	modOffice.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
 
 	local officeCreature = modOffice:FindFirstChild("OfficeCreature")
 	if not officeCreature then
-		players.LocalPlayer:RequestStreamAroundAsync(modOffice:GetPivot().p, 100)
-		return
+		return players.LocalPlayer:RequestStreamAroundAsync(modOffice:GetPivot().Position, 100)
 	end
 
-	officeCreature.CollisionGroup = 'Default'
+	officeCreature.CollisionGroup = "Default"
 	officeCreature.CanCollide = true
 
-	firetouchinterest(officeCreature, rootPart, 0);
-    firetouchinterest(officeCreature, rootPart, 1);
+	firetouchinterest(officeCreature, rootPart, 0)
+	firetouchinterest(officeCreature, rootPart, 1)
 end
 
 ---Update attach to back.
@@ -308,7 +310,7 @@ local function updateMovement()
 		movementMaid["flyBodyVelocity"] = nil
 	end
 
-	if Configuration.expectToggleValue("AABypass") then
+	if Configuration.expectToggleValue("AAGunBypass") then
 		updateAABypass(rootPart)
 	end
 

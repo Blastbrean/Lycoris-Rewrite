@@ -36,9 +36,9 @@ function GameTab.initLocalCharacterSection(groupbox)
 
 	local flyDepBox = groupbox:AddDependencyBox()
 
-	flyDepBox:AddToggle("AABypass", {
-		Text = "Anti Air Bypass",
-		Tooltip = "Disable Anti Air Anti-Cheat while you fly, does not work with Brickwall talent.",
+	flyDepBox:AddToggle("AAGunBypass", {
+		Text = "Anti Air Gun Bypass",
+		Tooltip = "This feature does not work with the 'Brick Wall' talent. It abuses the fact that being knocked disables AA-Gun.",
 		Default = false,
 	})
 
@@ -262,12 +262,12 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 		Text = "Show Roblox Chat",
 		Default = true,
 	})
-	
+
 	groupbox:AddToggle("ShowOwnership", {
 		Text = "Show Network Ownership",
 		Default = false,
 	})
-	
+
 	local bestiaryToggle = groupbox:AddToggle("ShowBestiary", {
 		Text = "Show Bestiary UI",
 		Default = false,

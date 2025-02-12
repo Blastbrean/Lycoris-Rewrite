@@ -422,7 +422,7 @@ local function onToString(...)
 	local args = { ... }
 	local variable = args[1]
 
-	---@note: Don't virtualize this part. Unleaked KH Bypass.
+	---@note: Virtualize this part. Unleaked KH Bypass.
 	if typeof(variable) == "string" and variable:match("EEKE") and checkcaller() then
 		Logger.longNotify("[1] Screenshot this message, send it to the developers, and leave the game when possible.")
 		return error("LYCORIS_ON_TOP")

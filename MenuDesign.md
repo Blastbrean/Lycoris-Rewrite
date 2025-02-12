@@ -56,8 +56,6 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
 
     Use Counter Mantras When Avaliable
 
-    Account for Hyperarmor in Auto Defense
-
     Hold Block For Auto Defense
 
 - Builder ✅
