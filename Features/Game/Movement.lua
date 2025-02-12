@@ -85,12 +85,17 @@ local function updateNoClip(character, rootPart)
 	local knockedRestore = effectReplicatorModule:FindEffect("Knocked")
 		and Configuration.expectToggleValue("NoClipCollisionsKnocked")
 
-	for _, instance in pairs(character:GetDescendants()) do
+	for _, instance in pairs(character:GetChildren()) do
 		if not instance:IsA("BasePart") then
 			continue
 		end
-
+		
+		local bone = instance:FindFirstChild('Bone')
 		noClipMap:add(instance, "CanCollide", knockedRestore and noClipMap:get(instance):get() or false)
+
+		if bone then
+			noClipMap:add(bone, "CanCollide", knockedRestore and noClipMap:get(bone):get() or false)
+		end
 	end
 end
 
