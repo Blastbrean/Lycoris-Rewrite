@@ -70,7 +70,13 @@ function AnimatorDefender:valid(timing, action)
 		return self:notify(timing, "No character found.")
 	end
 
-	if not self:hitbox(target.root.CFrame * CFrame.new(0, 0, -(action.hitbox.Z / 2)), action.hitbox, { character }) then
+	if
+		not self:hitbox(
+			(target.root.CFrame * CFrame.new(0, 0, -(action.hitbox.Z / 2))).Position,
+			action.hitbox,
+			{ character }
+		)
+	then
 		return self:notify(timing, "Not inside of the hitbox.")
 	end
 
