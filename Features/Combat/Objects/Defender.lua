@@ -68,11 +68,11 @@ end
 
 ---Run hitbox check. Returns wheter if the hitbox is being touched.
 ---@note: This check can fail when players suddenly look...
----@param cframe CFrame
+---@param position Vector3
 ---@param size Vector3
 ---@param filter Instance[]
 ---@return boolean
-function Defender:hitbox(cframe, size, filter)
+function Defender:hitbox(position, size, filter)
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterDescendantsInstances = filter
 	overlapParams.FilterType = Enum.RaycastFilterType.Include
@@ -87,7 +87,8 @@ function Defender:hitbox(cframe, size, filter)
 		return nil
 	end
 
-	local realCFrame = CFrame.lookAt(cframe.Position, root.Position)
+	---@todo: Bad fix. The issue is that the player's current look vector will not be the same as when they attack due to a parry timing being seperate from the attack.
+	local realCFrame = CFrame.lookAt(position, root.Position)
 
 	---@todo: Make the visualizations better. This is just for debugging. Right now, they don't clear up properly.
 	if Configuration.expectToggleValue("EnableVisualizations") then
