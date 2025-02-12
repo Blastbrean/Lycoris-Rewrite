@@ -94,7 +94,7 @@ function Defender:hitbox(position, size, filter)
 	local inBounds = #workspace:GetPartBoundsInBox(realCFrame, size, overlapParams) > 0
 
 	-- Visualize color.
-	local visColor = inBounds and Color3.fromRGB(255, 0, 0) or Color3.fromRGB(0, 255, 0)
+	local visColor = inBounds and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
 
 	---@todo: Make the visualizations better. This is just for debugging. Right now, they don't clear up properly.
 	if Configuration.expectToggleValue("EnableVisualizations") then
