@@ -74,7 +74,7 @@ local function runPlayerScans()
 			PlayerScanning.scanDataCache[player] = { staffRank = result }
 		end
 
-		local backpack = localPlayer:FindFirstChild("Backpack")
+		local backpack = player:FindFirstChild("Backpack")
 		if not backpack then
 			return
 		end
