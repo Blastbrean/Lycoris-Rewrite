@@ -4,29 +4,44 @@ local KeyHandling = {}
 -- Services.
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
+-- Instances.
+local modules = replicatedStorage and replicatedStorage:WaitForChild("Modules", 3)
+local clientModuleManager = modules and modules:WaitForChild("ClientManager", 3)
+local persistence = modules and modules:WaitForChild("Persistence", 3)
+
+-- Modules.
+local integrity = persistence and persistence:WaitForChild("Integrity", 3)
+local keyHandler = clientModuleManager and clientModuleManager:WaitForChild("KeyHandler", 3)
+
 ---Get the stack of the KeyHandler module.
----@return table
+---@return table?
 function KeyHandling.getStack()
-	local modules = replicatedStorage:WaitForChild("Modules")
-	local clientModuleManager = modules:WaitForChild("ClientManager")
-	local keyHandler = clientModuleManager:WaitForChild("KeyHandler")
+	if not keyHandler then
+		return
+	end
+
 	local keyHandlerModule = require(keyHandler)
 	return debug.getupvalue(getrawmetatable(debug.getupvalue(keyHandlerModule, 8)).__index, 1)[1][1]
 end
 
 ---Get the Heaven and Hell remotes.
----@return Instance, Instance
+---@return Instance?, Instance?
 function KeyHandling.getAntiCheatRemotes()
 	local stack = KeyHandling.getStack()
+	if not stack then
+		return
+	end
+
 	return stack[86], stack[85]
 end
 
 ---Get the 'khGetRemote' funciton.
----@return function
+---@return function?
 function KeyHandling.getRemoteRaw()
-	local modules = replicatedStorage:WaitForChild("Modules")
-	local clientModuleManager = modules:WaitForChild("ClientManager")
-	local keyHandler = clientModuleManager:WaitForChild("KeyHandler")
+	if not keyHandler then
+		return
+	end
+
 	local keyHandlerModule = require(keyHandler)
 	if not keyHandlerModule then
 		return
@@ -44,9 +59,10 @@ end
 ---@param remoteName string
 ---@return Instance|nil
 function KeyHandling.getRemote(remoteName)
-	local modules = replicatedStorage:WaitForChild("Modules")
-	local persistence = modules:WaitForChild("Persistence")
-	local integrity = persistence:WaitForChild("Integrity")
+	if not integrity then
+		return
+	end
+
 	local integrityModule = require(integrity)
 	if not integrityModule then
 		return
