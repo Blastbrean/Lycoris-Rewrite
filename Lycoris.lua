@@ -28,6 +28,9 @@ local SaveManager = require("Game/Timings/SaveManager")
 ---@module Features.Visuals.Visuals
 local Visuals = require("Features/Visuals/Visuals")
 
+---@module Game.KeyHandling
+local KeyHandling = require("Game/KeyHandling")
+
 -- Services.
 local memStorageService = game:GetService("MemStorageService")
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -142,6 +145,8 @@ function Lycoris.init()
 	if game.PlaceId == LOBBY_PLACE_ID and serverHopSlot and serverHopJobId then
 		return handleMainMenuServerHop(serverHopSlot, serverHopJobId)
 	end
+
+	KeyHandling.init()
 
 	Hooking.init()
 
