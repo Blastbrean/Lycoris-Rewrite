@@ -111,13 +111,12 @@ end
 
 ---Create new PartDefender object.
 ---@param part BasePart
----@param timing PartTiming
 ---@return PartDefender?
-function PartDefender.new(part, timing)
+function PartDefender.new(part)
 	local self = setmetatable(Defender.new(), PartDefender)
 	self.part = part
 	self.timing = self:initial(self.owner or part, SaveManager.ps, nil, part.Name)
-	self.owner = guessOwnerFromPartTiming(timing)
+	self.owner = self.timing and guessOwnerFromPartTiming(self.timing)
 	self.touched = false
 	self.start = os.clock()
 	return self.timing and self or nil
