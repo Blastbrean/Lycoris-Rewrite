@@ -53,11 +53,11 @@ function Task.new(identifier, delay, punishable, after, callback, ...)
 	self.after = after
 
 	if not self.punishable or self.punishable <= 0 then
-		self.punishable = 0.7
+		self.punishable = Configuration.expectOptionValue("DefaultPunishableWindow") or 0.7
 	end
 
 	if not self.after or self.after <= 0 then
-		self.after = 0.1
+		self.after = Configuration.expectOptionValue("DefaultAfterWindow") or 0.1
 	end
 
 	return self
