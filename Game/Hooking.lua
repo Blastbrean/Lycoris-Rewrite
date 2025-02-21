@@ -173,15 +173,17 @@ local function onNameCall(...)
 	local args = { ... }
 	local self = args[1]
 
-	local heavenRemote = KeyHandling.getRemote("Heaven")
-	local hellRemote = KeyHandling.getRemote("Hell")
+	if typeof(self) == "Instance" and self:IsA("BaseRemoteEvent") then
+		local heavenRemote = KeyHandling.getRemote("Heaven")
+		local hellRemote = KeyHandling.getRemote("Hell")
 
-	if heavenRemote and self == heavenRemote then
-		return
-	end
+		if heavenRemote and self == heavenRemote then
+			return
+		end
 
-	if hellRemote and self == hellRemote then
-		return
+		if hellRemote and self == hellRemote then
+			return
+		end
 	end
 
 	if
@@ -229,15 +231,17 @@ local function onUnreliableFireServer(...)
 	local args = { ... }
 	local self = args[1]
 
-	local heavenRemote = KeyHandling.getRemote("Heaven")
-	local hellRemote = KeyHandling.getRemote("Hell")
+	if typeof(self) == "Instance" and self:IsA("BaseRemoteEvent") then
+		local heavenRemote = KeyHandling.getRemote("Heaven")
+		local hellRemote = KeyHandling.getRemote("Hell")
 
-	if heavenRemote and self == heavenRemote then
-		return
-	end
+		if heavenRemote and self == heavenRemote then
+			return
+		end
 
-	if hellRemote and self == hellRemote then
-		return
+		if hellRemote and self == hellRemote then
+			return
+		end
 	end
 
 	local leftClickRemote = KeyHandling.getRemote("LeftClick")
