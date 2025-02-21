@@ -1,12 +1,6 @@
 -- LycorisTab module.
 local LycorisTab = {}
 
--- Fetch environment.
-local environment = getgenv and getgenv() or _G
-if not environment then
-	return
-end
-
 ---@module GUI.ThemeManager
 local ThemeManager = require("GUI/ThemeManager")
 
@@ -20,7 +14,7 @@ local Library = require("GUI/Library")
 ---@param groupbox table
 function LycorisTab.initCheatSettingsSection(groupbox)
 	groupbox:AddButton("Unload Cheat", function()
-		environment.Lycoris.detach()
+		shared.Lycoris.detach()
 	end)
 end
 
