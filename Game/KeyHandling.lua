@@ -146,74 +146,74 @@ end
 
 ---Initialize the KeyHandler module.
 function KeyHandling.init()
-	for _, value in next, getgc(true) do
-		if typeof(value) ~= "table" then
-			continue
+	repeat
+		for _, value in next, getgc(true) do
+			if typeof(value) ~= "table" then
+				continue
+			end
+
+			if getrawmetatable(value) then
+				continue
+			end
+
+			local firstIndex, firstValue = next(value)
+
+			if typeof(firstIndex) ~= "number" then
+				continue
+			end
+
+			if typeof(firstValue) ~= "number" then
+				continue
+			end
+
+			if firstValue < 100000 or firstValue > 100000000 then
+				continue
+			end
+
+			if #value ~= 68 then
+				continue
+			end
+
+			randomTable = value
 		end
 
-		if getrawmetatable(value) then
-			continue
+		for _, value in next, getgc(true) do
+			if typeof(value) ~= "table" then
+				continue
+			end
+
+			if getrawmetatable(value) then
+				continue
+			end
+
+			if #value ~= 0 then
+				continue
+			end
+
+			local firstIndex, firstValue = next(value)
+
+			if typeof(firstIndex) ~= "string" then
+				continue
+			end
+			if typeof(firstValue) ~= "Instance" then
+				continue
+			end
+
+			if not firstValue:IsA("BaseRemoteEvent") then
+				continue
+			end
+
+			remoteTable = value
 		end
 
-		local firstIndex, firstValue = next(value)
-
-		if typeof(firstIndex) ~= "number" then
-			continue
-		end
-
-		if typeof(firstValue) ~= "number" then
-			continue
-		end
-
-		if firstValue < 100000 or firstValue > 100000000 then
-			continue
-		end
-
-		if #value ~= 68 then
-			continue
-		end
-
-		randomTable = value
-	end
-
-	for _, value in next, getgc(true) do
-		if typeof(value) ~= "table" then
-			continue
-		end
-
-		if getrawmetatable(value) then
-			continue
-		end
-
-		if #value ~= 0 then
-			continue
-		end
-
-		local firstIndex, firstValue = next(value)
-
-		if typeof(firstIndex) ~= "string" then
-			continue
-		end
-		if typeof(firstValue) ~= "Instance" then
-			continue
-		end
-
-		if not firstValue:IsA("BaseRemoteEvent") then
-			continue
-		end
-
-		remoteTable = value
-	end
+		task.wait(0.5)
+	until randomTable and remoteTable
 end
 
 ---Get remote from a specific remote name.
 ---@param remoteName string
 ---@return Instance|nil
 function KeyHandling.getRemote(remoteName)
-	if not remoteTable then
-		return Logger.warn("No remote table for '%s' remote.", remoteName)
-	end
-
 	local hashedRemoteName = hashCache[remoteName] or hash(remoteName)
 
 	if not hashCache[remoteName] then
