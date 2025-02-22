@@ -177,6 +177,10 @@ local function onWorkspaceChildAdded(child)
 		return emplaceObject(child, PartESP.new("Artifact", child, "Artifact"))
 	end
 
+	if name == "WindrunnerOrb" and child:IsA("BasePart") then
+		return emplaceObject(child, PartESP.new("WindrunnerOrb", child, "Windrunner Orb"))
+	end
+
 	if name == "DepthsWhirlpool" then
 		return emplaceObject(child, ModelESP.new("Whirlpool", child, "Whirlpool"))
 	end
