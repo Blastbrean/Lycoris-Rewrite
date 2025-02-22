@@ -77,7 +77,7 @@ function Targeting.viable()
 			continue
 		end
 
-		if PlayerScanning.isAlly(entity) and Configuration.expectToggleValue("IgnoreAllies") then
+		if PlayerScanning.isAlly(playerFromCharacter) and Configuration.expectToggleValue("IgnoreAllies") then
 			continue
 		end
 
