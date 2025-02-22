@@ -16,6 +16,13 @@ if not lycoris_init then
 	lycoris_init.current_role = "N/A"
 end
 
+-- Initialize Luraph globals if they do not exist.
+if not LPH_OBFUSCATED then
+	loadstring([[
+		function LPH_NO_VIRTUALIZE(...) return ... end
+	]])()
+end
+
 ---@module Utility.Profiler
 local Profiler = require("Utility/Profiler")
 

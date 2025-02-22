@@ -36,9 +36,29 @@ local oldTick = nil
 local oldCoroutineWrap = nil
 local oldTaskSpawn = nil
 
+---Find function level of InputClient.
+---@return number?, table?
+local findInputClientLevel = LPH_NO_VIRTUALIZE(function()
+	for level = 1, math.huge do
+		-- Get info.
+		local success, info = pcall(debug.getinfo, level)
+		if not success or not info then
+			break
+		end
+
+		-- Check source.
+		if not info.source:match("InputClient") then
+			continue
+		end
+
+		-- Return level & information.
+		return level, info
+	end
+end)
+
 ---Replicate gesture.
 ---@param gestureName string
-local function replicateGesture(gestureName)
+local replicateGesture = LPH_NO_VIRTUALIZE(function(gestureName)
 	local assets = replicatedStorage:FindFirstChild("Assets")
 	local anims = assets and assets:FindFirstChild("Anims")
 	local gestures = anims and anims:FindFirstChild("Gestures")
@@ -102,11 +122,11 @@ local function replicateGesture(gestureName)
 	mobileActionEffect:Remove()
 
 	stopGestureAnimations()
-end
+end)
 
 ---Modify ambience color.
 ---@param value Color3
-local function modifyAmbienceColor(value)
+local modifyAmbienceColor = LPH_NO_VIRTUALIZE(function(value)
 	local ambienceColor = Configuration.expectOptionValue("AmbienceColor")
 	local shouldUseOriginalAmbienceColor = Configuration.expectToggleValue("OriginalAmbienceColor")
 
@@ -122,11 +142,11 @@ local function modifyAmbienceColor(value)
 	blue = math.min(blue + brightness, 255)
 
 	return Color3.fromRGB(red, green, blue)
-end
+end)
 
 ---On tick.
 ---@return any
-local function onTick(...)
+local onTick = LPH_NO_VIRTUALIZE(function(...)
 	if checkcaller() then
 		return oldTick(...)
 	end
@@ -135,12 +155,12 @@ local function onTick(...)
 		return oldTick(...)
 	end
 
-	local debugInfoResult = debug.getinfo(3)
-	if not debugInfoResult.source:match("InputClient") then
+	local level, info = findInputClientLevel()
+	if not level or not info then
 		return oldTick(...)
 	end
 
-	local firstConstantSuccess, firstConstant = pcall(debug.getconstant, debugInfoResult.func, 1)
+	local firstConstantSuccess, firstConstant = pcall(debug.getconstant, info.func, 1)
 	if not firstConstantSuccess then
 		return oldTick(...)
 	end
@@ -149,10 +169,10 @@ local function onTick(...)
 		return oldTick(...)
 	end
 
-	local tickStack = debug.getstack(3)
+	local tickStack = debug.getstack(level)
+	local tickStackValue = tickStack[6]
 
 	---@note: Filter for any other spots that might be using tick() through the stack.
-	local tickStackValue = tickStack[6]
 	if tickStackValue ~= "W" and tickStackValue ~= "A" and tickStackValue ~= "S" and tickStackValue ~= "D" then
 		return oldTick(...)
 	end
@@ -164,11 +184,11 @@ local function onTick(...)
 
 	---@note: Set the timestamp set by sprinting to -math.huge so it's always over 0.25s.
 	return -math.huge
-end
+end)
 
 ---On name call.
 ---@return any
-local function onNameCall(...)
+local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 	if checkcaller() then
 		return oldNameCall(...)
 	end
@@ -220,11 +240,11 @@ local function onNameCall(...)
 	end
 
 	return oldNameCall(...)
-end
+end)
 
 ---On unreliable fire server.
 ---@return any
-local function onUnreliableFireServer(...)
+local onUnreliableFireServer = LPH_NO_VIRTUALIZE(function(...)
 	if checkcaller() then
 		return oldUnreliableFireServer(...)
 	end
@@ -257,11 +277,11 @@ local function onUnreliableFireServer(...)
 	end
 
 	return oldUnreliableFireServer(...)
-end
+end)
 
 ---On fire server.
 ---@return any
-local function onFireServer(...)
+local onFireServer = LPH_NO_VIRTUALIZE(function(...)
 	if checkcaller() then
 		return oldFireServer(...)
 	end
@@ -281,11 +301,11 @@ local function onFireServer(...)
 	end
 
 	return oldFireServer(...)
-end
+end)
 
 ---On new index.
 ---@return any
-local function onNewIndex(...)
+local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 	if checkcaller() then
 		return oldNewIndex(...)
 	end
@@ -310,60 +330,78 @@ local function onNewIndex(...)
 	end
 
 	return oldNewIndex(...)
-end
+end)
+
+---On coroutine call.
+---@return any
+local onCoroutineCall = LPH_NO_VIRTUALIZE(function(arg)
+	if arg == "" then
+		return ""
+	else
+		return "LYCORIS_ON_TOP"
+	end
+end)
 
 ---On coroutine wrap.
 ---@return any
-local function onCoroutineWrap(...)
+local onCoroutineWrap = LPH_NO_VIRTUALIZE(function(...)
 	if checkcaller() then
 		return oldCoroutineWrap(...)
 	end
 
+	local level, info = findInputClientLevel()
+	if not level or not info then
+		return oldCoroutineWrap(...)
+	end
+
+	-- Fetch arguments.
 	local args = { ... }
 
 	---@note: Prevent InputClient detection 16.2 from happening so the Disconnect call never happens.
-	if debug.getinfo(3).source:match("InputClient") then
-		local function onCoroutineCall(arg1)
-			if arg1 == "" then
-				return ""
-			else
-				return "LYCORIS_ON_TOP"
-			end
-		end
+	args[1] = onCoroutineCall
 
-		args[1] = onCoroutineCall
-	end
-
+	-- Return with modified arguments.
 	return oldCoroutineWrap(unpack(args))
-end
+end)
 
 ---On task spawn.
 ---@return any
-local function onTaskSpawn(...)
+local onTaskSpawn = LPH_NO_VIRTUALIZE(function(...)
 	if checkcaller() then
 		return oldTaskSpawn(...)
 	end
 
-	if not debug.getinfo(3).source:match("InputClient") then
+	local level, info = findInputClientLevel()
+	if not level or not info then
 		return oldTaskSpawn(...)
 	end
 
+	-- Arguments.
 	local args = { ... }
 	local func = args[1]
-	local consts = debug.getconstants(func)
-	local stack = debug.getstack(3)
 
-	if (#consts == 0 or consts[2] == "Parent") and not table.find(consts, "LightAttack") then
+	-- Data.
+	local consts = debug.getconstants(func)
+	local stack = debug.getstack(level)
+
+	-- Check for anticheat task.
+	local isAnticheatTask = (#consts == 0 or consts[2] == "Parent") and not table.find(consts, "LightAttack")
+
+	-- Okay, replace arguments.
+	if isAnticheatTask then
 		args[1] = function() end
-	elseif stack and stack[2] ~= Enum.HumanoidStateType.Landed then
+	end
+
+	-- Check if this is something where we would want to update the InputClient cache.
+	if not isAnticheatTask and stack and stack[2] ~= Enum.HumanoidStateType.Landed then
 		InputClient.update(consts)
 	end
 
+	-- Return.
 	return oldTaskSpawn(unpack(args))
-end
+end)
 
 ---Hooking initialization.
----@note: Careful with checkcaller() on hooks where it is called from us during KeyHandling phase.
 function Hooking.init()
 	local localPlayer = playersService.LocalPlayer
 
