@@ -215,9 +215,6 @@ end)
 ---@param remoteName string
 ---@return Instance|nil
 KeyHandling.getRemote = LPH_NO_VIRTUALIZE(function(remoteName)
-	if remoteName ~= "Heaven" and remoteName ~= "Hell" then
-		print(remoteTable[hash(remoteName)], hash(remoteName), remoteName, #remoteName, hashCache[remoteName])
-	end
 	local hashedRemoteName = hashCache[remoteName] or hash(remoteName)
 
 	if not hashCache[remoteName] then

@@ -10,6 +10,9 @@ local Targeting = require("Features/Combat/Targeting")
 ---@module Utility.Signal
 local Signal = require("Utility/Signal")
 
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
 ---@class SoundDefender: Defender
 ---@field owner Model? The owner of the part.
 ---@field sound Sound The sound that we're defending.
@@ -46,13 +49,17 @@ end)
 ---Process sound playing.
 ---@param self SoundDefender
 SoundDefender.process = LPH_NO_VIRTUALIZE(function(self)
-	if players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character then
-		return
-	end
-
 	---@type SoundTiming?
 	local timing = self:initial(self.owner, SaveManager.ss, self.owner.Name, tostring(self.sound.SoundId))
 	if not timing then
+		return
+	end
+
+	if not Configuration.expectToggleValue("EnableAutoDefense") then
+		return
+	end
+
+	if players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character then
 		return
 	end
 

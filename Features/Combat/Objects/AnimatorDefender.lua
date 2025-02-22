@@ -143,10 +143,6 @@ end)
 ---@todo: Logger module.
 ---@param track AnimationTrack
 AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
-	if not Configuration.expectToggleValue("EnableAutoDefense") then
-		return
-	end
-
 	if track.Priority == Enum.AnimationPriority.Core then
 		return
 	end
@@ -169,14 +165,18 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 		)
 	end
 
-	local localCharacter = players.LocalPlayer.Character
-	if localCharacter and self.entity == localCharacter then
-		return
-	end
-
 	---@type AnimationTiming?
 	local timing = self:initial(self.entity, SaveManager.as, self.entity.Name, tostring(track.Animation.AnimationId))
 	if not timing then
+		return
+	end
+
+	if not Configuration.expectToggleValue("EnableAutoDefense") then
+		return
+	end
+
+	local localCharacter = players.LocalPlayer.Character
+	if localCharacter and self.entity == localCharacter then
 		return
 	end
 

@@ -40,13 +40,13 @@ end)
 
 ---Process effect.
 EffectDefender.process = LPH_NO_VIRTUALIZE(function(self)
-	if players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character then
-		return
-	end
-
 	---@type EffectTiming?
 	local timing = self:initial(self.owner, SaveManager.es, self.owner.Name, self.name)
 	if not timing then
+		return
+	end
+
+	if players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character then
 		return
 	end
 

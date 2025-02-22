@@ -23,6 +23,7 @@ return LPH_NO_VIRTUALIZE(function()
 	local Toggles = {}
 	local Options = {}
 	local ColorPickers = {}
+	local Tasks = {}
 	local ContextMenus = {}
 	local Tooltips = {}
 	local ModeSelectFrames = {}
@@ -200,7 +201,7 @@ return LPH_NO_VIRTUALIZE(function()
 		XSize = XSize + 20
 		YSize = YSize + 22
 
-		Library.InfoLoggerFrame.Size = UDim2.new(0, math.clamp(XSize, 210, 640), 0, math.clamp(YSize, 24, 180))
+		Library.InfoLoggerFrame.Size = UDim2.new(0, math.clamp(XSize, 210, 800), 0, math.clamp(YSize, 24, 180))
 	end
 
 	function Library:AddEntry(type, key, entry)
@@ -279,79 +280,93 @@ return LPH_NO_VIRTUALIZE(function()
 	end
 
 	function Library:AddMissEntry(type, key, name, distance)
-		local ifd = Library.InfoLoggerData
-		local mde = ifd.MissingDataEntries
-		local bl = ifd.KeyBlacklistList
+		Tasks[#Tasks + 1] = task.spawn(function()
+			local ifd = Library.InfoLoggerData
+			local mde = ifd.MissingDataEntries
+			local bl = ifd.KeyBlacklistList
 
-		if bl[key] then
-			return
-		end
+			if bl[key] then
+				return
+			end
 
-		local function getEntriesForThisType()
-			local entries = {}
+			local function getEntriesForThisType()
+				local entries = {}
 
-			for Idx, Entry in next, mde do
-				if Entry.Type == type then
-					table.insert(entries, { [1] = Entry, [2] = Idx })
+				for Idx, Entry in next, mde do
+					if Entry.Type == type then
+						table.insert(entries, { [1] = Entry, [2] = Idx })
+					end
 				end
+
+				return entries
 			end
 
-			return entries
-		end
+			-- Pop the last element if we're under 30 entries for this type.
+			-- Max of 30 entries per type; in total - 120 for all types.
 
-		-- Pop the last element if we're under 30 entries for this type.
-		-- Max of 30 entries per type; in total - 120 for all types.
+			local entries = getEntriesForThisType()
+			local last = entries[#entries]
 
-		local entries = getEntriesForThisType()
-		local last = entries[#entries]
+			if #entries > 30 and last then
+				last[1].Label:Destroy()
 
-		if #entries > 30 and last then
-			last[1].Label:Destroy()
-
-			table.remove(mde, last[2])
-		end
-
-		-- Create a new label.
-		---@type TextLabel
-		local label = Library:CreateLabel({
-			Text = name and string.format("(%.2fm away) Key '%s' from '%s' is missing.", distance, key, name)
-				or string.format("(%.2fm away) Key '%s' is missing.", distance, key),
-			TextXAlignment = Enum.TextXAlignment.Left,
-			Size = UDim2.new(1, 0, 0, 14),
-			LayoutOrder = 1,
-			TextSize = 12,
-			Visible = true,
-			ZIndex = 306,
-			Parent = nil,
-		}, true)
-
-		Library:AddToRegistry(label, {
-			TextColor3 = "FontColor",
-		}, true)
-
-		-- entry
-		local entry = { Label = label, Key = key, Type = type }
-
-		-- Copy & blacklist.
-		label.InputBegan:Connect(function(Input)
-			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-				setclipboard(key)
-				Library:Notify(string.format("Copied key '%s' to clipboard.", key))
+				table.remove(mde, last[2])
 			end
 
-			if Input.UserInputType == Enum.UserInputType.MouseButton2 then
-				ifd.KeyBlacklistList[key] = true
-				ifd.KeyBlacklistHistory[#ifd.KeyBlacklistHistory + 1] = key
-				Library:RefreshInfoLogger()
-				Library:Notify(string.format("Blacklisted key '%s' from list.", key))
+			local lol = nil
+			local asset = typeof(key) == "string" and tonumber(key:sub(14, 40)) or nil
+
+			if asset then
+				lol = game:GetService("MarketplaceService"):GetProductInfo(asset)
 			end
+
+			-- Create a new label.
+			---@type TextLabel
+			local label = Library:CreateLabel({
+				Text = name and string.format(
+					"(%.2fm away) (%s) Key '%s' from '%s' is missing.",
+					lol and lol.Name or "N/A",
+					distance,
+					key,
+					name
+				) or string.format("(%.2fm away) Key '%s' is missing.", distance, key),
+				TextXAlignment = Enum.TextXAlignment.Left,
+				Size = UDim2.new(1, 0, 0, 14),
+				LayoutOrder = 1,
+				TextSize = 12,
+				Visible = true,
+				ZIndex = 306,
+				Parent = nil,
+			}, true)
+
+			Library:AddToRegistry(label, {
+				TextColor3 = "FontColor",
+			}, true)
+
+			-- entry
+			local entry = { Label = label, Key = key, Type = type }
+
+			-- Copy & blacklist.
+			label.InputBegan:Connect(function(Input)
+				if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+					setclipboard(key)
+					Library:Notify(string.format("Copied key '%s' to clipboard.", key))
+				end
+
+				if Input.UserInputType == Enum.UserInputType.MouseButton2 then
+					ifd.KeyBlacklistList[key] = true
+					ifd.KeyBlacklistHistory[#ifd.KeyBlacklistHistory + 1] = key
+					Library:RefreshInfoLogger()
+					Library:Notify(string.format("Blacklisted key '%s' from list.", key))
+				end
+			end)
+
+			-- Create a new entry for later destroying.
+			table.insert(mde, 1, entry)
+
+			-- Refresh.
+			Library:RefreshInfoLogger()
 		end)
-
-		-- Create a new entry for later destroying.
-		table.insert(mde, 1, entry)
-
-		-- Refresh.
-		Library:RefreshInfoLogger()
 	end
 
 	function Library:ApplyTextStroke(Inst)
@@ -614,6 +629,12 @@ return LPH_NO_VIRTUALIZE(function()
 	end
 
 	function Library:Unload()
+		for _, Task in next, Tasks do
+			if coroutine.status(Task) == "suspended" then
+				task.cancel(Task)
+			end
+		end
+
 		-- Unload all of the signals
 		for Idx = #Library.Signals, 1, -1 do
 			local Connection = table.remove(Library.Signals, Idx)
