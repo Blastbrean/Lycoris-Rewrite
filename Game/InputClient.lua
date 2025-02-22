@@ -269,11 +269,6 @@ InputClient.parry = LPH_NO_VIRTUALIZE(function()
 		return Logger.warn("Cannot parry without effect replicator module.")
 	end
 
-	local blockRemote = KeyHandling.getRemote("Block")
-	if not blockRemote then
-		return Logger.warn("Cannot parry without block remote.")
-	end
-
 	InputClient.bstart()
 
 	InputClient.bend()

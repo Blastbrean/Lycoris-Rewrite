@@ -43,7 +43,7 @@ end
 ---@param len number
 ---@return string
 local function preprocess(msg, len)
-	return msg .. "\128" .. string.rep("\000", 64 - (len + 9) % 64) .. nts(8 * len, 8)
+	return msg .. string.char(128) .. string.rep(string.char(0), 64 - (len + 9) % 64) .. nts(8 * len, 8)
 end
 
 ---Process SHA-256 digest block.
@@ -214,7 +214,10 @@ end)
 ---Get remote from a specific remote name.
 ---@param remoteName string
 ---@return Instance|nil
-function KeyHandling.getRemote(remoteName)
+KeyHandling.getRemote = LPH_NO_VIRTUALIZE(function(remoteName)
+	if remoteName ~= "Heaven" and remoteName ~= "Hell" then
+		print(remoteTable[hash(remoteName)], hash(remoteName), remoteName, #remoteName, hashCache[remoteName])
+	end
 	local hashedRemoteName = hashCache[remoteName] or hash(remoteName)
 
 	if not hashCache[remoteName] then
@@ -222,7 +225,7 @@ function KeyHandling.getRemote(remoteName)
 	end
 
 	return remoteTable[hashedRemoteName]
-end
+end)
 
 -- Return KeyHandling module.
 return KeyHandling
