@@ -316,12 +316,23 @@ end
 
 ---Clean up all tasks.
 Defender.clean = LPH_NO_VIRTUALIZE(function(self)
+	-- Was there a start block?
+	local blocking = false
+
 	for idx, task in next, self.tasks do
 		-- Cancel task.
 		task:cancel()
 
 		-- Clear in table.
 		self.tasks[idx] = nil
+
+		-- Check.
+		blocking = blocking or task.identifier == "Start Block"
+	end
+
+	-- End block if we're blocking.
+	if blocking then
+		InputClient.bend()
 	end
 end)
 
@@ -336,7 +347,7 @@ Defender.actions = LPH_NO_VIRTUALIZE(function(self, timing, multiplier)
 		-- Add action.
 		self:mark(
 			Task.new(
-				string.format("Action_%s", action._type),
+				action._type,
 				(action:when() - ping) * (multiplier or 1),
 				timing.punishable,
 				timing.after,

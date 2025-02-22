@@ -6,6 +6,7 @@ local Configuration = require("Utility/Configuration")
 
 ---@class Task
 ---@field thread thread
+---@field identifier string
 ---@field when number A timestamp when the task will be executed.
 ---@field punishable number A window in seconds where the task can be punished.
 ---@field after number A window in seconds where the task can be executed.
@@ -47,7 +48,8 @@ end
 ---@return Task
 function Task.new(identifier, delay, punishable, after, callback, ...)
 	local self = setmetatable({}, Task)
-	self.thread = TaskSpawner.delay(identifier, delay, callback, ...)
+	self.thread = TaskSpawner.delay("Action_" .. identifier, delay, callback, ...)
+	self.identifier = identifier
 	self.when = os.clock() + delay
 	self.punishable = punishable
 	self.after = after
