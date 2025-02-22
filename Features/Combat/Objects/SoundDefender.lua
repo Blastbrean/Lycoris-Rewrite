@@ -22,10 +22,11 @@ SoundDefender.__type = "Sound"
 local players = game:GetService("Players")
 
 ---Check if we're in a valid state to proceed with the action.
+---@param self SoundDefender
 ---@param timing PartTiming
 ---@param action Action
 ---@return boolean
-function SoundDefender:valid(timing, action)
+SoundDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	if self.owner and not Targeting.find(self.owner) then
 		return self:notify(timing, "Not a viable target.")
 	end
@@ -40,10 +41,11 @@ function SoundDefender:valid(timing, action)
 	end
 
 	return true
-end
+end)
 
----Process sound playing
-function SoundDefender:process()
+---Process sound playing.
+---@param self SoundDefender
+SoundDefender.process = LPH_NO_VIRTUALIZE(function(self)
 	if players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character then
 		return
 	end
@@ -59,7 +61,7 @@ function SoundDefender:process()
 
 	-- Add actions.
 	return self:actions(timing, 1.0)
-end
+end)
 
 ---Create new SoundDefender object.
 ---@param sound Sound

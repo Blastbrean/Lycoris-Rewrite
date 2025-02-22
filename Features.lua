@@ -38,6 +38,7 @@ local Logger = require("Utility/Logger")
 local Defense = require("Features/Combat/Defense")
 
 ---Initialize features.
+---@note: Careful with features that have entire return LPH_NO_VIRTUALIZE(function() blocks. We assume that we don't care about what's placed in there.
 function Features.init()
 	Defense.init()
 	Visuals.init()

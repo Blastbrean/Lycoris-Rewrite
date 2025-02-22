@@ -195,12 +195,20 @@ end
 
 ---Intelligence farming.
 function InteligenceFarm.init()
+	-- Attach the inteligence farm.
 	autoIntelligenceMaid:add(renderStepped:connect("AttributeFarmIntelligence_OnPreRender", updateInteligence))
+
+	-- Log.
+	Logger.warn("Inteligence Farm initialized.")
 end
 
 ---Detach the inteligence farm.
 function InteligenceFarm.detach()
+	-- Clean the maid.
 	autoIntelligenceMaid:clean()
+
+	-- Log.
+	Logger.warn("Inteligence Farm detached.")
 end
 
 -- Return InteligenceFarm module

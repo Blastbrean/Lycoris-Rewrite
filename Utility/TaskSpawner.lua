@@ -20,9 +20,12 @@ function TaskSpawner.delay(label, delay, callback, ...)
 	end
 
 	-- Wrap callback in profiler and error handling.
-	local taskFunction = Profiler.wrap(label, function(...)
-		return xpcall(callback, onTaskFunctionError, ...)
-	end)
+	local taskFunction = Profiler.wrap(
+		label,
+		LPH_NO_VIRTUALIZE(function(...)
+			return xpcall(callback, onTaskFunctionError, ...)
+		end)
+	)
 
 	return task.delay(delay, taskFunction, ...)
 end
@@ -39,9 +42,12 @@ function TaskSpawner.spawn(label, callback, ...)
 	end
 
 	-- Wrap callback in profiler and error handling.
-	local taskFunction = Profiler.wrap(label, function(...)
-		return xpcall(callback, onTaskFunctionError, ...)
-	end)
+	local taskFunction = Profiler.wrap(
+		label,
+		LPH_NO_VIRTUALIZE(function(...)
+			return xpcall(callback, onTaskFunctionError, ...)
+		end)
+	)
 
 	-- Return reference.
 	return task.spawn(taskFunction, ...)

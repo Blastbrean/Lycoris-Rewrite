@@ -32,7 +32,7 @@ local playerScanningMaid = Maid.new()
 local lastRateLimit = nil
 
 ---Run player scans.
-local function runPlayerScans()
+local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 	local localPlayer = players.LocalPlayer
 	if not localPlayer then
 		return
@@ -142,7 +142,7 @@ local function runPlayerScans()
 
 		Logger.warn("Player scanning finished scanning %s in queue.", player.Name)
 	end
-end
+end)
 
 ---Are there moderators in the server?
 ---@return table

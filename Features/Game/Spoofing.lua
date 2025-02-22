@@ -1,181 +1,192 @@
----@module Utility.Maid
-local Maid = require("Utility/Maid")
+return LPH_NO_VIRTUALIZE(function()
+	---@module Utility.Maid
+	local Maid = require("Utility/Maid")
 
----@module Utility.Signal
-local Signal = require("Utility/Signal")
+	---@module Utility.Signal
+	local Signal = require("Utility/Signal")
 
----@module Utility.Configuration
-local Configuration = require("Utility/Configuration")
+	---@module Utility.Configuration
+	local Configuration = require("Utility/Configuration")
 
--- Spoofing module.
----@note: This is ugly as fuck.
-local Spoofing = {}
+	---@module Utility.Logger
+	local Logger = require("Utility/Logger")
 
--- Services.
-local runService = game:GetService("RunService")
-local starterGui = game:GetService("StarterGui")
-local players = game:GetService("Players")
-local collectionService = game:GetService("CollectionService")
+	-- Spoofing module.
+	---@note: This is ugly as fuck.
+	local Spoofing = {}
 
--- Signals.
-local renderStepped = Signal.new(runService.RenderStepped)
+	-- Services.
+	local runService = game:GetService("RunService")
+	local starterGui = game:GetService("StarterGui")
+	local players = game:GetService("Players")
+	local collectionService = game:GetService("CollectionService")
 
--- Maid.
-local spoofingMaid = Maid.new()
+	-- Signals.
+	local renderStepped = Signal.new(runService.RenderStepped)
 
--- Konga's clutch ring instance.
-local fakeKongaClutchRing = Instance.new("Folder")
-fakeKongaClutchRing.Name = "Ring:Konga's Clutch Ring"
+	-- Maid.
+	local spoofingMaid = Maid.new()
 
--- Freestyler's band instance.
-local fakeFreestylerBand = Instance.new("Folder")
-fakeFreestylerBand.Name = "Ring:Freestyler's Band"
+	-- Konga's clutch ring instance.
+	local fakeKongaClutchRing = Instance.new("Folder")
+	fakeKongaClutchRing.Name = "Ring:Konga's Clutch Ring"
 
--- Variables.
-local originalTags = nil
+	-- Freestyler's band instance.
+	local fakeFreestylerBand = Instance.new("Folder")
+	fakeFreestylerBand.Name = "Ring:Freestyler's Band"
 
--- Constants.
-local EXPECTED_EMOTE_CHILDREN = 20 + 1
-local EMOTE_SPOOFER_TAGS = {
-	"EmotePack1",
-	"EmotePack2",
-	"MetalBadge",
-}
+	-- Variables.
+	local originalTags = nil
 
----Update emote spoofer.
-local function updateEmoteSpoofer()
-	local localPlayer = players.LocalPlayer
-	if not localPlayer then
-		return
-	end
+	-- Constants.
+	local EXPECTED_EMOTE_CHILDREN = 20 + 1
+	local EMOTE_SPOOFER_TAGS = {
+		"EmotePack1",
+		"EmotePack2",
+		"MetalBadge",
+	}
 
-	local playerGui = localPlayer.PlayerGui
-	if not playerGui then
-		return
-	end
-
-	local gestureGui = playerGui:FindFirstChild("GestureGui")
-	if not gestureGui then
-		return
-	end
-
-	local mainFrame = gestureGui:FindFirstChild("MainFrame")
-	local gestureScroll = mainFrame and mainFrame:FindFirstChild("GestureScroll")
-	if not gestureScroll then
-		return
-	end
-
-	local starterGestureGui = starterGui:FindFirstChild("GestureGui")
-	if not starterGestureGui then
-		return
-	end
-
-	if not originalTags then
-		originalTags = localPlayer:GetTags()
-	end
-
-	for _, tag in next, EMOTE_SPOOFER_TAGS do
-		if originalTags[tag] then
-			continue
+	---Update emote spoofer.
+	local function updateEmoteSpoofer()
+		local localPlayer = players.LocalPlayer
+		if not localPlayer then
+			return
 		end
 
-		collectionService:AddTag(localPlayer, tag)
-	end
-
-	if #gestureScroll:GetChildren() >= EXPECTED_EMOTE_CHILDREN then
-		return
-	end
-
-	gestureGui:Destroy()
-
-	local newGestureGui = starterGestureGui:Clone()
-	newGestureGui.Parent = playerGui
-end
-
----Reset emote spoofer.
-local function resetEmoteSpoofer()
-	if not originalTags then
-		return
-	end
-
-	local localPlayer = players.LocalPlayer
-	if not localPlayer then
-		return
-	end
-
-	for _, tag in next, EMOTE_SPOOFER_TAGS do
-		if not originalTags[tag] then
-			continue
+		local playerGui = localPlayer.PlayerGui
+		if not playerGui then
+			return
 		end
 
-		collectionService:RemoveTag(localPlayer, tag)
+		local gestureGui = playerGui:FindFirstChild("GestureGui")
+		if not gestureGui then
+			return
+		end
+
+		local mainFrame = gestureGui:FindFirstChild("MainFrame")
+		local gestureScroll = mainFrame and mainFrame:FindFirstChild("GestureScroll")
+		if not gestureScroll then
+			return
+		end
+
+		local starterGestureGui = starterGui:FindFirstChild("GestureGui")
+		if not starterGestureGui then
+			return
+		end
+
+		if not originalTags then
+			originalTags = localPlayer:GetTags()
+		end
+
+		for _, tag in next, EMOTE_SPOOFER_TAGS do
+			if originalTags[tag] then
+				continue
+			end
+
+			collectionService:AddTag(localPlayer, tag)
+		end
+
+		if #gestureScroll:GetChildren() >= EXPECTED_EMOTE_CHILDREN then
+			return
+		end
+
+		gestureGui:Destroy()
+
+		local newGestureGui = starterGestureGui:Clone()
+		newGestureGui.Parent = playerGui
 	end
-end
 
----Update freestyler band spoof.
-local function updateFreestylerBandSpoof()
-	local localPlayer = players.LocalPlayer
-	if not localPlayer then
-		return
+	---Reset emote spoofer.
+	local function resetEmoteSpoofer()
+		if not originalTags then
+			return
+		end
+
+		local localPlayer = players.LocalPlayer
+		if not localPlayer then
+			return
+		end
+
+		for _, tag in next, EMOTE_SPOOFER_TAGS do
+			if not originalTags[tag] then
+				continue
+			end
+
+			collectionService:RemoveTag(localPlayer, tag)
+		end
 	end
 
-	local backpack = localPlayer:FindFirstChild("Backpack")
-	if not backpack then
-		return
+	---Update freestyler band spoof.
+	local function updateFreestylerBandSpoof()
+		local localPlayer = players.LocalPlayer
+		if not localPlayer then
+			return
+		end
+
+		local backpack = localPlayer:FindFirstChild("Backpack")
+		if not backpack then
+			return
+		end
+
+		fakeFreestylerBand.Parent = backpack
 	end
 
-	fakeFreestylerBand.Parent = backpack
-end
+	---Update konga clutch ring spoof.
+	local function updateKongaClutchRingSpoof()
+		local localPlayer = players.LocalPlayer
+		if not localPlayer then
+			return
+		end
 
----Update konga clutch ring spoof.
-local function updateKongaClutchRingSpoof()
-	local localPlayer = players.LocalPlayer
-	if not localPlayer then
-		return
+		local backpack = localPlayer:FindFirstChild("Backpack")
+		if not backpack then
+			return
+		end
+
+		fakeKongaClutchRing.Parent = backpack
 	end
 
-	local backpack = localPlayer:FindFirstChild("Backpack")
-	if not backpack then
-		return
+	---Update spoofing.
+	local function updateSpoofing()
+		if Configuration.expectToggleValue("EmoteSpoofer") then
+			updateEmoteSpoofer()
+		else
+			resetEmoteSpoofer()
+		end
+
+		if Configuration.expectToggleValue("FreestylersBandSpoof") then
+			updateFreestylerBandSpoof()
+		else
+			fakeFreestylerBand.Parent = nil
+		end
+
+		if Configuration.expectToggleValue("KongaClutchRingSpoof") then
+			updateKongaClutchRingSpoof()
+		else
+			fakeFreestylerBand.Parent = nil
+		end
 	end
 
-	fakeKongaClutchRing.Parent = backpack
-end
+	---Initialize spoofing.
+	function Spoofing.init()
+		-- Attach.
+		spoofingMaid:add(renderStepped:connect("Spoofing_OnRenderStepped", updateSpoofing))
 
----Update spoofing.
-local function updateSpoofing()
-	if Configuration.expectToggleValue("EmoteSpoofer") then
-		updateEmoteSpoofer()
-	else
+		-- Log.
+		Logger.warn("Spoofing initialized.")
+	end
+
+	---Detach spoofing.
+	function Spoofing.detach()
+		spoofingMaid:clean()
 		resetEmoteSpoofer()
-	end
 
-	if Configuration.expectToggleValue("FreestylersBandSpoof") then
-		updateFreestylerBandSpoof()
-	else
 		fakeFreestylerBand.Parent = nil
+		fakeKongaClutchRing.Parent = nil
+
+		Logger.warn("Spoofing detached.")
 	end
 
-	if Configuration.expectToggleValue("KongaClutchRingSpoof") then
-		updateKongaClutchRingSpoof()
-	else
-		fakeFreestylerBand.Parent = nil
-	end
-end
-
----Initialize spoofing.
-function Spoofing.init()
-	spoofingMaid:add(renderStepped:connect("Spoofing_OnRenderStepped", updateSpoofing))
-end
-
----Detach spoofing.
-function Spoofing.detach()
-	spoofingMaid:clean()
-	resetEmoteSpoofer()
-
-	fakeFreestylerBand.Parent = nil
-	fakeKongaClutchRing.Parent = nil
-end
-
--- Return Spoofing module.
-return Spoofing
+	-- Return Spoofing module.
+	return Spoofing
+end)()

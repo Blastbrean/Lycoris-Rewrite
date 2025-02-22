@@ -9,14 +9,14 @@ MobESP.__index = MobESP
 local ESP_HEALTH = "[%i/%i]"
 
 ---Update MobESP.
-function MobESP:update()
+MobESP.update = LPH_NO_VIRTUALIZE(function(self)
 	local humanoid = self.model:FindFirstChildOfClass("Humanoid")
 	if not humanoid then
 		return self:visible(false)
 	end
 
 	ModelESP.update(self, { ESP_HEALTH:format(humanoid.Health, humanoid.MaxHealth) })
-end
+end)
 
 ---Create new MobESP object.
 ---@param identifier string

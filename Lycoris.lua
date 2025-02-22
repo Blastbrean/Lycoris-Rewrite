@@ -151,11 +151,11 @@ function Lycoris.init()
 			or Logger.warn("Script exit initialization early because we are in the lobby.")
 	end
 
-	setthreadidentity(7)
-
 	KeyHandling.init()
 
 	Hooking.init()
+
+	setthreadidentity(7)
 
 	InputClient.cache()
 

@@ -86,7 +86,7 @@ end
 ---@param timing Timing
 ---@param action Action
 ---@return boolean
-function Defender:valid(timing, action)
+Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	local keybinds = replicatedStorage:FindFirstChild("KeyBinds")
 	if not keybinds then
 		return self:notify(timing, "No keybinds instance found.")
@@ -123,7 +123,7 @@ function Defender:valid(timing, action)
 	end
 
 	return true
-end
+end)
 
 ---Run hitbox check. Returns wheter if the hitbox is being touched.
 ---@note: This check can fail when players suddenly look...
@@ -132,7 +132,7 @@ end
 ---@param size Vector3
 ---@param filter Instance[]
 ---@return boolean
-function Defender:hitbox(position, depth, size, filter)
+Defender.hitbox = LPH_NO_VIRTUALIZE(function(self, position, depth, size, filter)
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterDescendantsInstances = filter
 	overlapParams.FilterType = Enum.RaycastFilterType.Include
@@ -185,7 +185,7 @@ function Defender:hitbox(position, depth, size, filter)
 	end
 
 	return inBounds
-end
+end)
 
 ---Check initial state.
 ---@param from Model? | BasePart?
@@ -193,7 +193,7 @@ end
 ---@param name string
 ---@param key string
 ---@return Timing?
-function Defender:initial(from, pair, name, key)
+Defender.initial = LPH_NO_VIRTUALIZE(function(self, from, pair, name, key)
 	-- Find timing.
 	local timing = pair:index(key)
 
@@ -217,18 +217,18 @@ function Defender:initial(from, pair, name, key)
 
 	-- Return timing.
 	return timing
-end
+end)
 
 ---Logger notify.
 ---@param timing Timing
 ---@param str string
-function Defender:notify(timing, str, ...)
+Defender.notify = LPH_NO_VIRTUALIZE(function(self, timing, str, ...)
 	if not Configuration.expectToggleValue("EnableNotifications") then
 		return
 	end
 
 	Logger.notify("[%s] (%s) %s", timing.name, self.__type, string.format(str, ...))
-end
+end)
 
 ---Get ping.
 ---@return number
@@ -254,7 +254,7 @@ end
 ---Handle action.
 ---@param timing Timing
 ---@param action Action
-function Defender:handle(timing, action)
+Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	if not self:valid(timing, action) then
 		return
 	end
@@ -290,7 +290,7 @@ function Defender:handle(timing, action)
 	end
 
 	InputClient.parry()
-end
+end)
 
 ---Check if we have input blocking tasks.
 ---@return boolean
@@ -324,7 +324,7 @@ end
 ---Add actions from timing to defender object.
 ---@param timing Timing
 ---@param multiplier number
-function Defender:actions(timing, multiplier)
+Defender.actions = LPH_NO_VIRTUALIZE(function(self, timing, multiplier)
 	for _, action in next, timing.actions:get() do
 		-- Get ping.
 		local ping = self:ping()
@@ -346,7 +346,7 @@ function Defender:actions(timing, multiplier)
 		-- Log.
 		self:notify(timing, "Added action '%s' (%.2fs) with ping '%.2f' subtracted.", action.name, action:when(), ping)
 	end
-end
+end)
 
 ---Detach defender object.
 function Defender:detach()

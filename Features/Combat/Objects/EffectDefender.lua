@@ -21,7 +21,7 @@ local players = game:GetService("Players")
 ---@param timing PartTiming
 ---@param action Action
 ---@return boolean
-function EffectDefender:valid(timing, action)
+EffectDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	if not Targeting.find(self.owner) then
 		return self:notify(timing, "Not a viable target.")
 	end
@@ -36,10 +36,10 @@ function EffectDefender:valid(timing, action)
 	end
 
 	return true
-end
+end)
 
 ---Process effect.
-function EffectDefender:process()
+EffectDefender.process = LPH_NO_VIRTUALIZE(function(self)
 	if players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character then
 		return
 	end
@@ -55,7 +55,7 @@ function EffectDefender:process()
 
 	-- Add actions.
 	return self:actions(timing, 1.0)
-end
+end)
 
 ---Create new EffectDefender object.
 ---@param name string

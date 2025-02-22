@@ -10,7 +10,7 @@ local FilteredESP = {}
 FilteredESP.__index = FilteredESP
 
 ---Partial look for string in list.
-local function partialStringFind(list, value)
+local partialStringFind = LPH_NO_VIRTUALIZE(function(list, value)
 	for _, str in next, list do
 		if not value:match(str) then
 			continue
@@ -20,7 +20,7 @@ local function partialStringFind(list, value)
 	end
 
 	return false
-end
+end)
 
 ---Set visible.
 ---@param visible boolean
@@ -34,7 +34,7 @@ function FilteredESP:detach()
 end
 
 ---Update FilteredESP.
-function FilteredESP:update()
+FilteredESP.update = LPH_NO_VIRTUALIZE(function(self)
 	local object = self.object
 	local identifier = self.identifier
 	local label = object.label
@@ -56,7 +56,7 @@ function FilteredESP:update()
 	object:update()
 
 	self.delayTimestamp = object.delayTimestamp
-end
+end)
 
 ---Create new FilteredESP object.
 ---@param object ModelESP|PartESP

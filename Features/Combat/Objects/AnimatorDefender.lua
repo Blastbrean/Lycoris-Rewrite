@@ -54,7 +54,7 @@ end
 ---@param timing AnimationTiming
 ---@param action Action
 ---@return boolean
-function AnimatorDefender:valid(timing, action)
+AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	if not self.track then
 		return self:notify(timing, "No current track.")
 	end
@@ -105,13 +105,13 @@ function AnimatorDefender:valid(timing, action)
 	end
 
 	return true
-end
+end)
 
 ---Repeat until parry end.
 ---@param track AnimationTrack
 ---@param timing AnimationTiming
 ---@param index number
-function AnimatorDefender:rpue(track, timing, index)
+AnimatorDefender.rpue = LPH_NO_VIRTUALIZE(function(self, track, timing, index)
 	if not self.track.IsPlaying then
 		return
 	end
@@ -137,12 +137,12 @@ function AnimatorDefender:rpue(track, timing, index)
 	self:notify(timing, "(%i) Action 'RPUE Parry' is being executed.", index)
 
 	InputClient.parry()
-end
+end)
 
 ---Process animation track.
 ---@todo: Logger module.
 ---@param track AnimationTrack
-function AnimatorDefender:process(track)
+AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	if not Configuration.expectToggleValue("EnableAutoDefense") then
 		return
 	end
@@ -247,7 +247,7 @@ function AnimatorDefender:process(track)
 		timing:rsd(),
 		timing:rpd()
 	)
-end
+end)
 
 ---Create new AnimatorDefender object.
 ---@param animator Animator

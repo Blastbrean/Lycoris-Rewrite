@@ -29,7 +29,7 @@ local players = game:GetService("Players")
 ---Guess the nearest viable owner of a part by using a specific emitter timing.
 ---@param timing EmitterTiming
 ---@return Model?
-local function guessOwnerFromEmitterTiming(timing)
+local guessOwnerFromEmitterTiming = LPH_NO_VIRTUALIZE(function(timing)
 	for _, entity in next, Entities.getEntitiesInRange(timing.imxd) do
 		local humanoid = entity:FindFirstChildWhichIsA("Humanoid")
 		if not humanoid then
@@ -52,13 +52,13 @@ local function guessOwnerFromEmitterTiming(timing)
 
 		return entity
 	end
-end
+end)
 
 ---Check if we're in a valid state to proceed with the action.
 ---@param timing EmitterTiming
 ---@param action Action
 ---@return boolean
-function EmitterDefender:valid(timing, action)
+EmitterDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	if self.owner and not Targeting.find(self.owner) then
 		return self:notify(timing, "Not a viable target.")
 	end
@@ -73,10 +73,10 @@ function EmitterDefender:valid(timing, action)
 	end
 
 	return true
-end
+end)
 
 ---Update EmitterDefender object.
-function EmitterDefender:update()
+EmitterDefender.update = LPH_NO_VIRTUALIZE(function(self)
 	-- Check if we're finished.
 	if self.finished then
 		return
@@ -130,7 +130,7 @@ function EmitterDefender:update()
 
 	-- Add actions.
 	return self:actions(self.timing, 1.0)
-end
+end)
 
 ---Create new EmitterDefender object.
 ---@param emitter ParticleEmitter?

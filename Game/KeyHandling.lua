@@ -1,6 +1,3 @@
----@module Utility.Logger
-local Logger = require("Utility/Logger")
-
 -- KeyHandler related stuff is handled here.
 local KeyHandling = {}
 
@@ -145,7 +142,7 @@ local function hash(remoteName)
 end
 
 ---Initialize the KeyHandler module.
-function KeyHandling.init()
+KeyHandling.init = LPH_NO_VIRTUALIZE(function()
 	while true do
 		for _, value in next, getgc(true) do
 			if typeof(value) ~= "table" then
@@ -212,7 +209,7 @@ function KeyHandling.init()
 
 		task.wait(0.5)
 	end
-end
+end)
 
 ---Get remote from a specific remote name.
 ---@param remoteName string

@@ -8,7 +8,7 @@ ModelESP.__index = ModelESP
 
 ---Update ModelESP.
 ---@param tags string[]
-function ModelESP:update(tags)
+ModelESP.update = LPH_NO_VIRTUALIZE(function(self, tags)
 	local model = self.model
 
 	if not model.Parent then
@@ -16,7 +16,7 @@ function ModelESP:update(tags)
 	end
 
 	InstanceESP.update(self, model:GetPivot().Position, tags or {})
-end
+end)
 
 ---Create new ModelESP object.
 ---@param identifier string

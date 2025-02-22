@@ -33,7 +33,7 @@ local ESP_HEALTH_BARS = "[%.1f bars]"
 local ESP_DANGER_TIME = "[%s on timer]"
 
 ---Update PlayerESP.
-function PlayerESP:update()
+PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
 	local model = self.character
 	local player = self.player
 	local identifier = self.identifier
@@ -142,7 +142,7 @@ function PlayerESP:update()
 	end
 
 	self.text.TextColor3 = Configuration.idOptionValue(identifier, "AllyColor")
-end
+end)
 
 ---Create new PlayerESP object.
 ---@param identifier string

@@ -20,7 +20,7 @@ Group.__index = Group
 
 ---Update ESP object.
 ---@param object ModelESP|PartESP|FilteredESP
-function Group:object(object)
+Group.object = LPH_NO_VIRTUALIZE(function(self, object)
 	self.count = self.count + 1
 
 	if not self.warned and self.count >= 500 then
@@ -37,10 +37,10 @@ function Group:object(object)
 	end
 
 	Profiler.run(string.format("ESP_Update_%s", object.identifier), object.update, object)
-end
+end)
 
 ---Update group.
-function Group:update()
+Group.update = LPH_NO_VIRTUALIZE(function(self)
 	local map = self:data()
 
 	if not Configuration.idToggleValue(self.identifier, "Enable") then
@@ -77,10 +77,10 @@ function Group:update()
 	end
 
 	self.updated = true
-end
+end)
 
 ---Hide group.
-function Group:hide()
+Group.hide = LPH_NO_VIRTUALIZE(function(self)
 	if not self.updated then
 		return
 	end
@@ -90,14 +90,14 @@ function Group:hide()
 	end
 
 	self.updated = false
-end
+end)
 
 ---Detach group.
-function Group:detach()
+Group.detach = LPH_NO_VIRTUALIZE(function(self)
 	for _, object in next, self:data() do
 		object:detach()
 	end
-end
+end)
 
 ---Create new Group object.
 ---@param identifier string

@@ -28,6 +28,9 @@ local InputClient = require("Game/InputClient")
 ---@module Utility.Table
 local Table = require("Utility/Table")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 -- Handle all defense related functions.
 local Defense = { lastMantraActivate = nil }
 
@@ -50,7 +53,7 @@ local mobAnimations = {}
 ---Iteratively find effect owner from effect data.
 ---@param data table
 ---@return Model?
-local function findEffectOwner(data)
+local findEffectOwner = LPH_NO_VIRTUALIZE(function(data)
 	local live = workspace:FindFirstChild("Live")
 	if not live then
 		return
@@ -68,17 +71,17 @@ local function findEffectOwner(data)
 
 		return value
 	end
-end
+end)
 
 ---Add animator defender.
 ---@param animator Animator
-local function addAnimatorDefender(animator)
+local addAnimatorDefender = LPH_NO_VIRTUALIZE(function(animator)
 	defenderObjects[animator] = AnimatorDefender.new(animator, mobAnimations)
-end
+end)
 
 ---Add sound defender.
 ---@param sound Sound
-local function addSoundDefender(sound)
+local addSoundDefender = LPH_NO_VIRTUALIZE(function(sound)
 	---@note: If there's nothing to base the sound position off of, then I'm just gonna skip it bruh.
 	local part = sound:FindFirstAncestorWhichIsA("BasePart")
 	if not part then
@@ -87,11 +90,11 @@ local function addSoundDefender(sound)
 
 	-- Add sound defender.
 	defenderObjects[sound] = SoundDefender.new(sound, part)
-end
+end)
 
 ---Add part defender.
 ---@param part BasePart
-local function addPartDefender(part)
+local addPartDefender = LPH_NO_VIRTUALIZE(function(part)
 	-- Get part defender.
 	local partDefender = PartDefender.new(part)
 	if not partDefender then
@@ -101,11 +104,11 @@ local function addPartDefender(part)
 	-- Link to list.
 	defenderObjects[part] = partDefender
 	defenderPartObjects[part] = partDefender
-end
+end)
 
 ---Add emitter defender.
 ---@param emitter ParticleEmitter
-local function addEmitterDefender(emitter)
+local addEmitterDefender = LPH_NO_VIRTUALIZE(function(emitter)
 	-- Get emitter defender.
 	local emitterDefender = EmitterDefender.new(emitter)
 	if not emitterDefender then
@@ -122,11 +125,11 @@ local function addEmitterDefender(emitter)
 	-- Link to list.
 	defenderObjects[emitter] = emitterDefender
 	defenderEmitterObjects[emitter] = emitterDefender
-end
+end)
 
 ---On game descendant added.
 ---@param descendant Instance
-local function onGameDescendantAdded(descendant)
+local onGameDescendantAdded = LPH_NO_VIRTUALIZE(function(descendant)
 	if descendant:IsA("Animator") then
 		return addAnimatorDefender(descendant)
 	end
@@ -142,11 +145,11 @@ local function onGameDescendantAdded(descendant)
 	if descendant:IsA("ParticleEmitter") then
 		return addEmitterDefender(descendant)
 	end
-end
+end)
 
 ---On game descendant removed.
 ---@param descendant Instance
-local function onGameDescendantRemoved(descendant)
+local onGameDescendantRemoved = LPH_NO_VIRTUALIZE(function(descendant)
 	local object = defenderObjects[descendant]
 	if not object then
 		return
@@ -162,12 +165,12 @@ local function onGameDescendantRemoved(descendant)
 
 	object:detach()
 	object[descendant] = nil
-end
+end)
 
 ---On client effect event.
 ---@param name string?
 ---@param data table?
-local function onClientEffectEvent(name, data)
+local onClientEffectEvent = LPH_NO_VIRTUALIZE(function(name, data)
 	if not name or not data then
 		return
 	end
@@ -178,11 +181,11 @@ local function onClientEffectEvent(name, data)
 	end
 
 	defenderObjects[data] = EffectDefender.new(name, owner)
-end
+end)
 
 ---On effect replicated.
 ---@param effect table
-local function onEffectReplicated(effect)
+local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 	if not Configuration.expectToggleValue("PerfectMantraCast") or effect.Class ~= "UsingSpell" then
 		return
 	end
@@ -192,10 +195,10 @@ local function onEffectReplicated(effect)
 	end
 
 	InputClient.left()
-end
+end)
 
 ---Update part defenders.
-local function updatePartDefenders()
+local updatePartDefenders = LPH_NO_VIRTUALIZE(function()
 	if not Configuration.expectToggleValue("EnableAutoDefense") then
 		return
 	end
@@ -215,7 +218,7 @@ local function updatePartDefenders()
 
 		object:update()
 	end
-end
+end)
 
 ---Check if objects have blocking tasks.
 ---@return boolean
@@ -273,6 +276,9 @@ function Defense.init()
 	for _, effect in next, effectReplicatorModule.Effects do
 		onEffectReplicated(effect)
 	end
+
+	-- Log.
+	Logger.warn("Defense initialized.")
 end
 
 ---Detach defense.
@@ -282,6 +288,8 @@ function Defense.detach()
 	end
 
 	defenseMaid:clean()
+
+	Logger.warn("Defense detached.")
 end
 
 -- Return Defense module.

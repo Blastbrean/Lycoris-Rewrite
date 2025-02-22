@@ -100,12 +100,20 @@ end
 
 ---Charisma farming.
 function CharismaFarm.init()
+	-- Attach.
 	autoCharismaMaid:add(renderStepped:connect("AttributeFarmCharisma_OnPreRender", updateCharisma))
+
+	-- Log.
+	Logger.warn("Charisma Farm initialized.")
 end
 
 ---Detach the charisma farm.
 function CharismaFarm.detach()
+	-- Clean.
 	autoCharismaMaid:clean()
+
+	-- Log.
+	Logger.warn("Charisma Farm detached.")
 end
 
 -- Return CharismaFarm module

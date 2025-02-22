@@ -8,7 +8,7 @@ PartESP.__index = PartESP
 
 ---Update PartESP.
 ---@param tags string[]
-function PartESP:update(tags)
+PartESP.update = LPH_NO_VIRTUALIZE(function(self, tags)
 	local part = self.part
 
 	if not part.Parent then
@@ -16,7 +16,7 @@ function PartESP:update(tags)
 	end
 
 	InstanceESP.update(self, part.Position, tags or {})
-end
+end)
 
 ---Create new PartESP object.
 ---@param identifier string

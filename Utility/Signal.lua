@@ -23,9 +23,12 @@ function Signal:connect(label, eventFunction)
 	end
 
 	-- Connect to signal. Wrap function with profiler and error handling.
-	local connection = self.signal:Connect(Profiler.wrap(label, function(...)
-		return xpcall(eventFunction, onEventFunctionError, ...)
-	end))
+	local connection = self.signal:Connect(Profiler.wrap(
+		label,
+		LPH_NO_VIRTUALIZE(function(...)
+			return xpcall(eventFunction, onEventFunctionError, ...)
+		end)
+	))
 
 	-- Return connection.
 	return connection

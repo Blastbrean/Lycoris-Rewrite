@@ -35,7 +35,7 @@ end
 ---@param label string
 ---@param tags string[]
 ---@return string
-function InstanceESP:build(label, tags)
+InstanceESP.build = LPH_NO_VIRTUALIZE(function(self, label, tags)
 	if #tags <= 0 then
 		return label
 	end
@@ -59,12 +59,12 @@ function InstanceESP:build(label, tags)
 	end
 
 	return table.concat(lines, "\n")
-end
+end)
 
 ---Update InstanceESP.
 ---@param position Vector3
 ---@param tags string[]
-function InstanceESP:update(position, tags)
+InstanceESP.update = LPH_NO_VIRTUALIZE(function(self, position, tags)
 	local label = self.label
 	local identifier = self.identifier
 
@@ -92,7 +92,7 @@ function InstanceESP:update(position, tags)
 	text.TextColor3 = Configuration.idOptionValue(identifier, "Color")
 	text.TextSize = Configuration.optionValue("FontSize")
 	text.Font = Enum.Font[Configuration.optionValue("Font")] or Enum.Font.Code
-end
+end)
 
 ---Setup InstanceESP.
 function InstanceESP:setup()
