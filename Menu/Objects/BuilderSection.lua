@@ -282,6 +282,7 @@ function BuilderSection:baction(base)
 			-- Create new action.
 			local action = Action.new()
 			action.name = self.actionName.Value
+			action._type = "Parry"
 
 			-- Record ping for telemetry.
 			local network = stats:FindFirstChild("Network")

@@ -18,6 +18,7 @@ local Table = require("Utility/Table")
 ---@field owner Part? The owner of the emitter.
 ---@field timing EmitterTiming
 ---@field touched boolean Determines whether if we touched the timing in the past.
+---@field finished boolean Determines whether if we finished the timing. This is used when we're doing timing delay instead of delay until in hitbox.
 local EmitterDefender = setmetatable({}, { __index = Defender })
 EmitterDefender.__index = EmitterDefender
 EmitterDefender.__type = "Emitter"
@@ -76,6 +77,23 @@ end
 
 ---Update EmitterDefender object.
 function EmitterDefender:update()
+	-- Check if we're finished.
+	if self.finished then
+		return
+	end
+
+	-- Handle no hitbox delay.
+	if not self.timing.duih then
+		-- Add actions.
+		self:actions(self.timing, 1.0)
+
+		-- Set that we're finished so we don't have to do this again.
+		self.finished = true
+
+		-- Return.
+		return
+	end
+
 	-- Deny updates if we already have actions in the queue.
 	if #self.tasks > 0 then
 		return
@@ -129,6 +147,7 @@ function EmitterDefender.new(emitter)
 	self.timing = self:initial(part, SaveManager.ems, part.Name, tostring(emitter.Texture))
 	self.owner = self.timing and guessOwnerFromEmitterTiming(self.timing)
 	self.touched = false
+	self.finished = false
 
 	if not self.timing then
 		return nil

@@ -18,6 +18,7 @@ local SaveManager = require("Game/Timings/SaveManager")
 ---@field part BasePart
 ---@field timing PartTiming
 ---@field touched boolean Determines whether if we touched the timing in the past.
+---@field finished boolean Determines whether if we finished the timing. This is used when we're doing timing delay instead of delay until in hitbox.
 local PartDefender = setmetatable({}, { __index = Defender })
 PartDefender.__index = PartDefender
 PartDefender.__type = "Part"
@@ -76,6 +77,23 @@ end
 
 ---Update PartDefender object.
 function PartDefender:update()
+	-- Check if we're finished.
+	if self.finished then
+		return
+	end
+
+	-- Handle no hitbox delay.
+	if not self.timing.duih then
+		-- Add actions.
+		self:actions(self.timing, 1.0)
+
+		-- Set that we're finished so we don't have to do this again.
+		self.finished = true
+
+		-- Return.
+		return
+	end
+
 	-- Deny updates if we already have actions in the queue.
 	if #self.tasks > 0 then
 		return
@@ -124,6 +142,7 @@ function PartDefender.new(part)
 	self.timing = self:initial(part, SaveManager.ps, nil, part.Name)
 	self.owner = self.timing and guessOwnerFromPartTiming(self.timing)
 	self.touched = false
+	self.finished = false
 
 	return self.timing and self or nil
 end
