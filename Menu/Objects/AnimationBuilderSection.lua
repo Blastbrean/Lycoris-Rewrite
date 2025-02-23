@@ -25,7 +25,7 @@ function AnimationBuilderSection:tide(tab)
 end
 
 ---Load the extra elements. Override me.
----@param timing Timing
+---@param timing AnimationTiming
 function AnimationBuilderSection:exload(timing)
 	self.animationId:SetRawValue(timing._id)
 	self.repeatUntilParryEnd:SetRawValue(timing.rpue)

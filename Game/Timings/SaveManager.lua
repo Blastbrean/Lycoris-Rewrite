@@ -287,6 +287,19 @@ function SaveManager.load(name)
 	SaveManager.llcn = name
 end
 
+---Auto-save timings.
+function SaveManager.autosave()
+	if not SaveManager.llcn then
+		return
+	end
+
+	if not Configuration.expectToggleValue("AutoSaveOnLeave") then
+		return
+	end
+
+	SaveManager.write(SaveManager.llcn)
+end
+
 ---Initialize SaveManager.
 function SaveManager.init()
 	local timestamp = os.clock()
@@ -350,15 +363,7 @@ function SaveManager.init()
 			return
 		end
 
-		if not SaveManager.llcn then
-			return
-		end
-
-		if not Configuration.expectToggleValue("AutoSaveOnLeave") then
-			return
-		end
-
-		SaveManager.write(SaveManager.llcn)
+		SaveManager.autosave()
 	end)
 end
 

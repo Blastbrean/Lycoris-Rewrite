@@ -35,6 +35,18 @@ function TimingContainer:find(name)
 	end
 end
 
+---List all timings.
+---@return Timing[]
+function TimingContainer:list()
+	local timings = {}
+
+	for _, timing in next, self.timings do
+		timings[#timings + 1] = timing
+	end
+
+	return timings
+end
+
 ---Get names of all timings.
 ---@return string[]
 function TimingContainer:names()

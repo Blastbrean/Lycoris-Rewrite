@@ -145,6 +145,22 @@ function BuilderTab.initMergeManagerSection(groupbox)
 	})
 end
 
+---Initialize global changes section.
+---@param groupbox table
+function BuilderTab.initGlobalChangesSection(groupbox)
+	local shfo = groupbox:AddToggle("SetHitboxFacingOffset", {
+		Text = "Set Hitbox Facing Offset",
+		Default = false,
+	})
+
+	groupbox:AddButton("Apply Changes", function()
+		---@type AnimationTiming
+		for _, timing in next, SaveManager.as:list() do
+			timing.fhb = shfo.Value
+		end
+	end)
+end
+
 ---Initialize logger section.
 ---@param groupbox table
 function BuilderTab.initLoggerSection(groupbox)
@@ -202,6 +218,7 @@ function BuilderTab.init(window)
 	BuilderTab.initSaveManagerSection(tab:AddDynamicGroupbox("Save Manager"))
 	BuilderTab.initMergeManagerSection(tab:AddDynamicGroupbox("Merge Manager"))
 	BuilderTab.initLoggerSection(tab:AddDynamicGroupbox("Logger"))
+	BuilderTab.initGlobalChangesSection(tab:AddDynamicGroupbox("Global Changes"))
 
 	-- Create builder sections.
 	BuilderTab.abs =

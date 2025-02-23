@@ -203,6 +203,8 @@ end
 
 ---Detach instance.
 function Lycoris.detach()
+	SaveManager.autosave()
+
 	Menu.detach()
 
 	ControlModule.detach()

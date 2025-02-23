@@ -30,5 +30,21 @@ function TimingContainerPair:find(name)
 	return self.config:find(name) or self.internal:find(name)
 end
 
+---List all timings.
+---@return Timing[]
+function TimingContainerPair:list()
+	local timings = {}
+
+	for _, timing in next, self.config:list() do
+		table.insert(timings, timing)
+	end
+
+	for _, timing in next, self.internal:list() do
+		table.insert(timings, timing)
+	end
+
+	return timings
+end
+
 -- Return TimingContainerStack module.
 return TimingContainerPair
