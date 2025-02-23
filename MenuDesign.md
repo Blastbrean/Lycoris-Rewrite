@@ -374,3 +374,7 @@ Tabs have a marker to desiginate whether or not the menu elements are finished.
 There are way more features from the old script that are left out.
 
 This is what we have to do right now.
+
+--- HERE I SAVE SOME BULLSHIT I MAY FORGET
+
+--Mantra:TossIce{{Ice Flock}}

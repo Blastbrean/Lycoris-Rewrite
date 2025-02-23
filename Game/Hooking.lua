@@ -307,7 +307,7 @@ local onFireServer = LPH_NO_VIRTUALIZE(function(...)
 	if hellRemote and self == hellRemote then
 		return
 	end
-
+	
 	return oldFireServer(...)
 end)
 
