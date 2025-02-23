@@ -163,10 +163,17 @@ end
 ---@param groupbox table
 ---@return string, table, table
 function VisualsTab.initBaseESPSection(identifier, groupbox)
-	local enableToggle = groupbox:AddToggle(Configuration.identify(identifier, "Enable"), {
-		Text = "Enable ESP",
-		Default = false,
-	})
+	local enableToggle = groupbox
+		:AddToggle(Configuration.identify(identifier, "Enable"), {
+			Text = "Enable ESP",
+			Default = false,
+		})
+		:AddKeyPicker(Configuration.identify(identifier, "Keybind"), {
+			Default = "N/A",
+			SyncToggleState = true,
+			NoUI = true,
+			Text = groupbox.Name,
+		})
 
 	enableToggle:AddColorPicker(Configuration.identify(identifier, "Color"), {
 		Default = Color3.new(1, 1, 1),

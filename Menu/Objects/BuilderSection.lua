@@ -301,6 +301,10 @@ function BuilderSection:baction(base)
 
 			-- Refresh action list.
 			self:arefresh(timing)
+
+			-- Set action list value.
+			self.actionList:SetValue(action.name)
+			self.actionList:Display()
 		end)
 	)
 
@@ -410,6 +414,10 @@ function BuilderSection:timing()
 
 		-- Refresh timing list.
 		self:refresh()
+
+		-- Set timing list value.
+		self.timingList:SetValue(self.timingName.Value)
+		self.timingList:Display()
 	end)
 
 	local internalDepBox = tab:AddDependencyBox()

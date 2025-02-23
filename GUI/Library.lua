@@ -3866,7 +3866,7 @@ return LPH_NO_VIRTUALIZE(function()
 			end
 
 			function Tab:AddGroupbox(Info)
-				local Groupbox = {}
+				local Groupbox = { Name = Info.Name }
 
 				local BoxOuter = Library:Create("Frame", {
 					BackgroundColor3 = Library.BackgroundColor,
