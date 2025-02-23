@@ -1,3 +1,35 @@
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
+-- Services.
+local players = game:GetService("Players")
+
+---Update anti air bypass.
+---@param rootPart BasePart
+local function updateAABypass(rootPart)
+	if not Configuration.expectToggleValue("Fly") then
+		return
+	end
+
+	local modOffice = workspace:FindFirstChild("ModOffice")
+	if not modOffice then
+		return
+	end
+
+	modOffice.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
+
+	local officeCreature = modOffice:FindFirstChild("OfficeCreature")
+	if not officeCreature then
+		return players.LocalPlayer:RequestStreamAroundAsync(modOffice:GetPivot().Position, 100)
+	end
+
+	officeCreature.CollisionGroup = "Default"
+	officeCreature.CanCollide = true
+
+	firetouchinterest(officeCreature, rootPart, 0)
+	firetouchinterest(officeCreature, rootPart, 1)
+end
+
 return LPH_NO_VIRTUALIZE(function()
 	-- Movement related stuff is handled here.
 	---@todo: Make our own tween module.
@@ -11,9 +43,6 @@ return LPH_NO_VIRTUALIZE(function()
 
 	---@module Utility.InstanceWrapper
 	local InstanceWrapper = require("Utility/InstanceWrapper")
-
-	---@module Utility.Configuration
-	local Configuration = require("Utility/Configuration")
 
 	---@module Utility.OriginalStore
 	local OriginalStore = require("Utility/OriginalStore")
@@ -32,7 +61,6 @@ return LPH_NO_VIRTUALIZE(function()
 
 	-- Services.
 	local runService = game:GetService("RunService")
-	local players = game:GetService("Players")
 	local userInputService = game:GetService("UserInputService")
 	local replicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -158,32 +186,6 @@ return LPH_NO_VIRTUALIZE(function()
 		end
 
 		flyBodyVelocity.Velocity = flyVelocity
-	end
-
-	---Update anti air bypass
-	---@param rootPart BasePart
-	local function updateAABypass(rootPart)
-		if not Configuration.expectToggleValue("Fly") then
-			return
-		end
-
-		local modOffice = workspace:FindFirstChild("ModOffice")
-		if not modOffice then
-			return
-		end
-
-		modOffice.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
-
-		local officeCreature = modOffice:FindFirstChild("OfficeCreature")
-		if not officeCreature then
-			return players.LocalPlayer:RequestStreamAroundAsync(modOffice:GetPivot().Position, 100)
-		end
-
-		officeCreature.CollisionGroup = "Default"
-		officeCreature.CanCollide = true
-
-		firetouchinterest(officeCreature, rootPart, 0)
-		firetouchinterest(officeCreature, rootPart, 1)
 	end
 
 	---Update attach to back.
