@@ -63,6 +63,7 @@ local fieldOfView = visualsMaid:mark(OriginalStore.new())
 
 -- Original store managers.
 local showRobloxChatMap = visualsMaid:mark(OriginalStoreManager.new())
+local noAnimatedSeaMap = visualsMaid:mark(OriginalStoreManager.new())
 
 ---Update show roblox chat.
 local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
@@ -97,10 +98,40 @@ local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
 	showRobloxChatMap:add(chatChannelFrame, "Visible", true)
 end)
 
+---Update no animated sea.
+local updateNoAnimatedSea = LPH_NO_VIRTUALIZE(function()
+	local localPlayer = players.LocalPlayer
+	local playerScripts = localPlayer and localPlayer:FindFirstChild("PlayerScripts")
+	if not playerScripts then
+		return
+	end
+
+	local seaClient = playerScripts:FindFirstChild("SeaClient")
+	if not seaClient then
+		return
+	end
+
+	noAnimatedSeaMap:add(seaClient, "Enabled", false)
+
+	for _, descendant in next, seaClient:GetDescendants() do
+		if not descendant:IsA("LocalScript") then
+			continue
+		end
+
+		noAnimatedSeaMap:add(descendant, "Enabled", false)
+	end
+end)
+
 ---Update visuals.
 local updateVisuals = LPH_NO_VIRTUALIZE(function()
 	for _, group in next, groups do
 		group:update()
+	end
+
+	if Configuration.toggleValue("NoAnimatedSea") then
+		updateNoAnimatedSea()
+	else
+		noAnimatedSeaMap:restore()
 	end
 
 	if Configuration.toggleValue("ModifyFieldOfView") then

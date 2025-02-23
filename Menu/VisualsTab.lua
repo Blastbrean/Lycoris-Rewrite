@@ -149,6 +149,12 @@ function VisualsTab.initVisualRemovalsSection(groupbox)
 		Tooltip = "Shadow effects are hidden.",
 		Default = false,
 	})
+
+	groupbox:AddToggle("NoAnimatedSea", {
+		Text = "No Animated Sea",
+		Tooltip = "Disable the script(s) that animate the sea.",
+		Default = false,
+	})
 end
 
 ---Initialize Base ESP section.
