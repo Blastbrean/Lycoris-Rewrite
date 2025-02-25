@@ -7,6 +7,10 @@ return LPH_NO_VIRTUALIZE(function()
 	---@param label string
 	---@param functionToProfile function
 	function Profiler.run(label, functionToProfile, ...)
+		if typeof(label) == "function" then
+			print("Profiler.run", label, functionToProfile, ...)
+			print(debug.traceback())
+		end
 		-- Profile under label.
 		debug.profilebegin(label)
 
@@ -25,6 +29,7 @@ return LPH_NO_VIRTUALIZE(function()
 	---@param functionToProfile function
 	---@return function
 	function Profiler.wrap(label, functionToProfile)
+		print("Profiler.wrap", label, functionToProfile)
 		return function(...)
 			return Profiler.run(label, functionToProfile, ...)
 		end

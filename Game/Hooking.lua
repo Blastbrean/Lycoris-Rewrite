@@ -52,13 +52,15 @@ local findInputClientLevel = LPH_NO_VIRTUALIZE(function()
 		end
 
 		-- Fetch stack.
-		local stack = debug.getstack(level - 1)
-		if not stack then
-			break
+		local minus_success, minus_stack = pcall(debug.getstack, level - 1)
+		local stack_success, stack = pcall(debug.getstack, level)
+
+		if not minus_success and not stack_success then
+			return level, info, nil
 		end
 
 		-- Return level, debug information, and stack.
-		return level, info, stack
+		return level, info, minus_stack or stack
 	end
 end)
 
@@ -162,8 +164,12 @@ local onTick = LPH_NO_VIRTUALIZE(function(...)
 	end
 
 	local level, info, stack = findInputClientLevel()
-	if not level or not info or not stack then
+	if not level or not info then
 		return oldTick(...)
+	end
+
+	if not stack then
+		return error("Stack is nil.")
 	end
 
 	local firstConstantSuccess, firstConstant = pcall(debug.getconstant, info.func, 1)
@@ -307,7 +313,7 @@ local onFireServer = LPH_NO_VIRTUALIZE(function(...)
 	if hellRemote and self == hellRemote then
 		return
 	end
-	
+
 	return oldFireServer(...)
 end)
 
@@ -357,8 +363,8 @@ local onCoroutineWrap = LPH_NO_VIRTUALIZE(function(...)
 		return oldCoroutineWrap(...)
 	end
 
-	local level, info, _ = findInputClientLevel()
-	if not level or not info or not _ then
+	local level, info = findInputClientLevel()
+	if not level or not info then
 		return oldCoroutineWrap(...)
 	end
 
@@ -380,8 +386,12 @@ local onTaskSpawn = LPH_NO_VIRTUALIZE(function(...)
 	end
 
 	local level, info, stack = findInputClientLevel()
-	if not level or not info or not stack then
+	if not level or not info then
 		return oldTaskSpawn(...)
+	end
+
+	if not stack then
+		Logger.warn("Task stack is nil.")
 	end
 
 	-- Arguments.
@@ -392,7 +402,8 @@ local onTaskSpawn = LPH_NO_VIRTUALIZE(function(...)
 	local consts = debug.getconstants(func)
 
 	-- Check for anticheat task.
-	local isAnticheatTask = (#consts == 0 or consts[2] == "Parent") and not table.find(consts, "LightAttack")
+	local isAnticheatTask = (#consts == 0 or consts[2] == "Parent" or table.find(consts, "RenderStepped"))
+		and not table.find(consts, "LightAttack")
 
 	-- Okay, replace arguments.
 	if isAnticheatTask then

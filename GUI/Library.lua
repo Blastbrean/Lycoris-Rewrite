@@ -64,17 +64,6 @@ return LPH_NO_VIRTUALIZE(function()
 	table.insert(
 		Library.Signals,
 		RenderStepped:Connect(function(Delta)
-			if os.clock() - UpdateTimestamp >= 0.05 then
-				local Idx, MissEntry = next(Entry)
-
-				if MissEntry then
-					Tasks[#Tasks + 1] = task.spawn(MissEntry)
-					table.remove(Entry, Idx)
-				end
-
-				UpdateTimestamp = os.clock()
-			end
-
 			RainbowStep = RainbowStep + Delta
 
 			if RainbowStep >= (1 / 60) then
