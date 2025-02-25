@@ -38,6 +38,7 @@ local Defense = { lastMantraActivate = nil }
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local players = game:GetService("Players")
 local runService = game:GetService("RunService")
+local userInputService = game:GetService("UserInputService")
 
 -- Maids.
 local defenseMaid = Maid.new()
@@ -219,6 +220,13 @@ end)
 
 ---Update defenders.
 local updateDefenders = LPH_NO_VIRTUALIZE(function()
+	if
+		Configuration.expectToggleValue("M1Hold")
+		and userInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
+	then
+		InputClient.left()
+	end
+
 	if not Configuration.expectToggleValue("EnableAutoDefense") then
 		return
 	end

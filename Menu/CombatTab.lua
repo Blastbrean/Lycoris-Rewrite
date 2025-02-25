@@ -247,7 +247,12 @@ end
 
 -- Initialize input assistance section.
 ---@param groupbox table
-function CombatTab.initInputAssistance(groupbox) end
+function CombatTab.initInputAssistance(groupbox)
+	groupbox:AddToggle("M1Hold", {
+		Text = "M1 Hold",
+		Default = false,
+	})
+end
 
 -- Initialize combat assistance section.
 ---@param groupbox table
