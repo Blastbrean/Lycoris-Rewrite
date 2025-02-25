@@ -29,7 +29,7 @@ function LycorisTab.initUISettingsSection(groupbox)
 
 	keybindFrameLabel:AddKeyPicker("KeybindList", {
 		Default = "N/A",
-		Mode = "Toggle",
+		Mode = "Always",
 		NoUI = true,
 		Text = "Keybind List",
 		Callback = function(Value)
@@ -41,7 +41,7 @@ function LycorisTab.initUISettingsSection(groupbox)
 
 	watermarkFrameLabel:AddKeyPicker("Watermark", {
 		Default = "N/A",
-		Mode = "Toggle",
+		Mode = "Always",
 		NoUI = true,
 		Text = "Watermark",
 		Callback = function(Value)
