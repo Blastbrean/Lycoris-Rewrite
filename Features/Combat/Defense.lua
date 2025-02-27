@@ -223,6 +223,7 @@ local updateDefenders = LPH_NO_VIRTUALIZE(function()
 	if
 		Configuration.expectToggleValue("M1Hold")
 		and userInputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1)
+		and not Defense.blocking()
 	then
 		InputClient.left()
 	end

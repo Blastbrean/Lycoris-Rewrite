@@ -125,11 +125,11 @@ function Lycoris.init()
 		localPlayer = playersService.LocalPlayer
 	until localPlayer ~= nil
 
-	local scriptKeyQueueString = string.format("script_key = '%s'", lycoris_init.key)
+	local scriptKeyQueueString = string.format("script_key = '%s'", armorshield.key)
 	local loadStringQueueString =
 		'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/5ac35cc8c071938af640f639b49c629b.lua"))()'
 
-	if lycoris_init.key ~= "N/A" and queue_on_teleport and not Lycoris.queued then
+	if armorshield.key ~= "N/A" and queue_on_teleport and not Lycoris.queued then
 		-- Queue.
 		queue_on_teleport(scriptKeyQueueString .. "\n" .. loadStringQueueString)
 

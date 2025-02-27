@@ -11,9 +11,8 @@ end
 -- Catch the ban evaders :groan:
 
 -- Initialize ArmorShield globals if they do not exist.
-if not lycoris_init then
-	lycoris_init = { key = "N/A" }
-	lycoris_init.current_role = "N/A"
+if not armorshield then
+	armorshield = { key = "N/A", current_role = "N/A" }
 end
 
 -- Initialize Luraph globals if they do not exist.

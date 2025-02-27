@@ -50,7 +50,8 @@
         "get_comm_channel",
         "firetouchinterest",
         "gethiddenproperty",
-        "iswindowactive"
+        "iswindowactive",
+        "armorshield"
     ],
     "robloxLsp.suggestedImports.importIgnore": [
         "**/_Index/**",
