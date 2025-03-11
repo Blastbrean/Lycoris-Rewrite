@@ -54,12 +54,18 @@ function PartBuilderSection:reset()
 	self.linkedAnimationIds:Display()
 end
 
+---Set creation timing properties. Override me.
+---@param timing PartTiming
+function PartBuilderSection:cset(timing)
+	timing.name = self.timingName.Value
+	timing.pname = self.partName.Value
+end
+
 ---Create new timing. Override me.
 ---@return PartTiming
 function PartBuilderSection:create()
 	local timing = PartTiming.new()
-	timing.name = self.timingName.Value
-	timing.pname = self.partName.Value
+	self:cset(timing)
 	return timing
 end
 

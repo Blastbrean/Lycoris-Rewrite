@@ -36,6 +36,43 @@ function AnimationBuilderSection:exload(timing)
 	self.ignoreAnimationEnd:SetRawValue(timing.iae)
 end
 
+---Action delay. Override me.
+---@param base table
+function BuilderSection:daction(base)
+	self.useAnimationDelta = base:AddToggle(nil, {
+		Text = "Use Animation Delta",
+		Tooltip = "Should the action use the animation delta?",
+		Default = false,
+		Callback = self:anc(function(action, value)
+			action.uad = value
+		end),
+	})
+
+	local depBoxOn = base:AddDependencyBox()
+	local depBoxOff = base:AddDependencyBox()
+
+	self.animationDelta = depBoxOn:AddSlider(nil, {
+		Text = "Animation Delta",
+		Min = 0,
+		Max = 1,
+		Default = 0,
+		Rounding = 3,
+		Callback = self:anc(function(action, value)
+			action.adelta = value
+		end),
+	})
+
+	BuilderSection.daction(self, depBoxOff)
+
+	depBoxOn:SetupDependencies({
+		{ self.useAnimationDelta, true },
+	})
+
+	depBoxOff:SetupDependencies({
+		{ self.useAnimationDelta, false },
+	})
+end
+
 ---Reset the elements. Extend me.
 function AnimationBuilderSection:reset()
 	BuilderSection.reset(self)
@@ -66,12 +103,18 @@ function AnimationBuilderSection:check()
 	return true
 end
 
+---Set creation timing properties. Override me.
+---@param timing AnimationTiming
+function AnimationBuilderSection:cset(timing)
+	timing.name = self.timingName.Value
+	timing._id = self.animationId.Value
+end
+
 ---Create new timing. Override me.
 ---@return Timing
 function AnimationBuilderSection:create()
 	local timing = AnimationTiming.new()
-	timing.name = self.timingName.Value
-	timing._id = self.animationId.Value
+	self:cset(timing)
 	return timing
 end
 

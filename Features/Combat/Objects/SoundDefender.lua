@@ -73,11 +73,16 @@ SoundDefender.process = LPH_NO_VIRTUALIZE(function(self)
 		return
 	end
 
+	-- Use module if we need to.
+	if timing.umoa then
+		return self:module(timing)
+	end
+
 	---@note: Clean up previous tasks that are still waiting or suspended because they're in a different track.
 	self:clean()
 
 	-- Add actions.
-	return self:actions(timing, 1.0)
+	return self:actions(timing)
 end)
 
 ---Create new SoundDefender object.

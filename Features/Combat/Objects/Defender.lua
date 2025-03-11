@@ -16,6 +16,9 @@ local Maid = require("Utility/Maid")
 ---@module GUI.Library
 local Library = require("GUI/Library")
 
+---@module Game.Timings.ModuleManager
+local ModuleManager = require("Game/Timings/ModuleManager")
+
 ---@class Defender
 ---@field tasks Task[]
 ---@field maid Maid
@@ -391,11 +394,38 @@ Defender.clean = LPH_NO_VIRTUALIZE(function(self)
 	end
 end)
 
+---Process module.
+---@param timing Timing
+Defender.module = LPH_NO_VIRTUALIZE(function(self, timing)
+	-- Get loaded function.
+	local lf = ModuleManager.modules[timing.smod]
+	if not lf then
+		return
+	end
+
+	-- Run loaded function.
+	self:mark(
+		Task.new(
+			string.format("Defender_RunModule_%s", timing.smod),
+			nil,
+			timing.punishable,
+			timing.after,
+			lf,
+			self,
+			timing
+		)
+	)
+end)
+
 ---Add actions from timing to defender object.
 ---@param timing Timing
----@param multiplier number
-Defender.actions = LPH_NO_VIRTUALIZE(function(self, timing, multiplier)
+Defender.actions = LPH_NO_VIRTUALIZE(function(self, timing)
 	for _, action in next, timing.actions:get() do
+		-- Skip all actions that are animation delta based.
+		if action.uad then
+			continue
+		end
+
 		-- Get ping.
 		local ping = self:ping()
 
@@ -403,7 +433,7 @@ Defender.actions = LPH_NO_VIRTUALIZE(function(self, timing, multiplier)
 		self:mark(
 			Task.new(
 				action._type,
-				(action:when() - ping) * (multiplier or 1),
+				action:when() - ping,
 				timing.punishable,
 				timing.after,
 				self.handle,

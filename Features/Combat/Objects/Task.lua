@@ -40,7 +40,7 @@ end
 
 ---Create new Task object.
 ---@param identifier string
----@param delay number
+---@param delay number?
 ---@param punishable number
 ---@param after number
 ---@param callback function
@@ -48,11 +48,12 @@ end
 ---@return Task
 function Task.new(identifier, delay, punishable, after, callback, ...)
 	local self = setmetatable({}, Task)
-	self.thread = TaskSpawner.delay("Action_" .. identifier, delay, callback, ...)
 	self.identifier = identifier
 	self.when = os.clock() + delay
 	self.punishable = punishable
 	self.after = after
+	self.thread = (not delay) and TaskSpawner.spawn("Action_" .. identifier, callback, ...)
+		or TaskSpawner.delay("Action_" .. identifier, delay, callback, ...)
 
 	if not self.punishable or self.punishable <= 0 then
 		self.punishable = Configuration.expectOptionValue("DefaultPunishableWindow") or 0.7

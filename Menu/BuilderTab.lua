@@ -10,9 +10,6 @@ local SoundBuilderSection = require("Menu/Objects/SoundBuilderSection")
 ---@module Menu.Objects.EffectBuilderSection
 local EffectBuilderSection = require("Menu/Objects/EffectBuilderSection")
 
----@module Menu.Objects.EmitterBuilderSection
-local EmitterBuilderSection = require("Menu/Objects/EmitterBuilderSection")
-
 ---@module Menu.Objects.PartBuilderSection
 local PartBuilderSection = require("Menu/Objects/PartBuilderSection")
 
@@ -22,14 +19,14 @@ local AnimationTiming = require("Game/Timings/AnimationTiming")
 ---@module Game.Timings.EffectTiming
 local EffectTiming = require("Game/Timings/EffectTiming")
 
----@module Game.Timings.EmitterTiming
-local EmitterTiming = require("Game/Timings/EmitterTiming")
-
 ---@module Game.Timings.PartTiming
 local PartTiming = require("Game/Timings/PartTiming")
 
 ---@module Game.Timings.SoundTiming
 local SoundTiming = require("Game/Timings/SoundTiming")
+
+---@module Game.Timings.ModuleManager
+local ModuleManager = require("Game/Timings/ModuleManager")
 
 ---@module GUI.Library
 local Library = require("GUI/Library")
@@ -40,7 +37,6 @@ local BuilderTab = {
 	ebs = nil,
 	pbs = nil,
 	sbs = nil,
-	embs = nil,
 }
 
 ---Refresh builder lists.
@@ -63,11 +59,6 @@ function BuilderTab.refresh()
 	if BuilderTab.sbs then
 		BuilderTab.sbs:reset()
 		BuilderTab.sbs:refresh()
-	end
-
-	if BuilderTab.embs then
-		BuilderTab.embs:reset()
-		BuilderTab.embs:refresh()
 	end
 end
 
@@ -167,6 +158,19 @@ end
 ---Initialize logger section.
 ---@param groupbox table
 function BuilderTab.initLoggerSection(groupbox)
+	groupbox:AddToggle("ShowAnimationVisualizer", {
+		Text = "Show Animation Visualizer",
+		Default = false,
+		Callback = function(value)
+			Library.AnimationVisualizerFrame.Visible = value
+		end,
+	})
+
+	groupbox:AddInput("VisualizerAnimationId", {
+		Text = "Visualizer Animation ID",
+		Default = "",
+	})
+
 	groupbox:AddToggle("ShowLoggerWindow", {
 		Text = "Show Logger Window",
 		Default = false,
@@ -211,6 +215,27 @@ function BuilderTab.initLoggerSection(groupbox)
 	end)
 end
 
+---Initialize Module Manager section.
+---@param groupbox table
+function BuilderTab.initModuleManagerSection(groupbox)
+	local moduleList = groupbox:AddDropdown("ModuleList", {
+		Text = "Module List",
+		Values = ModuleManager.loaded(),
+		AllowNull = true,
+		Multi = false,
+	})
+
+	groupbox:AddButton("Refresh List", function()
+		-- Refresh manager.
+		ModuleManager.refresh()
+
+		-- Set loaded modules.
+		moduleList:SetValues(ModuleManager.loaded())
+		moduleList:SetValue(nil)
+		moduleList:Display()
+	end)
+end
+
 ---Initialize tab.
 ---@param window table
 function BuilderTab.init(window)
@@ -220,6 +245,7 @@ function BuilderTab.init(window)
 	-- Initialize sections.
 	BuilderTab.initSaveManagerSection(tab:AddDynamicGroupbox("Save Manager"))
 	BuilderTab.initMergeManagerSection(tab:AddDynamicGroupbox("Merge Manager"))
+	BuilderTab.initModuleManagerSection(tab:AddDynamicGroupbox("Module Manager"))
 	BuilderTab.initLoggerSection(tab:AddDynamicGroupbox("Logger"))
 	BuilderTab.initGlobalChangesSection(tab:AddDynamicGroupbox("Global Changes"))
 
@@ -229,14 +255,12 @@ function BuilderTab.init(window)
 	BuilderTab.pbs = PartBuilderSection.new("Part", tab:AddDynamicTabbox(), SaveManager.ps, PartTiming.new())
 	BuilderTab.ebs = EffectBuilderSection.new("Effect", tab:AddDynamicTabbox(), SaveManager.es, EffectTiming.new())
 	BuilderTab.sbs = SoundBuilderSection.new("Sound", tab:AddDynamicTabbox(), SaveManager.ss, SoundTiming.new())
-	BuilderTab.embs = EmitterBuilderSection.new("Emitter", tab:AddDynamicTabbox(), SaveManager.ems, EmitterTiming.new())
 
 	-- Initialize builder sections.
 	BuilderTab.abs:init()
 	BuilderTab.ebs:init()
 	BuilderTab.pbs:init()
 	BuilderTab.sbs:init()
-	BuilderTab.embs:init()
 end
 
 -- Return CombatTab module.

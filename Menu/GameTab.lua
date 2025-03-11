@@ -131,17 +131,23 @@ function GameTab.initLocalCharacterSection(groupbox)
 
 	groupbox:AddToggle("AgilitySpoof", {
 		Text = "Agility Spoofer",
-		Tooltip = "Set your Agility investment points to boost movement realistically.",
+		Tooltip = "Set your Agility investment points to boost movement.",
 		Default = false,
 	})
 
 	local agilitySpoofDepBox = groupbox:AddDependencyBox()
 
+	agilitySpoofDepBox:AddToggle("BoostAgilityDirectly", {
+		Text = "Boost Agility Directly",
+		Tooltip = "Boost your Agility directly instead of using investment points.",
+		Default = false,
+	})
+
 	agilitySpoofDepBox:AddSlider("AgilitySpoof", {
 		Text = "Agility Value",
 		Default = 0,
 		Min = 0,
-		Max = 200,
+		Max = 400,
 		Suffix = "pts",
 		Rounding = 0,
 	})

@@ -23,8 +23,7 @@ return LPH_NO_VIRTUALIZE(function()
 	local Toggles = {}
 	local Options = {}
 	local ColorPickers = {}
-	local Tasks = {}
-	local Entry = {}
+	local Entries = {}
 	local ContextMenus = {}
 	local Tooltips = {}
 	local ModeSelectFrames = {}
@@ -64,6 +63,17 @@ return LPH_NO_VIRTUALIZE(function()
 	table.insert(
 		Library.Signals,
 		RenderStepped:Connect(function(Delta)
+			if Toggles.ShowLoggerWindow and not Toggles.ShowLoggerWindow.Value then
+				Entries = {}
+			end
+
+			local NextIndex, NextEntry = next(Entries)
+
+			if NextIndex and NextEntry then
+				Entries[NextIndex] = nil
+				NextEntry()
+			end
+
 			RainbowStep = RainbowStep + Delta
 
 			if RainbowStep >= (1 / 60) then
@@ -165,14 +175,16 @@ return LPH_NO_VIRTUALIZE(function()
 		local Blacklist = Library.InfoLoggerData.KeyBlacklistList
 
 		for Idx, Entry in next, Library.InfoLoggerData.MissingDataEntries do
-			if Blacklist[Entry.Key] then
-				table.remove(Library.InfoLoggerData.MissingDataEntries, Idx)
-
-				pcall(Entry.Label.Destroy, Entry.Label)
-
+			if not Blacklist[Entry.Key] then
 				continue
 			end
 
+			table.remove(Library.InfoLoggerData.MissingDataEntries, Idx)
+
+			pcall(Entry.Label.Destroy, Entry.Label)
+		end
+
+		for Idx, Entry in next, Library.InfoLoggerData.MissingDataEntries do
 			Entry.Label.Parent = Entry.Type == CurrentTypeCycle and Library.InfoLoggerContainer or nil
 			Entry.Label.LayoutOrder = Idx
 		end
@@ -211,8 +223,7 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		--[[
-		table.insert(Entry, 1, function()
+		table.insert(Entries, 1, function()
 			debug.profilebegin("Library:AddMissEntry")
 
 			local function getEntriesForThisType()
@@ -239,23 +250,13 @@ return LPH_NO_VIRTUALIZE(function()
 				table.remove(mde, last[2])
 			end
 
-			local lol = nil
 			local asset = typeof(key) == "string" and tonumber(key:sub(14, 40)) or nil
-
-			if asset then
-				lol = game:GetService("MarketplaceService"):GetProductInfo(asset)
-			end
 
 			-- Create a new label.
 			---@type TextLabel
 			local label = Library:CreateLabel({
-				Text = name and string.format(
-					"(%.2fm away) (%s) Key '%s' from '%s' is missing.",
-					distance,
-					lol and lol.Name or "N/A",
-					key,
-					name
-				) or string.format("(%.2fm away) Key '%s' is missing.", distance, key),
+				Text = name and string.format("(%.2fm away) Key '%s' from '%s' is missing.", distance, key, name)
+					or string.format("(%.2fm away) Key '%s' is missing.", distance, key),
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Size = UDim2.new(1, 0, 0, 14),
 				LayoutOrder = 1,
@@ -268,6 +269,17 @@ return LPH_NO_VIRTUALIZE(function()
 			Library:AddToRegistry(label, {
 				TextColor3 = "FontColor",
 			}, true)
+
+			if asset then
+				task.spawn(function()
+					local lol = game:GetService("MarketplaceService"):GetProductInfo(asset)
+					if not lol then
+						return
+					end
+
+					label.Text = string.format("(%s) %s", lol.Name, label.Text)
+				end)
+			end
 
 			-- entry
 			local entry = { Label = label, Key = key, Type = type }
@@ -298,21 +310,19 @@ return LPH_NO_VIRTUALIZE(function()
 
 			debug.profileend()
 		end)
-		]]
-		--
 	end
 
 	function Library:ApplyTextStroke(Inst)
 		Inst.TextStrokeTransparency = 1
 
 		--[[
-	Library:Create("UIStroke", {
-		Color = Color3.new(0, 0, 0),
-		Thickness = 1,
-		LineJoinMode = Enum.LineJoinMode.Miter,
-		Parent = Inst,
-	})
-	]]
+		Library:Create("UIStroke", {
+			Color = Color3.new(0, 0, 0),
+			Thickness = 1,
+			LineJoinMode = Enum.LineJoinMode.Miter,
+			Parent = Inst,
+		})
+		]]
 		--
 	end
 
@@ -562,12 +572,6 @@ return LPH_NO_VIRTUALIZE(function()
 	end
 
 	function Library:Unload()
-		for _, Task in next, Tasks do
-			if coroutine.status(Task) == "suspended" then
-				task.cancel(Task)
-			end
-		end
-
 		-- Unload all of the signals
 		for Idx = #Library.Signals, 1, -1 do
 			local Connection = table.remove(Library.Signals, Idx)
@@ -1502,11 +1506,7 @@ return LPH_NO_VIRTUALIZE(function()
 							Key = "MB2"
 						end
 
-						if
-							Input.KeyCode == Enum.KeyCode.Escape
-							or Input.KeyCode == Enum.KeyCode.Backspace
-							or Input.KeyCode == Enum.KeyCode.Delete
-						then
+						if Input.KeyCode == Enum.KeyCode.Escape or Input.KeyCode == Enum.KeyCode.Backspace then
 							Key = "N/A"
 						end
 
@@ -3323,7 +3323,6 @@ return LPH_NO_VIRTUALIZE(function()
 			"Part",
 			"Sound",
 			"Effect",
-			"Emitter",
 		}
 		Library.InfoLoggerData = {
 			MissingDataEntries = {},

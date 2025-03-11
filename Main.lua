@@ -10,12 +10,9 @@ end
 -- Send this data to the ArmorShield database for further checking.
 -- Catch the ban evaders :groan:
 
--- Initialize ArmorShield globals if they do not exist.
-if not armorshield then
-	armorshield = { key = "N/A", current_role = "N/A" }
-end
-
 -- Initialize Luraph globals if they do not exist.
+---@todo: Don't directly set to LPH_NO_VIRTUALIZE to not destroy LSP information. Instead, inlined function.
+--- As such: return LPH_NO_VIRTUALIZE(function() **body here** end)()
 if not LPH_OBFUSCATED then
 	loadstring([[
 		function LPH_NO_VIRTUALIZE(...) return ... end
@@ -33,12 +30,11 @@ local Lycoris = require("Lycoris")
 local function initializeScript()
 	-- Check if there's already another instance.
 	if shared.Lycoris then
+		-- Detach previous instance.
 		shared.Lycoris.detach()
-	end
 
-	-- Check if it's already queued - we'll share that state.
-	if shared.Lycoris and shared.Lycoris.queued then
-		Lycoris.queued = true
+		-- Share the previous state.
+		Lycoris.queued = shared.Lycoris.queued
 	end
 
 	-- Re-initialize under the new state.

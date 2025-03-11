@@ -84,8 +84,12 @@ PartDefender.update = LPH_NO_VIRTUALIZE(function(self)
 
 	-- Handle no hitbox delay.
 	if not self.timing.duih then
-		-- Add actions.
-		self:actions(self.timing, 1.0)
+		-- Use module if we need to, else add actions.
+		if self.timing.umoa then
+			self:module(self.timing)
+		else
+			self:actions(self.timing)
+		end
 
 		-- Set that we're finished so we don't have to do this again.
 		self.finished = true
@@ -128,8 +132,13 @@ PartDefender.update = LPH_NO_VIRTUALIZE(function(self)
 	-- Clean all previous tasks. Just to be safe. We already check if it's empty... so.
 	self:clean()
 
+	-- Use module if we need to.
+	if self.timing.umoa then
+		return self:module(self.timing)
+	end
+
 	-- Add actions.
-	return self:actions(self.timing, 1.0)
+	return self:actions(self.timing)
 end)
 
 ---Create new PartDefender object.
