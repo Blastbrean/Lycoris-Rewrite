@@ -251,7 +251,13 @@ return LPH_NO_VIRTUALIZE(function()
 		-- With 40 investment points, we can have 16 real agility points.
 		-- However, with 30 investment points, we can only have 14 real agility points.
 		-- This means that the starting value must be 8 and we must increase by 2 for every point we have.
-		agilitySpoofer:set(agility, "Value", 8 + (Options.AgilitySpoof.Value / 10) * 2)
+		local agilitySpoofValue = 8 + (Options.AgilitySpoof.Value / 10) * 2
+
+		if Toggles.BoostAgilityDirectly.Value then
+			agilitySpoofValue = Options.AgilitySpoof.Value
+		end
+
+		agilitySpoofer:set(agility, "Value", agilitySpoofValue)
 	end
 
 	---Tween to altars.

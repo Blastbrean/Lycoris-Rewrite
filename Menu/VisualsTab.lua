@@ -4,6 +4,12 @@ local Logger = require("Utility/Logger")
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
+---@module Features.Visuals.Visuals
+local Visuals = require("Features/Visuals/Visuals")
+
+---@module Utility.JSON
+local JSON = require("Utility/JSON")
+
 -- Visuals tab.
 local VisualsTab = {}
 
@@ -126,6 +132,51 @@ function VisualsTab.initWorldVisualsSection(groupbox)
 
 	umacDepBox:SetupDependencies({
 		{ Toggles.OriginalAmbienceColor, true },
+	})
+end
+
+---Initialize Visual Assistance section.
+---@param groupbox table
+function VisualsTab.initVisualAssistanceSection(groupbox)
+	groupbox:AddToggle("TalentHighlighter", {
+		Text = "Talent Highlighter",
+		Tooltip = "Highlight shown talents that are in your builder link.",
+		Default = false,
+	})
+
+	groupbox:AddInput("TalentHighlighterLink", {
+		Text = "Talent Highlighter Link",
+		Tooltip = "The builder link that will be used to highlight talents.",
+		Placeholder = "Enter your builder link here.",
+		Finished = true,
+		Callback = function(value)
+			-- Get ID.
+			local id = value:gsub("https://deepwoken.co/builder%?id=", ""):gsub(" ", ""):gsub("\n", "")
+
+			-- Fetch builder data.
+			local response = request({
+				Url = ("https://api.deepwoken.co/build?id=%s"):format(id),
+				Method = "GET",
+				Headers = { ["Content-Type"] = "application/json" },
+			})
+
+			-- Check response.
+			if not response or not response.Success or not response.Body then
+				return Logger.notify("Invalid response while fetching builder data.")
+			end
+
+			-- Deserialize response.
+			local success, result = pcall(JSON.decode, response.Body)
+			if not success or not result then
+				return Logger.notify("JSON error '%s' while deserializing builder data.", result)
+			end
+
+			-- Notify result.
+			Logger.notify("Successfully fetched builder data.")
+
+			-- Set builder data.
+			Visuals.currentBuilderData = result
+		end,
 	})
 end
 
@@ -346,6 +397,7 @@ function VisualsTab.init(window)
 	VisualsTab.initESPOptimizations(tab:AddDynamicGroupbox("ESP Optimizations"))
 	VisualsTab.initWorldVisualsSection(tab:AddDynamicGroupbox("World Visuals"))
 	VisualsTab.initVisualRemovalsSection(tab:AddDynamicGroupbox("Visual Removals"))
+	VisualsTab.initVisualAssistanceSection(tab:AddDynamicGroupbox("Visual Assistance"))
 	VisualsTab.addPlayerESP(VisualsTab.initBaseESPSection("Player", tab:AddDynamicGroupbox("Player ESP")))
 	VisualsTab.initBaseESPSection("Mob", tab:AddDynamicGroupbox("Mob ESP"))
 	VisualsTab.initBaseESPSection("NPC", tab:AddDynamicGroupbox("NPC ESP"))

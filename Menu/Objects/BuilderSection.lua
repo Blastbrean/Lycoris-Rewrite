@@ -46,6 +46,21 @@ function BuilderSection:extra(tab) end
 ---@param timing Timing
 function BuilderSection:exload(timing) end
 
+---Action delay. Override me.
+---@param base table
+function BuilderSection:daction(base)
+	-- The user can accidently click this input through the dropdown and override the delay.
+	-- It has been moved and set to "Finished" to prevent this.
+	self.actionDelay = base:AddInput(nil, {
+		Text = "Action Delay",
+		Numeric = true,
+		Finished = true,
+		Callback = self:anc(function(action, value)
+			action._when = tonumber(value)
+		end),
+	})
+end
+
 ---Reset elements. Extend me.
 function BuilderSection:reset()
 	-- Reset timing elements.
@@ -60,6 +75,8 @@ function BuilderSection:reset()
 	self.hitboxHeight:SetRawValue(0)
 	self.hitboxLength:SetRawValue(0)
 	self.hitboxWidth:SetRawValue(0)
+	self.useModuleOverActions:SetRawValue(false)
+	self.selectedModule:SetRawValue("")
 
 	-- Reset action list.
 	self:arefresh(nil)
@@ -82,11 +99,17 @@ function BuilderSection:check()
 	return true
 end
 
+---Set creation timing properties. Override me.
+---@param timing Timing
+function BuilderSection:cset(timing)
+	timing.name = self.timingName.Value
+end
+
 ---Create new timing. Override me.
 ---@return Timing
 function BuilderSection:create()
 	local timing = Timing.new()
-	timing.name = self.timingName.Value
+	self:cset(timing)
 	return timing
 end
 
@@ -103,6 +126,14 @@ function BuilderSection:raction()
 	self.hitboxHeight:SetRawValue(0)
 	self.hitboxLength:SetRawValue(0)
 	self.hitboxWidth:SetRawValue(0)
+
+	if self.useAnimationDelta then
+		self.useAnimationDelta:SetRawValue(false)
+	end
+
+	if self.animationDelta then
+		self.animationDelta:SetRawValue(0)
+	end
 end
 
 ---Refresh timing list.
@@ -211,6 +242,15 @@ function BuilderSection:baction(base)
 			self.hitboxWidth:SetRawValue(action.hitbox.X)
 			self.hitboxHeight:SetRawValue(action.hitbox.Y)
 			self.hitboxLength:SetRawValue(action.hitbox.Z)
+
+			-- Set the optional elements.
+			if self.useAnimationDelta then
+				self.useAnimationDelta:SetRawValue(action.uad)
+			end
+
+			if self.animationDelta then
+				self.animationDelta:SetRawValue(action.adelta)
+			end
 		end),
 	})
 
@@ -223,16 +263,7 @@ function BuilderSection:baction(base)
 		end),
 	})
 
-	-- The user can accidently click this input through the dropdown and override the delay.
-	-- It has been moved and set to "Finished" to prevent this.
-	self.actionDelay = base:AddInput(nil, {
-		Text = "Action Delay",
-		Numeric = true,
-		Finished = true,
-		Callback = self:anc(function(action, value)
-			action._when = tonumber(value)
-		end),
-	})
+	self:daction(base)
 
 	self.hitboxLength = base:AddSlider(nil, {
 		Text = "Hitbox Length",
@@ -380,6 +411,10 @@ function BuilderSection:timing()
 			self.hitboxHeight:SetRawValue(found.hitbox.Z)
 			self.hitboxWidth:SetRawValue(found.hitbox.X)
 			self.hitboxLength:SetRawValue(found.hitbox.Y)
+			self.punishableWindow:SetRawValue(found.punishable)
+			self.afterWindow:SetRawValue(found.after)
+			self.useModuleOverActions:SetRawValue(found.umoa)
+			self.selectedModule:SetRawValue(found.smod)
 
 			-- Load extra elements.
 			self:exload(found)
@@ -409,16 +444,48 @@ function BuilderSection:timing()
 			return
 		end
 
+		-- Create new timing.
+		local timing = self:create()
+
 		-- Push new timing.
-		config:push(self:create())
+		config:push(timing)
 
 		-- Refresh timing list.
 		self:refresh()
 
 		-- Set timing list value.
-		self.timingList:SetValue(self.timingName.Value)
+		self.timingList:SetValue(timing.name)
 		self.timingList:Display()
 	end)
+
+	configDepBox:AddButton(
+		"Duplicate Timing",
+		self:tnc(function(found)
+			-- Fetch config.
+			local config = self.pair.config
+
+			-- Check if we can successfully create a timing from the given data.
+			if not self:check() then
+				return
+			end
+
+			-- Clone new timing.
+			local timing = found:clone()
+
+			-- Set creation properties.
+			self:cset(timing)
+
+			-- Push new timing.
+			config:push(timing)
+
+			-- Refresh timing list.
+			self:refresh()
+
+			-- Set timing list value.
+			self.timingList:SetValue(timing.name)
+			self.timingList:Display()
+		end)
+	)
 
 	local internalDepBox = tab:AddDependencyBox()
 
@@ -602,6 +669,22 @@ function BuilderSection:builder()
 
 	duihDepBox:SetupDependencies({
 		{ self.delayUntilInHitbox, true },
+	})
+
+	self.useModuleOverActions = tab:AddToggle(nil, {
+		Text = "Use Module Over Actions",
+		Default = false,
+		Callback = self:tnc(function(timing, value)
+			timing.umoa = value
+		end),
+	})
+
+	self.selectedModule = tab:AddInput(nil, {
+		Text = "Selected Module",
+		Finished = true,
+		Callback = self:tnc(function(timing, value)
+			timing.smod = value
+		end),
 	})
 
 	self:extra(tab)

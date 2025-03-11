@@ -16,17 +16,11 @@ local SoundDefender = require("Features/Combat/Objects/SoundDefender")
 ---@module Features.Combat.Objects.EffectDefender
 local EffectDefender = require("Features/Combat/Objects/EffectDefender")
 
----@module Features.Combat.Objects.EmitterDefender
-local EmitterDefender = require("Features/Combat/Objects/EmitterDefender")
-
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
-
----@module Utility.Table
-local Table = require("Utility/Table")
 
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
@@ -46,7 +40,7 @@ local defenseMaid = Maid.new()
 -- Defender objects.
 local defenderObjects = {}
 local defenderPartObjects = {}
-local defenderEmitterObjects = {}
+local defenderAnimationObjects = {}
 
 -- Mob animations.
 local mobAnimations = {}
@@ -80,7 +74,9 @@ end)
 ---Add animator defender.
 ---@param animator Animator
 local addAnimatorDefender = LPH_NO_VIRTUALIZE(function(animator)
-	defenderObjects[animator] = AnimatorDefender.new(animator, mobAnimations)
+	local animationDefender = AnimatorDefender.new(animator, mobAnimations)
+	defenderObjects[animator] = animationDefender
+	defenderAnimationObjects[animator] = animationDefender
 end)
 
 ---Add sound defender.
@@ -110,27 +106,6 @@ local addPartDefender = LPH_NO_VIRTUALIZE(function(part)
 	defenderPartObjects[part] = partDefender
 end)
 
----Add emitter defender.
----@param emitter ParticleEmitter
-local addEmitterDefender = LPH_NO_VIRTUALIZE(function(emitter)
-	-- Get emitter defender.
-	local emitterDefender = EmitterDefender.new(emitter)
-	if not emitterDefender then
-		return
-	end
-
-	-- Check if there's already a defender object under this part.
-	if Table.elements(defenderEmitterObjects, function(object)
-		return object.part == emitterDefender.part
-	end) then
-		return
-	end
-
-	-- Link to list.
-	defenderObjects[emitter] = emitterDefender
-	defenderEmitterObjects[emitter] = emitterDefender
-end)
-
 ---On game descendant added.
 ---@param descendant Instance
 local onGameDescendantAdded = LPH_NO_VIRTUALIZE(function(descendant)
@@ -145,10 +120,6 @@ local onGameDescendantAdded = LPH_NO_VIRTUALIZE(function(descendant)
 	if descendant:IsA("BasePart") then
 		return addPartDefender(descendant)
 	end
-
-	if descendant:IsA("Beam") or descendant:IsA("ParticleEmitter") then
-		return addEmitterDefender(descendant)
-	end
 end)
 
 ---On game descendant removed.
@@ -159,12 +130,12 @@ local onGameDescendantRemoved = LPH_NO_VIRTUALIZE(function(descendant)
 		return
 	end
 
-	if defenderEmitterObjects[descendant] then
-		defenderEmitterObjects[descendant] = nil
-	end
-
 	if defenderPartObjects[descendant] then
 		defenderPartObjects[descendant] = nil
+	end
+
+	if defenderAnimationObjects[descendant] then
+		defenderAnimationObjects[descendant] = nil
 	end
 
 	object:detach()
@@ -232,19 +203,11 @@ local updateDefenders = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	for _, object in next, defenderPartObjects do
-		if not object.update then
-			continue
-		end
-
+	for _, object in next, defenderAnimationObjects do
 		object:update()
 	end
 
-	for _, object in next, defenderEmitterObjects do
-		if not object.update then
-			continue
-		end
-
+	for _, object in next, defenderPartObjects do
 		object:update()
 	end
 end)

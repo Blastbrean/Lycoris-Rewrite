@@ -26,6 +26,8 @@ local Task = require("Features/Combat/Objects/Task")
 ---@field animator Animator
 ---@field entity Model
 ---@field heffects Instance[]
+---@field keyframes Action[]
+---@field timing AnimationTiming?
 ---@field manimations table<number, Animation>
 ---@field track AnimationTrack? Don't be confused. This is the **valid && last** animation track played.
 ---@field maid Maid This maid is cleaned up after every new animation track. Safe to use for on-animation-track setup.
@@ -36,19 +38,6 @@ AnimatorDefender.__type = "Animation"
 -- Services.
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
-
----Find the Heavy Hands Ring instance in a character.
----@param character Model
----@return Instance
-local function hasHeavyHandsRing(character)
-	for _, instance in pairs(character:GetChildren()) do
-		if instance:GetAttribute("EquipmentRef") ~= "Heavy Hands Ring" then
-			continue
-		end
-
-		return instance
-	end
-end
 
 ---Check if we're in a valid state to proceed with the action.
 ---@param timing AnimationTiming
@@ -167,6 +156,71 @@ AnimatorDefender.rpue = LPH_NO_VIRTUALIZE(function(self, track, timing, index)
 	InputClient.parry()
 end)
 
+---Get latest keyframe.
+---@return Action?
+AnimatorDefender.latest = LPH_NO_VIRTUALIZE(function(self)
+	local latestKeyframe = nil
+	local latestDelta = nil
+
+	for _, keyframe in next, self.keyframes do
+		if self.track.TimePosition <= keyframe.adelta then
+			continue
+		end
+
+		if latestDelta and keyframe.adelta <= latestDelta then
+			continue
+		end
+
+		latestDelta = keyframe.adelta
+		latestKeyframe = keyframe
+	end
+
+	return latestKeyframe
+end)
+
+---Update the defender.
+---@param self AnimatorDefender
+AnimatorDefender.update = LPH_NO_VIRTUALIZE(function(self)
+	if not self.track or not self.timing then
+		return
+	end
+
+	-- Find the latest keyframe that we have exceeded.
+	local latest = self:latest()
+	if not latest then
+		return
+	end
+
+	-- Clear the keyframes that we have exceeded.
+	for idx, keyframe in next, self.keyframes do
+		if self.track.TimePosition <= keyframe.adelta then
+			continue
+		end
+
+		self.keyframes[idx] = nil
+	end
+
+	-- Ok, run action of this keyframe.
+	self:mark(
+		Task.new(latest._type, nil, self.timing.punishable, self.timing.after, self.handle, self, self.timing, latest)
+	)
+end)
+
+---Add animation delta actions.
+---@param self AnimatorDefender
+---@param timing AnimationTiming
+AnimatorDefender.aeactions = LPH_NO_VIRTUALIZE(function(self, timing)
+	for _, action in next, timing.actions:get() do
+		-- Skip all actions that are animation delta based.
+		if not action.uad then
+			continue
+		end
+
+		-- Add to keyframe list.
+		self.keyframes[#self.keyframes + 1] = action
+	end
+end)
+
 ---Process animation track.
 ---@todo: Logger module.
 ---@param track AnimationTrack
@@ -231,6 +285,7 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 
 	-- Stop! We need to feint if we're currently attacking. Input block will handle the rest.
 	-- Assume, we cannot react in time. Example: we attacked just right before this process call.
+	---@note: Replicate to other types. Improve me or move me.
 	local shouldFeintAttack = midAttackCanFeint and Configuration.expectToggleValue("FeintM1WhileDefending")
 	local shouldFeintMantra = effectReplicatorModule:FindEffect("CastingSpell")
 		and Configuration.expectToggleValue("FeintMantrasWhileDefending")
@@ -247,12 +302,18 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	self:clean()
 
 	-- Set current data.
+	self.timing = timing
 	self.track = track
 	self.heffects = {}
 
+	-- Use module over actions.
+	if timing.umoa then
+		return self:module(timing)
+	end
+
 	---@note: Start processing the timing. Add the actions if we're not RPUE.
 	if not timing.rpue then
-		return self:actions(timing, timing.tag == "M1" and hasHeavyHandsRing(self.entity) and 0.85 or 1)
+		return self:actions(timing) and self:aeactions(timing)
 	end
 
 	self:mark(
@@ -278,6 +339,15 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	)
 end)
 
+---Clean up the defender.
+function AnimatorDefender:clean()
+	-- Empty keyframes.
+	self.keyframes = {}
+
+	-- Clean through base method.
+	Defender.clean(self)
+end
+
 ---Create new AnimatorDefender object.
 ---@param animator Animator
 ---@param manimations table<number, Animation>
@@ -297,7 +367,10 @@ function AnimatorDefender.new(animator, manimations)
 	self.entity = entity
 
 	self.track = nil
+	self.timing = nil
+
 	self.heffects = {}
+	self.keyframes = {}
 
 	self.maid:mark(
 		entityDescendantAdded:connect(

@@ -11,6 +11,8 @@ local ActionContainer = require("Game/Timings/ActionContainer")
 ---@field duih boolean Delay until in hitbox.
 ---@field actions ActionContainer
 ---@field hitbox Vector3
+---@field umoa boolean Use module over actions.
+---@field smod string Selected module string.
 local Timing = {}
 Timing.__index = Timing
 
@@ -64,6 +66,14 @@ function Timing:load(values)
 	if typeof(values.hitbox) == "table" then
 		self.hitbox = Vector3.new(values.hitbox.X or 0, values.hitbox.Y or 0, values.hitbox.Z or 0)
 	end
+
+	if typeof(values.umoa) == "boolean" then
+		self.umoa = values.umoa
+	end
+
+	if typeof(values.smod) == "string" then
+		self.smod = values.smod
+	end
 end
 
 ---Clone timing.
@@ -80,6 +90,8 @@ function Timing:clone()
 	clone.after = self.after
 	clone.actions = self.actions:clone()
 	clone.hitbox = self.hitbox
+	clone.umoa = self.umoa
+	clone.smod = self.smod
 
 	return clone
 end
@@ -101,6 +113,8 @@ function Timing:serialize()
 			Y = self.hitbox.Y,
 			Z = self.hitbox.Z,
 		},
+		umoa = self.umoa,
+		smod = self.smod,
 	}
 end
 
@@ -119,6 +133,8 @@ function Timing.new(values)
 	self.duih = false
 	self.actions = ActionContainer.new()
 	self.hitbox = Vector3.zero
+	self.umoa = false
+	self.smod = "N/A"
 
 	if values then
 		self:load(values)

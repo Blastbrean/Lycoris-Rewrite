@@ -60,12 +60,18 @@ function SoundBuilderSection:check()
 	return true
 end
 
+---Set creation timing properties. Override me.
+---@param timing SoundTiming
+function SoundBuilderSection:cset(timing)
+	timing.name = self.timingName.Value
+	timing._id = self.soundId.Value
+end
+
 ---Create new timing. Override me.
 ---@return Timing
 function SoundBuilderSection:create()
 	local timing = SoundTiming.new()
-	timing.name = self.timingName.Value
-	timing._id = self.soundId.Value
+	self:cset(timing)
 	return timing
 end
 

@@ -60,12 +60,18 @@ function EffectBuilderSection:check()
 	return true
 end
 
+---Set creation timing properties. Override me.
+---@param timing EffectTiming
+function EffectBuilderSection:cset(timing)
+	timing.name = self.timingName.Value
+	timing.ename = self.effectName.Value
+end
+
 ---Create new timing. Override me.
 ---@return Timing
 function EffectBuilderSection:create()
 	local timing = EffectTiming.new()
-	timing.name = self.timingName.Value
-	timing.ename = self.effectName.Value
+	self:cset(timing)
 	return timing
 end
 

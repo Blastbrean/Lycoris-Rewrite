@@ -13,9 +13,6 @@ local PartTiming = require("Game/Timings/PartTiming")
 ---@module Game.Timings.SoundTiming
 local SoundTiming = require("Game/Timings/SoundTiming")
 
----@module Game.Timings.EmitterTiming
-local EmitterTiming = require("Game/Timings/EmitterTiming")
-
 ---@class TimingSave
 ---@field _data TimingContainer[]
 ---@field _removals table<string, string[]> For every container, a list of timing IDs that we need to remove from the internal data.
@@ -77,10 +74,6 @@ function TimingSave:load(values)
 	if typeof(values.sound) == "table" then
 		data.sound:load(values.sound)
 	end
-
-	if typeof(values.emitter) == "table" then
-		data.emitter:load(values.emitter)
-	end
 end
 
 ---Get timing save count.
@@ -106,7 +99,6 @@ function TimingSave:serialize()
 		effect = data.effect:serialize(),
 		part = data.part:serialize(),
 		sound = data.sound:serialize(),
-		emitter = data.emitter:serialize(),
 	}
 end
 
@@ -121,7 +113,6 @@ function TimingSave.new(values)
 		effect = TimingContainer.new(EffectTiming),
 		part = TimingContainer.new(PartTiming),
 		sound = TimingContainer.new(SoundTiming),
-		emitter = TimingContainer.new(EmitterTiming),
 	}
 
 	if values then

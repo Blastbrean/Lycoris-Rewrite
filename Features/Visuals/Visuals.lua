@@ -40,7 +40,7 @@ local Logger = require("Utility/Logger")
 -- Visuals module.
 ---@optimization: All Configuration calls are replaced with direct accessors.
 ---The rendering starts after our script is loaded; so we can assume the objects exist.
-local Visuals = {}
+local Visuals = { currentBuilderData = nil }
 
 -- Last visuals update.
 local lastVisualsUpdate = os.clock()
@@ -67,6 +67,56 @@ local fieldOfView = visualsMaid:mark(OriginalStore.new())
 local showRobloxChatMap = visualsMaid:mark(OriginalStoreManager.new())
 local noAnimatedSeaMap = visualsMaid:mark(OriginalStoreManager.new())
 local noPersistentMap = visualsMaid:mark(OriginalStoreManager.new())
+local talentHighlighterMap = visualsMaid:mark(OriginalStoreManager.new())
+
+---Update talent highlighter.
+local updateTalentHighlighter = LPH_NO_VIRTUALIZE(function()
+	local talentData = Visuals.currentBuilderData and Visuals.currentBuilderData.talents
+	if not talentData then
+		return
+	end
+
+	local localPlayer = players.LocalPlayer
+	if not localPlayer then
+		return
+	end
+
+	local playerGui = localPlayer.PlayerGui
+	if not playerGui then
+		return
+	end
+
+	local talentGui = playerGui:FindFirstChild("TalentGui")
+	if not talentGui then
+		return
+	end
+
+	local choiceFrame = talentGui:FindFirstChild("ChoiceFrame")
+	if not choiceFrame then
+		return
+	end
+
+	for _, instance in pairs(choiceFrame:GetChildren()) do
+		if not instance:IsA("TextButton") then
+			continue
+		end
+
+		local cardFrame = instance:FindFirstChild("CardFrame")
+		if not cardFrame then
+			continue
+		end
+
+		local talentInData = table.find(talentData, string.gsub(instance.Name, "^%s*(.-)%s*$", "%1"))
+
+		talentHighlighterMap:add(
+			cardFrame,
+			"BackgroundColor3",
+			talentInData and Color3.new(0, 255, 0) or Color3.new(255, 0, 0)
+		)
+
+		talentHighlighterMap:add(cardFrame, "BorderSizePixel", talentInData and 10 or 0)
+	end
+end)
 
 ---Update no persistence.
 local updateNoPersistence = LPH_NO_VIRTUALIZE(function()
@@ -156,6 +206,12 @@ local updateVisuals = LPH_NO_VIRTUALIZE(function()
 	end
 
 	lastVisualsUpdate = os.clock()
+
+	if Configuration.toggleValue("TalentHighlighter") then
+		updateTalentHighlighter()
+	else
+		talentHighlighterMap:restore()
+	end
 
 	if Configuration.toggleValue("NoPersisentESP") then
 		updateNoPersistence()

@@ -126,8 +126,11 @@ PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
 
 	self.shadow.Position = usedPosition
 
-	if self.billboard.Adornee ~= (predictedPosition and self.shadow or self.character) then
-		self.billboard.Adornee = predictedPosition and self.shadow or self.character
+	local expectedAdornee = predictedPosition and self.shadow or model
+
+	---@note: BillboardGUIs only update when a property of it changes.
+	if self.billboard.Adornee ~= expectedAdornee then
+		self.billboard.Adornee = expectedAdornee
 	end
 
 	InstanceESP.update(self, usedPosition, tags)

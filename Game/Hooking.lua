@@ -36,8 +36,36 @@ local oldTick = nil
 local oldCoroutineWrap = nil
 local oldTaskSpawn = nil
 
+---Recursively find first valid InputClient stack.
+---@return table?
+local findInputClientStack = LPH_NO_VIRTUALIZE(function()
+	for level = 1, math.huge do
+		-- Get info.
+		local success, info = pcall(debug.getinfo, level)
+		if not success or not info then
+			break
+		end
+
+		-- Check source.
+		if not info.source:match("InputClient") then
+			continue
+		end
+
+		-- Check if CClosure.
+		if iscclosure(info.func) then
+			continue
+		end
+
+		-- Fetch alternative stack - on Wave, this will fail. You cannot wrap debug.getstack(...) in pcall.
+		local stack_success, stack = pcall(debug.getstack, level)
+
+		-- Return stack.
+		return stack_success and stack or debug.getstack(level - 1)
+	end
+end)
+
 ---Find function level of InputClient.
----@return number?, table?, table?
+---@return number?, table?
 local findInputClientLevel = LPH_NO_VIRTUALIZE(function()
 	for level = 1, math.huge do
 		-- Get info.
@@ -51,16 +79,8 @@ local findInputClientLevel = LPH_NO_VIRTUALIZE(function()
 			continue
 		end
 
-		-- Fetch stack.
-		local minus_success, minus_stack = pcall(debug.getstack, level - 1)
-		local stack_success, stack = pcall(debug.getstack, level)
-
-		if not minus_success and not stack_success then
-			return level, info, nil
-		end
-
-		-- Return level, debug information, and stack.
-		return level, info, minus_success and minus_stack or stack
+		-- Return level, debug information.
+		return level, info
 	end
 end)
 
@@ -163,11 +183,12 @@ local onTick = LPH_NO_VIRTUALIZE(function(...)
 		return oldTick(...)
 	end
 
-	local level, info, stack = findInputClientLevel()
+	local level, info = findInputClientLevel()
 	if not level or not info then
 		return oldTick(...)
 	end
 
+	local stack = findInputClientStack()
 	if not stack then
 		return error("Stack is nil.")
 	end
@@ -389,11 +410,12 @@ local onTaskSpawn = LPH_NO_VIRTUALIZE(function(...)
 		return oldTaskSpawn(...)
 	end
 
-	local level, info, stack = findInputClientLevel()
+	local level, info = findInputClientLevel()
 	if not level or not info then
 		return oldTaskSpawn(...)
 	end
 
+	local stack = findInputClientStack()
 	if not stack then
 		Logger.warn("Task stack is nil.")
 	end
