@@ -12,7 +12,7 @@ function ActionContainer:clone()
 	local clone = ActionContainer.new()
 
 	for _, action in next, self._data do
-		clone:push(action)
+		clone:push(action:clone())
 	end
 
 	return clone

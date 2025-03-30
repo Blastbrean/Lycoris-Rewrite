@@ -2475,6 +2475,8 @@ return LPH_NO_VIRTUALIZE(function()
 				Library:SafeCallback("Slider_Changed" .. "_" .. (Idx or ""), Slider.Changed, Slider.Value)
 			end
 
+			local CurrentAmount = 0.01
+
 			SliderInner.InputBegan:Connect(function(Input)
 				if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
 					local mPos = Mouse.X
@@ -2500,6 +2502,22 @@ return LPH_NO_VIRTUALIZE(function()
 					end
 
 					Library:AttemptSave()
+				end
+
+				if Input.KeyCode == Enum.KeyCode.Equals then
+					CurrentAmount = CurrentAmount + 0.01
+				end
+
+				if Input.KeyCode == Enum.KeyCode.Minus then
+					CurrentAmount = CurrentAmount - 0.01
+				end
+
+				if Input.KeyCode == Enum.KeyCode.Right then
+					Slider:SetValue(Slider.Value + CurrentAmount)
+				end
+
+				if Input.KeyCode == Enum.KeyCode.Left then
+					Slider:SetValue(Slider.Value - CurrentAmount)
 				end
 			end)
 

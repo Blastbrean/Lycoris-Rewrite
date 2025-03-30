@@ -449,7 +449,7 @@ function BuilderSection:timing()
 	end)
 
 	configDepBox:AddButton(
-		"Duplicate Timing",
+		"Duplicate Selected Timing",
 		self:tnc(function(found)
 			-- Fetch config.
 			local config = self.pair.config

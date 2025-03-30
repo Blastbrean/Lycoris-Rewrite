@@ -4,6 +4,7 @@ local Timing = require("Game/Timings/Timing")
 ---@class EffectTiming: Timing
 ---@field ename string Effect name.
 ---@field rpue boolean Repeat parry until end.
+---@param fhb boolean Flag to see whether or not this timing should offset facing.
 ---@field _rsd number Repeat start delay in miliseconds. Never access directly.
 ---@field _rpd number Delay between each repeat parry in miliseconds. Never access directly.
 local EffectTiming = setmetatable({}, { __index = Timing })
@@ -36,8 +37,12 @@ function EffectTiming:load(values)
 		self.ename = values.ename
 	end
 
-	if type(values.rsd) == "number" then
+	if typeof(values.rsd) == "number" then
 		self._rsd = values.rsd
+	end
+
+	if typeof(values.fhb) == "boolean" then
+		self.fhb = values.fhb
 	end
 
 	if typeof(values.rpue) == "boolean" then
@@ -56,6 +61,7 @@ function EffectTiming:clone()
 
 	clone.ename = self.ename
 	clone._rpd = self._rpd
+	clone.fhb = self.fhb
 	clone._rsd = self._rsd
 	clone.rpue = self.rpue
 
@@ -68,6 +74,7 @@ function EffectTiming:serialize()
 	local serializable = Timing.serialize(self)
 
 	serializable.ename = self.ename
+	serializable.fhb = self.fhb
 	serializable.rpue = self.rpue
 	serializable.rsd = self._rsd
 	serializable.rpd = self._rpd
@@ -81,6 +88,7 @@ end
 function EffectTiming.new(values)
 	local self = setmetatable(Timing.new(), EffectTiming)
 
+	self.fhb = false
 	self.ename = ""
 	self.rpue = false
 	self._rsd = 0

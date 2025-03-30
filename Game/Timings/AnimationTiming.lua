@@ -107,7 +107,7 @@ function AnimationTiming.new(values)
 	self._rpd = 0
 	self.rpue = false
 	self.ha = false
-	self.fhb = false
+	self.fhb = true
 	self.iae = false
 
 	if values then
