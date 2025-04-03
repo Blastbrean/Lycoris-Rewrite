@@ -193,7 +193,7 @@ AnimatorDefender.latest = LPH_NO_VIRTUALIZE(function(self)
 	return latestKeyframe
 end)
 
---Get time position from history and track.
+ ---Get time position from history and track.
  ---@param track AnimationTrack
  ---@param pbdata PlaybackData
  ---@param offset number
@@ -223,6 +223,7 @@ end)
  
  ---Get time position of current track.
  ---@note: This method is ping compensated, we attempt to calculate from the initial delay of receiving the animation how much forwards (e.g where we would be at) we would be.
+ ---@todo: We should likely also subtract our round-trip time (e.g double the ping) since we have a receiving delay and a sending delay when we send the action to the server.
  ---@return number?
  function AnimatorDefender:tp()
  	if not self.track or self.offset == nil then
