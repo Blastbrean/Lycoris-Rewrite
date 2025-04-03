@@ -2030,30 +2030,7 @@ return LPH_NO_VIRTUALIZE(function()
 				end
 
 				Textbox.Value = Text
-
-				if Connection then
-					Connection:Disconnect()
-				end
-
 				Box.Text = Text
-
-				if Connection then
-					if Textbox.Finished then
-						Connection = Box.FocusLost:Connect(function(enter)
-							if not enter then
-								return
-							end
-
-							Textbox:SetValue(Box.Text)
-							Library:AttemptSave()
-						end)
-					else
-						Connection = Box:GetPropertyChangedSignal("Text"):Connect(function()
-							Textbox:SetValue(Box.Text)
-							Library:AttemptSave()
-						end)
-					end
-				end
 			end
 
 			function Textbox:SetValue(Text)

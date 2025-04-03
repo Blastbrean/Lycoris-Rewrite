@@ -179,7 +179,8 @@ function AnimationBuilderSection:action()
 
 	self.repeatStartDelay = depBoxOn:AddInput(nil, {
 		Text = "Repeat Start Delay",
-		Default = false,
+		Numeric = true,
+		Finished = true,
 		Callback = self:tnc(function(timing, value)
 			timing._rsd = value
 		end),
@@ -188,6 +189,7 @@ function AnimationBuilderSection:action()
 	self.repeatParryDelay = depBoxOn:AddInput(nil, {
 		Text = "Repeat Parry Delay",
 		Numeric = true,
+		Finished = true,
 		Callback = self:tnc(function(timing, value)
 			timing._rpd = value
 		end),

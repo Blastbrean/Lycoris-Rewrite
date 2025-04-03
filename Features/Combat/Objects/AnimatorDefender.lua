@@ -235,12 +235,9 @@ function AnimatorDefender:tp()
 	end
 
 	---@note: Compensate for ping. Shift the current position up by the offset to counteract the delay that we had receiving the animation.
-	--- If we don't have valid playback data, then all we have to go off of is the current data.
-	--- We'll have to convert our seconds into a time position using the current speed.
-	--- If the length of seconds that a track will play is equal to it's length divided by speed:
-	--- Then, Length / Speed = Seconds
-	--- So, Speed * Seconds = Length
-	return self.track.TimePosition + (self.offset * self.track.Speed)
+	--- We have no valid speed history to go off of. If we use the current speed, it will be completely wrong.
+	--- Assume that our time is shifted by X amount of time position of speed 1.
+	return self.track.TimePosition + self.offset
 end
 
 ---Update playback data tracking. Attempt to record data for tracks that have not been recorded yet.

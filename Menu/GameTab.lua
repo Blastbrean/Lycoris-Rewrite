@@ -422,12 +422,43 @@ function GameTab.initInstanceRemovalsSection(groupbox)
 	})
 end
 
+---Debugging section.
+---@param groupbox table
+function GameTab.initDebuggingSection(groupbox)
+	local incomingReplicationLagTime = nil
+
+	groupbox:AddToggle("IncomingReplicationLag", {
+		Text = "Incoming Replication Lag",
+		Tooltip = "Enable incoming replication lag.",
+		Default = false,
+		Callback = function(value)
+			if not incomingReplicationLagTime then
+				return
+			end
+
+			settings().Network.IncomingReplicationLag = value and incomingReplicationLagTime.Value or 0
+		end,
+	})
+
+	incomingReplicationLagTime = groupbox:AddSlider("IncomingReplicationLagTime", {
+		Text = "Incoming Replication Lag Time",
+		Default = 0.1,
+		Min = 0,
+		Max = 5,
+		Suffix = "s",
+		Rounding = 2,
+		Callback = function(value)
+			settings().Network.IncomingReplicationLag = value
+		end,
+	})
+end
 ---Initialize tab.
 function GameTab.init(window)
 	-- Create tab.
 	local tab = window:AddTab("Game")
 
 	-- Initialize sections.
+	GameTab.initDebuggingSection(tab:AddDynamicGroupbox("Debugging"))
 	GameTab.initLocalCharacterSection(tab:AddDynamicGroupbox("Local Character"))
 	GameTab.initEffectRemovalsSection(tab:AddDynamicGroupbox("Effect Removals"))
 	GameTab.initInstanceRemovalsSection(tab:AddDynamicGroupbox("Instance Removals"))
