@@ -39,7 +39,7 @@ function AnimationTiming:load(values)
 		self._id = values._id
 	end
 
-	if type(values.rsd) == "number" then
+	if typeof(values.rsd) == "number" then
 		self._rsd = values.rsd
 	end
 

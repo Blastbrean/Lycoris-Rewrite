@@ -182,7 +182,7 @@ function AnimationBuilderSection:action()
 		Numeric = true,
 		Finished = true,
 		Callback = self:tnc(function(timing, value)
-			timing._rsd = value
+			timing._rsd = tonumber(value) or 0
 		end),
 	})
 
@@ -191,7 +191,7 @@ function AnimationBuilderSection:action()
 		Numeric = true,
 		Finished = true,
 		Callback = self:tnc(function(timing, value)
-			timing._rpd = value
+			timing._rpd = tonumber(value) or 0
 		end),
 	})
 
