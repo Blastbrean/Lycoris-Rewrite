@@ -322,7 +322,8 @@ end)
 ---Handle action.
 ---@param timing Timing
 ---@param action Action
-Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action)
+---@varargs ... any Arguments to be passed into notification.
+Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, ...)
 	if not self:valid(timing, action) then
 		return
 	end
@@ -337,7 +338,7 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	self:notify(timing, "Action type '%s' is being executed.", action._type)
+	self:notify(timing, ...)
 
 	if action._type == "Start Block" then
 		return InputClient.bstart()
@@ -482,7 +483,9 @@ Defender.actions = LPH_NO_VIRTUALIZE(function(self, timing)
 				self.handle,
 				self,
 				timing,
-				action
+				action,
+				"Action type '%s' is being executed.",
+				action._type
 			)
 		)
 

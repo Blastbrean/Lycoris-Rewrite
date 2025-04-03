@@ -286,8 +286,10 @@ AnimatorDefender.update = LPH_NO_VIRTUALIZE(function(self)
 	end
 
 	-- Clear the keyframes that we have exceeded.
+	local tp = self:tp() or 0.0
+
 	for idx, keyframe in next, self.keyframes do
-		if (self:tp() or 0.0) <= keyframe.tp then
+		if tp <= keyframe.tp then
 			continue
 		end
 
@@ -301,7 +303,16 @@ AnimatorDefender.update = LPH_NO_VIRTUALIZE(function(self)
 
 	-- Ok, run action of this keyframe.
 	self.maid:mark(
-		TaskSpawner.spawn(string.format("KeyframeAction_%s", latest._type), self.handle, self, self.timing, latest)
+		TaskSpawner.spawn(
+			string.format("KeyframeAction_%s", latest._type),
+			self.handle,
+			self,
+			self.timing,
+			latest,
+			"(%.2f) Keyframe action type '%s' is being executed.",
+			tp,
+			latest._type
+		)
 	)
 end)
 
