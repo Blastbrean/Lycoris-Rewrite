@@ -2482,11 +2482,11 @@ return LPH_NO_VIRTUALIZE(function()
 				end
 
 				if Input.KeyCode == Enum.KeyCode.Equals then
-					CurrentAmount = CurrentAmount + 0.01
+					CurrentAmount = CurrentAmount + 0.001
 				end
 
 				if Input.KeyCode == Enum.KeyCode.Minus then
-					CurrentAmount = CurrentAmount - 0.01
+					CurrentAmount = CurrentAmount - 0.001
 				end
 
 				if Input.KeyCode == Enum.KeyCode.Right then
