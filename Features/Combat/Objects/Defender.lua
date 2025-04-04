@@ -449,16 +449,7 @@ Defender.module = LPH_NO_VIRTUALIZE(function(self, timing)
 	local identifier = string.format("Defender_RunModule_%s", timing.smod)
 
 	-- Run module.
-	self.maid:mark(TaskSpawner.spawn(identifier, function()
-		-- Start blocking.
-		self:smarker(identifier)
-
-		-- Run loaded function.
-		lf(self, timing)
-
-		-- End blocking.
-		self:emarker(identifier)
-	end))
+	self.maid:mark(TaskSpawner.spawn(identifier, lf, self, timing))
 end)
 
 ---Add actions from timing to defender object.
