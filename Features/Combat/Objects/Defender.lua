@@ -156,6 +156,8 @@ Defender.vupdate = LPH_NO_VIRTUALIZE(function(self)
 end)
 
 ---Run hitbox check. Returns wheter if the hitbox is being touched.
+---@todo: Add backtracking to the player to compensate for lag on the server and extrapolation for the other player to compensate for their next position in the future.
+---@todo: Add a check to see if the player was looking at us in the last 0.25 seconds aswell.
 ---@todo: An issue is that the player's current look vector will not be the same as when they attack due to a parry timing being seperate from the attack; causing this check to fail.
 ---@param cframe CFrame
 ---@param depth number

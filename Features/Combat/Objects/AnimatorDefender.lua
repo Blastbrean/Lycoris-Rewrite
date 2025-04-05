@@ -66,6 +66,8 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "Not a viable target.")
 	end
 
+	local skipActionHitbox = false
+
 	while
 		timing.duih
 		and not self:hitbox(
@@ -76,6 +78,7 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		)
 	do
 		task.wait()
+		skipActionHitbox = true
 	end
 
 	local character = players.LocalPlayer.Character
@@ -83,7 +86,10 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "No character found.")
 	end
 
-	if not self:hitbox(target.root.CFrame, timing.fhb and action.hitbox.Z / 2 or 0, action.hitbox, { character }) then
+	if
+		not skipActionHitbox
+		and not self:hitbox(target.root.CFrame, timing.fhb and action.hitbox.Z / 2 or 0, action.hitbox, { character })
+	then
 		return self:notify(timing, "Not inside of the hitbox.")
 	end
 
