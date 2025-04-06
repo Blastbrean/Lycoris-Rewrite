@@ -69,16 +69,26 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin
 		return self:notify(timing, "Not a viable target.")
 	end
 
+	local root = self.entity:FindFirstChild("HumanoidRootPart")
+	if not root then
+		return self:notify(timing, "No humanoid root part found.")
+	end
+
+	local character = players.LocalPlayer.Character
+	if not character then
+		return self:notify(timing, "No character found.")
+	end
+
 	local skipActionHitbox = false
 
 	while
 		timing.duih
 		and self.track.IsPlaying
 		and not self:hitbox(
-			origin or target.root.CFrame,
+			origin or root.CFrame,
 			timing.fhb and action.hitbox.Z / 2 or 0,
 			timing.hitbox,
-			{ players.LocalPlayer.Character }
+			{ character }
 		)
 	do
 		-- Wait.
@@ -88,15 +98,10 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin
 		skipActionHitbox = true
 	end
 
-	local character = players.LocalPlayer.Character
-	if not character then
-		return self:notify(timing, "No character found.")
-	end
-
 	if
 		not skipActionHitbox
 		and not self:hitbox(
-			origin or target.root.CFrame,
+			origin or root.CFrame,
 			timing.fhb and action.hitbox.Z / 2 or 0,
 			action.hitbox,
 			{ character }
