@@ -298,11 +298,13 @@ local onUnreliableFireServer = LPH_NO_VIRTUALIZE(function(...)
 	local hellRemote = KeyHandling.getRemote("Hell")
 
 	if heavenRemote and self == heavenRemote then
-		return
+		Logger.warn("Anticheat is attempting to ban us with the Heaven remote.")
+		return warn(...)
 	end
 
 	if hellRemote and self == hellRemote then
-		return
+		Logger.warn("Anticheat is attempting to ban us with the Hell remote.")
+		return warn(...)
 	end
 
 	local leftClickRemote = KeyHandling.getRemote("LeftClick")
@@ -335,11 +337,13 @@ local onFireServer = LPH_NO_VIRTUALIZE(function(...)
 	local hellRemote = KeyHandling.getRemote("Hell")
 
 	if heavenRemote and self == heavenRemote then
-		return
+		Logger.warn("Anticheat is attempting to ban us with the Heaven remote.")
+		return warn(...)
 	end
 
 	if hellRemote and self == hellRemote then
-		return
+		Logger.warn("Anticheat is attempting to ban us with the Hell remote.")
+		return warn(...)
 	end
 
 	return oldFireServer(...)
