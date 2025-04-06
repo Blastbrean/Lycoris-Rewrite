@@ -282,6 +282,7 @@ end)
 
 ---Get ping.
 ---@note: https://devforum.roblox.com/t/in-depth-information-about-robloxs-remoteevents-instance-replication-and-physics-replication-w-sources/1847340
+---@note: The forum post above is misleading, not only is it the RTT time, please note that this also takes into account all delays like frame time.
 ---@note: This is our round-trip time (e.g double the ping) since we have a receiving delay (replication) and a sending delay when we send the input to the server.
 ---@return number
 function Defender:ping()
@@ -300,7 +301,7 @@ function Defender:ping()
 		return
 	end
 
-	return (dataPingItem:GetValue() / 1000) * 2.0
+	return (dataPingItem:GetValue() / 1000)
 end
 
 ---Handle end block.
