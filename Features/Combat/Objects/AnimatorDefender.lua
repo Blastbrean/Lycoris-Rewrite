@@ -32,7 +32,6 @@ local PlaybackData = require("Game/Timings/PlaybackData")
 ---@field animator Animator
 ---@field entity Model
 ---@field heffects Instance[]
----@field lunisynctp number? The last time we unisynced the animation track.
 ---@field keyframes Action[]
 ---@field timing AnimationTiming?
 ---@field pbdata table<AnimationTrack, PlaybackData> Playback data to be recorded.
@@ -227,14 +226,9 @@ AnimatorDefender.update = LPH_NO_VIRTUALIZE(function(self)
 end)
 
 ---Unisync animation track.
----@note: This doesn't work as I intended it to when I wrote it. But, it works and if I try to change it - it breaks. Fix me later.
 ---@param track AnimationTrack
 function AnimatorDefender:unisync(track)
-	if track.TimePosition == self.lunisynctp then
-		return
-	end
-
-	if track.Looped then
+	if track.Looped or track.Priority == Enum.AnimationPriority.Core then
 		return
 	end
 
@@ -242,60 +236,22 @@ function AnimatorDefender:unisync(track)
 		return
 	end
 
-	-- Fetch frequency.
-	local frequency = (Configuration.expectOptionValue("AnimationUnisyncFrequency") / 1000 or 0.05)
-
-	-- Log.
-	Logger.warn("Unisyncing animation '%s' in %.2fms.", track.Animation.AnimationId, frequency * 1000)
-
 	-- Stop track immediately and save state.
-	local lastWeightCurrent, lastSpeed, lastTimePosition, lastPriority =
-		track.WeightCurrent, track.Speed, track.TimePosition, track.Priority
-
+	local lastWeightCurrent, lastSpeed, lastPriority = track.WeightCurrent, track.Speed, track.Priority
 	track:Stop(0.0)
 
-	-- Force priority to core instantly.
+	-- Set fake track state.
 	track.Priority = Enum.AnimationPriority.Core
+	track:AdjustSpeed(Configuration.expectOptionValue("AnimationUnisyncSpeed") or 0.0)
+	track:AdjustWeight(Configuration.expectOptionValue("AnimationUnisyncWeight") or -10.0, 0.0)
 
-	-- Replay animation at faked priority state.
+	-- Replay animation.
 	track:Play(0.0, lastWeightCurrent, lastSpeed)
-	track.TimePosition = lastTimePosition
+
+	-- Now, set the real track state.
 	track.Priority = lastPriority
-
-	-- Set last unisync time position.
-	self.lunisynctp = track.TimePosition
-
-	-- Unisync.
-	self.maid:add(TaskSpawner.delay("AnimationDefender_UnisyncAnimation", frequency, function()
-		-- Return if the animation is not playing.
-		if not track.IsPlaying then
-			return track:Stop(0.0)
-		end
-
-		-- Stop and save state.
-		local stoppedWeightCurrent, stoppedSpeed, stoppedTimePosition =
-			track.WeightCurrent, track.Speed, track.TimePosition
-
-		track:Stop(0.0)
-
-		-- Play animation at fake state.
-		track:Play(
-			0.0,
-			Configuration.expectOptionValue("AnimationUnisyncWeight") or 0.0,
-			Configuration.expectOptionValue("AnimationUnisyncSpeed") or -10.0
-		)
-
-		-- Set *real* animation speed, weight, and time position.
-		track:AdjustSpeed(stoppedSpeed)
-		track:AdjustWeight(stoppedWeightCurrent, 0.0)
-		track.TimePosition = stoppedTimePosition
-
-		-- Set last unisync time position.
-		self.lunisynctp = track.TimePosition
-
-		-- Repeat cycle.
-		self:unisync(track)
-	end))
+	track:AdjustSpeed(lastSpeed)
+	track:AdjustWeight(lastWeightCurrent, 0.0)
 end
 
 ---Virtualized processing checks.
@@ -466,7 +422,6 @@ function AnimatorDefender.new(animator, manimations)
 
 	self.track = nil
 	self.timing = nil
-	self.lunisynctp = nil
 
 	self.heffects = {}
 	self.keyframes = {}
