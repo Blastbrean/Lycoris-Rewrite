@@ -61,6 +61,10 @@ end)
 ---@param foreign boolean?
 ---@return boolean
 PartDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin, foreign)
+	if not Defender.valid(self, timing, action) then
+		return false
+	end
+
 	if not foreign and self.owner and not Targeting.find(self.owner) then
 		return self:notify(timing, "Not a viable target.")
 	end

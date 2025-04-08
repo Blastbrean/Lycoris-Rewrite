@@ -100,9 +100,8 @@ end
 ---Check if we're in a valid state to proceed with action handling. Extend me.
 ---@param timing Timing
 ---@param action Action
----@param origin CFrame?
 ---@return boolean
-Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin)
+Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	local keybinds = replicatedStorage:FindFirstChild("KeyBinds")
 	if not keybinds then
 		return self:notify(timing, "No keybinds instance found.")
@@ -153,6 +152,7 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin)
 		or effectReplicatorModule:FindEffect("CriticalAttack")
 		or effectReplicatorModule:FindEffect("Followup")
 		or effectReplicatorModule:FindEffect("CastingSpell")
+		or effectReplicatorModule:FindEffect("M1Buffer")
 	then
 		return self:notify(timing, "User is in a state where they are attacking.")
 	end

@@ -28,6 +28,10 @@ local MAX_WAIT = 5.0
 ---@param foreign boolean?
 ---@return boolean
 EffectDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin, foreign)
+	if not Defender.valid(self, timing, action) then
+		return false
+	end
+
 	local humanoidRootPart = self.owner:FindFirstChild("HumanoidRootPart")
 	if not humanoidRootPart then
 		return self:notify(timing, "No humanoid root part found.")

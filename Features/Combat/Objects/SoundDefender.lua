@@ -32,6 +32,10 @@ local players = game:GetService("Players")
 ---@param foreign boolean?
 ---@return boolean
 SoundDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin, foreign)
+	if not Defender.valid(self, timing, action) then
+		return false
+	end
+
 	while timing.duih and not self:hitbox(self.part.CFrame, 0, timing.hitbox, { players.LocalPlayer.Character }) do
 		task.wait()
 	end

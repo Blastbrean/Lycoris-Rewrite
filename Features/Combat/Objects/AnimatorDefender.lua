@@ -52,6 +52,10 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 ---@param foreign boolean? If true, we don't want to check the target.
 ---@return boolean
 AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin, foreign)
+	if not Defender.valid(self, timing, action) then
+		return false
+	end
+
 	if not self.track then
 		return self:notify(timing, "No current track.")
 	end
