@@ -138,6 +138,25 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin)
 		return self:notify(timing, "Window is not active.")
 	end
 
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return self:notify(timing, "No effect replicator found.")
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return self:notify(timing, "No effect replicator module found.")
+	end
+
+	if
+		effectReplicatorModule:FindEffect("LightAttack")
+		or effectReplicatorModule:FindEffect("CriticalAttack")
+		or effectReplicatorModule:FindEffect("Followup")
+		or effectReplicatorModule:FindEffect("CastingSpell")
+	then
+		return self:notify(timing, "User is in a state where they are attacking.")
+	end
+
 	return true
 end)
 
@@ -351,7 +370,10 @@ Defender.dahandle = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	end
 
 	---@note: Okay, we'll assume that we're in the parry state. There's no other type.
-	if effectReplicatorModule:FindEffect("ParryCool") and Configuration.expectToggleValue("RollOnParryCooldown") then
+	if
+		(not effectReplicatorModule:FindEffect("Equipped") or effectReplicatorModule:FindEffect("ParryCool"))
+		and Configuration.expectToggleValue("RollOnParryCooldown")
+	then
 		self:notify(timing, "Action type 'Parry' overrided to 'Dodge' type.")
 		return InputClient.dodge()
 	end
