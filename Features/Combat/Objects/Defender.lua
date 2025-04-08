@@ -152,7 +152,6 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		or effectReplicatorModule:FindEffect("CriticalAttack")
 		or effectReplicatorModule:FindEffect("Followup")
 		or effectReplicatorModule:FindEffect("CastingSpell")
-		or effectReplicatorModule:FindEffect("M1Buffer")
 	then
 		return self:notify(timing, "User is in a state where they are attacking.")
 	end
