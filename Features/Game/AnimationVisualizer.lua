@@ -371,7 +371,7 @@ return LPH_NO_VIRTUALIZE(function()
 
 			iterations = iterations + 1
 
-			if iterations >= 1000 then
+			if iterations >= 10000 then
 				break
 			end
 
