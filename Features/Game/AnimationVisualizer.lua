@@ -363,10 +363,17 @@ return LPH_NO_VIRTUALIZE(function()
 		local currentPos = 0
 		local elapsed = 0
 		local dt = 0.01
+		local iterations = 0
 
 		while currentPos < timePosition do
 			local speed = currentPlaybackData:last(elapsed) or 1
 			local stepSize = speed * dt
+
+			iterations = iterations + 1
+
+			if iterations >= 1000 then
+				break
+			end
 
 			-- If adding the full step would exceed the target position, calculate partial step and break.
 			if currentPos + stepSize > timePosition then
