@@ -349,8 +349,9 @@ return LPH_NO_VIRTUALIZE(function()
 
 	---Get time elapsed from time position.
 	---@param timePosition number
+	---@param animationLength number
 	---@return number?
-	local function getTimeElapsedFromTp(timePosition)
+	local function getTimeElapsedFromTp(timePosition, animationLength)
 		if not currentPlaybackData then
 			return nil
 		end
@@ -371,7 +372,10 @@ return LPH_NO_VIRTUALIZE(function()
 
 			iterations = iterations + 1
 
-			if iterations >= 10000 then
+			---@note: We can calculate how many iterations this should likely take based on the length (e.g 4 seconds) of the animation.
+			--- Since we have a delta time of 0.01s, that means we can multiply the length by 100 to get our iteration amount.
+			--- Then, we should multiply that number by 4 to act as a buffer. At minimum, we'll allow for 1000 iterations.
+			if iterations >= math.max(((animationLength * 100) * 4), 1000) then
 				break
 			end
 
@@ -499,7 +503,7 @@ return LPH_NO_VIRTUALIZE(function()
 			runService.PreRender:Wait()
 		end
 
-		timeElapsed = getTimeElapsedFromTp(currentTrack.TimePosition) or 0.0
+		timeElapsed = getTimeElapsedFromTp(currentTrack.TimePosition, currentTrack.Length) or 0.0
 	end
 
 	---Outer input began.
