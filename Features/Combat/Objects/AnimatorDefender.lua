@@ -44,6 +44,21 @@ AnimatorDefender.__type = "Animation"
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
+-- Constants.
+local MAX_HITBOX_DELAY_TIME = 5.0
+
+---Is animation stopped? Made into a function for de-duplication.
+---@return boolean
+AnimatorDefender.stopped = LPH_NO_VIRTUALIZE(function(self, timing)
+	if not timing.iae and not self.track.IsPlaying then
+		return true, self:notify(timing, "Animation stopped playing.")
+	end
+
+	if timing.iae and not timing.ieae and not self.track.IsPlaying and self.track.TimePosition < self.track.Length then
+		return true, self:notify(timing, "Animation stopped playing early.")
+	end
+end)
+
 ---Check if we're in a valid state to proceed with the action.
 ---@todo: Add extra effect checks because we don't want our input to be buffered when we can't even parry.
 ---@param timing AnimationTiming
@@ -79,9 +94,10 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin
 		return self:notify(timing, "No character found.")
 	end
 
+	local start = os.clock()
+
 	while
 		timing.duih
-		and self.track.IsPlaying
 		and not self:hitbox(
 			origin or root.CFrame,
 			timing.fhb and action.hitbox.Z / 2 or 0,
@@ -89,6 +105,14 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin
 			{ character }
 		)
 	do
+		if self:stopped() then
+			return false
+		end
+
+		if timing.iae and timing.ieae and os.clock() - start >= MAX_HITBOX_DELAY_TIME then
+			return self:notify(timing, "Delay until in hitbox delay time exceeded.")
+		end
+
 		task.wait()
 	end
 
@@ -114,12 +138,8 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action, origin
 		return self:notify(timing, "Not being targeted.")
 	end
 
-	if not timing.iae and not self.track.IsPlaying then
-		return self:notify(timing, "Animation stopped playing.")
-	end
-
-	if timing.iae and not timing.ieae and not self.track.IsPlaying and self.track.TimePosition < self.track.Length then
-		return self:notify(timing, "Animation stopped playing early.")
+	if self:stopped() then
+		return false
 	end
 
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
