@@ -275,9 +275,17 @@ local hssp = LPH_NO_VIRTUALIZE(function(position, str)
 	end
 
 	local localPlayer = players.LocalPlayer
-	local mouse = localPlayer:GetMouse()
+	local localPlayerCharacter = localPlayer.Character
+	if not localPlayerCharacter then
+		return Logger.warn("No local player character found for Auto Wisp.")
+	end
 
-	local requests = replicatedStorage:FindFirstChild("Requests")
+	local characterHandler = localPlayerCharacter:FindFirstChild("CharacterHandler")
+	if not characterHandler then
+		return Logger.warn("No character handler found for Auto Wisp.")
+	end
+
+	local requests = characterHandler:FindFirstChild("Requests")
 	if not requests then
 		return Logger.warn("No requests found for Auto Wisp.")
 	end
@@ -306,7 +314,7 @@ local hssp = LPH_NO_VIRTUALIZE(function(position, str)
 		return Logger.warn("Knocked state found for Auto Wisp.")
 	end
 
-	spellCheck:FireServer(character, mouse.Hit)
+	spellCheck:FireServer(character, localPlayer:GetMouse().Hit)
 end)
 
 ---On spell event.
