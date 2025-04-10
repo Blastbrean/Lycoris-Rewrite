@@ -269,6 +269,33 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 		Default = true,
 	})
 
+	local nmDepBox = groupbox:AddDependencyBox()
+
+	nmDepBox:AddToggle("NotifyModBeep", {
+		Text = "Play Beep Sound",
+		Tooltip = "Use a beep sound along with the mod notification.",
+		Default = false,
+	})
+
+	local nmbDepBox = nmDepBox:AddDependencyBox()
+
+	nmbDepBox:AddSlider("NotifyModBeepVolume", {
+		Text = "Beep Sound Volume",
+		Default = 10,
+		Min = 0,
+		Max = 20,
+		Suffix = "v",
+		Rounding = 2,
+	})
+
+	nmbDepBox:SetupDependencies({
+		{ Toggles.NotifyModBeep, true },
+	})
+
+	nmDepBox:SetupDependencies({
+		{ Toggles.NotifyMod, true },
+	})
+
 	groupbox:AddToggle("NotifyVoidWalker", {
 		Text = "Void Walker Notifications",
 		Tooltip = "This will notify you when a player has a Void Walker contract.",
