@@ -288,7 +288,9 @@ function AnimatorDefender:pvalidate(track)
 		return false
 	end
 
-	if track.WeightTarget <= 0.05 then
+	local isComingFromPlayer = players:GetPlayerFromCharacter(self.entity)
+
+	if isComingFromPlayer and track.WeightTarget <= 0.05 then
 		Logger.warn(
 			"Animation %s is being skipped from entity %s with speed %.2f and weight-target %.2f. It is hidden.",
 			track.Animation.AnimationId,
@@ -300,7 +302,7 @@ function AnimatorDefender:pvalidate(track)
 		return false
 	end
 
-	if players:GetPlayerFromCharacter(self.entity) and self.manimations[track.Animation.AnimationId] ~= nil then
+	if isComingFromPlayer and self.manimations[track.Animation.AnimationId] ~= nil then
 		Logger.warn(
 			"(%s) Animation %s is being skipped from player %s because they're likely AP breaking.",
 			self.manimations[track.Animation.AnimationId].Name,
