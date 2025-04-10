@@ -138,6 +138,12 @@ end
 ---Initialize Visual Assistance section.
 ---@param groupbox table
 function VisualsTab.initVisualAssistanceSection(groupbox)
+	groupbox:AddToggle("SanityTracker", {
+		Text = "Sanity Tracker",
+		Tooltip = "Create a tracker marking how much sanity you have left.",
+		Default = false,
+	})
+
 	local talentHighlighterToggle = groupbox:AddToggle("TalentHighlighter", {
 		Text = "Talent Highlighter",
 		Tooltip = "Highlight shown talents that are in your builder link.",

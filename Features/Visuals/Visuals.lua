@@ -34,6 +34,9 @@ local OriginalStore = require("Utility/OriginalStore")
 ---@module Utility.OriginalStoreManager
 local OriginalStoreManager = require("Utility/OriginalStoreManager")
 
+---@module Utility.InstanceWrapper
+local InstanceWrapper = require("Utility/InstanceWrapper")
+
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
@@ -66,6 +69,75 @@ local showRobloxChatMap = visualsMaid:mark(OriginalStoreManager.new())
 local noAnimatedSeaMap = visualsMaid:mark(OriginalStoreManager.new())
 local noPersistentMap = visualsMaid:mark(OriginalStoreManager.new())
 local talentHighlighterMap = visualsMaid:mark(OriginalStoreManager.new())
+
+---Update sanity meter.
+local updateSanityMarker = LPH_NO_VIRTUALIZE(function()
+	local localPlayer = players.LocalPlayer
+	if not localPlayer then
+		return
+	end
+
+	local playerGui = localPlayer.PlayerGui
+	if not playerGui then
+		return
+	end
+
+	local currencyGui = playerGui:FindFirstChild("CurrencyGui")
+	if not currencyGui then
+		return
+	end
+
+	local currencyFrame = currencyGui:FindFirstChild("CurrencyFrame")
+	if not currencyFrame then
+		return
+	end
+
+	local crownsTextLabel = currencyFrame:FindFirstChild("Crowns")
+	if not crownsTextLabel then
+		return
+	end
+
+	-- Character.
+	local character = localPlayer.Character
+	if not character then
+		return
+	end
+
+	local sanity = character:FindFirstChild("Sanity")
+	if not sanity then
+		return
+	end
+
+	-- Setup.
+	local sanityTextLabel = InstanceWrapper.mark(visualsMaid, "SanityTextLabel", crownsTextLabel:Clone())
+	sanityTextLabel.Name = "Sanity"
+	sanityTextLabel.Parent = currencyFrame
+
+	-- Amount.
+	local amountLabel = sanityTextLabel:FindFirstChild("Amount")
+	if not amountLabel then
+		return
+	end
+
+	amountLabel.Text = string.format("%.2f / %.2f", sanity.Value, sanity.MaxValue)
+	amountLabel.TextColor3 = Color3.fromRGB(2, 177, 255)
+
+	-- Icon.
+	local icon = sanityTextLabel:FindFirstChild("Icon")
+	if not icon then
+		return
+	end
+
+	icon.Image = "http://www.roblox.com/asset/?id=16865012250"
+	icon.ImageColor3 = Color3.fromRGB(0, 162, 255)
+
+	-- Lore.
+	sanityTextLabel:SetAttribute("Tip_Title", "Sanity")
+	sanityTextLabel:SetAttribute(
+		"Tip_Desc",
+		"The Flicker is a creeping affliction, awarded by the abyss for prolonged exposure to its horrors or a perverse talent for understanding its maddening secrets. This erosion of the mind holds a terrifying value in the afflicted's perception, granting a twisted understanding of the unseen, marking them as touched by powers beyond mortal comprehension."
+	)
+end)
 
 ---Update talent highlighter.
 local updateTalentHighlighter = LPH_NO_VIRTUALIZE(function()
@@ -204,6 +276,12 @@ local updateVisuals = LPH_NO_VIRTUALIZE(function()
 	end
 
 	lastVisualsUpdate = os.clock()
+
+	if Configuration.expectToggleValue("SanityMarker") then
+		updateSanityMarker()
+	else
+		visualsMaid["SanityTextLabel"] = nil
+	end
 
 	if Configuration.expectToggleValue("TalentHighlighter") then
 		updateTalentHighlighter()
