@@ -22,6 +22,9 @@ local Configuration = require("Utility/Configuration")
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
+---@module Utility.TaskSpawner
+local TaskSpawner = require("Utility/TaskSpawner")
+
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
@@ -48,7 +51,7 @@ local deletedPlaybackData = {}
 -- Mob animations.
 local mobAnimations = {}
 
--- Current wisp string & position & timestamp.
+-- Current wisp string & position.
 local cws = nil
 local cwp = nil
 local cwt = nil
@@ -201,6 +204,69 @@ local updateVisualizations = LPH_NO_VIRTUALIZE(function()
 	end
 end)
 
+---Handle spell string & position.
+---@param position number
+---@param str string
+local hssp = LPH_NO_VIRTUALIZE(function(position, str)
+	if os.clock() - cwt <= 0.1 then
+		return
+	end
+
+	cwt = os.clock()
+
+	if position <= 0 or position > #str then
+		return Logger.warn("Invalid position (%i vs. %i) for Auto Wisp.", position, #str)
+	end
+
+	local character = str:sub(position, position)
+	if character ~= "Z" and character ~= "X" and character ~= "C" and character ~= "V" then
+		return Logger.warn("Invalid character (%s) for Auto Wisp.", tostring(character))
+	end
+
+	local localPlayer = players.LocalPlayer
+	local localPlayerCharacter = localPlayer.Character
+	if not localPlayerCharacter then
+		return
+	end
+
+	local characterHandler = localPlayerCharacter:FindFirstChild("CharacterHandler")
+	if not characterHandler then
+		return
+	end
+
+	local requests = characterHandler:FindFirstChild("Requests")
+	if not requests then
+		return
+	end
+
+	local spellCheck = requests:FindFirstChild("SpellCheck")
+	if not spellCheck then
+		return
+	end
+
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return
+	end
+
+	if not effectReplicatorModule:HasEffect("RitualCastingSpell") then
+		return Logger.warn("RitualCastingSpell effect not found.")
+	end
+
+	if effectReplicatorModule:HasEffect("Knocked") then
+		return Logger.warn("Knocked effect found.")
+	end
+
+	Logger.warn("Sending event for character (%s) with position (%i) and string (%s).", character, position, str)
+
+	spellCheck:FireServer(character, localPlayer:GetMouse().Hit)
+end)
+
 ---Update defenders.
 local updateDefenders = LPH_NO_VIRTUALIZE(function()
 	if
@@ -209,6 +275,10 @@ local updateDefenders = LPH_NO_VIRTUALIZE(function()
 		and not Defense.blocking()
 	then
 		InputClient.left()
+	end
+
+	if Configuration.expectToggleValue("AutoWisp") and cwp and cws and cwt then
+		hssp(cwp, cws)
 	end
 
 	if not Configuration.expectToggleValue("EnableAutoDefense") then
@@ -261,80 +331,15 @@ Defense.agpd = LPH_NO_VIRTUALIZE(function(aid)
 	end
 end)
 
----Handle spell string & position.
----@param position number
----@param str string
-local hssp = LPH_NO_VIRTUALIZE(function(position, str)
-	if position <= 0 or position > #str then
-		return Logger.warn("Invalid position (%i vs. %i) for Auto Wisp.", position, #str)
-	end
-
-	local character = str:sub(position, position)
-	if character ~= "Z" and character ~= "X" and character ~= "C" and character ~= "V" then
-		return Logger.warn("Invalid character (%s) for Auto Wisp.", tostring(character))
-	end
-
-	local localPlayer = players.LocalPlayer
-	local localPlayerCharacter = localPlayer.Character
-	if not localPlayerCharacter then
-		return Logger.warn("No local player character found for Auto Wisp.")
-	end
-
-	local characterHandler = localPlayerCharacter:FindFirstChild("CharacterHandler")
-	if not characterHandler then
-		return Logger.warn("No character handler found for Auto Wisp.")
-	end
-
-	local requests = characterHandler:FindFirstChild("Requests")
-	if not requests then
-		return Logger.warn("No requests found for Auto Wisp.")
-	end
-
-	local spellCheck = requests:FindFirstChild("SpellCheck")
-	if not spellCheck then
-		return Logger.warn("No spell check found for Auto Wisp.")
-	end
-
-	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
-	if not effectReplicator then
-		return Logger.warn("No effect replicator found for Auto Wisp.")
-	end
-
-	local effectReplicatorModule = require(effectReplicator)
-	if not effectReplicatorModule then
-		return Logger.warn("No effect replicator module found for Auto Wisp.")
-	end
-
-	---@note: Allow some buffer at the start for the effect to process.
-	if os.clock() - cwt >= 0.25 and not effectReplicatorModule:HasEffect("RitualCastingSpell") then
-		return Logger.warn("No ritual casting spell found for Auto Wisp.")
-	end
-
-	if effectReplicatorModule:HasEffect("Knocked") then
-		return Logger.warn("Knocked state found for Auto Wisp.")
-	end
-
-	spellCheck:FireServer(character, localPlayer:GetMouse().Hit)
-end)
-
 ---On spell event.
 ---@param name string
 ---@param data any?
 local onSpellEvent = LPH_NO_VIRTUALIZE(function(name, data)
-	if not Configuration.expectToggleValue("AutoWisp") then
-		return
-	end
-
 	-- Close.
 	if name == "close" then
 		cws = nil
 		cwp = nil
 		cwt = nil
-	end
-
-	---@note: We don't want to handle the current position if it isn't set or shift.
-	if name ~= "set" and name ~= "shift" then
-		return
 	end
 
 	-- Set the current position & string.
@@ -344,18 +349,10 @@ local onSpellEvent = LPH_NO_VIRTUALIZE(function(name, data)
 		cwt = os.clock()
 	end
 
-	-- If there's no 'cws' and no 'cwp' and no 'cwt', don't continue.
-	if not cws or not cwp or not cwt then
-		return
-	end
-
-	-- Shift our position if we were successful!
-	if name == "shift" then
+	-- Shift our position if we were successful.
+	if cws and cwt and cwp and name == "shift" then
 		cwp = cwp + 1
 	end
-
-	-- Handle position.
-	hssp(cwp, cws)
 end)
 
 ---Initialize defense.
