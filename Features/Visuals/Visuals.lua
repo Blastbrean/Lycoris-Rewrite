@@ -138,7 +138,7 @@ local updateSanityTracker = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	amountLabel.Text = string.format("%i%%", (sanity.Value / sanity.MaxValue) * 100)
+	amountLabel.Text = string.format("%i", (sanity.Value / sanity.MaxValue) * 100) .. "%"
 	amountLabel.TextColor3 = mainColor
 
 	-- Icon.
