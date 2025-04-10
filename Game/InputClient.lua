@@ -186,7 +186,23 @@ InputClient.bend = LPH_NO_VIRTUALIZE(function(noUnsprint)
 		return Logger.warn("Cannot end block without sprint function or input data.")
 	end
 
-	unblockRemote:FireServer()
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return Logger.warn("Cannot end block without effect replicator.")
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return Logger.warn("Cannot end block without effect replicator module.")
+	end
+
+	while effectReplicatorModule:HasEffect("Blocking") do
+		-- Unblock.
+		unblockRemote:FireServer()
+
+		-- Wait.
+		task.wait()
+	end
 
 	inputData["f"] = false
 
