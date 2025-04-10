@@ -80,6 +80,7 @@ function BuilderSection:reset()
 	self.timingHitboxLength:SetRawValue(0)
 	self.timingHitboxWidth:SetRawValue(0)
 	self.useModuleOverActions:SetRawValue(false)
+	self.skipModuleNotification:SetRawValue(false)
 	self.selectedModule:SetRawValue("")
 
 	-- Reset action list.
@@ -500,6 +501,7 @@ function BuilderSection:timing()
 			self.punishableWindow:SetRawValue(found.punishable)
 			self.afterWindow:SetRawValue(found.after)
 			self.useModuleOverActions:SetRawValue(found.umoa)
+			self.skipModuleNotification:SetRawValue(found.smn)
 			self.selectedModule:SetRawValue(found.smod)
 
 			-- Load extra elements.
@@ -766,6 +768,14 @@ function BuilderSection:builder()
 	})
 
 	local umoaDepBox = tab:AddDependencyBox()
+
+	self.skipModuleNotification = umoaDepBox:AddToggle(nil, {
+		Text = "Skip Module Notification",
+		Default = false,
+		Callback = self:tnc(function(timing, value)
+			timing.smn = value
+		end),
+	})
 
 	self.selectedModule = umoaDepBox:AddInput(nil, {
 		Text = "Selected Module",

@@ -12,6 +12,7 @@ local ActionContainer = require("Game/Timings/ActionContainer")
 ---@field actions ActionContainer
 ---@field hitbox Vector3
 ---@field umoa boolean Use module over actions.
+---@field smn boolean Skip module notification.
 ---@field smod string Selected module string.
 local Timing = {}
 Timing.__index = Timing
@@ -63,6 +64,10 @@ function Timing:load(values)
 		self.actions:load(values.actions)
 	end
 
+	if typeof(values.smn) == "boolean" then
+		self.smn = values.smn
+	end
+
 	if typeof(values.hitbox) == "table" then
 		self.hitbox = Vector3.new(values.hitbox.X or 0, values.hitbox.Y or 0, values.hitbox.Z or 0)
 	end
@@ -86,6 +91,7 @@ function Timing:clone()
 	clone.duih = self.duih
 	clone.imdd = self.imdd
 	clone.imxd = self.imxd
+	clone.smn = self.smn
 	clone.punishable = self.punishable
 	clone.after = self.after
 	clone.actions = self.actions:clone()
@@ -106,6 +112,7 @@ function Timing:serialize()
 		imxd = self.imxd,
 		duih = self.duih,
 		punishable = self.punishable,
+		smn = self.smn,
 		after = self.after,
 		actions = self.actions:serialize(),
 		hitbox = {
@@ -128,6 +135,7 @@ function Timing.new(values)
 	self.name = "N/A"
 	self.imdd = 0
 	self.imxd = 0
+	self.smn = false
 	self.punishable = 0
 	self.after = 0
 	self.duih = false

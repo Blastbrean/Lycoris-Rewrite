@@ -509,7 +509,9 @@ Defender.module = LPH_NO_VIRTUALIZE(function(self, timing)
 	local identifier = string.format("Defender_RunModule_%s", timing.smod)
 
 	-- Notify.
-	self:notify(timing, "Running module '%s' on timing.", timing.smod)
+	if not timing.smn then
+		self:notify(timing, "Running module '%s' on timing.", timing.smod)
+	end
 
 	-- Run module.
 	self.tmaid:mark(TaskSpawner.spawn(identifier, lf, self, timing))
