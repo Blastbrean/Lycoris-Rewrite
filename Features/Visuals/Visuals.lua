@@ -285,6 +285,14 @@ local onThrownChildAdded = LPH_NO_VIRTUALIZE(function(child)
 	if name == "BagDrop" then
 		return emplaceObject(child, PartESP.new("BagDrop", child, "Bag"))
 	end
+
+	if name == "EventFeatherRef" then
+		return emplaceObject(child, PartESP.new("OwlFeathers", child, "Owl Feathers"))
+	end
+
+	if name == "LootUpdated" then
+		return emplaceObject(child, ModelESP.new("Chest", child.Parent, "Chest"))
+	end
 end)
 
 ---On Workspace ChildAdded.
@@ -306,10 +314,6 @@ local onWorkspaceChildAdded = LPH_NO_VIRTUALIZE(function(child)
 
 	if name == "DepthsWhirlpool" then
 		return emplaceObject(child, ModelESP.new("Whirlpool", child, "Whirlpool"))
-	end
-
-	if name == "EventFeatherRef" then
-		return emplaceObject(child, PartESP.new("OwlFeathers", child, "Owl Feathers"))
 	end
 
 	if name == "MinistryCacheIndicator" then
@@ -339,10 +343,6 @@ local onWorkspaceChildAdded = LPH_NO_VIRTUALIZE(function(child)
 		end
 
 		return emplaceObject(child, PartESP.new("ArmorBrick", child, armorBrickName))
-	end
-
-	if name == "LootUpdated" then
-		return emplaceObject(child, ModelESP.new("Chest", child.Parent, "Chest"))
 	end
 
 	if name == "RareObelisk" then
