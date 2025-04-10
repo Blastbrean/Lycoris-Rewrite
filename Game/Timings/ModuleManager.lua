@@ -22,6 +22,9 @@ local TaskSpawner = require("Utility/TaskSpawner")
 ---@module Utility.Entitites
 local Entitites = require("Utility/Entitites")
 
+---@module Features.Combat.Targeting
+local Targeting = require("Features/Combat/Targeting")
+
 -- Module filesystem.
 local fs = Filesystem.new("Lycoris-Rewrite-Modules")
 
@@ -65,6 +68,8 @@ function ModuleManager.refresh()
 		getfenv(lf).Task = Task
 		getfenv(lf).TaskSpawner = TaskSpawner
 		getfenv(lf).Entitites = Entitites
+		getfenv(lf).Targeting = Targeting
+		getfenv(lf).Logger = Logger
 
 		-- Run executable function to initialize it.
 		local success, result = pcall(lf)
