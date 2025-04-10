@@ -250,7 +250,9 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 
 	local isActivatingMantra = self.Name == "ActivateMantra"
 
-	Defense.lastMantraActivate = isActivatingMantra and args[2] or Defense.lastMantraActivate
+	if typeof(args[2]) == "Instance" and isActivatingMantra then
+		Defense.lastMantraActivate = args[2]
+	end
 
 	if isActivatingMantra and Configuration.expectToggleValue("BlockPunishableMantras") and Defense.blocking() then
 		return
