@@ -70,8 +70,8 @@ local noAnimatedSeaMap = visualsMaid:mark(OriginalStoreManager.new())
 local noPersistentMap = visualsMaid:mark(OriginalStoreManager.new())
 local talentHighlighterMap = visualsMaid:mark(OriginalStoreManager.new())
 
----Update sanity meter.
-local updateSanityMarker = LPH_NO_VIRTUALIZE(function()
+---Update sanity tracker.
+local updateSanityTracker = LPH_NO_VIRTUALIZE(function()
 	local localPlayer = players.LocalPlayer
 	if not localPlayer then
 		return
@@ -277,8 +277,8 @@ local updateVisuals = LPH_NO_VIRTUALIZE(function()
 
 	lastVisualsUpdate = os.clock()
 
-	if Configuration.expectToggleValue("SanityMarker") then
-		updateSanityMarker()
+	if Configuration.expectToggleValue("SanityTracker") then
+		updateSanityTracker()
 	else
 		visualsMaid["SanityTextLabel"] = nil
 	end
