@@ -36,6 +36,9 @@ return LPH_NO_VIRTUALIZE(function()
 	local fakeFreestylerBand = Instance.new("Folder")
 	fakeFreestylerBand.Name = "Ring:Freestyler's Band"
 
+	-- Timestamp.
+	local lastTimestampRun = os.clock()
+
 	-- Variables.
 	local originalTags = nil
 
@@ -147,8 +150,56 @@ return LPH_NO_VIRTUALIZE(function()
 		fakeKongaClutchRing.Parent = backpack
 	end
 
+	---On Player GUI descendant added.
+	---@param instance Instance
+	local function onPgDescendantAdded(instance)
+		if
+			instance.Name ~= "DeathID"
+			and instance.Name ~= "KillerPlayer"
+			and instance.Name ~= "KillerCharacter"
+			and instance.Name ~= "Timestamp"
+		then
+			return
+		end
+
+		if not instance:IsA("TextLabel") and not instance:IsA("TextBox") then
+			return
+		end
+
+		instance.Visible = not Configuration.expectToggleValue("HideDeathInformation")
+	end
+
+	---Update death information spoof.
+	local function updateDeathInformationSpoof()
+		local localPlayer = players.LocalPlayer
+		local playerGui = localPlayer:FindFirstChild("PlayerGui")
+		if not playerGui then
+			return
+		end
+
+		local killGui = playerGui:FindFirstChild("KillGui")
+		if not killGui then
+			return
+		end
+
+		local splash = killGui:FindFirstChild("Splash")
+		if not splash then
+			return
+		end
+
+		for _, descendant in next, splash:GetDescendants() do
+			onPgDescendantAdded(descendant)
+		end
+	end
+
 	---Update spoofing.
 	local function updateSpoofing()
+		if os.clock() - lastTimestampRun <= 2.0 then
+			return
+		end
+
+		lastTimestampRun = os.clock()
+
 		if Configuration.expectToggleValue("EmoteSpoofer") then
 			updateEmoteSpoofer()
 		else
@@ -166,6 +217,8 @@ return LPH_NO_VIRTUALIZE(function()
 		else
 			fakeFreestylerBand.Parent = nil
 		end
+
+		updateDeathInformationSpoof()
 	end
 
 	---Fire attribute changed signal.
@@ -223,8 +276,14 @@ return LPH_NO_VIRTUALIZE(function()
 
 	---Initialize spoofing.
 	function Spoofing.init()
+		-- Get player data.
+		local localPlayer = players.LocalPlayer
+		local playerGui = localPlayer:WaitForChild("PlayerGui")
+		local pgDescendantAdded = Signal.new(playerGui.DescendantAdded)
+
 		-- Attach.
 		spoofingMaid:add(renderStepped:connect("Spoofing_OnRenderStepped", updateSpoofing))
+		spoofingMaid:add(pgDescendantAdded:connect("Spoofing_OnPGDescendantAdded", onPgDescendantAdded))
 
 		-- Log.
 		Logger.warn("Spoofing initialized.")
