@@ -39,6 +39,9 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 	end
 
 	for player, _ in next, PlayerScanning.scanQueue do
+		local spoofName = Configuration.expectToggleValue("InfoSpoofing")
+			and Configuration.expectToggleValue("SpoofOtherPlayers")
+
 		if not PlayerScanning.scanDataCache[player] then
 			local success, result = pcall(PlayerScanning.getStaffRank, player)
 
@@ -53,7 +56,11 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 
 				Logger.warn("Scan player %s ran into error '%s' while getting staff rank.", player.Name, result)
 
-				Logger.longNotify("Failed to scan player %s for moderator status.", player.Name, result)
+				Logger.longNotify(
+					"Failed to scan player %s for moderator status.",
+					spoofName and "[REDACTED]" or player.Name,
+					result
+				)
 
 				PlayerScanning.scanQueue[player] = nil
 
@@ -61,7 +68,11 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 			end
 
 			if Configuration.expectToggleValue("NotifyMod") and result then
-				Logger.longNotify("%s is a staff member with the rank '%s' in group.", player.Name, result)
+				Logger.longNotify(
+					"%s is a staff member with the rank '%s' in group.",
+					spoofName and "[REDACTED]" or player.Name,
+					result
+				)
 
 				if Configuration.expectToggleValue("NotifyModBeep") then
 					local moderatorSound = Instance.new("Sound", game:GetService("CoreGui"))
@@ -83,7 +94,10 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 
 		if not collectionService:HasTag(backpack, "Loaded") or #backpack:GetChildren() < 1 then
 			if not PlayerScanning.waitingForLoad[player] then
-				Logger.warn("Player scanning is waiting for %s to load in the game.", player.Name)
+				Logger.warn(
+					"Player scanning is waiting for %s to load in the game.",
+					spoofName and "[REDACTED]" or player.Name
+				)
 			end
 
 			PlayerScanning.waitingForLoad[player] = true
@@ -95,7 +109,7 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 			Configuration.expectToggleValue("NotifyVoidWalker")
 			and backpack:FindFirstChild("Talent:Voidwalker Contract")
 		then
-			Logger.longNotify("%s has the Voidwalker Contract talent.", player.Name)
+			Logger.longNotify("%s has the Voidwalker Contract talent.", spoofName and "[REDACTED]" or player.Name)
 		end
 
 		if Configuration.expectToggleValue("NotifyMythic") then
@@ -134,7 +148,12 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 					toolQualityTag = "[No Stars]"
 				end
 
-				Logger.longNotify("%s has vulnerable weapon '%s' %s.", player.Name, toolName, toolQualityTag)
+				Logger.longNotify(
+					"%s has vulnerable weapon '%s' %s.",
+					spoofName and "[REDACTED]" or player.Name,
+					toolName,
+					toolQualityTag
+				)
 			end
 		end
 
@@ -142,7 +161,7 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 
 		PlayerScanning.friendCache[player] = localPlayer:GetFriendStatus(player) == Enum.FriendStatus.Friend
 
-		Logger.warn("Player scanning finished scanning %s in queue.", player.Name)
+		Logger.warn("Player scanning finished scanning %s in queue.", spoofName and "[REDACTED]" or player.Name)
 	end
 end)
 
