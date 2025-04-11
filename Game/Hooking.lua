@@ -304,18 +304,22 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 	then
 		local character = playersService.LocalPlayer.Character
 		local humanoid = character:FindFirstChild("Humanoid")
-		local other = Configuration.expectToggleValue("SpoofOtherPlayers")
+		local foreign = true
 
 		if character and humanoid and (self.Parent == character and self.Parent == humanoid) then
-			other = false
+			foreign = false
+		end
+
+		if foreign and not Configuration.expectToggleValue("SpoofOtherPlayers") then
+			return oldNameCall(...)
 		end
 
 		if args[2] == "FirstName" then
-			return other and "Linoria V2" or Configuration.expectOptionValue("SpoofedFirstName")
+			return foreign and "Linoria V2" or Configuration.expectOptionValue("SpoofedFirstName")
 		end
 
 		if args[2] == "LastName" then
-			return other and "On Top" or Configuration.expectOptionValue("SpoofedLastName")
+			return foreign and "On Top" or Configuration.expectOptionValue("SpoofedLastName")
 		end
 
 		if args[2] == "CharacterName" then
@@ -323,15 +327,15 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 				.. " "
 				.. Configuration.expectOptionValue("SpoofedLastName")
 
-			return other and "Linoria V2 On Top" or characterName
+			return foreign and "Linoria V2 On Top" or characterName
 		end
 
 		if args[2] == "Guild" then
-			return other and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuild")
+			return foreign and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuild")
 		end
 
 		if args[2] == "GuildRich" then
-			return other and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuildName")
+			return foreign and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuildName")
 		end
 	end
 
