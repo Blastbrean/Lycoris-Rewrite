@@ -54,6 +54,10 @@ PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
 		playerName = player.Name
 	end
 
+	if Configuration.expectToggleValue("InfoSpoofing") and Configuration.expectToggleValue("SpoofOtherPlayers") then
+		playerName = "Linoria V2 On Top"
+	end
+
 	self.label = playerName
 
 	local health = humanoid.Health

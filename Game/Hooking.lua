@@ -457,6 +457,25 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 		)
 	end
 
+	if
+		Configuration.expectToggleValue("InfoSpoofing")
+		and typeof(self) == "Instance"
+		and game.IsA(self, "TextLabel")
+		and index == "Text"
+	then
+		if self.Name == "Slot" then
+			return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedSlotString"))
+		end
+
+		if self.Name == "GameVersion" then
+			return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedGameVersion"))
+		end
+
+		if self.Name == "Date" then
+			return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedDateString"))
+		end
+	end
+
 	if self == lighting and (index == "FogStart" or index == "FogEnd") and Configuration.expectToggleValue("NoFog") then
 		return
 	end

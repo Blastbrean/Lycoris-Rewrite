@@ -511,24 +511,102 @@ function GameTab.initInfoSpoofingSection(groupbox)
 		Callback = Spoofing.rics,
 	})
 
-	isDepBox:AddToggle("HideGameVersion", {
-		Text = "Hide Game Version",
-		Default = false,
-	})
-
-	isDepBox:AddToggle("HideGameYear", {
-		Text = "Hide Game Year",
-		Default = false,
-	})
-
 	isDepBox:AddToggle("HideDeathInformation", {
 		Text = "Hide Death Information",
 		Default = false,
 	})
 
-	isDepBox:AddToggle("HideCharacterKey", {
-		Text = "Hide Character Key",
-		Default = false,
+	isDepBox:AddInput("SpoofedSlotString", {
+		Text = "Spoofed Slot String",
+		Default = "1234567890:Z|1 [Lv. 1]",
+		Finished = true,
+		Callback = function(value)
+			local player = players.LocalPlayer
+			if not player then
+				return
+			end
+
+			local playerGui = player:FindFirstChild("PlayerGui")
+			if not playerGui then
+				return
+			end
+
+			local worldInfo = playerGui:FindFirstChild("WorldInfo")
+			local infoFrame = worldInfo and worldInfo:FindFirstChild("InfoFrame")
+			local characterInfo = infoFrame and infoFrame:FindFirstChild("CharacterInfo")
+			if not characterInfo then
+				return
+			end
+
+			local slotLabel = characterInfo:FindFirstChild("Slot")
+			if not slotLabel then
+				return
+			end
+
+			slotLabel.Text = value
+		end,
+	})
+
+	isDepBox:AddInput("SpoofedDateString", {
+		Text = "Spoofed Date String",
+		Default = "Linoria, 1970 CE",
+		Finished = true,
+		Callback = function(value)
+			local player = players.LocalPlayer
+			if not player then
+				return
+			end
+
+			local playerGui = player:FindFirstChild("PlayerGui")
+			if not playerGui then
+				return
+			end
+
+			local worldInfo = playerGui:FindFirstChild("WorldInfo")
+			local infoFrame = worldInfo and worldInfo:FindFirstChild("InfoFrame")
+			local worldInfoFrame = infoFrame and infoFrame:FindFirstChild("WorldInfo")
+			if not worldInfoFrame then
+				return
+			end
+
+			local dateLabel = worldInfoFrame:FindFirstChild("Date")
+			if not dateLabel then
+				return
+			end
+
+			dateLabel.Text = value
+		end,
+	})
+
+	isDepBox:AddInput("SpoofedGameVersion", {
+		Text = "Spoofed Game Version",
+		Default = "pv_JAN_01_00:00z",
+		Finished = true,
+		Callback = function(value)
+			local player = players.LocalPlayer
+			if not player then
+				return
+			end
+
+			local playerGui = player:FindFirstChild("PlayerGui")
+			if not playerGui then
+				return
+			end
+
+			local worldInfo = playerGui:FindFirstChild("WorldInfo")
+			local infoFrame = worldInfo and worldInfo:FindFirstChild("InfoFrame")
+			local gameInfo = infoFrame and infoFrame:FindFirstChild("GameInfo")
+			if not gameInfo then
+				return
+			end
+
+			local gameVersionLabel = gameInfo:FindFirstChild("GameVersion")
+			if not gameVersionLabel then
+				return
+			end
+
+			gameVersionLabel.Text = value
+		end,
 	})
 
 	isDepBox:AddInput("SpoofedFirstName", {
