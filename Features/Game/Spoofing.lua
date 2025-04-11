@@ -168,26 +168,22 @@ return LPH_NO_VIRTUALIZE(function()
 		end
 	end
 
-	---Fire all connections under a given signal.
-	---@param signal Signal
-	function Spoofing.fire(signal)
-		for _, connection in next, getconnections(signal) do
-			print(connection, connection.Function)
-		end
-	end
-
 	---Refresh info changed signals.
 	function Spoofing.rics()
+		if not firesignal then
+			return Logger.longNotify("Your exploit does not support the 'firesignal' function.")
+		end
+
 		for _, player in next, players:GetPlayers() do
-			Spoofing.fire(player:GetAttributeChangedSignal("Guild"))
+			firesignal(player:GetAttributeChangedSignal("Guild"))
 
 			local character = player.Character
 			if not character then
 				continue
 			end
 
-			Spoofing.fire(character:GetAttributeChangedSignal("CharacterName"))
-			Spoofing.fire(character:GetAttributeChangedSignal("GuildRich"))
+			firesignal(character:GetAttributeChangedSignal("CharacterName"))
+			firesignal(character:GetAttributeChangedSignal("GuildRich"))
 		end
 
 		local serverRegion = replicatedStorage:FindFirstChild("SERVER_REGION")
@@ -198,9 +194,9 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		Spoofing.fire(serverRegion.Changed)
-		Spoofing.fire(serverName.Changed)
-		Spoofing.fire(serverAge.Changed)
+		firesignal(serverRegion.Changed)
+		firesignal(serverName.Changed)
+		firesignal(serverAge.Changed)
 	end
 
 	---Initialize spoofing.

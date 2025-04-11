@@ -54,7 +54,8 @@
         "armorshield",
         "isnetworkowner",
         "setthreadientity",
-        "Content"
+        "Content",
+        "firesignal"
     ],
     "robloxLsp.suggestedImports.importIgnore": [
         "**/_Index/**",
