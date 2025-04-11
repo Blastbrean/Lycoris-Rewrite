@@ -190,6 +190,8 @@ return LPH_NO_VIRTUALIZE(function()
 	function Spoofing.rics()
 		for _, player in next, players:GetPlayers() do
 			Spoofing.facs(player, "Guild")
+			Spoofing.facs(player, "FirstName")
+			Spoofing.facs(player, "LastName")
 
 			local character = player.Character
 			if not character then

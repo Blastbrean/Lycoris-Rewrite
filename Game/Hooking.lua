@@ -311,7 +311,7 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 		end
 
 		if args[2] == "FirstName" then
-			return other and "Linoria V2 On Top" or Configuration.expectOptionValue("SpoofedFirstName")
+			return other and "Linoria V2" or Configuration.expectOptionValue("SpoofedFirstName")
 		end
 
 		if args[2] == "LastName" then
