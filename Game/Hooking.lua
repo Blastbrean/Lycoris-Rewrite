@@ -465,7 +465,7 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 		and game.IsA(self, "TextLabel")
 		and index == "Text"
 	then
-		if self.Name == "Slot" then
+		if self.Name == "Slot" and self.Parent.Name == "CharacterInfo" then
 			return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedSlotString"))
 		end
 
