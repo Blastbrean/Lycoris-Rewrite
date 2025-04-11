@@ -225,6 +225,12 @@ end)
 ---@param self AnimatorDefender
 AnimatorDefender.update = LPH_NO_VIRTUALIZE(function(self)
 	for track, data in next, self.pbdata do
+		-- Don't process tracks.
+		if not Configuration.expectToggleValue("ShowAnimationVisualizer") then
+			self.pbdata[track] = nil
+			continue
+		end
+
 		-- Check if the track is playing.
 		if not track.IsPlaying then
 			-- Remove out of 'pbdata' and put it in to the recorded table.
@@ -330,7 +336,9 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	end
 
 	-- Add to playback data list.
-	self.pbdata[track] = PlaybackData.new(self.entity)
+	if Configuration.expectToggleValue("ShowAnimationVisualizer") then
+		self.pbdata[track] = PlaybackData.new(self.entity)
+	end
 
 	-- Animation ID.
 	local aid = tostring(track.Animation.AnimationId)
