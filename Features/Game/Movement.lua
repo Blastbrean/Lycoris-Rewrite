@@ -281,24 +281,24 @@ return LPH_NO_VIRTUALIZE(function()
 		local chaserHrp = chaserEntity:FindFirstChild("HumanoidRootPart")
 		local chaserBloodJar = chaserHrp and chaserHrp:FindFirstChild("BloodJar") or nil
 
-		if not chaserBloodJar or not chaserBloodJar.Value or bloodJarTarget ~= chaserBloodJar.Value then
-			Logger.warn("Resetting tween lol.")
-			print(chaserBloodJar, chaserBloodJar and chaserBloodJar.Value, bloodJarTarget)
+		if
+			not chaserBloodJar
+			or not chaserBloodJar.Value
+			or (bloodJarTarget and bloodJarTarget ~= chaserBloodJar.Value)
+		then
 			return resetBloodJarTween()
 		end
 
 		if movementMaid["bloodJarTween"] then
-			return Logger.warn("Active tween.")
+			return
 		end
 
 		bloodJarTarget = chaserBloodJar.Value
 
-		Logger.warn("(%s) Tweening towards BloodJar target.", bloodJarTarget.Name)
-
-		local distance = (chaserBloodJar:GetPivot().Position - rootPart.HumanoidRootPart.Position).Magnitude
+		local distance = (bloodJarTarget:GetPivot().Position - rootPart.HumanoidRootPart.Position).Magnitude
 		local bloodJarTween =
 			InstanceWrapper.tween(movementMaid, "bloodJarTween", rootPart, TweenInfo.new(distance / 80), {
-				CFrame = CFrame.new(chaserBloodJar:GetPivot().Position),
+				CFrame = CFrame.new(bloodJarTarget:GetPivot().Position),
 			})
 
 		bloodJarTween:Play()
@@ -313,6 +313,10 @@ return LPH_NO_VIRTUALIZE(function()
 		local bossRoom = workspace:FindFirstChild("TrueAvatarBossRoom")
 		local bossRoomContainer = bossRoom and bossRoom:FindFirstChild("Floor1Stuff") or nil
 
+		if bossRoomContainer then
+			return tweenToAltars(rootPart, bossRoomContainer)
+		end
+
 		local live = workspace:FindFirstChild("Live")
 		local chaserEntity = nil
 
@@ -323,12 +327,6 @@ return LPH_NO_VIRTUALIZE(function()
 
 			chaserEntity = instance
 			break
-		end
-
-		print(chaserEntity, bossRoomContainer)
-
-		if bossRoomContainer then
-			return tweenToAltars(rootPart, bossRoomContainer)
 		end
 
 		if chaserEntity then
