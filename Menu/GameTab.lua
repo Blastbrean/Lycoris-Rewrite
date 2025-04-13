@@ -492,6 +492,16 @@ function GameTab.initDebuggingSection(groupbox)
 	irltDepBox:SetupDependencies({
 		{ irlToggle, true },
 	})
+
+	groupbox:AddToggle("LogEffectsToConsole", {
+		Text = "Log Effects To Console",
+		Default = false,
+	})
+
+	groupbox:AddToggle("StopGameLogging", {
+		Text = "Stop Game Logging",
+		Default = false,
+	})
 end
 
 ---Info spoofing section.

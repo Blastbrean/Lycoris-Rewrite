@@ -39,6 +39,8 @@ local oldTick = nil
 local oldCoroutineWrap = nil
 local oldTaskSpawn = nil
 local oldIndex = nil
+local oldPrint = nil
+local oldWarn = nil
 
 -- Ban remotes table.
 local banRemotes = {}
@@ -189,6 +191,34 @@ local modifyAmbienceColor = LPH_NO_VIRTUALIZE(function(value)
 	blue = math.min(blue + brightness, 255)
 
 	return Color3.fromRGB(red, green, blue)
+end)
+
+---On print.
+---@return any
+local onPrint = LPH_NO_VIRTUALIZE(function(...)
+	if checkcaller() then
+		return oldPrint(...)
+	end
+
+	if not Configuration.expectToggleValue("StopGameLogging") then
+		return
+	end
+
+	return oldPrint(...)
+end)
+
+---On warn.
+---@return any
+local onWarn = LPH_NO_VIRTUALIZE(function(...)
+	if checkcaller() then
+		return oldWarn(...)
+	end
+
+	if not Configuration.expectToggleValue("StopGameLogging") then
+		return
+	end
+
+	return oldWarn(...)
 end)
 
 ---On tick.
@@ -621,6 +651,8 @@ function Hooking.init()
 	oldNameCall = hookfunction(getrawmetatable(game).__namecall, onNameCall)
 	oldNewIndex = hookfunction(getrawmetatable(game).__newindex, onNewIndex)
 	oldTick = hookfunction(tick, onTick)
+	oldWarn = hookfunction(warn, onWarn)
+	oldPrint = hookfunction(print, onPrint)
 
 	-- Okay, we're done.
 	Logger.warn("Client-side anticheat has been penetrated.")
@@ -629,6 +661,14 @@ end
 ---Hooking detach.
 function Hooking.detach()
 	local localPlayer = playersService.LocalPlayer
+
+	if oldPrint then
+		hookfunction(print, oldPrint)
+	end
+
+	if oldWarn then
+		hookfunction(warn, oldWarn)
+	end
 
 	if oldTick then
 		hookfunction(tick, oldTick)
