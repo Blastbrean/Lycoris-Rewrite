@@ -310,7 +310,7 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		local slotLabel = gameInfo:FindFirstChild("SlotLabel")
+		local slotLabel = gameInfo:FindFirstChild("Slot")
 		if not slotLabel then
 			return
 		end
