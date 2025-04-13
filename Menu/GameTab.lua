@@ -505,7 +505,12 @@ function GameTab.initInfoSpoofingSection(groupbox)
 	groupbox:AddToggle("InfoSpoofing", {
 		Text = "Enable Info Spoofing",
 		Default = false,
-		Callback = Spoofing.rics,
+		Callback = function()
+			Spoofing.rics()
+			Spoofing.sss()
+			Spoofing.sds()
+			Spoofing.sgv()
+		end,
 	})
 
 	local isDepBox = groupbox:AddDependencyBox()
