@@ -305,12 +305,12 @@ return LPH_NO_VIRTUALIZE(function()
 
 		local worldInfo = playerGui:FindFirstChild("WorldInfo")
 		local infoFrame = worldInfo and worldInfo:FindFirstChild("InfoFrame")
-		local gameInfo = infoFrame and infoFrame:FindFirstChild("GameInfo")
-		if not gameInfo then
+		local characterInfo = infoFrame and infoFrame:FindFirstChild("CharacterInfo")
+		if not characterInfo then
 			return
 		end
 
-		local slotLabel = gameInfo:FindFirstChild("Slot")
+		local slotLabel = characterInfo:FindFirstChild("Slot")
 		if not slotLabel then
 			return
 		end
