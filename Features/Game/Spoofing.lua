@@ -254,7 +254,7 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		local gameVersionLabel = gameInfo:FindFirstChild("VersionTitle")
+		local gameVersionLabel = gameInfo:FindFirstChild("GameVersion")
 		if not gameVersionLabel then
 			return
 		end
