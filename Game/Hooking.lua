@@ -200,7 +200,7 @@ local onPrint = LPH_NO_VIRTUALIZE(function(...)
 		return oldPrint(...)
 	end
 
-	if not Configuration.expectToggleValue("StopGameLogging") then
+	if Configuration.expectToggleValue("StopGameLogging") then
 		return
 	end
 
@@ -214,7 +214,7 @@ local onWarn = LPH_NO_VIRTUALIZE(function(...)
 		return oldWarn(...)
 	end
 
-	if not Configuration.expectToggleValue("StopGameLogging") then
+	if Configuration.expectToggleValue("StopGameLogging") then
 		return
 	end
 
