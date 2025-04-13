@@ -175,10 +175,6 @@ end)
 ---On effect replicated.
 ---@param effect table
 local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
-	if Configuration.expectToggleValue("LogEffectsToConsole") then
-		Logger.warn("[REPLICATED] - %s", tostring(effect))
-	end
-
 	if not Configuration.expectToggleValue("PerfectMantraCast") or effect.Class ~= "UsingSpell" then
 		return
 	end
@@ -188,16 +184,6 @@ local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 	end
 
 	InputClient.left()
-end)
-
----On effect removing.
----@param effect table
-local onEffectRemoving = LPH_NO_VIRTUALIZE(function(effect)
-	if not Configuration.expectToggleValue("LogEffectsToConsole") then
-		return
-	end
-
-	Logger.warn("[REMOVING] - %s", tostring(effect))
 end)
 
 ---Update visualizations.
@@ -413,10 +399,8 @@ function Defense.init()
 	local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
 	local effectReplicatorModule = require(effectReplicator)
 	local effectAddedSignal = Signal.new(effectReplicatorModule.EffectAdded)
-	local effectRemovingSignal = Signal.new(effectReplicatorModule.EffectRemoving)
 
 	defenseMaid:add(effectAddedSignal:connect("Defense_EffectReplicated", onEffectReplicated))
-	defenseMaid:add(effectRemovingSignal:connect("Defense_EffectRemoving", onEffectRemoving))
 
 	for _, effect in next, effectReplicatorModule.Effects do
 		onEffectReplicated(effect)

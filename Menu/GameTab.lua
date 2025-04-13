@@ -493,11 +493,6 @@ function GameTab.initDebuggingSection(groupbox)
 		{ irlToggle, true },
 	})
 
-	groupbox:AddToggle("LogEffectsToConsole", {
-		Text = "Log Effects To Console",
-		Default = false,
-	})
-
 	groupbox:AddToggle("StopGameLogging", {
 		Text = "Stop Game Logging",
 		Default = false,
