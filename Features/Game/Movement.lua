@@ -295,7 +295,7 @@ return LPH_NO_VIRTUALIZE(function()
 
 		bloodJarTarget = chaserBloodJar.Value
 
-		local distance = (bloodJarTarget:GetPivot().Position - rootPart.HumanoidRootPart.Position).Magnitude
+		local distance = (bloodJarTarget:GetPivot().Position - rootPart.Position).Magnitude
 		local bloodJarTween =
 			InstanceWrapper.tween(movementMaid, "bloodJarTween", rootPart, TweenInfo.new(distance / 80), {
 				CFrame = CFrame.new(bloodJarTarget:GetPivot().Position),
