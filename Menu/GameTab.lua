@@ -7,8 +7,8 @@ local Bestiary = require("Features/Game/Bestiary")
 ---@module Features.Game.Spoofing
 local Spoofing = require("Features/Game/Spoofing")
 
----@module Features.Game.Configuration
-local Configuration = require("Features/Game/Configuration")
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
 
 -- Services.
 local players = game:GetService("Players")
