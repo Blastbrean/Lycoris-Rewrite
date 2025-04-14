@@ -277,16 +277,16 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 
 	local nmDepBox = groupbox:AddDependencyBox()
 
-	nmDepBox:AddToggle("NotifyModBeep", {
-		Text = "Play Beep Sound",
-		Tooltip = "Use a beep sound along with the mod notification.",
+	nmDepBox:AddToggle("NotifyModSound", {
+		Text = "Mod Notification Sound",
+		Tooltip = "Use a sound along with the mod notification.",
 		Default = false,
 	})
 
 	local nmbDepBox = nmDepBox:AddDependencyBox()
 
-	nmbDepBox:AddSlider("NotifyModBeepVolume", {
-		Text = "Beep Sound Volume",
+	nmbDepBox:AddSlider("NotifyModSoundVolume", {
+		Text = "Sound Volume",
 		Default = 10,
 		Min = 0,
 		Max = 20,
@@ -295,7 +295,7 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 	})
 
 	nmbDepBox:SetupDependencies({
-		{ Toggles.NotifyModBeep, true },
+		{ Toggles.NotifyModSound, true },
 	})
 
 	nmDepBox:SetupDependencies({

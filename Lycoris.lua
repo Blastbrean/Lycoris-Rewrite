@@ -25,9 +25,6 @@ local PlayerScanning = require("Game/PlayerScanning")
 ---@module Game.Timings.SaveManager
 local SaveManager = require("Game/Timings/SaveManager")
 
----@module Features.Visuals.Visuals
-local Visuals = require("Features/Visuals/Visuals")
-
 ---@module Game.KeyHandling
 local KeyHandling = require("Game/KeyHandling")
 
@@ -55,12 +52,11 @@ local LOBBY_PLACE_ID = 4111023553
 local startTimestamp = os.clock()
 
 ---Handle server hop while in the main menu.
----@param serverHopSlot string
----@param serverHopJobId string
-local function handleMainMenuServerHop(serverHopSlot, serverHopJobId)
+---@param slotString string
+---@param jobId string?
+local function handleMainMenuServerHop(slotString, jobId)
 	memStorageService:RemoveItem("ServerHop")
-
-	Logger.warn("Server hopping on slot %s with JobId %s", serverHopSlot, serverHopJobId)
+	memStorageService:RemoveItem("ServerHopJobId")
 
 	local localPlayer = playersService.LocalPlayer
 
@@ -71,33 +67,35 @@ local function handleMainMenuServerHop(serverHopSlot, serverHopJobId)
 	local pickServer = startMenu:WaitForChild("PickServer")
 
 	local slotData = replicatedStorage:WaitForChild("SlotData")
-	local slotUserIdData = slotData:WaitForChild(localPlayer.UserId):WaitForChild(serverHopSlot)
+	local slotUserIdData = slotData:WaitForChild(localPlayer.UserId):WaitForChild(slotString)
+
 	local slotUserIdRealm = slotUserIdData:WaitForChild("Realm").Value
+	local serversRealm = nil
 
 	if slotUserIdRealm == "???" then
-		slotUserIdRealm = "EtreanLuminant"
+		serversRealm = "EtreanLuminant"
 	end
 
 	if slotUserIdRealm:find("The Depths") then
-		slotUserIdRealm = "Depths"
+		serversRealm = "Depths"
 	end
 
-	local serversInRealm = replicatedStorage:WaitForChild("Servers"):WaitForChild(slotUserIdRealm)
-	local shouldUseJobId = serverHopJobId ~= ""
-
-	if shouldUseJobId and not serversInRealm:FindFirstChild(serverHopJobId, true) then
-		return Logger.warn("The JobId %s is not in the realm %s", serverHopJobId, slotUserIdRealm)
+	if slotUserIdRealm:find("The Eastern") then
+		serversRealm = "EastLuminant"
 	end
 
-	start:FireServer(serverHopSlot, { PrivateTest = false })
+	local servers = replicatedStorage:WaitForChild("Servers")
+	local serversInRealm = servers:WaitForChild(serversRealm)
 
-	task.wait(0.5)
-
-	if shouldUseJobId then
-		pickServer:FireServer(serverHopJobId)
-	else
-		pickServer:FireServer("none")
+	if jobId and not serversInRealm:FindFirstChild(jobId, true) then
+		return Logger.warn("(%s) (%s) Attempted to find server, but it did not exist.", serversRealm, jobId)
 	end
+
+	-- Start.
+	start:FireServer(slotString, { PrivateTest = false })
+
+	-- Pick server.
+	pickServer:FireServer(jobId or "none")
 end
 
 ---Handle start menu.
@@ -170,7 +168,7 @@ function Lycoris.init()
 	local inLobbyPlace = game.PlaceId == LOBBY_PLACE_ID
 
 	if inLobbyPlace then
-		return (serverHopSlot and serverHopJobId) and handleMainMenuServerHop(serverHopSlot, serverHopJobId)
+		return serverHopSlot and handleMainMenuServerHop(serverHopSlot, serverHopJobId)
 			or Logger.warn("Script exit initialization early because we are in the lobby.")
 	end
 
@@ -191,7 +189,11 @@ function Lycoris.init()
 	Menu.init()
 
 	if memStorageService:HasItem("HandleStartMenu") then
+		-- Handle it.
 		handleStartMenu()
+
+		-- Remove entry.
+		memStorageService:RemoveItem("HandleStartMenu")
 	end
 
 	PlayerScanning.init()

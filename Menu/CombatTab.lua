@@ -165,6 +165,34 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		{ rollCancelToggle, true },
 	})
 
+	autoDefenseDepBox:AddDivider()
+
+	autoDefenseDepBox:AddToggle("CheckM1Attack", {
+		Text = "Check If M1 Attack",
+		Tooltip = "If the attack is recognized as an 'M1', stop the auto defense from proceeding.",
+		Default = false,
+	})
+
+	autoDefenseDepBox:AddToggle("CheckMantra", {
+		Text = "Check If Mantra Attack",
+		Tooltip = "If the attack is recognized as an 'Mantra', stop the auto defense from proceeding.",
+		Default = false,
+	})
+
+	autoDefenseDepBox:AddToggle("CheckCritical", {
+		Text = "Check If Critical Attack",
+		Tooltip = "If the attack is recognized as an 'Critical', stop the auto defense from proceeding.",
+		Default = false,
+	})
+
+	autoDefenseDepBox:AddToggle("CheckUndefined", {
+		Text = "Check If Undefined Attack",
+		Tooltip = "If the attack is recognized as an 'Undefined' attack (e.g mobs), stop the auto defense from proceeding.",
+		Default = false,
+	})
+
+	autoDefenseDepBox:AddDivider()
+
 	autoDefenseDepBox:AddToggle("CheckHoldingBlockInput", {
 		Text = "Check If Holding Block Input",
 		Tooltip = "If we are holding the block input, stop the auto defense from proceeding.",

@@ -1,6 +1,6 @@
 return LPH_NO_VIRTUALIZE(function()
 	-- Anything related to leaving a server is handled here.
-	local ServerLeaving = { hopping = false }
+	local ServerLeaving = {}
 
 	---@module Utility.SendInput
 	local SendInput = require("Utility/SendInput")
@@ -76,23 +76,20 @@ return LPH_NO_VIRTUALIZE(function()
 		local choicePrompt = localPlayer.PlayerGui:WaitForChild("ChoicePrompt")
 		local choice = choicePrompt and choicePrompt:WaitForChild("Choice")
 
-		if not choicePrompt or not choice then
-			return
-		end
-
 		choice:FireServer(true)
 	end
 
 	---Hop from a server to leave. This will yield.
-	function ServerLeaving.hop()
-		local localPlayer = playersService.LocalPlayer
+	---@param blockUser boolean? Whether to block the first avaliable user or not.
+	---@param jobId string? The JobId to hop to.
+	function ServerLeaving.hop(blockUser, jobId)
+		memStorageService:SetItem("ServerHop", playersService.LocalPlayer:GetAttribute("DataSlot"))
 
-		ServerLeaving.hopping = true
+		if jobId then
+			memStorageService:SetItem("ServerHopJobId", jobId)
+		end
 
-		memStorageService:SetItem("ServerHop", localPlayer:GetAttribute("DataSlot"))
-		memStorageService:SetItem("ServerHopJobId", Options.ServerHopJobId.Value)
-
-		if Toggles.BlockUser.Value then
+		if blockUser then
 			blockFirstAvaliableUser()
 		end
 

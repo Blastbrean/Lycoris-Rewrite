@@ -164,6 +164,22 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "User is knocked.")
 	end
 
+	if timing.tag == "M1" and Configuration.expectToggleValue("CheckM1Attack") then
+		return self:notify(timing, "User is using a 'M1' attack.")
+	end
+
+	if timing.tag == "Mantra" and Configuration.expectToggleValue("CheckMantra") then
+		return self:notify(timing, "User is using a 'Mantra' attack.")
+	end
+
+	if timing.tag == "Critical" and Configuration.expectToggleValue("CheckCritical") then
+		return self:notify(timing, "User is using a 'Critical' attack.")
+	end
+
+	if timing.tag == "Undefined" and Configuration.expectToggleValue("CheckUndefined") then
+		return self:notify(timing, "User is using an 'Undefined' attack.")
+	end
+
 	return true
 end)
 

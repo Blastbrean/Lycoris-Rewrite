@@ -74,11 +74,11 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 					result
 				)
 
-				if Configuration.expectToggleValue("NotifyModBeep") then
+				if Configuration.expectToggleValue("NotifyModSound") then
 					local moderatorSound = Instance.new("Sound", game:GetService("CoreGui"))
 					moderatorSound.SoundId = "rbxassetid://6045346303"
 					moderatorSound.PlaybackSpeed = 1
-					moderatorSound.Volume = Configuration.expectToggleValue("NotifyModBeepVolume") or 10
+					moderatorSound.Volume = Configuration.expectToggleValue("NotifyModSoundVolume") or 10
 					moderatorSound.PlayOnRemove = true
 					moderatorSound:Destroy()
 				end
