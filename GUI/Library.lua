@@ -1249,7 +1249,7 @@ return LPH_NO_VIRTUALIZE(function()
 			}
 
 			if KeyPicker.SyncToggleState then
-				Info.Modes = { "Toggle" }
+				Info.Modes = { "Toggle", "Hold" }
 				Info.Mode = "Toggle"
 			end
 

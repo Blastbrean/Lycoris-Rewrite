@@ -408,11 +408,16 @@ function GameTab.initEffectRemovalsSection(groupbox)
 		Default = false,
 	})
 
-	groupbox:AddToggle("NoFallDamage", {
+	local noFallToggle = groupbox:AddToggle("NoFallDamage", {
 		Text = "No Fall Damage",
 		Tooltip = "Remove any 'Fall Damage' requests to the server.",
 		Default = false,
 	})
+
+	noFallToggle:AddKeyPicker(
+		"NoFallDamageKeybind",
+		{ Default = "N/A", SyncToggleState = true, Text = "No Fall Damage" }
+	)
 
 	groupbox:AddToggle("NoAcidWater", {
 		Text = "No Acid Water",
