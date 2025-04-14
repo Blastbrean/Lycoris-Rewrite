@@ -389,8 +389,8 @@ local onThrownChildAdded = LPH_NO_VIRTUALIZE(function(child)
 		return emplaceObject(child, PartESP.new("OwlFeathers", child, "Owl Feathers"))
 	end
 
-	if name == "LootUpdated" then
-		return emplaceObject(child, ModelESP.new("Chest", child.Parent, "Chest"))
+	if child:IsA("Model") and child:FindFirstChild("LootUpdated") then
+		return emplaceObject(child, ModelESP.new("Chest", child, "Chest"))
 	end
 end)
 
@@ -544,9 +544,9 @@ function Visuals.init()
 	createChildrenListener(ingredients, "Ingredients", onIngredientsChildAdded, onInstanceRemoving)
 	createChildrenListener(players, "Players", onPlayerAdded, onInstanceRemoving)
 
-	local chests = workspace:FindFirstChild("Chests")
-	if chests then
-		createChildrenListener(chests, "Chests", onWorkspaceChildAdded, onInstanceRemoving)
+	local layerTwoFloorTwo = workspace:FindFirstChild("Layer2Floor2")
+	if layerTwoFloorTwo then
+		createChildrenListener(layerTwoFloorTwo, "Layer2Floor2", onWorkspaceChildAdded, onInstanceRemoving)
 	end
 
 	---@note: We only need to get this once.
