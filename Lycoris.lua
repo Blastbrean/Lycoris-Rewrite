@@ -138,7 +138,7 @@ function Lycoris.init()
 		localPlayer = playersService.LocalPlayer
 	until localPlayer ~= nil
 
-	if armorshield and queue_on_teleport and not Lycoris.queued then
+	if armorshield and queue_on_teleport and not Lycoris.queued and not no_queue_on_teleport then
 		-- String.
 		local scriptKeyQueueString = string.format("script_key = '%s'", armorshield.key or "N/A")
 		local loadStringQueueString =
