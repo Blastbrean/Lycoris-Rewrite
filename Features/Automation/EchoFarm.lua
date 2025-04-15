@@ -467,7 +467,6 @@ local machine = StateMachine.create({
 
 		-- Overworld states.
 		{ name = "ingredients", from = "none", to = "ingredients" },
-		{ name = "ingredients", from = "ingredients", to = "campfire" },
 		{ name = "campfire", from = "ingredients", to = "serverhop" },
 
 		-- Selection states.
@@ -476,7 +475,6 @@ local machine = StateMachine.create({
 
 		-- Lobby states.
 		{ name = "wslot", from = "none", to = "wslot" },
-		{ name = "wslot", from = "wslot", to = "qjoin" },
 		{ name = "qjoin", from = "wslot", to = StateMachine.NONE },
 	},
 	dexit = function()
