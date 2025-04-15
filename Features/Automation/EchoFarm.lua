@@ -171,7 +171,9 @@ local function getNearestIngredient(name)
 		return
 	end
 
-	runNearbyPlayerCheck()
+	if not runNearbyPlayerCheck() then
+		return
+	end
 
 	local distance = (nearestIngredient.Position - humanoidRootPart.Position).Magnitude
 	local tween = InstanceWrapper.tween(stateMaid, "EchoFarmTween", humanoidRootPart, TweenInfo.new(distance / 80), {
@@ -235,7 +237,9 @@ function Callbacks.onentertwself(fsm)
 		local npcs = workspace:WaitForChild("NPCs")
 		local selfNpc = npcs:WaitForChild("Self")
 
-		runNearbyPlayerCheck()
+		if not runNearbyPlayerCheck() then
+			return
+		end
 
 		-- Attempt to repeatedly teleport until we're within 10 studs of the NPC.
 		local selfCFrame = selfNpc:GetPivot()
@@ -336,7 +340,9 @@ function Callbacks.onentercampfire(fsm, name)
 			return
 		end
 
-		runNearbyPlayerCheck()
+		if not runNearbyPlayerCheck() then
+			return
+		end
 
 		local campfireCFrame = nearestCampfire:GetPivot()
 		local distance = (campfireCFrame.Position - humanoidRootPart.Position).Magnitude
@@ -513,33 +519,40 @@ local machine = StateMachine.create({
 ---Nearby player check.
 runNearbyPlayerCheck = function()
 	if machine:is("serverhop") then
-		return
+		return false
 	end
 
 	local localPlayer = players.LocalPlayer
 	if not localPlayer then
-		return
+		return false
 	end
 
 	local character = localPlayer.Character
 	if not character then
-		return
+		return false
 	end
 
 	local rootPart = character:FindFirstChild("HumanoidRootPart")
 	if not rootPart then
-		return
+		return false
 	end
 
 	if not Entitites.isNear(rootPart.Position) then
-		return
+		return false
 	end
 
 	-- Mark that we're coming from nearby check.
 	PersistentData.set("shw", true)
 
+	-- Server hop, cancel transitions.
 	machine:cancelTransition(machine.currentTransitioningEvent)
 	machine:serverhop()
+
+	-- Clean maids.
+	stateMaid:clean()
+
+	-- Return true.
+	return true
 end
 
 ---Get nearest area marker.
@@ -626,7 +639,9 @@ function EchoFarm.start()
 	local renderStepped = Signal.new(runService.RenderStepped)
 	echoFarmMaid:add(renderStepped:connect("EchoFarm_NearbyPlayerCheck", runNearbyPlayerCheck))
 
-	runNearbyPlayerCheck()
+	if not runNearbyPlayerCheck() then
+		return
+	end
 
 	local areaMarker = getNearestAreaMarker(humanoidRootPart.Position)
 	local areaMarkerParent = areaMarker and areaMarker.Parent
