@@ -458,22 +458,23 @@ end
 
 -- Create state machine.
 local machine = StateMachine.create({
+	initial = StateMachine.NONE,
 	events = {
 		-- Server hop.
-		{ name = "serverhop", from = "campfire", to = StateMachine.NONE },
+		{ name = "serverhop", from = StateMachine.NONE, to = StateMachine.NONE },
 
 		-- Fragments states.
-		{ name = "twself", from = "twself", to = StateMachine.NONE },
+		{ name = "twself", from = StateMachine.NONE, to = StateMachine.NONE },
 
 		-- Overworld states.
-		{ name = "ingredients", from = "ingredients", to = "campfire" },
+		{ name = "ingredients", from = StateMachine.NONE, to = "campfire" },
 		{ name = "campfire", from = "ingredients", to = "serverhop" },
 
 		-- Selection states.
-		{ name = "csetup", from = "csetup", to = "ingredients" },
+		{ name = "csetup", from = StateMachine.NONE, to = "ingredients" },
 
 		-- Lobby states.
-		{ name = "wslot", from = "wslot", to = "qjoin" },
+		{ name = "wslot", from = StateMachine.NONE, to = "qjoin" },
 		{ name = "qjoin", from = "wslot", to = StateMachine.NONE },
 	},
 	dexit = function()
