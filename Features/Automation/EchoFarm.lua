@@ -291,6 +291,7 @@ function Callbacks.onenteringredients(fsm, name)
 		end
 
 		fsm:transition(name)
+		fsm:campfire()
 	end))
 
 	return fsm.ASYNC
@@ -358,6 +359,7 @@ function Callbacks.onentercampfire(fsm, name)
 		EchoFarm.tweening = false
 
 		fsm:transition(name)
+		fsm:serverhop()
 	end))
 
 	return fsm.ASYNC
@@ -444,7 +446,7 @@ local machine = StateMachine.create({
 		-- Overworld states.
 		{ name = "ingredients", from = "none", to = "ingredients" },
 		{ name = "ingredients", from = "ingredients", to = "campfire" },
-		{ name = "campfire", from = "campfire", to = "serverhop" },
+		{ name = "campfire", from = "ingredients", to = "serverhop" },
 
 		-- Selection states.
 		{ name = "csetup", from = "none", to = "csetup" },
