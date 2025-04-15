@@ -173,6 +173,9 @@ local function getNearestIngredient(name)
 	EchoFarm.tweening = true
 
 	while nearestIngredient and nearestIngredient:IsDescendantOf(game) do
+		-- Wait.
+		task.wait()
+
 		-- Fire prompt.
 		fireproximityprompt(interactPrompt)
 
@@ -328,6 +331,9 @@ function Callbacks:onentercampfire(fsm, name)
 		EchoFarm.tweening = true
 
 		while not effectReplicatorModule:FindEffect("Resting") do
+			-- Wait.
+			task.wait()
+
 			-- Fire prompt.
 			fireproximityprompt(interactPrompt)
 
