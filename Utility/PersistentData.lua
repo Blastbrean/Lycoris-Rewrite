@@ -85,6 +85,8 @@ function PersistentData.init()
 		return Logger.warn("(%s) Failed to deserialize PersistentData snapshot.", tostring(result))
 	end
 
+	Logger.warn("(%s) Successfully loaded PersistentData snapshot.", tostring(result))
+
 	PersistentData._data = result
 end
 

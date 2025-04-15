@@ -403,8 +403,9 @@ end
 
 ---Wipe slot state.
 ---@param fsm StateMachine
+---@param name string
 ---@return string?
-function Callbacks.onenterwslot(fsm)
+function Callbacks.onenterwslot(fsm, name)
 	if PersistentData.get("shw") then
 		return PersistentData.set("shw", false)
 	end
@@ -415,9 +416,14 @@ function Callbacks.onenterwslot(fsm)
 			return error("The last used slot is nil.")
 		end
 
+		-- Wipe slot.
 		local requests = replicatedStorage:WaitForChild("Requests")
 		local wipeSlot = requests:WaitForChild("WipeSlot")
 		wipeSlot:InvokeServer(lastUsedSlot)
+
+		-- Transition.
+		fsm:transition(name)
+		fsm:qjoin()
 	end))
 
 	return fsm.ASYNC
