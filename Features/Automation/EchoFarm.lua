@@ -175,7 +175,8 @@ local function getNearestIngredient(name)
 
 	EchoFarm.tweening = true
 
-	while nearestIngredient and nearestIngredient:IsDescendantOf(ingredients) do
+	while nearestIngredient and nearestIngredient.Parent == ingredients do
+		print(nearestIngredient.Parent)
 		-- Wait.
 		task.wait()
 
