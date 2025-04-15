@@ -9,7 +9,17 @@ local Logger = require("Utility/Logger")
 
 -- PersistentData module.
 local PersistentData = {
+	-- First timestamp of when Lycoris was loaded.
 	fli = nil,
+
+	-- The last used slot.
+	lus = nil,
+
+	-- Echo farm persistence - did we trigger a server hop from wiping our character? If so, skip the wipe slot handler.
+	shw = false,
+
+	-- Echo farm persistence - do we need to activate on initialization?
+	aei = false,
 }
 
 -- Generate mapping.

@@ -82,6 +82,9 @@ return LPH_NO_VIRTUALIZE(function()
 	---@module Utility.Logger
 	local Logger = require("Utility/Logger")
 
+	---@module Features.Automation.EchoFarm
+	local EchoFarm = require("Features/Automation/EchoFarm")
+
 	-- Services.
 	local runService = game:GetService("RunService")
 	local userInputService = game:GetService("UserInputService")
@@ -377,7 +380,8 @@ return LPH_NO_VIRTUALIZE(function()
 			updateInfiniteJump(rootPart)
 		end
 
-		if Configuration.expectToggleValue("NoClip") then
+		---@todo: Make a tweening module next time.
+		if EchoFarm.tweening or Configuration.expectToggleValue("NoClip") then
 			updateNoClip(character, rootPart)
 		else
 			noClipMap:restore()

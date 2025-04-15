@@ -19,6 +19,9 @@ local ControlModule = require("Utility/ControlModule")
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
+---@module Features.Automation.EchoFarm
+local EchoFarm = require("Features/Automation/EchoFarm")
+
 ---@module Game.PlayerScanning
 local PlayerScanning = require("Game/PlayerScanning")
 
@@ -44,7 +47,6 @@ local ModuleManager = require("Game/Timings/ModuleManager")
 local lycorisMaid = Maid.new()
 
 -- Services.
-local memStorageService = game:GetService("MemStorageService")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local playersService = game:GetService("Players")
 
@@ -93,6 +95,10 @@ function Lycoris.init()
 
 	PersistentData.init()
 
+	if PersistentData.aei then
+		EchoFarm.init()
+	end
+
 	InputClient.cache()
 
 	SaveManager.init()
@@ -111,6 +117,10 @@ function Lycoris.init()
 
 	if not PersistentData.fli then
 		PersistentData.set("fli", os.time())
+	end
+
+	if not PersistentData.lus then
+		PersistentData.set("lus", playersService.LocalPlayer:GetAttribute("DataSlot"))
 	end
 
 	local modules = replicatedStorage:FindFirstChild("Modules")
