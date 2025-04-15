@@ -643,12 +643,21 @@ function EchoFarm.start()
 		return
 	end
 
-	local areaMarker = getNearestAreaMarker(humanoidRootPart.Position)
-	local areaMarkerParent = areaMarker and areaMarker.Parent
+	-- We're in the Depths.
+	if game.PlaceId == 5735553160 then
+		-- Get marker.
+		local areaMarker = nil
 
-	-- Go to start of fragment states.
-	---@todo: Bug where the ingredients state can be entered first?
-	if areaMarkerParent.Name == "Fragments of Self" then
+		-- Wait until we're in the fragments area.
+		repeat
+			-- Wait.
+			task.wait()
+
+			-- Get nearest area marker.
+			areaMarker = getNearestAreaMarker(humanoidRootPart.Position)
+		until areaMarker and areaMarker.Parent == "Fragments of Self"
+
+		-- Put us in the fragments state.
 		return machine:twself()
 	end
 
