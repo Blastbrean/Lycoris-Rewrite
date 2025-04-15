@@ -461,20 +461,23 @@ local machine = StateMachine.create({
 	initial = StateMachine.NONE,
 	events = {
 		-- Server hop.
-		{ name = "serverhop", from = StateMachine.NONE, to = StateMachine.NONE },
+		{ name = "serverhop", from = { "campfire", "ingredients", "twself", StateMachine.None }, to = "serverhop" },
 
 		-- Fragments states.
-		{ name = "twself", from = StateMachine.NONE, to = StateMachine.NONE },
+		{ name = "twself", from = StateMachine.NONE, to = "twself" },
 
 		-- Overworld states.
-		{ name = "ingredients", from = StateMachine.NONE, to = "campfire" },
-		{ name = "campfire", from = "ingredients", to = "serverhop" },
+		{ name = "ingredients", from = StateMachine.NONE, to = "ingredients" },
+		{ name = "ingredients", from = "ingredients", to = "campfire" },
+		{ name = "campfire", from = "ingredients", to = "campfire" },
 
 		-- Selection states.
-		{ name = "csetup", from = StateMachine.NONE, to = "ingredients" },
+		{ name = "csetup", from = StateMachine.NONE, to = "csetup" },
+		{ name = "csetup", from = "csetup", to = "ingredients" },
 
 		-- Lobby states.
-		{ name = "wslot", from = StateMachine.NONE, to = "qjoin" },
+		{ name = "wslot", from = StateMachine.NONE, to = "wslot" },
+		{ name = "wslot", from = "wslot", to = "qjoin" },
 		{ name = "qjoin", from = "wslot", to = StateMachine.NONE },
 	},
 	dexit = function()
@@ -485,7 +488,7 @@ local machine = StateMachine.create({
 
 ---Nearby player check.
 local function runNearbyPlayerCheck()
-	if machine:is("serverhop") or machine:is(StateMachine.NONE) then
+	if machine:is("serverhop") then
 		return
 	end
 
