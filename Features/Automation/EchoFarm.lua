@@ -467,7 +467,7 @@ local machine = StateMachine.create({
 		{ name = "twself", from = StateMachine.NONE, to = "twself" },
 
 		-- Overworld states.
-		{ name = "ingredients", from = StateMachine.NONE, to = "ingredients" },
+		{ name = "ingredients", from = { "csetup", StateMachine.NONE }, to = "ingredients" },
 		{ name = "ingredients", from = "ingredients", to = "campfire" },
 		{ name = "campfire", from = "ingredients", to = "campfire" },
 
@@ -592,21 +592,13 @@ function EchoFarm.start()
 	PersistentData.set("shw", false)
 	PersistentData.set("aei", true)
 
-	runNearbyPlayerCheck()
+	local character = handleStartMenu()
+	local humanoidRootPart = character and character:WaitForChild("HumanoidRootPart")
 
 	local renderStepped = Signal.new(runService.RenderStepped)
 	echoFarmMaid:add(renderStepped:connect("EchoFarm_NearbyPlayerCheck", runNearbyPlayerCheck))
 
-	local character = handleStartMenu()
-	local humanoidRootPart = character and character:WaitForChild("HumanoidRootPart")
-
-	local localPlayer = players.LocalPlayer
-	local playerGui = localPlayer:WaitForChild("PlayerGui")
-
-	-- Go to the start of character states.
-	if playerGui:FindFirstChild("CharacterCreator") then
-		return machine:csetup()
-	end
+	runNearbyPlayerCheck()
 
 	local areaMarker = getNearestAreaMarker(humanoidRootPart.Position)
 	local areaMarkerParent = areaMarker and areaMarker.Parent
@@ -614,6 +606,14 @@ function EchoFarm.start()
 	-- Go to start of fragment states.
 	if areaMarkerParent.Name == "Fragments of Self" then
 		return machine:twself()
+	end
+
+	local localPlayer = players.LocalPlayer
+	local playerGui = localPlayer:WaitForChild("PlayerGui")
+
+	-- Go to the start of character states.
+	if playerGui:WaitForChild("CharacterCreator", 1.0) then
+		return machine:csetup()
 	end
 
 	-- Go to start of overworld states.
