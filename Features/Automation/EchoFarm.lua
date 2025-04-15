@@ -491,7 +491,7 @@ local machine = StateMachine.create({
 	initial = StateMachine.NONE,
 	events = {
 		-- Server hop.
-		{ name = "serverhop", from = { "campfire", "ingredients", "twself" }, to = "serverhop" },
+		{ name = "serverhop", from = { "campfire", "ingredients", "twself", StateMachine.NONE }, to = "serverhop" },
 
 		-- Fragments states.
 		{ name = "twself", from = StateMachine.NONE, to = "twself" },
