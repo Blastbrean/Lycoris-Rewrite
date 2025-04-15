@@ -49,7 +49,9 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		self.data[self.index] = self.value
+		pcall(function()
+			self.data[self.index] = self.value
+		end)
 
 		self.stored = false
 	end
