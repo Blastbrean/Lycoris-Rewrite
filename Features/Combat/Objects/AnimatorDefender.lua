@@ -46,7 +46,6 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Constants.
 local MAX_REPEAT_TIME = 5.0
-local MAX_TRACK_HISTORY = 3
 
 ---Is animation stopped? Made into a function for de-duplication.
 ---@param track AnimationTrack
