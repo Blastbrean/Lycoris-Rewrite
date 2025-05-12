@@ -105,7 +105,7 @@ end
 ---Call RPUE function.
 ---@param entity Model
 ---@param track AnimationTrack?
----@param timing AnimationTiming
+---@param timing Timing
 ---@param index number
 Defender.crpue = LPH_NO_VIRTUALIZE(function(self, entity, track, timing, index)
 	self:mark(
@@ -135,7 +135,7 @@ end)
 ---Repeat until parry end.
 ---@param entity Model
 ---@param track AnimationTrack?
----@param timing AnimationTiming
+---@param timing Timing
 ---@param index number
 Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, track, timing, index)
 	local distance = self:distance(entity)
@@ -151,7 +151,7 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, track, timing, index)
 		return Logger.warn("Stopping RPUE '%s' because the repeat condition is not valid.", timing.name)
 	end
 
-	self:crpue(track, timing, index + 1)
+	self:crpue(entity, track, timing, index + 1)
 
 	local target = Targeting.find(entity)
 	if not target then
