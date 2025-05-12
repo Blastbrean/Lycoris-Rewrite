@@ -101,6 +101,11 @@ function PartDefender.new(part, timing)
 	self.timing = timing or self:initial(part, SaveManager.ps, nil, part.Name)
 	self.touched = false
 
+	-- Handle no timing.
+	if not self.timing then
+		return nil
+	end
+
 	-- Handle module.
 	if self.timing.umoa then
 		self:module(self.timing)
@@ -111,7 +116,8 @@ function PartDefender.new(part, timing)
 		self:actions(self.timing)
 	end
 
-	return self.timing and self or nil
+	-- Return self.
+	return self
 end
 
 -- Return PartDefender module.

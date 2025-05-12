@@ -208,18 +208,18 @@ local hssp = LPH_NO_VIRTUALIZE(function(position, str)
 		return
 	end
 
-	local characterHandler = localPlayerCharacter:FindFirstChild("CharacterHandler")
-	if not characterHandler then
+	local playerGui = localPlayer:FindFirstChild("PlayerGui")
+	if not playerGui then
 		return
 	end
 
-	local requests = characterHandler:FindFirstChild("Requests")
-	if not requests then
+	local spellGui = playerGui:FindFirstChild("SpellGui")
+	if not spellGui then
 		return
 	end
 
-	local spellCheck = requests:FindFirstChild("SpellCheck")
-	if not spellCheck then
+	local spellInput = spellGui:FindFirstChild("SpellInput")
+	if not spellInput then
 		return
 	end
 
@@ -243,7 +243,7 @@ local hssp = LPH_NO_VIRTUALIZE(function(position, str)
 
 	Logger.warn("Sending event for character (%s) with position (%i) and string (%s).", character, position, str)
 
-	spellCheck:FireServer(character, localPlayer:GetMouse().Hit)
+	spellInput:FireServer(character)
 end)
 
 ---Update defenders.
@@ -379,12 +379,17 @@ function Defense.init()
 		mobAnimations[animation.AnimationId] = animation
 	end
 
+	-- Local player.
+	local localPlayer = players.LocalPlayer
+	local playerGui = localPlayer:WaitForChild("PlayerGui")
+	local spellGui = playerGui:WaitForChild("SpellGui")
+
 	-- Requests.
 	local requests = replicatedStorage:WaitForChild("Requests")
 	local clientEffect = requests:WaitForChild("ClientEffect")
 	local clientEffectLarge = requests:WaitForChild("ClientEffectLarge")
 	local clientEffectDirect = requests:WaitForChild("ClientEffectDirect")
-	local spell = requests:WaitForChild("Spell")
+	local spell = spellGui:WaitForChild("SpellInput")
 
 	-- Signals.
 	local gameDescendantAdded = Signal.new(game.DescendantAdded)
