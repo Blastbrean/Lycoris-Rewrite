@@ -46,6 +46,9 @@ return LPH_NO_VIRTUALIZE(function()
 	---@module Utility.Logger
 	local Logger = require("Utility/Logger")
 
+	---@module Utility.OriginalStoreManager
+	local OriginalStoreManager = require("Utility/OriginalStoreManager")
+
 	-- Signals.
 	local renderStepped = Signal.new(runService.RenderStepped)
 
@@ -91,6 +94,10 @@ return LPH_NO_VIRTUALIZE(function()
 			return cleanParts()
 		end
 
+		-- Create an update table.
+		local updateTable = {}
+
+		-- Add models.
 		for model, maid in next, OwnershipWatcher.modelsToScan do
 			local humanoidRootPart = model:FindFirstChild("HumanoidRootPart")
 			if not humanoidRootPart then
@@ -102,16 +109,36 @@ return LPH_NO_VIRTUALIZE(function()
 
 			-- Visualization.
 			local netVisual = InstanceWrapper.create(maid, "NetworkVisual", "Part", model)
-			netVisual.Size = Vector3.new(5, 5, 2)
+			netVisual.Size = Vector3.new(10, 10, 10)
 			netVisual.Transparency = Configuration.expectToggleValue("ShowOwnership") and 0.8 or 1.0
 			netVisual.Color = isNetworkOwner and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
 			netVisual.CFrame = humanoidRootPart.CFrame
 			netVisual.Anchored = true
 			netVisual.CanCollide = false
 
-			-- Mark part.
-			OwnershipWatcher.parts[humanoidRootPart] = { owned = isNetworkOwner, model = model }
+			-- Part data.
+			local data = OwnershipWatcher.parts[humanoidRootPart]
+				or {
+					owned = isNetworkOwner,
+					model = model,
+					map = OriginalStoreManager.new(),
+				}
+
+			-- Update part data.
+			data.owned = isNetworkOwner
+			data.model = model
+
+			-- Set in global part list.
+			OwnershipWatcher.parts[humanoidRootPart] = data
+
+			-- Set in map.
+			updateTable[humanoidRootPart] = data
 		end
+
+		-- Override global part list with the new update table.
+		---@note: This will get rid of any parts that were not updated (e.g no longer existing root part or not in model list) upon cycle.
+		---@todo: Fix me - this is a bit of a hack.
+		OwnershipWatcher.parts = updateTable
 	end
 
 	---Get table of watched parts along with a mapping to extra data.

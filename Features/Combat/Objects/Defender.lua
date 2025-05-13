@@ -653,20 +653,6 @@ Defender.clean = LPH_NO_VIRTUALIZE(function(self)
 	end
 end)
 
----Start blocking marker.
----@param self Defender
----@param tag string
-Defender.smarker = LPH_NO_VIRTUALIZE(function(self, tag)
-	self.markers[tag] = true
-end)
-
----End blocking marker.
----@param self Defender
----@param tag string
-Defender.emarker = LPH_NO_VIRTUALIZE(function(self, tag)
-	self.markers[tag] = false
-end)
-
 ---Process module.
 ---@param timing Timing
 ---@varargs any

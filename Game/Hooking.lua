@@ -66,10 +66,10 @@ local findInputClientStack = LPH_NO_VIRTUALIZE(function()
 		end
 
 		-- Fetch alternative stack - on Wave, this will fail. You cannot wrap debug.getstack(...) in pcall.
-		local stack_success, stack = pcall(debug.getstack, level)
+		local ssuccess, stack = pcall(debug.getstack, level)
 
 		-- Return stack.
-		return stack_success and stack or debug.getstack(level - 1)
+		return ssuccess and stack or debug.getstack(level - 1)
 	end
 end)
 

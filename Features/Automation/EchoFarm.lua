@@ -25,6 +25,9 @@ local KeyHandling = require("Game/KeyHandling")
 ---@module Utility.InstanceWrapper
 local InstanceWrapper = require("Utility/InstanceWrapper")
 
+---@Module Game.PlayerScanning
+local PlayerScanning = require("Game/PlayerScanning")
+
 -- Constants.
 local LOBBY_PLACE_ID = 4111023553
 local GET_INGREDIENTS_TIMEOUT = 10.0
@@ -49,29 +52,30 @@ local echoFarmMaid = Maid.new()
 ---@note: Cleaned after every state exit.
 local stateMaid = Maid.new()
 
--- Nearby player check.
-local function runNearbyPlayerCheck(fsm)
+---Run player check.
+---@param fsm StateMachine
+local function runPlayerCheck(fsm)
 	if fsm:is("serverhop") then
-		return false
+		return
 	end
 
 	local localPlayer = players.LocalPlayer
 	if not localPlayer then
-		return true
+		return
 	end
 
 	local character = localPlayer.Character
 	if not character then
-		return true
+		return
 	end
 
 	local rootPart = character:FindFirstChild("HumanoidRootPart")
 	if not rootPart then
-		return true
+		return
 	end
 
-	if not Entitites.isNear(rootPart.Position) then
-		return true
+	if not Entitites.isNear(rootPart.Position) and not PlayerScanning.hasModerators() then
+		return
 	end
 
 	-- Mark that we're coming from nearby check.
@@ -237,7 +241,7 @@ end
 
 ---Handle nearby players while going to new states.
 function Callbacks.onstatechange(fsm)
-	runNearbyPlayerCheck(fsm)
+	runPlayerCheck(fsm)
 end
 
 ---Server hop state.
@@ -656,7 +660,10 @@ function EchoFarm.start()
 	local renderStepped = Signal.new(runService.RenderStepped)
 	local inputBegan = Signal.new(userInputService.InputBegan)
 
-	echoFarmMaid:add(renderStepped:connect("EchoFarm_NearbyPlayerCheck", runNearbyPlayerCheck))
+	echoFarmMaid:add(renderStepped:connect("EchoFarm_PlayerCheck", function()
+		runPlayerCheck(machine)
+	end))
+
 	echoFarmMaid:add(inputBegan:connect("EchoFarm_EmergencyKeybind", function(input, _)
 		if not input then
 			return
