@@ -307,6 +307,11 @@ return LPH_NO_VIRTUALIZE(function()
 		entity.Parent = worldModel
 		entity:PivotTo(CFrame.new(0, 0, 0))
 
+		-- Fetch the primary part. If it does not exist, then the entity has been unloaded.
+		if not entity.PrimaryPart then
+			return AnimationVisualizer.message("No Primary Part Found")
+		end
+
 		-- Setup camera.
 		local _, bbs = entity:GetBoundingBox()
 		camera.CFrame =
