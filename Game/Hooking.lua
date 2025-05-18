@@ -408,7 +408,7 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 
 	local fallDamageRemote = KeyHandling.getRemote("FallDamage")
 
-	if self == fallDamageRemote and Configuration.expectToggleValue("NoFallDamage") then
+	if fallDamageRemote and self == fallDamageRemote and Configuration.expectToggleValue("NoFallDamage") then
 		return
 	end
 

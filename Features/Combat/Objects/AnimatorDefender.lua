@@ -85,6 +85,14 @@ AnimatorDefender.rc = LPH_NO_VIRTUALIZE(function(self, timing, start, track)
 	return true
 end)
 
+---Find target - hookable function.
+---@param self AnimatorDefender
+---@param entity Model
+---@return Target?
+AnimatorDefender.target = LPH_NO_VIRTUALIZE(function(self, entity)
+	return Targeting.find(entity)
+end)
+
 ---Check if we're in a valid state to proceed with the action.
 ---@todo: Add extra effect checks because we don't want our input to be buffered when we can't even parry.
 ---@param timing AnimationTiming
@@ -103,7 +111,7 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "No entity found.")
 	end
 
-	local target = Targeting.find(self.entity)
+	local target = self:target(self.entity)
 	if not target then
 		return self:notify(timing, "Not a viable target.")
 	end
@@ -150,7 +158,7 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return false
 	end
 
-	if not self:hc(root.CFrame, timing, action, { character }) then
+	if not self:hc(root.CFrame, timing, action, { character }, self.track) then
 		return self:notify(timing, "Not in hitbox.")
 	end
 
@@ -181,46 +189,6 @@ AnimatorDefender.update = LPH_NO_VIRTUALIZE(function(self)
 		data:astrack(track.Speed)
 	end
 end)
-
----Unisync animation track.
----@note: Bugged and doesn't work properly.
----@param track AnimationTrack
-function AnimatorDefender:unisync(track)
-	if track.Looped or track.Priority == Enum.AnimationPriority.Core then
-		return
-	end
-
-	if not Configuration.expectToggleValue("AnimationUnisync") then
-		return
-	end
-
-	Logger.warn(
-		"Animation %s is being unisynced from entity %s with speed %.2f and weight-target %.2f.",
-		track.Animation.AnimationId,
-		self.entity.Name,
-		track.Speed,
-		track.WeightTarget
-	)
-
-	-- Stop track immediately and save state.
-	local lastWeightTarget, lastSpeed, lastPriority = track.WeightTarget, track.Speed, track.Priority
-	track:Stop(0.0)
-
-	-- Set fake priority.
-	track.Priority = Enum.AnimationPriority.Core
-
-	-- Replay animation.
-	track:Play(
-		0.0,
-		Configuration.expectOptionValue("AnimationUnisyncWeight") or -10.0,
-		Configuration.expectOptionValue("AnimationUnisyncSpeed") or 0.0
-	)
-
-	-- Now, set the real track state.
-	track.Priority = lastPriority
-	track:AdjustSpeed(lastSpeed)
-	track:AdjustWeight(lastWeightTarget, 0.0)
-end
 
 ---Virtualized processing checks.
 ---@param track AnimationTrack
@@ -262,9 +230,8 @@ end
 ---@todo: AP telemetry - aswell as tracking effects that are added with timestamps and current ping to that list.
 ---@param track AnimationTrack
 AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
-	local localCharacter = players.LocalPlayer.Character
-	if localCharacter and self.entity == localCharacter then
-		return self:unisync(track)
+	if players.LocalPlayer.Character and self.entity == players.LocalPlayer.Character then
+		return
 	end
 
 	if not self:pvalidate(track) then

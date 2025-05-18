@@ -100,12 +100,14 @@ function InstanceESP:setup()
 	billboardGui.Enabled = false
 	billboardGui.Adornee = self.instance
 	billboardGui.Parent = workspace
+	billboardGui.AutoLocalize = false
 
 	local textLabel = Instance.new("TextLabel")
 	textLabel.BackgroundTransparency = 1.0
 	textLabel.Size = UDim2.new(1, 0, 1, 0)
 	textLabel.TextStrokeTransparency = 0.0
 	textLabel.Parent = billboardGui
+	textLabel.AutoLocalize = false
 
 	self.billboard = self.maid:mark(billboardGui)
 	self.text = self.maid:mark(textLabel)

@@ -378,7 +378,7 @@ local onThrownChildAdded = LPH_NO_VIRTUALIZE(function(child)
 	end
 
 	if name == "ExplodeCrate" then
-		return emplaceObject(child, ModelESP.new("ExplosiveBarrel", child, "Explosive Barrel"))
+		return emplaceObject(child, PartESP.new("ExplosiveBarrel", child, "Explosive Barrel"))
 	end
 
 	if name == "BagDrop" then

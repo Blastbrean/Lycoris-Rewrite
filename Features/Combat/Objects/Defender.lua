@@ -174,7 +174,7 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, track, timing, index, s
 		return Logger.warn("Skipping RPUE '%s' because the target is not valid.", timing.name)
 	end
 
-	if not self:hc(target.root.CFrame, timing, nil, { players.LocalPlayer.Character }) then
+	if not self:hc(target.root.CFrame, timing, nil, { players.LocalPlayer.Character }, nil) then
 		return Logger.warn("Skipping RPUE '%s' because we are not in the hitbox.", timing.name)
 	end
 
@@ -450,13 +450,14 @@ end)
 ---@param timing Timing|EffectTiming|AnimationTiming
 ---@param action Action?
 ---@param filter Instance[]
+---@param track AnimationTrack?
 ---@return boolean
-Defender.hc = LPH_NO_VIRTUALIZE(function(self, cframe, timing, action, filter)
+Defender.hc = LPH_NO_VIRTUALIZE(function(self, cframe, timing, action, filter, track)
 	local start = os.clock()
 
 	---@note: We check for 'fhb' here even though the base timing may not have it.
 	while timing.duih and not timing.rpue and not self:hitbox(cframe, timing.fhb, timing.hitbox, filter) do
-		if not self:rc(timing, start, nil) then
+		if not self:rc(timing, start, track) then
 			return false
 		end
 

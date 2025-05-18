@@ -5,6 +5,9 @@ local KeyHandling = {}
 local remoteTable = nil
 local randomTable = nil
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 -- Hash cache.
 local hashCache = {}
 
@@ -143,6 +146,8 @@ end
 
 ---Initialize the KeyHandler module.
 KeyHandling.init = LPH_NO_VIRTUALIZE(function()
+	local retries = 0
+
 	while true do
 		for _, value in next, getgc(true) do
 			if typeof(value) ~= "table" then
@@ -207,6 +212,19 @@ KeyHandling.init = LPH_NO_VIRTUALIZE(function()
 			break
 		end
 
+		Logger.warn(
+			"KeyHandler retry (%i attempts) with results (%s, %s)",
+			retries,
+			tostring(remoteTable),
+			tostring(randomTable)
+		)
+
+		retries = retries + 1
+
+		if retries >= 10 then
+			return Logger.warn("KeyHandler failed to initialize after 10 attempts.")
+		end
+
 		task.wait(0.5)
 	end
 end)
@@ -215,6 +233,10 @@ end)
 ---@param remoteName string
 ---@return Instance|nil
 KeyHandling.getRemote = LPH_NO_VIRTUALIZE(function(remoteName)
+	if not randomTable and not remoteTable then
+		return nil
+	end
+
 	local hashedRemoteName = hashCache[remoteName] or hash(remoteName)
 
 	if not hashCache[remoteName] then

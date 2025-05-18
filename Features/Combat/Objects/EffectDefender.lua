@@ -41,7 +41,7 @@ EffectDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "No character found.")
 	end
 
-	if not self:hc(humanoidRootPart.CFrame, timing, action, { players.LocalPlayer.Character }) then
+	if not self:hc(humanoidRootPart.CFrame, timing, action, { players.LocalPlayer.Character }, nil) then
 		return false
 	end
 

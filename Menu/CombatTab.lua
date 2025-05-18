@@ -284,43 +284,6 @@ function CombatTab.initCombatAssistance(groupbox)
 		Text = "M1 Hold",
 		Default = false,
 	})
-
-	local unisyncToggle = groupbox:AddToggle("AnimationUnisync", {
-		Text = "Animation Unisync",
-		Tooltip = "Secretly and quickly 'unisync' your character's animations which break other auto-defense solutions.",
-		Default = false,
-	})
-
-	unisyncToggle:AddKeyPicker(
-		"AnimationUnisyncKeybind",
-		{ Default = "N/A", SyncToggleState = true, Text = "Animation Unisync" }
-	)
-
-	local unisyncDepBox = groupbox:AddDependencyBox()
-
-	unisyncDepBox:AddSlider("AnimationUnisyncWeight", {
-		Text = "Animation Unisync Weight",
-		Tooltip = "The weight of the animation that will be unisynced.",
-		Min = -100.0,
-		Max = 100.0,
-		Default = 0.0,
-		Rounding = 1,
-		Suffix = "w",
-	})
-
-	unisyncDepBox:AddSlider("AnimationUnisyncSpeed", {
-		Text = "Animation Unisync Speed",
-		Tooltip = "The speed of the animation that will be unisynced.",
-		Min = -100.0,
-		Max = 100.0,
-		Default = -10.0,
-		Rounding = 1,
-		Suffix = "s",
-	})
-
-	unisyncDepBox:SetupDependencies({
-		{ unisyncToggle, true },
-	})
 end
 
 ---Initialize tab.

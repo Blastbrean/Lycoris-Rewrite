@@ -37,7 +37,7 @@ PartDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "No character found.")
 	end
 
-	if not self.timing.duih and not self:hc(self:cframe(), timing, action, { character }) then
+	if not self.timing.duih and not self:hc(self:cframe(), timing, action, { character }, nil) then
 		return false
 	end
 
