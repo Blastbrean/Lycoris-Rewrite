@@ -17,6 +17,7 @@ local players = game:GetService("Players")
 
 ---Get CFrame.
 ---@note: Lag compensation of some kind? Maybe extrapolation.
+---@todo: Have initial facing angle -> replace the direction of the part.
 ---@param self PartDefender
 ---@return CFrame
 PartDefender.cframe = LPH_NO_VIRTUALIZE(function(self)
@@ -46,7 +47,6 @@ end)
 
 ---Update PartDefender object.
 PartDefender.update = LPH_NO_VIRTUALIZE(function(self)
-	print("PartDefender: Update called.")
 	-- Skip if we're not handling delay until in hitbox.
 	if not self.timing.duih then
 		return

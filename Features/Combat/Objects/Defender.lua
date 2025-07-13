@@ -251,10 +251,10 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "No effect replicator module found.")
 	end
 
-	---@todo: SK Swing breaks this check and we cannot parry second move
+	---@note: SK Swing breaks this check and we cannot parry second move
 	if
-		effectReplicatorModule:FindEffect("Telegraph_Generic")
-		or effectReplicatorModule:FindEffect("EarlyTelegraph_Generic")
+		effectReplicatorModule:FindEffect("LightAttack")
+		or effectReplicatorModule:FindEffect("MidAttack")
 		or effectReplicatorModule:FindEffect("Followup")
 		or effectReplicatorModule:FindEffect("CastingSpell")
 	then
