@@ -64,6 +64,8 @@
 - Chaser tween to objective + tween to nearest instead
 - Figure out later how to match projectiles to users.
 - Config data shuffling + encoding
+- Create a scale utility which will calculate how far along a hitbox you are with a percentage. Each percentage will have markers which will determine what time we need to parry at.
+- Fix projectiles and the callbacks erroring. Rewrite it, entirely.
 
 # What moves do we need to add?
 https://docs.google.com/spreadsheets/d/1jcZFsSF5iSfbYryL9edl5B_r34tlMo0HPwoFqKiPps4/edit?gid=1386834576#gid=1386834576
