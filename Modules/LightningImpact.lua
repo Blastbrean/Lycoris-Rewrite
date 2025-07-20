@@ -21,9 +21,9 @@ return function(self, timing)
 
 	local endAction = Action.new()
 	endAction._type = "Parry"
-	endAction._when = 650
-	endAction.hitbox = Vector3.new(100, 100, 100)
+	endAction._when = 600
 	endAction.name = "Lightning Impact Stomp"
+	endAction.ihbc = true
 	self:action(timing, endAction)
 
 	plistener:connect(function(child)

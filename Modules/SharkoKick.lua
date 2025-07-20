@@ -17,7 +17,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 0
 	action._type = "Dodge"
-	action.hitbox = Vector3.new(15, 70, 20)
+	action.hitbox = Vector3.new(20, 70, 20)
 	action.name = "Normal Kick Timing"
 
 	local lastTimestamp = os.clock()
