@@ -21,7 +21,7 @@ return function(self, timing)
 	end
 
 	local tracker = ProjectileTracker.new(function(candidate)
-		return candidate.Name == "Bullet"
+		return candidate.Name == "Bullet" or candidate.Name:match("ScrapsingerBullet")
 	end)
 
 	task.wait(0.4 - self:ping())
