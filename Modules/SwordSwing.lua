@@ -25,5 +25,12 @@ return function(self, timing)
 
 	action.name = "Dynamic Sword Swing"
 
+	-- Evengarde sword spam
+	if self.entity.Name:match(".evengarde") and self.track.Speed >= 2.5 then
+		action._when = 0
+		action._type = "Parry"
+		action.hitbox = Vector3.new(20, 20, 20)
+	end
+
 	return self:action(timing, action)
 end

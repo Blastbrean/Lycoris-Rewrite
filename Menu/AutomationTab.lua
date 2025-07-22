@@ -29,7 +29,7 @@ function AutomationTab.initAttributeSection(groupbox)
 
 	groupbox
 		:AddToggle("AutoIntelligence", {
-			Text = "Auto Intelligence",
+			Text = "Auto Intelligence Farm",
 			Tooltip = "Using the 'Math Textbook' book, the script will automatically train the 'Intelligence' attribute.",
 			Default = false,
 		})
@@ -46,6 +46,22 @@ function AutomationTab.initAttributeSection(groupbox)
 		MaxLength = 3,
 		Default = "75",
 	})
+end
+
+---Initialize Fish Farm section.
+---@param groupbox table
+function AutomationTab.initFishFarmSection(groupbox)
+	groupbox
+		:AddToggle("AutoFish", {
+			Text = "Auto Fish Farm",
+			Tooltip = "Automatically farm fish. Non-AFKable yet. Work-in progress.",
+			Default = false,
+		})
+		:AddKeyPicker("AutoFishKeybind", {
+			Default = "N/A",
+			SyncToggleState = true,
+			Text = "Auto Fish Farm",
+		})
 end
 
 ---Initialize Echo Farm section.
@@ -79,6 +95,7 @@ function AutomationTab.init(window)
 	local tab = window:AddTab("Auto")
 
 	-- Initialize sections.
+	AutomationTab.initFishFarmSection(tab:AddDynamicGroupbox("Fish Farm"))
 	AutomationTab.initEchoFarmSection(tab:AddDynamicGroupbox("Echo Farm"))
 	AutomationTab.initAttributeSection(tab:AddDynamicGroupbox("Attribute Farm"))
 	AutomationTab.initEffectAutomation(tab:AddDynamicGroupbox("Effect Automation"))

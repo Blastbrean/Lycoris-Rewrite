@@ -216,6 +216,12 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
+	groupbox:AddToggle("MaxMomentumSpoof", {
+		Text = "Max Momentum Spoofer",
+		Tooltip = "Spoof your character's momentum to the maximum value.",
+		Default = false,
+	})
+
 	groupbox:AddButton({
 		Text = "Respawn Character",
 		DoubleClick = true,

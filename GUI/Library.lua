@@ -225,7 +225,7 @@ return LPH_NO_VIRTUALIZE(function()
 		Library.InfoLoggerFrame.Size = UDim2.new(0, math.clamp(XSize, 210, 800), 0, math.clamp(YSize, 24, 180))
 	end
 
-	function Library:AddMissEntry(type, key, name, distance)
+	function Library:AddMissEntry(type, key, name, distance, parent)
 		local ifd = Library.InfoLoggerData
 		local mde = ifd.MissingDataEntries
 		local bl = ifd.KeyBlacklistList
@@ -276,6 +276,10 @@ return LPH_NO_VIRTUALIZE(function()
 				ZIndex = 306,
 				Parent = nil,
 			}, true)
+
+			if parent then
+				label.Text = string.format("(%s) %s", parent, label.Text)
+			end
 
 			Library:AddToRegistry(label, {
 				TextColor3 = "FontColor",

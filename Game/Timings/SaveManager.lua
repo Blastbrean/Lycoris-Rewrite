@@ -176,9 +176,10 @@ end
 
 ---Write timing as config name.
 ---@param name string
+---@return number
 function SaveManager.write(name)
 	if not name or #name <= 0 then
-		return Logger.longNotify("Config name cannot be empty.")
+		return -1, Logger.longNotify("Config name cannot be empty.")
 	end
 
 	local success, result = pcall(Serializer.marshal, config:serialize())
@@ -186,11 +187,8 @@ function SaveManager.write(name)
 	if not success then
 		Logger.longNotify("Failed to serialize config file %s.", name)
 
-		return Logger.warn(
-			"Timing manager ran into the error '%s' while attempting to serialize config %s.",
-			result,
-			name
-		)
+		return -2,
+			Logger.warn("Timing manager ran into the error '%s' while attempting to serialize config %s.", result, name)
 	end
 
 	success, result = pcall(fs.write, fs, name .. ".bin", result)
@@ -198,10 +196,13 @@ function SaveManager.write(name)
 	if not success then
 		Logger.longNotify("Failed to write config file %s.", name)
 
-		return Logger.warn("Timing manager ran into the error '%s' while attempting to write config %s.", result, name)
+		return -3,
+			Logger.warn("Timing manager ran into the error '%s' while attempting to write config %s.", result, name)
 	end
 
 	Logger.notify("Config file %s has written to.", name)
+
+	return 0
 end
 
 ---Clear config from config name.
@@ -290,18 +291,19 @@ function SaveManager.load(name)
 end
 
 ---Auto-save timings.
+---@return boolean, number
 function SaveManager.autosave()
 	if not SaveManager.llcn then
-		return Logger.warn("No config name has been loaded for auto-save.")
+		return false, -1, Logger.warn("No config name has been loaded for auto-save.")
 	end
 
 	if not SaveManager.sautos then
-		return Logger.warn("Auto-save has been disabled.")
+		return false, -2, Logger.warn("Auto-save has been disabled.")
 	end
 
 	Logger.warn("Auto-saving timings to '%s' config file.", SaveManager.llcn)
 
-	SaveManager.write(SaveManager.llcn)
+	return true, SaveManager.write(SaveManager.llcn), Logger.notify("Auto-save has completed successfully.")
 end
 
 ---Initialize SaveManager.

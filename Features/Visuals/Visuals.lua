@@ -360,6 +360,10 @@ end)
 ---On NPCs ChildAdded.
 ---@param child Instance
 local onNPCsChildAdded = LPH_NO_VIRTUALIZE(function(child)
+	if child.Name == "WindrunnerOrb" and child:IsA("BasePart") then
+		return emplaceObject(child, PartESP.new("WindrunnerOrb", child, "Windrunner Orb"))
+	end
+
 	return emplaceObject(child, ModelESP.new("NPC", child, child.Name))
 end)
 

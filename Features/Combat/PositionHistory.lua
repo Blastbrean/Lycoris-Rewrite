@@ -35,9 +35,9 @@ function PositionHistory.closest(timestamp)
 	local closestPosition = nil
 
 	for _, data in next, history do
-		local delta = timestamp - data.timestamp
+		local delta = math.abs(timestamp - data.timestamp)
 
-		if closestDelta and delta <= closestDelta then
+		if closestDelta and delta >= closestDelta then
 			continue
 		end
 

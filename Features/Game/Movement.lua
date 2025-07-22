@@ -232,6 +232,26 @@ return LPH_NO_VIRTUALIZE(function()
 		rootPart.CFrame = rootPart.CFrame:Lerp(attachTargetHrp.CFrame * offsetCFrame, 0.3)
 	end
 
+	---Update max momentum spoofer.
+	local function updateMaxMomentumSpoofer()
+		local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+		local effectReplicatorModule = effectReplicator and require(effectReplicator)
+		if not effectReplicatorModule then
+			return
+		end
+
+		local forcedMomentumEffect = effectReplicatorModule:FindEffect("ForceMomentum")
+		if not forcedMomentumEffect then
+			return effectReplicatorModule:CreateEffect("ForceMomentum")
+		end
+
+		if forcedMomentumEffect.Value ~= 10 then
+			forcedMomentumEffect.Value = 10
+		end
+
+		forcedMomentumEffect.Disabled = not Configuration.expectToggleValue("MaxMomentumSpoof")
+	end
+
 	---Update agility spoofer.
 	---@param character Model
 	local function updateAgilitySpoofer(character)
@@ -357,6 +377,10 @@ return LPH_NO_VIRTUALIZE(function()
 
 		if Configuration.expectToggleValue("AttachToBack") then
 			updateAttachToBack(rootPart)
+		end
+
+		if Configuration.expectToggleValue("MaxMomentumSpoof") then
+			updateMaxMomentumSpoofer()
 		end
 
 		if Configuration.expectToggleValue("Fly") then

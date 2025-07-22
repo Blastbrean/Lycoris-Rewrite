@@ -4,9 +4,6 @@ local ProjectileListener = getfenv().ProjectileListener
 ---@class Action
 local Action = getfenv().Action
 
----@module Features.Combat.Defense
-local Defense = getfenv().Defense
-
 ---@module Game.Timings.PartTiming
 local PartTiming = getfenv().PartTiming
 
@@ -35,6 +32,6 @@ return function(self, timing)
 		pt.hitbox = Vector3.new(100, 100, 100)
 		pt.actions:push(action)
 
-		Defense.cdpo(child, pt)
+		--Defense.cdpo(child, pt)
 	end)
 end

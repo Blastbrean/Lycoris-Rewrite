@@ -13,8 +13,17 @@ return function(self, timing)
 		return
 	end
 
-	local speed = Waiter.wfsc(self.track)
+	-- Maestro for the gap closer attack.
+	if self.entity.Name:match(".evengarde") then
+		local action = Action.new()
+		action._when = 0
+		action._type = "Parry"
+		action.hitbox = Vector3.new(100, 100, 100)
+		action.name = "Gap Closer Maestro Timing"
+		return self:action(timing, action)
+	end
 
+	local speed = Waiter.wfsc(self.track)
 	local action = Action.new()
 	action._when = 400 / speed
 	action._type = "Parry"

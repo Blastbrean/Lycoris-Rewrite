@@ -22,7 +22,7 @@ return function(self, timing)
 	end
 
 	local data = Mantra.data(self.entity, "Mantra:RoarShadow{{Shadow Roar}}")
-	local hitbox = Vector3.new(20 + data.size, 20 + data.size, 40 + data.range)
+	local hitbox = Vector3.new(20, 20, 40)
 
 	timing.fhb = true
 	timing.duih = false

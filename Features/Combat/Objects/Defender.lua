@@ -61,8 +61,9 @@ local HIT_DETECTION_OK = 2
 ---@param key string
 ---@param name string?
 ---@param distance number
+---@param parent string? If provided, will be shown in the log.
 ---@return boolean
-function Defender:miss(type, key, name, distance)
+function Defender:miss(type, key, name, distance, parent)
 	if not Configuration.expectToggleValue("ShowLoggerWindow") then
 		return false
 	end
@@ -74,7 +75,7 @@ function Defender:miss(type, key, name, distance)
 		return false
 	end
 
-	Library:AddMissEntry(type, key, name, distance)
+	Library:AddMissEntry(type, key, name, distance, parent)
 
 	return true
 end
@@ -256,6 +257,10 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "No effect replicator module found.")
 	end
 
+	if effectReplicatorModule:FindEffect("LightAttack") then
+		return self:notify(timing, "User has the 'LightAttack' effect.")
+	end
+
 	if effectReplicatorModule:FindEffect("Knocked") then
 		return self:notify(timing, "User is knocked.")
 	end
@@ -414,7 +419,7 @@ Defender.initial = LPH_NO_VIRTUALIZE(function(self, from, pair, name, key)
 	-- Check for no timing. If so, let's log a miss.
 	---@note: Ignore return value.
 	if not timing then
-		self:miss(self.__type, key, name, distance)
+		self:miss(self.__type, key, name, distance, from and tostring(from.Parent) or nil)
 		return nil
 	end
 
