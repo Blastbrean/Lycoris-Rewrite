@@ -20,7 +20,7 @@ return function(self, timing)
 		local action = Action.new()
 		action._when = timings[idx] or 0
 		action._type = "Parry"
-		action.hitbox = Vector3.new(40, 40, 40)
+		action.hitbox = Vector3.new(50, 150, 50)
 		action.name = "Dynamic Primadon Timing"
 
 		if humanoid.Health <= (humanoid.MaxHealth / 2) then
