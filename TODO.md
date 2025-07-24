@@ -82,6 +82,8 @@
     - Easy to be built into other modules
 - Finish "Echo Farm"
 - Auto Ragdoll Recover
+- Make the Player Proximity notification stay there until they're out of your proximity -juan
+- Make Player Proximity include their name "pizzalover69 (Winter Olaf) blah blah -juan
 
 # What moves do we need to add?
 https://docs.google.com/spreadsheets/d/1jcZFsSF5iSfbYryL9edl5B_r34tlMo0HPwoFqKiPps4/edit?gid=1386834576#gid=1386834576
