@@ -379,7 +379,7 @@ local onSpellEvent = LPH_NO_VIRTUALIZE(function(name, data)
 	end
 
 	-- Set the current position & string.
-	if name == "set" then
+	if name == "start" then
 		cws = data
 		cwp = 1
 	end

@@ -1351,7 +1351,7 @@ return LPH_NO_VIRTUALIZE(function()
 				Parent = Library.KeybindContainer,
 			}, true)
 
-			local Modes = Info.Modes or { "Always", "Toggle", "Hold" }
+			local Modes = Info.Modes or { "Always", "Toggle", "Hold", "Off" }
 			local ModeButtons = {}
 
 			for Idx, Mode in next, Modes do
@@ -1373,6 +1373,11 @@ return LPH_NO_VIRTUALIZE(function()
 
 					if Info.Mode == "Always" and KeyPicker.DoClick then
 						KeyPicker.Toggled = true
+						KeyPicker:DoClick()
+					end
+
+					if Info.Mode == "Off" and KeyPicker.DoClick then
+						KeyPicker.Toggled = false
 						KeyPicker:DoClick()
 					end
 
@@ -1437,6 +1442,8 @@ return LPH_NO_VIRTUALIZE(function()
 			function KeyPicker:GetState()
 				if KeyPicker.Mode == "Always" then
 					return true
+				elseif KeyPicker.Mode == "Off" then
+					return false
 				elseif KeyPicker.Mode == "Hold" then
 					if KeyPicker.Value == "None" then
 						return false
@@ -1610,6 +1617,11 @@ return LPH_NO_VIRTUALIZE(function()
 
 			if Info.Mode == "Always" then
 				KeyPicker.Toggled = true
+				KeyPicker:DoClick()
+			end
+
+			if Info.Mode == "Off" then
+				KeyPicker.Toggled = false
 				KeyPicker:DoClick()
 			end
 

@@ -10,6 +10,9 @@ local Spoofing = require("Features/Game/Spoofing")
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 -- Services.
 local players = game:GetService("Players")
 
@@ -314,10 +317,65 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 		Default = false,
 	})
 
-	groupbox:AddToggle("NotifyMythic", {
-		Text = "Legendary Weapon Notifications",
-		Tooltip = "This will notify you when a player has a Legendary Weapon in their inventory.",
+	local niToggle = groupbox:AddToggle("NotifyItems", {
+		Text = "Item Notifications",
+		Tooltip = "This will notify you when a player has any listed item in their inventory.",
 		Default = false,
+	})
+
+	local niDepBox = groupbox:AddDependencyBox()
+
+	local notifyItemsList = niDepBox:AddDropdown("NotifyItemsList", {
+		Text = "Item List",
+		Default = {},
+		SaveValues = true,
+		Multi = true,
+		Values = {},
+	})
+
+	local itemLabel = niDepBox:AddInput("NotifyItemsLabel", {
+		Text = "Item Name",
+		Placeholder = "Partial or exact item name.",
+	})
+
+	niDepBox:AddButton("Add Name To Filter", function()
+		local itemLabelValue = itemLabel.Value
+
+		if #itemLabelValue <= 0 then
+			return Logger.notify("Please enter a valid item name.")
+		end
+
+		local notifyItemsListValues = notifyItemsList.Values
+
+		if not table.find(notifyItemsListValues, itemLabelValue) then
+			table.insert(notifyItemsListValues, itemLabelValue)
+		end
+
+		notifyItemsList:SetValues(notifyItemsListValues)
+		notifyItemsList:SetValue({})
+		notifyItemsList:Display()
+	end)
+
+	niDepBox:AddButton("Remove Selected Names", function()
+		local notifyItemsListValues = notifyItemsList.Values
+		local selectedNotifyItems = notifyItemsList.Value
+
+		for selectedNotifyItem, _ in next, selectedNotifyItems do
+			local selectedIndex = table.find(notifyItemsListValues, selectedNotifyItem)
+			if not selectedIndex then
+				return Logger.notify("The selected item name %s does not exist in the list", selectedNotifyItem)
+			end
+
+			table.remove(notifyItemsListValues, selectedIndex)
+		end
+
+		notifyItemsList:SetValues(notifyItemsListValues)
+		notifyItemsList:SetValue({})
+		notifyItemsList:Display()
+	end)
+
+	niDepBox:SetupDependencies({
+		{ niToggle, true },
 	})
 
 	groupbox:AddToggle("PlayerSpectating", {

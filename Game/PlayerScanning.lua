@@ -37,6 +37,27 @@ local playerScanningMaid = Maid.new()
 -- Timestamp.
 local lastRateLimit = nil
 
+---Fetch name.
+local function fetchName(player)
+	local spoofName = Configuration.expectToggleValue("InfoSpoofing")
+		and Configuration.expectToggleValue("SpoofOtherPlayers")
+
+	return spoofName and "[REDACTED]" or string.format("(%s) %s", player:GetAttribute("CharacterName"), player.Name)
+end
+
+---Partial look for string in list.
+local partialStringFind = LPH_NO_VIRTUALIZE(function(list, value)
+	for _, str in next, list do
+		if not value:match(str) then
+			continue
+		end
+
+		return true
+	end
+
+	return false
+end)
+
 ---Run player scans.
 local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 	local localPlayer = players.LocalPlayer
@@ -45,9 +66,6 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 	end
 
 	for player, _ in next, PlayerScanning.scanQueue do
-		local spoofName = Configuration.expectToggleValue("InfoSpoofing")
-			and Configuration.expectToggleValue("SpoofOtherPlayers")
-
 		if not PlayerScanning.scanDataCache[player] then
 			local success, result = pcall(PlayerScanning.getStaffRank, player)
 
@@ -62,11 +80,7 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 
 				Logger.warn("Scan player %s ran into error '%s' while getting staff rank.", player.Name, result)
 
-				Logger.longNotify(
-					"Failed to scan player %s for moderator status.",
-					spoofName and "[REDACTED]" or player.Name,
-					result
-				)
+				Logger.longNotify("Failed to scan player %s for moderator status.", fetchName(player), result)
 
 				PlayerScanning.scanQueue[player] = nil
 
@@ -74,11 +88,7 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 			end
 
 			if Configuration.expectToggleValue("NotifyMod") and result then
-				Logger.longNotify(
-					"%s is a staff member with the rank '%s' in group.",
-					spoofName and "[REDACTED]" or player.Name,
-					result
-				)
+				Logger.longNotify("%s is a staff member with the rank '%s' in group.", fetchName(player), result)
 
 				if Configuration.expectToggleValue("NotifyModSound") then
 					moderatorSound.SoundId = "rbxassetid://6045346303"
@@ -98,10 +108,7 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 
 		if not collectionService:HasTag(backpack, "Loaded") or #backpack:GetChildren() < 1 then
 			if not PlayerScanning.waitingForLoad[player] then
-				Logger.warn(
-					"Player scanning is waiting for %s to load in the game.",
-					spoofName and "[REDACTED]" or player.Name
-				)
+				Logger.warn("Player scanning is waiting for %s to load in the game.", fetchName(player))
 			end
 
 			PlayerScanning.waitingForLoad[player] = true
@@ -113,51 +120,24 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 			Configuration.expectToggleValue("NotifyVoidWalker")
 			and backpack:FindFirstChild("Talent:Voidwalker Contract")
 		then
-			Logger.longNotify("%s has the Voidwalker Contract talent.", spoofName and "[REDACTED]" or player.Name)
+			Logger.longNotify("%s has the Voidwalker Contract talent.", fetchName(player))
 		end
 
-		if Configuration.expectToggleValue("NotifyMythic") then
+		if Configuration.expectToggleValue("NotifyItems") then
 			for _, tool in next, backpack:GetChildren() do
-				if not tool:IsA("Tool") then
+				local itemName = tool:GetAttribute("ItemName")
+
+				if typeof(itemName) ~= "string" or itemName == "" then
 					continue
 				end
 
-				local rarity = tool:FindFirstChild("Rarity")
-				if not rarity then
+				local notifyItemsList = Configuration.expectOptionValue("NotifyItemsList") or {}
+
+				if not partialStringFind(notifyItemsList, itemName) then
 					continue
 				end
 
-				if rarity.Value ~= "Mythic" then
-					continue
-				end
-
-				local weaponData = tool:FindFirstChild("WeaponData")
-				if not weaponData then
-					continue
-				end
-
-				local weaponDataJson = base64.decode(weaponData.Value):sub(1, #base64.decode(weaponData.Value) - 2)
-				local weaponDataDecoded = httpService:JSONDecode(weaponDataJson)
-
-				if weaponDataDecoded.SoulBound then
-					continue
-				end
-
-				local toolName = tool.Name:split("$")[1]
-
-				local toolQuality = tool:FindFirstChild("Quality") and tool.Quality.Value or 0
-				local toolQualityTag = string.format("[%i Stars]", toolQuality)
-
-				if toolQuality == 0 then
-					toolQualityTag = "[No Stars]"
-				end
-
-				Logger.longNotify(
-					"%s has vulnerable weapon '%s' %s.",
-					spoofName and "[REDACTED]" or player.Name,
-					toolName,
-					toolQualityTag
-				)
+				Logger.longNotify("%s has item '%s' in their inventory.", fetchName(player), itemName)
 			end
 		end
 
@@ -165,7 +145,7 @@ local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 
 		PlayerScanning.friendCache[player] = localPlayer:GetFriendStatus(player) == Enum.FriendStatus.Friend
 
-		Logger.warn("Player scanning finished scanning %s in queue.", spoofName and "[REDACTED]" or player.Name)
+		Logger.warn("Player scanning finished scanning %s in queue.", fetchName(player))
 	end
 end)
 

@@ -653,6 +653,15 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 		end
 	end
 
+	if
+		typeof(self) == "Instance"
+		and self.Name == "GenericBlur"
+		and index == "Size"
+		and Configuration.expectToggleValue("NoBlur")
+	then
+		return
+	end
+
 	if self == lighting and (index == "FogStart" or index == "FogEnd") and Configuration.expectToggleValue("NoFog") then
 		return
 	end

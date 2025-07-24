@@ -57,6 +57,7 @@ local renderStepped = Signal.new(runService.RenderStepped)
 
 -- Maids.
 local visualsMaid = Maid.new()
+local showRobloxChatMaid = Maid.new()
 
 -- Groups.
 local groups = {}
@@ -261,6 +262,19 @@ local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
 
 	showRobloxChatMap:add(chatBarFrame, "Position", UDim2.new(0, 0, 0, 195))
 	showRobloxChatMap:add(chatChannelFrame, "Visible", true)
+
+	local coreGui = game:GetService("CoreGui")
+	local experienceChat = coreGui:FindFirstChild("ExperienceChat")
+	local appLayout = experienceChat and experienceChat:FindFirstChild("appLayout")
+	local chatWindow = appLayout and appLayout:FindFirstChild("chatWindow")
+	local scrollingView = chatWindow and chatWindow:FindFirstChild("scrollingView")
+	local bottomLockedScrollView = scrollingView and scrollingView:FindFirstChild("bottomLockedScrollingView")
+	local rctScrollView = bottomLockedScrollView and bottomLockedScrollView:FindFirstChild("RCTScrollingView")
+	local rctScrolContentView = rctScrollView and rctScrollView:FindFirstChild("RCTScrollingContentView")
+
+	if not rctScrolContentView then
+		return
+	end
 end)
 
 ---Update no animated sea.
@@ -333,6 +347,7 @@ local updateVisuals = LPH_NO_VIRTUALIZE(function()
 		updateShowRobloxChat()
 	else
 		showRobloxChatMap:restore()
+		showRobloxChatMaid:clean()
 	end
 end)
 
@@ -377,6 +392,10 @@ end)
 ---@param child Instance
 local onThrownChildAdded = LPH_NO_VIRTUALIZE(function(child)
 	local name = child.Name
+
+	if name == "MinistryCacheIndicator" then
+		return emplaceObject(child, PartESP.new("MinistryCacheIndicator", child, "Ministry Cache Indicator"))
+	end
 
 	if name == "BellMeteor" then
 		return emplaceObject(child, ModelESP.new("BellMeteor", child, "Bell Meteor"))
@@ -578,6 +597,7 @@ function Visuals.detach()
 	end
 
 	visualsMaid:clean()
+	showRobloxChatMaid:clean()
 
 	Logger.warn("Visuals detached.")
 end

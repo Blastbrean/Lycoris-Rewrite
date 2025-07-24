@@ -144,6 +144,10 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "Entity got attack cancelled.")
 	end
 
+	if root:FindFirstChild("MegalodauntBroken") and not players:GetPlayerFromCharacter(self.entity) then
+		return self:notify(timing, "Entity is block broken.")
+	end
+
 	if self:stopped(self.track, timing) then
 		return false
 	end
