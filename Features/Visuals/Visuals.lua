@@ -248,7 +248,7 @@ local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
 	end
 
 	showRobloxChatMap:add(chatWindowConfiguration, "Enabled", true)
-
+	print("but this diddd!!!!")
 	local chatGui = playerGui:FindFirstChild("Chat")
 	local chatFrame = chatGui and chatGui:FindFirstChild("Frame")
 
@@ -256,9 +256,9 @@ local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
 	local chatChannelFrame = chatFrame and chatFrame:FindFirstChild("ChatChannelParentFrame")
 
 	if not chatBarFrame or not chatChannelFrame then
-		return
+		return print("it returns here so this never ran")
 	end
-
+	print("setup")
 	showRobloxChatMap:add(chatBarFrame, "Position", UDim2.new(0, 0, 0, 195))
 	showRobloxChatMap:add(chatChannelFrame, "Visible", true)
 
