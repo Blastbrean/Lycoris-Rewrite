@@ -263,17 +263,25 @@ local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
 	showRobloxChatMap:add(chatBarFrame, "Position", UDim2.new(0, 0, 0, 195))
 	showRobloxChatMap:add(chatChannelFrame, "Visible", true)
 
-	local coreGui = game:GetService("CoreGui")
-	local experienceChat = coreGui:FindFirstChild("ExperienceChat")
-	local appLayout = experienceChat and experienceChat:FindFirstChild("appLayout")
-	local chatWindow = appLayout and appLayout:FindFirstChild("chatWindow")
-	local scrollingView = chatWindow and chatWindow:FindFirstChild("scrollingView")
-	local bottomLockedScrollView = scrollingView and scrollingView:FindFirstChild("bottomLockedScrollingView")
-	local rctScrollView = bottomLockedScrollView and bottomLockedScrollView:FindFirstChild("RCTScrollingView")
-	local rctScrolContentView = rctScrollView and rctScrollView:FindFirstChild("RCTScrollingContentView")
+	---@note: Probably set a proper restore for this?
+	--- But, in Deepwoken, users cannot realisitically access the Roblox chat anyway.
+	textChatService.OnIncomingMessage = function(message)
+		local source = message.TextSource
+		if not source then
+			return
+		end
 
-	if not rctScrolContentView then
-		return
+		local player = players:GetPlayerByUserId(source.UserId)
+		if not player then
+			return
+		end
+
+		message.PrefixText = string.gsub(message.PrefixText, player.DisplayName, player.Name)
+		message.PrefixText = string.format(
+			"(%s) %s",
+			player:GetAttribute("CharacterName") or "Unknown Character Name",
+			message.PrefixText
+		)
 	end
 end)
 
