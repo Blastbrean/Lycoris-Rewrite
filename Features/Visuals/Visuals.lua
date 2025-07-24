@@ -265,23 +265,26 @@ local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
 
 	---@note: Probably set a proper restore for this?
 	--- But, in Deepwoken, users cannot realisitically access the Roblox chat anyway.
+	print("lolololo")
 	textChatService.OnIncomingMessage = function(message)
 		local source = message.TextSource
 		if not source then
-			return
+			return print("no")
 		end
-
+		print(source.UserId, message)
 		local player = players:GetPlayerByUserId(source.UserId)
 		if not player then
-			return
+			return print("why")
 		end
-
+		print("yeyeyeyeyeyye")
 		message.PrefixText = string.gsub(message.PrefixText, player.DisplayName, player.Name)
+		print("hahahahaa")
 		message.PrefixText = string.format(
 			"(%s) %s",
 			player:GetAttribute("CharacterName") or "Unknown Character Name",
 			message.PrefixText
 		)
+		print("hehehehehehehehe")
 	end
 end)
 
