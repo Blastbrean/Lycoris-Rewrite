@@ -238,10 +238,25 @@ end
 ---Initialize combat assistance section.
 ---@param groupbox table
 function CombatTab.initCombatAssistance(groupbox)
-	groupbox:AddToggle("AutoWisp", {
+	local awToggle = groupbox:AddToggle("AutoWisp", {
 		Text = "Auto Wisp",
 		Default = false,
 		Tooltip = "Automatically cast your Wisp for you without pressing the buttons.",
+	})
+
+	local awDepBox = groupbox:AddDependencyBox()
+
+	awDepBox:AddSlider("AutoWispDelay", {
+		Text = "Auto Wisp Delay",
+		Default = 0.4,
+		Min = 0,
+		Max = 1,
+		Suffix = "s",
+		Rounding = 2,
+	})
+
+	awDepBox:SetupDependencies({
+		{ awToggle, true },
 	})
 
 	groupbox:AddToggle("AutoFlowState", {

@@ -57,6 +57,7 @@ local cwp = nil
 
 -- Update.
 local lastVisualizationUpdate = os.clock()
+local lastAutoWispUpdate = os.clock()
 
 ---Iteratively find effect owner from effect data.
 ---@param data table
@@ -222,6 +223,10 @@ end)
 ---@param position number
 ---@param str string
 local hssp = LPH_NO_VIRTUALIZE(function(position, str)
+	if os.clock() - lastAutoWispUpdate <= Configuration.expectToggleValue("AutoWispDelay") then
+		return Logger.warn("Auto Wisp is on cooldown. Skipping.")
+	end
+
 	if position <= 0 or position > #str then
 		return Logger.warn("Invalid position (%i vs. %i) for Auto Wisp.", position, #str)
 	end
@@ -271,6 +276,8 @@ local hssp = LPH_NO_VIRTUALIZE(function(position, str)
 	end
 
 	Logger.warn("Sending event for character (%s) with position (%i) and string (%s).", character, position, str)
+
+	lastAutoWispUpdate = os.clock()
 
 	spellInput:FireServer(character)
 end)
