@@ -2489,7 +2489,7 @@ return LPH_NO_VIRTUALIZE(function()
 				Library:SafeCallback("Slider_Changed" .. "_" .. (Idx or ""), Slider.Changed, Slider.Value)
 			end
 
-			local CurrentAmount = 0.01
+			local CurrentAmount = 1
 
 			SliderInner.InputBegan:Connect(function(Input)
 				if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
@@ -2519,11 +2519,11 @@ return LPH_NO_VIRTUALIZE(function()
 				end
 
 				if Input.KeyCode == Enum.KeyCode.Equals then
-					CurrentAmount = CurrentAmount + 0.001
+					CurrentAmount = CurrentAmount / 2
 				end
 
 				if Input.KeyCode == Enum.KeyCode.Minus then
-					CurrentAmount = CurrentAmount - 0.001
+					CurrentAmount = CurrentAmount * 2
 				end
 
 				if Input.KeyCode == Enum.KeyCode.Right then
