@@ -57,7 +57,7 @@ local cwp = nil
 
 -- Update.
 local lastVisualizationUpdate = os.clock()
-local lastAutoWispUpdate = os.clock()
+local lastAutoWispUpdate = nil
 
 ---Iteratively find effect owner from effect data.
 ---@param data table
@@ -223,8 +223,14 @@ end)
 ---@param position number
 ---@param str string
 local hssp = LPH_NO_VIRTUALIZE(function(position, str)
-	if os.clock() - lastAutoWispUpdate <= Configuration.expectToggleValue("AutoWispDelay") then
-		return Logger.warn("Auto Wisp is on cooldown. Skipping.")
+	if lastAutoWispUpdate and os.clock() - lastAutoWispUpdate <= Configuration.expectToggleValue("AutoWispDelay") then
+		return Logger.warn(
+			"(%.2f - %.2f = %.2f vs. %.2f) Auto Wisp is on cooldown.",
+			os.clock(),
+			lastAutoWispUpdate,
+			os.clock() - lastAutoWispUpdate,
+			Configuration.expectToggleValue("AutoWispDelay")
+		)
 	end
 
 	if position <= 0 or position > #str then
@@ -383,12 +389,14 @@ local onSpellEvent = LPH_NO_VIRTUALIZE(function(name, data)
 	if name == "close" then
 		cws = nil
 		cwp = nil
+		lastAutoWispUpdate = nil
 	end
 
 	-- Set the current position & string.
 	if name == "start" then
 		cws = data
 		cwp = 1
+		lastAutoWispUpdate = os.clock()
 	end
 
 	-- Shift our position if we were successful.
