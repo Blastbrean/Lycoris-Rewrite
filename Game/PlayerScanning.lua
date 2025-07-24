@@ -47,7 +47,7 @@ end
 
 ---Partial look for string in list.
 local partialStringFind = LPH_NO_VIRTUALIZE(function(list, value)
-	for _, str in next, list do
+	for str, _ in next, list do
 		if not value:match(str) then
 			continue
 		end
