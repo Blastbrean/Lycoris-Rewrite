@@ -18,7 +18,7 @@ return function(self, timing)
 		action._when = 730
 	end
 	action._type = "Parry"
-	action.hitbox = Vector3.new(17, 10, 28)
-	action.name = string.format("(%.2f) Dynamic Rising Thunder Timing", distance)
+	action.hitbox = Vector3.new(22, 20, 30)
+	action.name = string.format("(%.2f) Dynamic Ice Lance Timing", distance)
 	return self:action(timing, action)
 end
