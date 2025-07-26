@@ -82,6 +82,8 @@
     - Easy to use filters
     - Loot all option
     - Easy to be built into other modules
+- Finish "Extra Keybinds"
+    - Keybind builder to partial item search find
 - Finish "Echo Farm"
 - Auto Ragdoll Recover
 - Guild Base Teleports + Teleports in Exploit Section
