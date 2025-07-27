@@ -459,6 +459,20 @@ onWorkspaceChildAdded = LPH_NO_VIRTUALIZE(function(child)
 		return createChildrenListener(child, "Layer2Floor2", onWorkspaceChildAdded, onInstanceRemoving)
 	end
 
+	if name == "BellKeys" then
+		for _, descendant in next, child:GetDescendants() do
+			if not descendant:IsA("BasePart") then
+				continue
+			end
+
+			if descendant.Name ~= "BellKey" then
+				continue
+			end
+
+			return emplaceObject(descendant, PartESP.new("BellKey", descendant, "Bell Key"))
+		end
+	end
+
 	if name == "JobBoard" then
 		return emplaceObject(child, ModelESP.new("JobBoard", child, "Job Board"))
 	end

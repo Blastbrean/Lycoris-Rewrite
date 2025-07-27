@@ -45,6 +45,7 @@ return LPH_NO_VIRTUALIZE(function()
 	local lightBarrierMap = removalMaid:mark(OriginalStoreManager.new())
 	local yunShulBarrierMap = removalMaid:mark(OriginalStoreManager.new())
 	local yunShulResonanceDoorMap = removalMaid:mark(OriginalStoreManager.new())
+	local hiveGateMap = removalMaid:mark(OriginalStoreManager.new())
 
 	-- Signals.
 	local renderStepped = Signal.new(runService.RenderStepped)
@@ -69,6 +70,18 @@ return LPH_NO_VIRTUALIZE(function()
 			end
 
 			echoModifiersMap:add(instance, "Parent", nil)
+		end
+	end
+
+	---Update no hive gate.
+	local function updateNoHiveGate()
+		for _, store in next, hiveGateMap:data() do
+			local data = store.data
+			if not data then
+				continue
+			end
+
+			store:set(store.data, "Parent", nil)
 		end
 	end
 
@@ -208,6 +221,12 @@ return LPH_NO_VIRTUALIZE(function()
 			killBricksMap:restore()
 		end
 
+		if Configuration.expectToggleValue("NoHiveGate") then
+			updateNoHiveGate()
+		else
+			hiveGateMap:restore()
+		end
+
 		if Configuration.expectToggleValue("NoCastleLightBarrier") then
 			updateNoLightBarrier()
 		else
@@ -327,6 +346,10 @@ return LPH_NO_VIRTUALIZE(function()
 	local function onWorkspaceDescendantAdded(descendant)
 		if descendant:IsA("Model") and descendant.Name == "ResonanceDoor" then
 			yunShulResonanceDoorMap:mark(descendant, "Parent")
+		end
+
+		if descendant:IsA("Model") and descendant.Name == "HiveGate" then
+			hiveGateMap:mark(descendant, "Parent")
 		end
 
 		if descendant.Name == "WindPusher" and Configuration.expectToggleValue("NoWind") then

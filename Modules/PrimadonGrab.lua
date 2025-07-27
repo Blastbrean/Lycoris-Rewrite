@@ -14,7 +14,7 @@ return function(self, timing)
 	action._when = 900
 	action._type = "Forced Full Dodge"
 	action.hitbox = Vector3.new(80, 250, 80)
-	action.name = "Dynamic Primadon Timing"
+	action.name = string.format("(%.2f) Dynamic Primadon Timing", self.track.Speed)
 
 	if humanoid.Health <= (humanoid.MaxHealth / 2) then
 		action._when /= 1.25

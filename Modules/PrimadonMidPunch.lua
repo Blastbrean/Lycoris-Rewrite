@@ -9,6 +9,6 @@ return function(self, timing)
 	action._when = (600 * 1.12) / self.track.Speed
 	action._type = "Parry"
 	action.hitbox = Vector3.new(80, 250, 80)
-	action.name = "Dynamic Primadon Timing"
+	action.name = string.format("(%.2f) Dynamic Primadon Timing", self.track.Speed)
 	return self:action(timing, action)
 end

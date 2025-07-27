@@ -528,6 +528,12 @@ function GameTab.initInstanceRemovalsSection(groupbox)
 		Tooltip = "Remove any 'Yun Shul Barrier' parts on the client.",
 		Default = false,
 	})
+
+	groupbox:AddToggle("NoHiveGate", {
+		Text = "No Hive Gate",
+		Tooltip = "Remove any 'Hive Gate' parts on the client.",
+		Default = false,
+	})
 end
 
 ---Debugging section.

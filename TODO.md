@@ -66,7 +66,6 @@
 - Figure out later how to match projectiles to users.
 - Config data shuffling + encoding
 - Create a scale utility which will calculate how far along a hitbox you are with a percentage. Each percentage will have markers which will determine what time we need to parry at.
-- Remove Eastern Luminant Hive Gate
 - Talent Highlighter -> Build Assistance
     - For traits: red if exceeded or none, green if keep going
     - For mantras: red if not in build, green if in
@@ -93,7 +92,6 @@
 - Bone Altar ESP + Hide Altars With Bones
 - PVP Safety
 - Fix FOV
-- Fix No Fog
 - Fix Username Check + Add Ignore Players
 - Depths Cathedral TP
 

@@ -121,10 +121,8 @@ function Menu.init()
 			local gpu = gpuData and gpuData:GetValue() or 0.0
 
 			-- Character data.
-			local character = players.LocalPlayer and players.LocalPlayer.Character
 			local mouse = players.LocalPlayer and players.LocalPlayer:GetMouse()
-			local humanoidRootPart = character and character:FindFirstChild("HumanoidRootPart")
-			local position = humanoidRootPart and humanoidRootPart.Position or nil
+			local position = workspace.CurrentCamera and workspace.CurrentCamera.CFrame.Position
 			local positionFormat = position and string.format("(%.2f, %.2f, %.2f)", position.X, position.Y, position.Z)
 				or "N/A"
 

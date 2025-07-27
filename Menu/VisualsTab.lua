@@ -438,6 +438,7 @@ function VisualsTab.init(window)
 	VisualsTab.initBaseESPSection("HealBrick", tab:AddDynamicGroupbox("Heal Brick ESP"))
 	VisualsTab.initBaseESPSection("MantraObelisk", tab:AddDynamicGroupbox("Mantra Obelisk ESP"))
 	VisualsTab.initBaseESPSection("BRWeapon", tab:AddDynamicGroupbox("BR Weapon ESP"))
+	VisualsTab.initBaseESPSection("BellKey", tab:AddDynamicGroupbox("Bell Key ESP"))
 end
 
 -- Return VisualsTab module.
