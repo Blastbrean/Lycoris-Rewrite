@@ -43,6 +43,9 @@ local AnimationVisualizer = require("Features/Game/AnimationVisualizer")
 ---@module Features.Automation.FishFarm
 local FishFarm = require("Features/Automation/FishFarm")
 
+---@module Features.Game.Teleport
+local Teleport = require("Features/Game/Teleport")
+
 ---Initialize features.
 ---@note: Careful with features that have entire return LPH_NO_VIRTUALIZE(function() blocks. We assume that we don't care about what's placed in there.
 function Features.init()
@@ -58,6 +61,7 @@ function Features.init()
 	CharismaFarm.init()
 	IntelligenceFarm.init()
 	FishFarm.init()
+	Teleport.init()
 
 	-- Only initialize if we're a builder.
 	if not armorshield or armorshield.current_role == "builder" then
@@ -74,6 +78,7 @@ function Features.detach()
 		AnimationVisualizer.detach()
 	end
 
+	Teleport.detach()
 	FishFarm.detach()
 	Defense.detach()
 	CharismaFarm.detach()

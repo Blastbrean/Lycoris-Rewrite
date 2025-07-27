@@ -390,6 +390,10 @@ local onThrownChildAdded = LPH_NO_VIRTUALIZE(function(child)
 		return emplaceObject(child, PartESP.new("MinistryCacheIndicator", child, "Ministry Cache Indicator"))
 	end
 
+	if name == "BigArtifact" and child:IsA("BasePart") then
+		return emplaceObject(child, PartESP.new("Artifact", child, "Artifact"))
+	end
+
 	if name == "BellMeteor" then
 		return emplaceObject(child, ModelESP.new("BellMeteor", child, "Bell Meteor"))
 	end
