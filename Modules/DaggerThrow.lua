@@ -17,7 +17,7 @@ local plistener = ProjectileListener.new("DaggerThrow")
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
-	task.wait(0.45 - self:ping())
+	task.wait(0.45 - self.ping())
 
 	if self:distance(self.entity) <= 10 then
 		local action = Action.new()

@@ -67,11 +67,20 @@
 - Config data shuffling + encoding
 - Create a scale utility which will calculate how far along a hitbox you are with a percentage. Each percentage will have markers which will determine what time we need to parry at.
 - Talent Highlighter -> Build Assistance
-    - For traits: red if exceeded or none, green if keep going
-    - For mantras: red if not in build, green if in
-    - For attributes: red if exceeded or none, green if keep going + shrine of order detection
-    - Clean up talent visual
-    - Have it work across all types of places that use talent cards
+    - Talent GUI Modification
+        - Show all mantras that are missing from the build in red or pink if pre-shrine missing
+        - Show all talents that are missing from the build in the same color as above
+    - Hand GUI Modification
+        - Traits are red if exceeded or none and green if we need to keep going
+        - Mantras are red if not in build and green if inside
+        - Make it work wherever any type of trait or mantra is shown to you
+    - Inventory GUI Modification
+        - Change color of attributes to be red if exceeded or none and green if keep going
+        - Change color of attributes to the same as above
+        - Automatically swap to new stats when we shrine of order
+    - Campfire GUI Modification
+        - Change color of backgrounds to be red if exceeded or none and green if keep going
+    - Make it look good and clean up the visuals
 - Finish "Auto Fish"
     - Auto Eat
     - Get Food At Guildbase
@@ -89,11 +98,13 @@
 - Hitbox Visualizer
 - Chaser Multi Player Support
 - Hide Obelisks That Are Already Turned On
-- Bone Altar ESP + Hide Altars With Bones
 - PVP Safety
-- Fix FOV
+- Fix FOV   
 - Fix Username Check + Add Ignore Players
 - Depths Cathedral TP
+- Mob AI breaker
+- Detect Dungeon and not load in Teleports
+- Fix Lionfish Beam
 
 # What moves do we need to add?
 https://docs.google.com/spreadsheets/d/1jcZFsSF5iSfbYryL9edl5B_r34tlMo0HPwoFqKiPps4/edit?gid=1386834576#gid=1386834576

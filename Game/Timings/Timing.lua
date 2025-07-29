@@ -17,6 +17,7 @@ local ActionContainer = require("Game/Timings/ActionContainer")
 ---@field smod string Selected module string.
 ---@field aatk boolean Allow attacking.
 ---@field fhb boolean Hitbox facing offset.
+---@field ndfb boolean No dodge fallback.
 local Timing = {}
 Timing.__index = Timing
 
@@ -94,6 +95,10 @@ function Timing:load(values)
 	if typeof(values.fhb) == "boolean" then
 		self.fhb = values.fhb
 	end
+
+	if typeof(values.ndfb) == "boolean" then
+		self.ndfb = values.ndfb
+	end
 end
 
 ---Clone timing.
@@ -116,6 +121,7 @@ function Timing:clone()
 	clone.smod = self.smod
 	clone.aatk = self.aatk
 	clone.fhb = self.fhb
+	clone.ndfb = self.ndfb
 
 	return clone
 end
@@ -143,6 +149,7 @@ function Timing:serialize()
 		smod = self.smod,
 		aatk = self.aatk,
 		fhb = self.fhb,
+		ndfb = self.ndfb,
 	}
 end
 
@@ -167,6 +174,7 @@ function Timing.new(values)
 	self.smod = "N/A"
 	self.aatk = false
 	self.fhb = true
+	self.ndfb = false
 
 	if values then
 		self:load(values)

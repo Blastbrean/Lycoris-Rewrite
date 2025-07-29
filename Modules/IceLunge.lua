@@ -18,7 +18,7 @@ return function(self, timing)
 		return
 	end
 
-	task.wait(0.4 - self:ping())
+	task.wait(0.4 - self.ping())
 
 	if self:distance(self.entity) <= 10 then
 		local firstPartTiming = Timing.new()

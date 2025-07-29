@@ -700,7 +700,7 @@ function EchoFarm.start()
 
 	-- Go to the start of character states.
 	if playerGui:WaitForChild("CharacterCreator", 1.0) then
-		return machine:cstep()
+		return machine:sstep()
 	end
 
 	-- Step forwards in overworld states.

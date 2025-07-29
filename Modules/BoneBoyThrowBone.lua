@@ -24,7 +24,7 @@ return function(self, timing)
 		return candidate.Name == "BoneSpear"
 	end)
 
-	task.wait(2.7 - self:ping())
+	task.wait(2.7 - self.ping())
 
 	if self:distance(self.entity) <= 25 then
 		local action = Action.new()

@@ -83,6 +83,8 @@ function BuilderSection:reset()
 	self.skipModuleNotification:SetRawValue(false)
 	self.selectedModule:SetRawValue("")
 	self.skipRepeatNotification:SetRawValue(false)
+	self.noDodgeFallback:SetRawValue(false)
+	self.hitboxFacingOffset:SetRawValue(true)
 
 	-- Reset action list.
 	self:arefresh(nil)
@@ -505,6 +507,8 @@ function BuilderSection:timing()
 			self.skipModuleNotification:SetRawValue(found.smn)
 			self.selectedModule:SetRawValue(found.smod)
 			self.skipRepeatNotification:SetRawValue(found.srpn)
+			self.hitboxFacingOffset:SetRawValue(found.fhb)
+			self.noDodgeFallback:SetRawValue(found.ndfb)
 
 			-- Load extra elements.
 			self:exload(found)
@@ -783,6 +787,15 @@ function BuilderSection:builder()
 		Default = true,
 		Callback = self:tnc(function(timing, value)
 			timing.fhb = value
+		end),
+	})
+
+	self.noDodgeFallback = tab:AddToggle(nil, {
+		Text = "No Dodge Fallback",
+		Tooltip = "If enabled, the timing will not fallback to a dodge if the parry action is not available.",
+		Default = false,
+		Callback = self:tnc(function(timing, value)
+			timing.ndfb = value
 		end),
 	})
 

@@ -76,7 +76,14 @@ function Menu.init()
 	SaveManager:SetLibrary(Library)
 	SaveManager:IgnoreThemeSettings()
 	SaveManager:SetFolder("Lycoris-Rewrite-Configs")
-	SaveManager:SetIgnoreIndexes({ "Fly", "NoClip", "Speedhack", "InfiniteJump", "TweenToObjective", "AttachToBack" })
+	SaveManager:SetIgnoreIndexes({
+		"Fly",
+		"NoClip",
+		"Speedhack",
+		"InfiniteJump",
+		"TweenToObjective",
+		"AttachToBack",
+	})
 
 	-- Initialize all tabs. Don't initialize them if we have the 'exploit_tester' role.
 	if not armorshield or armorshield.current_role ~= "exploit_tester" then

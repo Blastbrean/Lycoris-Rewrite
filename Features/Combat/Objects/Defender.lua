@@ -129,7 +129,7 @@ Defender.crpue = LPH_NO_VIRTUALIZE(function(self, entity, track, timing, index, 
 	self:mark(
 		Task.new(
 			string.format("RPUE_%s_%i", timing.name, index),
-			tdelay - self:ping(),
+			tdelay - self.ping(),
 			timing.punishable,
 			timing.after,
 			self.rpue,
@@ -259,8 +259,9 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 
 	local lightAttack = effectReplicatorModule:FindEffect("LightAttack")
 	local lightAttackData = lightAttack and lightAttack.index
+	local lightAttackTimestamp = lightAttackData and lightAttackData.Timestamp
 
-	if lightAttackData and os.clock() - lightAttackData.Timestamp <= 0.25 - self:ping() then
+	if lightAttackTimestamp and os.clock() - lightAttackTimestamp <= 0.25 then
 		return self:notify(timing, "User has the 'LightAttack' effect.")
 	end
 
@@ -314,8 +315,9 @@ end)
 ---@param fd boolean
 ---@param size Vector3
 ---@param filter Instance[]
+---@param identifier string
 ---@return boolean
-Defender.hitbox = LPH_NO_VIRTUALIZE(function(self, cframe, fd, size, filter)
+Defender.hitbox = LPH_NO_VIRTUALIZE(function(self, cframe, fd, size, filter, identifier)
 	local overlapParams = OverlapParams.new()
 	overlapParams.FilterDescendantsInstances = filter
 	overlapParams.FilterType = Enum.RaycastFilterType.Include
@@ -385,11 +387,13 @@ Defender.hitbox = LPH_NO_VIRTUALIZE(function(self, cframe, fd, size, filter)
 	self.vpart.Size = size
 	self.vpart.CFrame = usedCFrame
 	self.vpart.Color = visColor
+	self.vpart.Name = string.format("VP_%s", identifier)
 
 	-- Player part.
 	self.ppart.Size = root.Size
 	self.ppart.CFrame = root.CFrame
 	self.ppart.Color = visColor
+	self.ppart.Name = string.format("PP_%s", identifier)
 
 	-- Set timestamp.
 	self.lvisualization = os.clock()
@@ -447,7 +451,7 @@ end)
 ---@note: The forum post above is misleading, not only is it the RTT time, please note that this also takes into account all delays like frame time.
 ---@note: This is our round-trip time (e.g double the ping) since we have a receiving delay (replication) and a sending delay when we send the input to the server.
 ---@return number
-function Defender:ping()
+function Defender.ping()
 	local network = stats:FindFirstChild("Network")
 	if not network then
 		return
@@ -504,7 +508,8 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, partOrCframe, timing, action, fil
 				typeof(partOrCframe) == "Instance" and partOrCframe.CFrame or partOrCframe,
 				timing.fhb,
 				timing.hitbox,
-				filter
+				filter,
+				timing.name
 			)
 		then
 			return true
@@ -526,7 +531,8 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, partOrCframe, timing, action, fil
 			typeof(partOrCframe) == "Instance" and partOrCframe.CFrame or partOrCframe,
 			timing.fhb,
 			uh,
-			filter
+			filter,
+			timing.name
 		)
 	then
 		return false
@@ -634,6 +640,10 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	-- Dodge fallback.
 	if not Configuration.expectToggleValue("RollOnParryCooldown") then
 		return
+	end
+
+	if timing.ndfb then
+		return self:notify(timing, "Action fallback 'Dodge' is disabled for this timing.")
 	end
 
 	if effectReplicatorModule:FindEffect("Stun") then
@@ -760,7 +770,7 @@ end)
 ---@param action Action
 Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	-- Get ping.
-	local ping = self:ping()
+	local ping = self.ping()
 
 	-- Add action.
 	self:mark(

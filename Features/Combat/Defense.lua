@@ -25,6 +25,9 @@ local InputClient = require("Game/InputClient")
 ---@module Features.Combat.PositionHistory
 local PositionHistory = require("Features/Combat/PositionHistory")
 
+---@module Features.Combat.Objects.Defender
+local Defender = require("Features/Combat/Objects/Defender")
+
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
@@ -172,7 +175,7 @@ local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 	---@note: Set a timestamp for light attack effects.
 	--- This is a hack.
 	if effect.Class == "LightAttack" then
-		effect.index.Timestamp = os.clock()
+		effect.index.Timestamp = os.clock() - Defender.ping()
 	end
 
 	if not Configuration.expectToggleValue("PerfectMantraCast") or effect.Class ~= "UsingSpell" then
@@ -479,12 +482,7 @@ function Defense.init()
 		leftClickState = true
 	end))
 
-	defenseMaid:mark(inputEnded:connect("Defense_OnInputEnded", function(input, gameProcessed)
-		---@note: Need this to detect UI
-		if gameProcessed then
-			return
-		end
-
+	defenseMaid:mark(inputEnded:connect("Defense_OnInputEnded", function(input, _)
 		if input.UserInputType ~= Enum.UserInputType.MouseButton1 then
 			return
 		end

@@ -10,7 +10,7 @@ return function(self, timing)
 		return
 	end
 
-	task.wait(0.2 - self:ping())
+	task.wait(0.2 - self.ping())
 
 	timing.iae = true
 

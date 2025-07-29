@@ -71,7 +71,7 @@ PartDefender.update = LPH_NO_VIRTUALIZE(function(self)
 
 	-- Get current hitbox state.
 	---@note: If we're using PartDefender, why perserve rotation? It's likely wrong or gonna mess us up.
-	local touching = self:hitbox(self:cframe(), self.timing.fhb, self.timing.hitbox, { character })
+	local touching = self:hitbox(self:cframe(), self.timing.fhb, self.timing.hitbox, { character }, self.timing.name)
 
 	-- Deny updates if we're not touching the part.
 	if not touching then

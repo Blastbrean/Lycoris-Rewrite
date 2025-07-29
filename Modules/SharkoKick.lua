@@ -23,7 +23,7 @@ return function(self, timing)
 	local lastTimestamp = os.clock()
 
 	while task.wait() do
-		if (os.clock() - lastTimestamp) > (0.6 - self:ping()) then
+		if (os.clock() - lastTimestamp) > (0.6 - self.ping()) then
 			break
 		end
 

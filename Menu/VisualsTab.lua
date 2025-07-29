@@ -144,22 +144,22 @@ function VisualsTab.initVisualAssistanceSection(groupbox)
 		Default = false,
 	})
 
-	local talentHighlighterToggle = groupbox:AddToggle("TalentHighlighter", {
-		Text = "Talent Highlighter",
-		Tooltip = "Highlight shown talents that are in your builder link.",
+	local buildAssistanceToggle = groupbox:AddToggle("BuildAssistance", {
+		Text = "Build Assistance",
+		Tooltip = "Visual assistance for selecting talents, progressing a build, and more.",
 		Default = false,
 	})
 
-	local talentHighlighterDepBox = groupbox:AddDependencyBox()
+	local buildAssistanceDepBox = groupbox:AddDependencyBox()
 
-	talentHighlighterDepBox:AddInput("TalentHighlighterLink", {
-		Text = "Talent Highlighter Link",
-		Tooltip = "The builder link that will be used to highlight talents.",
+	buildAssistanceDepBox:AddInput("BuildAssistanceLink", {
+		Text = "Build Assistance Link",
+		Tooltip = "The builder link that will be used to assist with builds.",
 		Placeholder = "Enter your builder link here.",
 		Finished = true,
 		Callback = function(value)
-			-- Check if talent highligher is enabled.
-			if not talentHighlighterToggle.Value then
+			-- Check if build assistance is enabled.
+			if not buildAssistanceToggle.Value then
 				return
 			end
 
@@ -175,25 +175,25 @@ function VisualsTab.initVisualAssistanceSection(groupbox)
 
 			-- Check response.
 			if not response or not response.Success or not response.Body then
-				return Logger.notify("Invalid response while fetching highlighter builder data.")
+				return Logger.notify("Invalid response while fetching builder data.")
 			end
 
 			-- Deserialize response.
 			local success, result = pcall(JSON.decode, response.Body)
 			if not success or not result then
-				return Logger.notify("JSON error '%s' while deserializing highlighter builder data.", result)
+				return Logger.notify("JSON error '%s' while deserializing builder data.", result)
 			end
 
 			-- Notify result.
-			Logger.notify("Successfully fetched highlighter builder data.")
+			Logger.notify("Successfully fetched builder data.")
 
 			-- Set builder data.
 			Visuals.currentBuilderData = result
 		end,
 	})
 
-	talentHighlighterDepBox:SetupDependencies({
-		{ talentHighlighterToggle, true },
+	buildAssistanceDepBox:SetupDependencies({
+		{ buildAssistanceToggle, true },
 	})
 end
 

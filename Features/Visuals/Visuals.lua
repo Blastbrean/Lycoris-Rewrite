@@ -128,8 +128,12 @@ local updateSanityTracker = LPH_NO_VIRTUALIZE(function()
 		mainColor = Color3.fromRGB(255, 111, 0)
 	end
 
-	if sanity.Value <= sanity.MaxValue * 0.20 then
+	if sanity.Value <= sanity.MaxValue * 0.10 then
 		mainColor = Color3.fromRGB(255, 0, 0)
+	end
+
+	if sanity.Value <= 0.0 then
+		mainColor = Color3.fromRGB(114, 114, 114)
 	end
 
 	-- Amount.
@@ -161,8 +165,8 @@ local updateSanityTracker = LPH_NO_VIRTUALIZE(function()
 	)
 end)
 
----Update talent highlighter.
-local updateTalentHighlighter = LPH_NO_VIRTUALIZE(function()
+---Update builder assistance.
+local updateBuilderAssistance = LPH_NO_VIRTUALIZE(function()
 	local talentData = Visuals.currentBuilderData and Visuals.currentBuilderData.talents
 	if not talentData then
 		return
@@ -314,7 +318,7 @@ local updateVisuals = LPH_NO_VIRTUALIZE(function()
 	end
 
 	if Configuration.expectToggleValue("TalentHighlighter") then
-		updateTalentHighlighter()
+		updateBuilderAssistance()
 	else
 		talentHighlighterMap:restore()
 	end
