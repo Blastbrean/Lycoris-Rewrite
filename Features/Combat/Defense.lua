@@ -178,7 +178,11 @@ local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 		effect.index.Timestamp = os.clock() - Defender.ping()
 	end
 
-	if not Configuration.expectToggleValue("PerfectMantraCast") or effect.Class ~= "UsingSpell" then
+	if effect.Class ~= "UsingSpell" then
+		return
+	end
+
+	if not Configuration.expectToggleValue("PerfectMantraCast") then
 		return
 	end
 
