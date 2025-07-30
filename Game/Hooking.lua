@@ -653,7 +653,7 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 
 	if
 		typeof(self) == "Instance"
-		and self.Name == "GenericBlur"
+		and (self.Name == "GenericBlur" or self.Name == "UnderwaterBlur")
 		and index == "Size"
 		and Configuration.expectToggleValue("NoBlur")
 	then

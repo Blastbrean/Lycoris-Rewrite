@@ -166,7 +166,13 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
+		local underwaterBlur = lighting:FindFirstChild("UnderwaterBlur")
+		if not underwaterBlur then
+			return
+		end
+
 		noBlur:set(genericBlur, "Size", 0.0)
+		noBlur:set(underwaterBlur, "Size", 0.0)
 	end
 
 	---Update no yun shul barrier.
