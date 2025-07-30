@@ -19,6 +19,7 @@ return function(self, timing)
 
 		action.name = string.format("(%.2f) Dynamic Titus Timing", self.track.Speed)
 		if self.track.Speed >= 0.5 and self.track.Speed <= 0.6 then
+			action._type = "Dodge"
 			action._when = 470
 		end
 	end
