@@ -500,8 +500,12 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 
 	local result = self:hitbox(options:pos(), timing.fhb, hitbox, options.filter, timing.name)
 
-	if result or not options.spredict then
+	if result then
 		return result
+	end
+
+	if not options.spredict then
+		return false
 	end
 
 	local character = players.LocalPlayer.Character
