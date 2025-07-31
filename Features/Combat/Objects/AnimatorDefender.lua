@@ -20,7 +20,7 @@ local PlaybackData = require("Game/Timings/PlaybackData")
 local InputClient = require("Game/InputClient")
 
 ---@module Features.Combat.Objects.RepeatInfo
-local RepeatInfo = getfenv().RepeatInfo
+local RepeatInfo = require("Features/Combat/Objects/RepeatInfo")
 
 ---@module Features.Combat.Objects.HitboxOptions
 local HitboxOptions = require("Features/Combat/Objects/HitboxOptions")
