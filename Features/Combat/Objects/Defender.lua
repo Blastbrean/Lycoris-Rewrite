@@ -492,8 +492,13 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 		return self:duih(options, info)
 	end
 
-	local result =
-		self:hitbox(options:pos(), timing.fhb, action and action.hitbox or timing.hitbox, options.filter, timing.name)
+	local hitbox = action and action.hitbox or timing.hitbox
+
+	if timing.duih then
+		hitbox = timing.hitbox
+	end
+
+	local result = self:hitbox(options:pos(), timing.fhb, hitbox, options.filter, timing.name)
 
 	if result or not options.spredict then
 		return result
@@ -518,13 +523,7 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 
 	root.CFrame = closest
 
-	result = self:hitbox(
-		options:extrapolate(),
-		timing.fhb,
-		action and action.hitbox or timing.hitbox,
-		options.filter,
-		timing.name
-	)
+	result = self:hitbox(options:extrapolate(), timing.fhb, hitbox, options.filter, timing.name)
 
 	root.CFrame = oldCFrame
 
