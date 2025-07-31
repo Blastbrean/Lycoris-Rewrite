@@ -146,7 +146,7 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 	options.part = target and target.root
 	options.entity = entity
 
-	local success = target and self:hc(options, timing.rpue and info or nil)
+	local success = target and self:hc(options, timing.duih and info or nil)
 
 	info.index = info.index + 1
 

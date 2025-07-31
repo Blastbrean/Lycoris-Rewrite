@@ -167,7 +167,7 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	local info = RepeatInfo.new(timing)
 	info.track = self.track
 
-	if not self:hc(options, timing.rpue and info or nil) then
+	if not self:hc(options, timing.duih and info or nil) then
 		return self:notify(timing, "Not in hitbox.")
 	end
 
