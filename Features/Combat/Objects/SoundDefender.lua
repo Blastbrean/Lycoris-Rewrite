@@ -11,7 +11,7 @@ local Signal = require("Utility/Signal")
 local Configuration = require("Utility/Configuration")
 
 ---@module Features.Combat.Objects.RepeatInfo
-local RepeatInfo = require("Features/Combat/Objects/RepeatInfo")
+local RepeatInfo = getfenv().RepeatInfo
 
 ---@module Features.Combat.Objects.HitboxOptions
 local HitboxOptions = require("Features/Combat/Objects/HitboxOptions")

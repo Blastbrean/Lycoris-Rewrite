@@ -2,7 +2,7 @@
 local Waiter = getfenv().Waiter
 
 ---@module Features.Combat.Objects.RepeatInfo
-local RepeatInfo = require("Features/Combat/Objects/RepeatInfo")
+local RepeatInfo = getfenv().RepeatInfo
 
 ---Module function.
 ---@param self AnimatorDefender

@@ -5,6 +5,7 @@
         - Fake Mistime Rate ❌
         - Fallback To Counter Mantras ❌
         - Fallback To Blocking ❌
+        - Blatant Roll ❌
     - Feint Detection ❌
         - Detect M1 Feints ❌
         - Detect Mantra Feints ❌

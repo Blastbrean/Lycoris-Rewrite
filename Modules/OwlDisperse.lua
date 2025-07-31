@@ -2,7 +2,7 @@
 local Logger = getfenv().Logger
 
 ---@module Features.Combat.Objects.RepeatInfo
-local RepeatInfo = require("Features/Combat/Objects/RepeatInfo")
+local RepeatInfo = getfenv().RepeatInfo
 
 ---Module function.
 ---@param self EffectDefender
