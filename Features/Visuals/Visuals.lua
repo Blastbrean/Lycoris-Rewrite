@@ -285,7 +285,7 @@ local updatePowerBackground = LPH_NO_VIRTUALIZE(function(rframe)
 	buildAssistanceMap:add(
 		background,
 		"BackgroundColor3",
-		not bdata:ipre(drinfo) and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(255, 0, 0)
+		not bdata:ipre(drinfo) and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(128, 0, 0)
 	)
 end)
 
@@ -477,6 +477,10 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
 		end
 
 		local idx = Table.find(filteredTalents, function(value, _)
+			if builderAssistanceMaid[value] then
+				return false
+			end
+
 			return instance.Text:match(value)
 		end)
 
@@ -484,29 +488,39 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
 			continue
 		end
 
-		buildAssistanceMap:add(instance, "TextColor3", Color3.fromRGB(9, 136, 0))
+		buildAssistanceMap:add(instance, "TextColor3", Color3.fromRGB(9, 255, 0))
 
 		filteredTalents[idx] = nil
 	end
+
+	-- pre second step: create a nice looking separator
+	local tseparator = InstanceWrapper.mark(builderAssistanceMaid, "tdivider", divider:Clone())
+	tseparator.Name = "LMissingTalentDivider"
+	tseparator.Parent = talentScroll
 
 	-- second step: add every filtered talent as red (or purple if pre-shrine)
 	for _, talent in next, filteredTalents do
 		local nlabel = InstanceWrapper.mark(builderAssistanceMaid, talent, label:Clone())
 		local pshlocked = (bdata.ddata:possible(talent, bdata.pre) and not bdata.ddata:possible(talent, bdata.post))
-		nlabel.Text = "9" .. talent
-		nlabel.TextColor3 = pshlocked and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(127, 0, 2)
+		nlabel.Name = "M" .. talent
+		nlabel.Text = talent
+		nlabel.TextColor3 = pshlocked and Color3.fromRGB(255, 4, 255) or Color3.fromRGB(255, 0, 2)
+		nlabel.Parent = talentScroll
 	end
 
 	-- pre third step: create a nice looking separator
-	local separator = InstanceWrapper.mark(builderAssistanceMaid, "divider", divider:Clone())
-	separator.Name = "XMantraDivider"
+	local mseparator = InstanceWrapper.mark(builderAssistanceMaid, "mdivider", divider:Clone())
+	mseparator.Name = "XMissingMantraDivider"
+	mseparator.Parent = talentScroll
 
 	-- third step: add every mantra as red (or purple if pre-shrine)
 	for _, mantra in next, bdata.mantras do
 		local nlabel = InstanceWrapper.mark(builderAssistanceMaid, mantra, label:Clone())
 		local pshlocked = (bdata.ddata:possible(mantra, bdata.pre) and not bdata.ddata:possible(mantra, bdata.post))
-		nlabel.Text = "Z" .. mantra
-		nlabel.TextColor3 = pshlocked and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(127, 0, 2)
+		nlabel.Name = "Z" .. mantra
+		nlabel.Text = mantra
+		nlabel.TextColor3 = pshlocked and Color3.fromRGB(255, 4, 255) or Color3.fromRGB(255, 0, 2)
+		nlabel.Parent = talentScroll
 	end
 end)
 

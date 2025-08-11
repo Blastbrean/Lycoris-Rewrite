@@ -9,7 +9,7 @@ DeepwokenData.__index = DeepwokenData
 ---@param adata AttributeData
 ---@return boolean
 function DeepwokenData:possible(name, adata)
-	local data = self.talents[name] or self.mantras[name]
+	local data = self.talents[string.lower(name)] or self.mantras[string.lower(name)]
 	if not data then
 		return false
 	end
