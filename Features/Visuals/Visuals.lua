@@ -468,6 +468,9 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
 		return
 	end
 
+	-- clean maid to re-setup
+	builderAssistanceMaid:clean()
+
 	-- first step: color everything inside and remove everything that is in the builder list already
 	local filteredTalents = table.clone(bdata.talents)
 
@@ -477,10 +480,6 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
 		end
 
 		local idx = Table.find(filteredTalents, function(value, _)
-			if builderAssistanceMaid[value] then
-				return false
-			end
-
 			return instance.Text:match(value)
 		end)
 
