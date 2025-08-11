@@ -205,22 +205,60 @@ local updateCardFrames = LPH_NO_VIRTUALIZE(function()
 			continue
 		end
 
-		local data = Visuals.currentBuilderData
-		if not data then
+		local drinfo = Visuals.drinfo
+		if not drinfo then
+			continue
+		end
+
+		---@type BuilderData
+		local bdata = Visuals.bdata
+		if not bdata then
 			continue
 		end
 
 		local trimmedName = string.gsub(title.Text, "^%s*(.-)%s*$", "%1")
-		local cardInData = table.find(data.talents, trimmedName) or table.find(data.mantras, trimmedName)
+		local cardInData = table.find(bdata.talents, trimmedName) or table.find(bdata.mantras, trimmedName)
 
 		buildAssistanceMap:add(border, "ImageColor3", cardInData and Color3.new(0, 255, 0) or Color3.new(255, 0, 0))
+
+		if
+			cardInData
+			and bdata.ddata:possible(trimmedName, bdata.pre)
+			and not bdata.ddata:possible(trimmedName, bdata.post)
+		then
+			buildAssistanceMap:add(border, "ImageColor3", Color3.new(255, 0, 255))
+		end
+
+		if cardInData then
+			continue
+		end
+
+		local mappingMatch = {
+			["Vitality"] = { expectedValue = bdata.traits["Vitality"], value = drinfo["TraitHealth"] },
+			["Erudition"] = { expectedValue = bdata.traits["Erudition"], value = drinfo["TraitEther"] },
+			["Proficiency"] = { expectedValue = bdata.traits["Proficiency"], value = drinfo["TraitWeaponDamage"] },
+			["Songchant"] = { expectedValue = bdata.traits["Songchant"], value = drinfo["TraitMantraDamage"] },
+		}
+
+		for idx, data in next, mappingMatch do
+			if not title.Text:match(idx) then
+				continue
+			end
+
+			buildAssistanceMap:add(
+				border,
+				"ImageColor3",
+				data.expectedValue ~= data.value and Color3.new(0, 255, 0) or Color3.new(255, 0, 0)
+			)
+		end
 	end
 end)
 
 ---Update power background.
 ---@param rframe Frame
 local updatePowerBackground = LPH_NO_VIRTUALIZE(function(rframe)
-	local journalFrame = rframe and rframe:FindFirstChild("JournalFrame")
+	local panels = rframe and rframe:FindFirstChild("Panels")
+	local journalFrame = panels and panels:FindFirstChild("JournalFrame")
 	local sheets = journalFrame and journalFrame:FindFirstChild("Sheets")
 	local power = sheets and sheets:FindFirstChild("Power")
 	local background = power and power:FindFirstChild("Background")
@@ -247,7 +285,7 @@ local updatePowerBackground = LPH_NO_VIRTUALIZE(function(rframe)
 	buildAssistanceMap:add(
 		background,
 		"BackgroundColor3",
-		bdata:ipre(drinfo) and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(255, 0, 0)
+		not bdata:ipre(drinfo) and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(255, 0, 0)
 	)
 end)
 
@@ -286,14 +324,14 @@ local updateAttributeFrame = LPH_NO_VIRTUALIZE(function(rframe)
 		["ElementLightning"] = attributes.attunement["Thundercall"],
 		["ElementWind"] = attributes.attunement["Galebreathe"],
 		["ElementShadow"] = attributes.attunement["Shadowcast"],
-		["ElementMetal"] = attributes.base["Ironsing"],
+		["ElementMetal"] = attributes.attunement["Ironsing"],
 		["WeaponHeavy"] = attributes.weapon["Heavy Wep."],
 		["WeaponMedium"] = attributes.weapon["Medium Wep."],
 		["WeaponLight"] = attributes.weapon["Light Wep."],
 	}
 
 	for _, instance in next, sheets:GetDescendants() do
-		if not instance:IsA("Frame") then
+		if not instance:IsA("TextButton") then
 			continue
 		end
 
@@ -322,11 +360,13 @@ local updateAttributeFrame = LPH_NO_VIRTUALIZE(function(rframe)
 			continue
 		end
 
-		buildAssistanceMap:add(
-			background,
-			"BackgroundColor3",
-			expectedValue == value and Color3.fromRGB(9, 136, 0) or Color3.fromRGB(127, 0, 2)
-		)
+		local color = expectedValue ~= value and Color3.fromRGB(9, 136, 0) or Color3.fromRGB(127, 0, 2)
+
+		if value > expectedValue then
+			color = Color3.fromRGB(128, 128, 128)
+		end
+
+		buildAssistanceMap:add(background, "BackgroundColor3", color)
 
 		buildAssistanceMap:add(abbrevLabel, "Text", string.format("GET (%i)", expectedValue))
 	end
@@ -338,8 +378,8 @@ local updateTraits = LPH_NO_VIRTUALIZE(function(rframe)
 	local panels = rframe:FindFirstChild("Panels")
 	local journalFrame = panels and panels:FindFirstChild("JournalFrame")
 	local sheets = journalFrame and journalFrame:FindFirstChild("Sheets")
-	local traitSheets = journalFrame and journalFrame:FindFirstChild("TraitSheets")
-	local container = traitSheets and traitSheets:FindFirstChild("Container")
+	local traitSheet = sheets and sheets:FindFirstChild("TraitSheet")
+	local container = traitSheet and traitSheet:FindFirstChild("Container")
 	if not container then
 		return
 	end
@@ -387,11 +427,13 @@ local updateTraits = LPH_NO_VIRTUALIZE(function(rframe)
 			continue
 		end
 
-		buildAssistanceMap:add(
-			background,
-			"BackgroundColor3",
-			expectedValue == value and Color3.fromRGB(9, 136, 0) or Color3.fromRGB(127, 0, 2)
-		)
+		local color = expectedValue ~= value and Color3.fromRGB(9, 136, 0) or Color3.fromRGB(127, 0, 2)
+
+		if value > expectedValue then
+			color = Color3.fromRGB(128, 128, 128)
+		end
+
+		buildAssistanceMap:add(background, "BackgroundColor3", color)
 	end
 end)
 
@@ -503,7 +545,7 @@ local updateRestGui = LPH_NO_VIRTUALIZE(function(rframe)
 		["ElementLightning"] = attributes.attunement["Thundercall"],
 		["ElementWind"] = attributes.attunement["Galebreathe"],
 		["ElementShadow"] = attributes.attunement["Shadowcast"],
-		["ElementMetal"] = attributes.base["Ironsing"],
+		["ElementMetal"] = attributes.attunement["Ironsing"],
 		["WeaponHeavy"] = attributes.weapon["Heavy Wep."],
 		["WeaponMedium"] = attributes.weapon["Medium Wep."],
 		["WeaponLight"] = attributes.weapon["Light Wep."],
@@ -534,7 +576,12 @@ local updateRestGui = LPH_NO_VIRTUALIZE(function(rframe)
 			continue
 		end
 
-		local color = expectedValue == value and Color3.fromRGB(9, 136, 0) or Color3.fromRGB(127, 0, 2)
+		local color = expectedValue ~= value and Color3.fromRGB(9, 136, 0) or Color3.fromRGB(127, 0, 2)
+
+		if value > expectedValue then
+			color = Color3.fromRGB(128, 128, 128)
+		end
+
 		buildAssistanceMap:add(increase, "BackgroundColor3", color)
 		buildAssistanceMap:add(instance, "TextColor3", color)
 		buildAssistanceMap:add(valueLabel, "TextColor3", color)
@@ -546,12 +593,13 @@ local updateBuildAssistance = LPH_NO_VIRTUALIZE(function()
 	updateCardFrames()
 
 	local localPlayer = players.LocalPlayer
-	local backpackGui = localPlayer and localPlayer:FindFirstChild("BackpackGui")
+	local playerGui = localPlayer and localPlayer:FindFirstChild("PlayerGui")
+	local backpackGui = playerGui and playerGui:FindFirstChild("BackpackGui")
 	if not backpackGui then
 		return
 	end
 
-	local restGui = localPlayer and localPlayer:FindFirstChild("RestGui")
+	local restGui = playerGui and playerGui:FindFirstChild("RestGui")
 	if not restGui then
 		return
 	end
@@ -975,6 +1023,10 @@ function Visuals.init()
 		playerGuiDescendantRemoving:connect("Visuals_OnPlayerGuiDescendantRemoving", onPlayerGuiDescendantRemoving)
 	)
 	visualsMaid:add(renderStepped:connect("Visuals_RenderStepped", updateVisuals))
+
+	for _, descendant in next, playerGui:GetDescendants() do
+		onPlayerGuiDescendantAdded(descendant)
+	end
 
 	local info = replicatedStorage:WaitForChild("Info")
 	local dataReplication = info:WaitForChild("DataReplication")
