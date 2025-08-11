@@ -154,7 +154,7 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 	info.index = info.index + 1
 
 	self:mark(Task.new(string.format("RPUE_%s_%i", timing.name, info.index), function()
-		return timing:rsd() - info.irdelay - self.sdelay()
+		return timing:rpd() - info.irdelay - self.sdelay()
 	end, timing.punishable, timing.after, self.rpue, self, self.entity, timing, info))
 
 	if not target then
