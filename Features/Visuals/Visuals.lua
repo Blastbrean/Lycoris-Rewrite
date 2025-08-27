@@ -520,6 +520,12 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
 		nlabel.Text = mantra
 		nlabel.TextColor3 = pshlocked and Color3.fromRGB(255, 4, 255) or Color3.fromRGB(255, 0, 2)
 		nlabel.Parent = talentScroll
+
+		if not drinfo["Mantras"][mantra] then
+			continue
+		end
+
+		nlabel.TextColor3 = Color3.fromRGB(9, 255, 0)
 	end
 end)
 
@@ -840,7 +846,7 @@ local onThrownChildAdded = LPH_NO_VIRTUALIZE(function(child)
 		return emplaceObject(child, PartESP.new("OwlFeathers", child, "Owl Feathers"))
 	end
 
-	if child:IsA("Model") and child:FindFirstChild("LootUpdated") then
+	if child:IsA("Model") and child:WaitForChild("LootUpdated", 0.1) then
 		return emplaceObject(child, ModelESP.new("Chest", child, "Chest"))
 	end
 end)

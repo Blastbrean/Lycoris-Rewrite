@@ -58,7 +58,6 @@ end)
 Entitites.getPlayersInRange = LPH_NO_VIRTUALIZE(function(range)
 	local localCharacter = players.LocalPlayer.Character
 	local localRootPart = localCharacter and localCharacter:FindFirstChild("HumanoidRootPart")
-
 	if not localRootPart then
 		return
 	end

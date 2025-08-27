@@ -264,21 +264,16 @@ function CombatTab.initCombatAssistance(groupbox)
 		{ awToggle, true },
 	})
 
+	groupbox:AddToggle("AutoGoldenTongue", {
+		Text = "Auto Golden Tongue",
+		Default = false,
+		Tooltip = "Automatically say a hidden message when your 'Golden Tongue' talent is on cooldown.",
+	})
+
 	groupbox:AddToggle("AutoFlowState", {
 		Text = "Auto Flow State",
 		Default = false,
 		Tooltip = "Detect what Silentheart moves would be thrown out and use flow-state beforehand.",
-	})
-
-	groupbox:AddToggle("PerfectMantraCast", {
-		Text = "Perfect Mantra Cast",
-		Default = false,
-	})
-
-	groupbox:AddToggle("EasyMantraFeint", {
-		Text = "Easy Mantra Feint",
-		Default = false,
-		Tooltip = "Automatically left click when attempting to feint a mantra.",
 	})
 
 	groupbox:AddToggle("M1Hold", {

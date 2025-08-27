@@ -28,6 +28,9 @@ local PositionHistory = require("Features/Combat/PositionHistory")
 ---@module Features.Combat.Objects.Defender
 local Defender = require("Features/Combat/Objects/Defender")
 
+---@module Utility.TaskSpawner
+local TaskSpawner = require("Utility/TaskSpawner")
+
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
@@ -39,6 +42,7 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local players = game:GetService("Players")
 local runService = game:GetService("RunService")
 local userInputService = game:GetService("UserInputService")
+local textChatService = game:GetService("TextChatService")
 
 -- Maids.
 local defenseMaid = Maid.new()
@@ -63,6 +67,7 @@ local leftClickState = false
 
 -- Update.
 local lastVisualizationUpdate = os.clock()
+local lastGoldenTongueUpdate = os.clock()
 local lastAutoWispUpdate = nil
 
 ---Iteratively find effect owner from effect data.
@@ -177,30 +182,6 @@ local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 	if effect.Class == "LightAttack" then
 		effect.index.Timestamp = os.clock() - Defender.rtt()
 	end
-
-	if effect.Class ~= "UsingSpell" then
-		return
-	end
-
-	if not Configuration.expectToggleValue("PerfectMantraCast") then
-		return
-	end
-
-	local localPlayer = players.LocalPlayer
-	local backpack = localPlayer:FindFirstChild("Backpack")
-	if not backpack then
-		return
-	end
-
-	if not backpack:FindFirstChild("Talent:Eureka") then
-		return
-	end
-
-	if Defense.lastMantraActivate and Defense.lastMantraActivate.Name:match("Dash") then
-		return
-	end
-
-	InputClient.left()
 end)
 
 --On effect removing.
@@ -226,6 +207,45 @@ local updateHistory = LPH_NO_VIRTUALIZE(function()
 	end
 
 	PositionHistory.add(humanoidRootPart.CFrame, tick())
+end)
+
+---Update golden tongue.
+local updateGoldenTongue = LPH_NO_VIRTUALIZE(function()
+	if os.clock() - lastGoldenTongueUpdate <= 1.0 then
+		return
+	end
+
+	lastGoldenTongueUpdate = os.clock()
+
+	if not Configuration.expectToggleValue("AutoGoldenTongue") then
+		return
+	end
+
+	if not players.LocalPlayer.Backpack:FindFirstChild("Talent:Golden Tongue") then
+		return
+	end
+
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return
+	end
+
+	if effectReplicatorModule:FindEffect("GoldCool") then
+		return
+	end
+
+	local textChannels = textChatService:FindFirstChild("TextChannels")
+	local rbxSystem = textChannels and textChannels:FindFirstChild("RBXSystem")
+	if not rbxSystem then
+		return
+	end
+
+	defenseMaid:mark(TaskSpawner.spawn("Defender_GoldenTongueSendAsync", rbxSystem.SendAsync, rbxSystem, "!a"))
 end)
 
 ---Update visualizations.
@@ -498,6 +518,7 @@ function Defense.init()
 	defenseMaid:mark(gameDescendantRemoved:connect("Defense_OnDescendantRemoved", onGameDescendantRemoved))
 	defenseMaid:mark(renderStepped:connect("Defense_UpdateVisualizations", updateVisualizations))
 	defenseMaid:mark(renderStepped:connect("Defense_UpdateHistory", updateHistory))
+	defenseMaid:mark(renderStepped:connect("Defense_UpdateGoldenTongue", updateGoldenTongue))
 	defenseMaid:mark(postSimulation:connect("Defense_UpdateDefenders", updateDefenders))
 	defenseMaid:mark(clientEffectEvent:connect("Defense_ClientEffectEvent", onClientEffectEvent))
 	defenseMaid:mark(clientEffectLargeEvent:connect("Defense_ClientEffectEventLarge", onClientEffectEvent))

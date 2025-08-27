@@ -92,6 +92,19 @@ function Lycoris.init()
 		)
 	end
 
+	---@note: What is this stupid issue which breaks my entire UI? WaitForChild on Cursor??
+	--- Looks like it has something to do with hooking?
+
+	if getexecutorname and getexecutorname():match("Zenith") then
+		-- Wait for the character to be loaded.
+		repeat
+			task.wait()
+		until localPlayer.Character
+
+		-- Wait 5 seconds.
+		task.wait(5)
+	end
+
 	if game.PlaceId ~= LOBBY_PLACE_ID then
 		-- Attempt to initialize KeyHandling.
 		KeyHandling.init()

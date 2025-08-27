@@ -530,8 +530,10 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 		return false
 	end
 
+	local leniency = timing.duih and 1.0 or PREDICTION_LENIENCY_MULTI
+
 	---@note: Multiply for some leniency since it is better to be over than miss
-	local closest = PositionHistory.closest(tick() - (self.sdelay() * PREDICTION_LENIENCY_MULTI))
+	local closest = PositionHistory.closest(tick() - (self.sdelay() * leniency))
 	if not closest then
 		return false
 	end
@@ -540,14 +542,7 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 
 	root.CFrame = closest
 
-	result = self:hitbox(
-		options:extrapolate(PREDICTION_LENIENCY_MULTI),
-		timing.fhb,
-		hitbox,
-		options.filter,
-		timing.name,
-		true
-	)
+	result = self:hitbox(options:extrapolate(leniency), timing.fhb, hitbox, options.filter, timing.name, true)
 
 	root.CFrame = oldCFrame
 
@@ -583,12 +578,15 @@ end)
 ---@param self Defender
 ---@param timing Timing
 ---@param action Action
-Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action)
+---@param notify boolean
+Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 	if not self:valid(timing, action) then
 		return
 	end
 
-	self:notify(timing, "Action type '%s' is being executed.", action._type)
+	if notify then
+		self:notify(timing, "Action type '%s' is being executed.", action._type)
+	end
 
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
@@ -810,7 +808,7 @@ Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	-- Add action.
 	self:mark(Task.new(action._type, function()
 		return action:when() - rdelay - self.sdelay()
-	end, timing.punishable, timing.after, self.handle, self, timing, action))
+	end, timing.punishable, timing.after, self.handle, self, timing, action, true))
 
 	-- Log.
 	self:notify(

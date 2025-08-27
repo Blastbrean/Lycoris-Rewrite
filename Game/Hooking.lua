@@ -63,14 +63,6 @@ local function onInterceptedInput(type, block)
 		return
 	end
 
-	if
-		Configuration.expectToggleValue("EasyMantraFeint")
-		and type == INPUT_RIGHT_CLICK
-		and effectReplicatorModule:FindEffect("UsingSpell")
-	then
-		InputClient.left()
-	end
-
 	if not Configuration.expectToggleValue("AutoFlowState") then
 		return
 	end
