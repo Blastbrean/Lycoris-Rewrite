@@ -58,6 +58,7 @@ return function(self, timing)
 
 	local info = RepeatInfo.new(timing)
 	info.track = track
+	info.irdelay = self.rdelay()
 
 	---@todo: Move to 'rc'
 	self:hook("stopped", function(...)

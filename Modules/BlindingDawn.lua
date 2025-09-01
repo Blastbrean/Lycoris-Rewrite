@@ -28,5 +28,6 @@ return function(self, timing)
 	local track = Waiter.fet("rbxassetid://10622235550", animator)
 	local info = RepeatInfo.new(timing)
 	info.track = track
+	info.irdelay = self.rdelay()
 	self:rpue(self.entity, timing, info)
 end

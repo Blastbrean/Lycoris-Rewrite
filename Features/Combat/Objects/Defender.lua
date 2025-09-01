@@ -142,6 +142,10 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 		return Logger.warn("Stopping RPUE '%s' because the repeat condition is not valid.", timing.name)
 	end
 
+	if not info.irdelay then
+		return Logger.warn("Stopping RPUE '%s' because the initial receive delay is not valid.", timing.name)
+	end
+
 	local target = self:target(entity)
 
 	local options = HitboxOptions.new(CFrame.new(), timing)

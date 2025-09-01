@@ -164,7 +164,7 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	options.action = action
 	options.entity = self.entity
 
-	local info = RepeatInfo.new(timing, self.rdelay())
+	local info = RepeatInfo.new(timing)
 	info.track = self.track
 
 	if not self:hc(options, timing.duih and info or nil) then
@@ -311,8 +311,9 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	end
 
 	-- Start RPUE.
-	local info = RepeatInfo.new(timing, self.rdelay())
+	local info = RepeatInfo.new(timing)
 	info.track = track
+	info.irdelay = self.rdelay()
 
 	self:mark(Task.new(string.format("RPUE_%s_%i", timing.name, 0), function()
 		return timing:rsd() - info.irdelay - self.sdelay()

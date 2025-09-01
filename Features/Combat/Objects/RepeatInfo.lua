@@ -4,21 +4,20 @@
 ---@field timing Timing
 ---@field start number
 ---@field index number
----@field irdelay number Initial receive delay.
+---@field irdelay number? Initial receive delay. Only needed for RPUE.
 local RepeatInfo = {}
 RepeatInfo.__index = RepeatInfo
 
 ---Create new RepeatInfo object.
 ---@param timing Timing
----@param irdelay number
 ---@return RepeatInfo
-function RepeatInfo.new(timing, irdelay)
+function RepeatInfo.new(timing)
 	local self = setmetatable({}, RepeatInfo)
 	self.track = nil
 	self.timing = timing
 	self.start = os.clock()
 	self.index = 0
-	self.irdelay = irdelay
+	self.irdelay = nil
 	return self
 end
 

@@ -19,6 +19,10 @@ return function(self, timing)
 		action.hitbox = Vector3.new(50, 50, 50)
 		self:action(timing, action)
 	else
+		local info = RepeatInfo.new(timing)
+		info.track = self.track
+		info.irdelay = self.rdelay()
+
 		timing.fhb = false
 		timing.ieae = false
 		timing.iae = false
@@ -27,6 +31,6 @@ return function(self, timing)
 		timing._rsd = 0
 		timing._rpd = 100
 		timing.hitbox = Vector3.new(50, 50, 50)
-		self:rpue(self.entity, timing, RepeatInfo.new(timing))
+		self:rpue(self.entity, timing, info)
 	end
 end

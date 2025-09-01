@@ -18,6 +18,10 @@ return function(self, timing)
 		return true
 	end)
 
+	local info = RepeatInfo.new(timing)
+	info.track = self.track
+	info.irdelay = self.rdelay()
+
 	---@todo: Mantra modifiers.
 	timing.fhb = false
 	timing.ieae = true
@@ -27,5 +31,5 @@ return function(self, timing)
 	timing._rsd = 750
 	timing._rpd = 150
 	timing.hitbox = Vector3.new(20, 20, 20)
-	self:rpue(self.entity, timing, RepeatInfo.new(timing))
+	self:rpue(self.entity, timing, info)
 end
