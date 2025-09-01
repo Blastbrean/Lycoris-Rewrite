@@ -4,12 +4,18 @@
 local DeepwokenData = {}
 DeepwokenData.__index = DeepwokenData
 
+---Get data for a specific talent or mantra.
+---@param name string
+function DeepwokenData:get(name)
+	return self.talents[string.lower(name)] or self.mantras[string.lower(name)]
+end
+
 ---Are we able to get a specified talent or mantra with the passed in attribute data?
 ---@param name string
 ---@param adata AttributeData
 ---@return boolean
 function DeepwokenData:possible(name, adata)
-	local data = self.talents[string.lower(name)] or self.mantras[string.lower(name)]
+	local data = self:get(name)
 	if not data then
 		return false
 	end

@@ -31,9 +31,6 @@ end
 function BuilderData:ipre(drinfo)
 	local currentInvestedPoints = ((drinfo.Level * 15) - 15) + (15 - drinfo.AttributePoints)
 	local pointsToGetToShrine = self.pre:points()
-	print(drinfo.Level, drinfo.AttributePoints)
-	print(currentInvestedPoints, pointsToGetToShrine)
-	print(currentInvestedPoints < pointsToGetToShrine)
 	return currentInvestedPoints < pointsToGetToShrine
 end
 

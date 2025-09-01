@@ -503,19 +503,18 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 	---@note: Fix object if we're using a lighting template.
 	local lightingTemplate = args[4]
 
-	if
-		getnamecallmethod() == "Create"
-		and typeof(lightingTemplate) == "table"
-		and lightingTemplate["FogStart"]
-		and lightingTemplate["FogEnd"]
-	then
-		if Configuration.expectToggleValue("NoFog") then
+	if getnamecallmethod() == "Create" and typeof(lightingTemplate) == "table" then
+		if lightingTemplate["FogStart"] and lightingTemplate["FogEnd"] and Configuration.expectToggleValue("NoFog") then
 			lightingTemplate["FogStart"] = 9e9
 			lightingTemplate["FogEnd"] = 9e9
 		end
 
-		if Configuration.expectToggleValue("ModifyAmbience") then
+		if lightingTemplate["Ambient"] and Configuration.expectToggleValue("ModifyAmbience") then
 			lightingTemplate["Ambient"] = modifyAmbienceColor(lightingTemplate["Ambient"])
+		end
+
+		if lightingTemplate["Density"] and Configuration.expectToggleValue("NoFog") then
+			lightingTemplate["Density"] = 0
 		end
 
 		return oldNameCall(unpack(args))

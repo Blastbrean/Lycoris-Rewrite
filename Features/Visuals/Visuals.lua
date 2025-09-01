@@ -54,6 +54,9 @@ local runService = game:GetService("RunService")
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local textChatService = game:GetService("TextChatService")
+local userInputService = game:GetService("UserInputService")
+local guiService = game:GetService("GuiService")
+local tweenService = game:GetService("TweenService")
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -64,6 +67,10 @@ local builderAssistanceMaid = Maid.new()
 
 -- Card frames.
 local cardFrames = {}
+
+-- Map.
+local labelMap = {}
+local hoveringMap = {}
 
 -- Groups.
 local groups = {}
@@ -471,6 +478,9 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(jframe)
 	-- clean maid to re-setup
 	builderAssistanceMaid:clean()
 
+	-- create state
+	labelMap = {}
+
 	-- first step: color everything inside and remove everything that is in the builder list already
 	local filteredTalents = table.clone(bdata.talents)
 
@@ -499,12 +509,19 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(jframe)
 
 	-- second step: add every filtered talent as red (or purple if pre-shrine)
 	for _, talent in next, filteredTalents do
+		local data = bdata.ddata:get(talent)
+		if not data then
+			continue
+		end
+
 		local nlabel = InstanceWrapper.mark(builderAssistanceMaid, talent, label:Clone())
 		local pshlocked = (bdata.ddata:possible(talent, bdata.pre) and not bdata.ddata:possible(talent, bdata.post))
 		nlabel.Name = "M" .. talent
 		nlabel.Text = talent
 		nlabel.TextColor3 = pshlocked and Color3.fromRGB(255, 4, 255) or Color3.fromRGB(255, 0, 2)
 		nlabel.Parent = talentScroll
+
+		labelMap[nlabel.Name] = data
 	end
 
 	-- pre third step: create a nice looking separator
@@ -514,6 +531,11 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(jframe)
 
 	-- third step: add every mantra as red (or purple if pre-shrine)
 	for _, mantra in next, bdata.mantras do
+		local data = bdata.ddata:get(mantra)
+		if not data then
+			continue
+		end
+
 		local nlabel = InstanceWrapper.mark(builderAssistanceMaid, mantra, label:Clone())
 		local pshlocked = (bdata.ddata:possible(mantra, bdata.pre) and not bdata.ddata:possible(mantra, bdata.post))
 		nlabel.Name = "Z" .. mantra
@@ -521,12 +543,159 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(jframe)
 		nlabel.TextColor3 = pshlocked and Color3.fromRGB(255, 4, 255) or Color3.fromRGB(255, 0, 2)
 		nlabel.Parent = talentScroll
 
-		if not drinfo["Mantras"][mantra] then
+		labelMap[nlabel.Name] = data
+	end
+end)
+
+---Update card hovering.
+local updateCardHovering = LPH_NO_VIRTUALIZE(function()
+	local localPlayer = players.LocalPlayer
+	local playerGui = localPlayer and localPlayer:FindFirstChild("PlayerGui")
+	local backpackGui = playerGui and playerGui:FindFirstChild("BackpackGui")
+	if not backpackGui then
+		return
+	end
+
+	local bpJournalFrame = backpackGui and backpackGui:FindFirstChild("JournalFrame")
+	if not bpJournalFrame then
+		return
+	end
+
+	local talentSheet = bpJournalFrame:FindFirstChild("TalentSheet")
+	local container = talentSheet and talentSheet:FindFirstChild("Container")
+	local talentScroll = container and container:FindFirstChild("TalentScroll")
+	if not talentScroll then
+		return
+	end
+
+	local talentDisplay = talentSheet and talentSheet:FindFirstChild("TalentDisplay")
+	local cardFrame = talentDisplay and talentDisplay:FindFirstChild("CardFrame")
+	if not cardFrame then
+		return
+	end
+
+	local icon = cardFrame:FindFirstChild("Icon")
+	local stats = cardFrame:FindFirstChild("Stats")
+	local class = cardFrame:FindFirstChild("Class")
+	local desc = cardFrame:FindFirstChild("Desc")
+	local title = cardFrame:FindFirstChild("Title")
+	if not icon or not stats or not class or not desc or not title then
+		return
+	end
+
+	local playerGui = players.LocalPlayer:FindFirstChild("PlayerGui")
+	if not playerGui then
+		return
+	end
+
+	local mousePosition = userInputService:GetMouseLocation() - guiService:GetGuiInset()
+	if not mousePosition then
+		return
+	end
+
+	local guiObjects = playerGui:GetGuiObjectsAtPosition(mousePosition.X, mousePosition.Y)
+
+	-- Remove any objects that we are no longer hovering over
+	for name, _ in next, hoveringMap do
+		if Table.find(guiObjects, function(object)
+			return object.Name == name
+		end) then
 			continue
 		end
 
-		nlabel.TextColor3 = Color3.fromRGB(9, 255, 0)
+		local object = talentScroll:FindFirstChild(name)
+		if not object then
+			continue
+		end
+
+		object.TextTransparency = 0.4
+
+		hoveringMap[name] = nil
 	end
+
+	local firstHoveringData = nil
+	local hoveringOverTalent = false
+
+	-- Update any objects that we are currently hovering over
+	for _, object in next, guiObjects do
+		if not hoveringOverTalent and object:IsDescendantOf(talentSheet) then
+			hoveringOverTalent = true
+		end
+
+		local data = labelMap[object.Name]
+		if not data then
+			continue
+		end
+
+		object.TextTransparency = 0.1
+
+		---@note: Go off names because they should be unique and they constantly regenerate
+		hoveringMap[object.Name] = true
+
+		-- Set data.
+		firstHoveringData = firstHoveringData or data
+	end
+
+	talentDisplay.Visible = hoveringOverTalent
+	stats.Text = ""
+
+	if not firstHoveringData then
+		return
+	end
+
+	desc.Text = firstHoveringData.desc or "N/A"
+	title.Text = firstHoveringData.name or "N/A"
+	class.Text = firstHoveringData.category or "???"
+	icon.ImageRectOffset = Vector2.new(0, 0)
+	icon.Image = "rbxassetid://94097748688985"
+
+	local reqData = firstHoveringData.reqs
+	local reqTags = {}
+	local tagMap = {
+		["Strength"] = "STR",
+		["Fortitude"] = "FTD",
+		["Agility"] = "AGI",
+		["Intelligence"] = "INT",
+		["Willpower"] = "WIL",
+		["Charisma"] = "CHA",
+		["Mind"] = "MIND",
+		["Body"] = "BODY",
+		["Heavy Wep."] = "WEP",
+		["Medium Wep."] = "WEP",
+		["Light Wep."] = "WEP",
+		["Flamecharm"] = "FLM",
+		["Frostdraw"] = "FRST",
+		["Thundercall"] = "THUN",
+		["Galebreathe"] = "GALE",
+		["Shadowcast"] = "SDW",
+		["Ironsing"] = "IRON",
+		["Bloodrend"] = "BLD",
+	}
+
+	local function checkAttributes(attributes)
+		for idx, requirement in next, attributes do
+			local tag = tagMap[idx]
+			if not tag then
+				continue
+			end
+
+			if requirement == 0 then
+				continue
+			end
+
+			reqTags[#reqTags + 1] = string.format("%s %s", requirement, tag)
+		end
+	end
+
+	if reqData.power ~= "0" then
+		reqTags[#reqTags + 1] = string.format("PWR %s", reqData.power)
+	end
+
+	checkAttributes(reqData.base)
+	checkAttributes(reqData.weapon)
+	checkAttributes(reqData.attunement)
+
+	stats.Text = table.concat(reqTags, ", ")
 end)
 
 ---Update train.
@@ -721,6 +890,10 @@ end)
 local updateVisuals = LPH_NO_VIRTUALIZE(function()
 	for _, group in next, groups do
 		group:update()
+	end
+
+	if Configuration.expectToggleValue("BuildAssistance") then
+		updateCardHovering()
 	end
 
 	if os.clock() - lastVisualsUpdate <= 1.0 then
