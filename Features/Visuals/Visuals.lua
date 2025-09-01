@@ -571,7 +571,7 @@ local updateTrain = LPH_NO_VIRTUALIZE(function(jframe)
 	}
 
 	for _, instance in next, sheets:GetDescendants() do
-		if not instance:IsA("TextLabel") then
+		if not instance:IsA("TextButton") then
 			continue
 		end
 
@@ -605,7 +605,7 @@ local updateTrain = LPH_NO_VIRTUALIZE(function(jframe)
 			color = Color3.fromRGB(128, 128, 128)
 		end
 
-		buildAssistanceMap:add(train, "BackgroundColor3", color)
+		buildAssistanceMap:add(train, "ImageColor3", color)
 	end
 end)
 
