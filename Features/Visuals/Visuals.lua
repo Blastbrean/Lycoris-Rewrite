@@ -285,7 +285,7 @@ local updatePowerBackground = LPH_NO_VIRTUALIZE(function(jframe)
 	buildAssistanceMap:add(
 		background,
 		"BackgroundColor3",
-		not bdata:ipre(drinfo) and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(128, 0, 0)
+		bdata:ipre(drinfo) and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(128, 0, 0)
 	)
 end)
 

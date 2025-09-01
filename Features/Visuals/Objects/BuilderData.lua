@@ -31,6 +31,9 @@ end
 function BuilderData:ipre(drinfo)
 	local currentInvestedPoints = ((drinfo.Level * 15) - 15) + (15 - drinfo.AttributePoints)
 	local pointsToGetToShrine = self.pre:points()
+	print(drinfo.Level, drinfo.AttributePoints)
+	print(currentInvestedPoints, pointsToGetToShrine)
+	print(currentInvestedPoints < pointsToGetToShrine)
 	return currentInvestedPoints < pointsToGetToShrine
 end
 
@@ -56,8 +59,8 @@ function BuilderData:load(values)
 		self.pre:load(values.preShrine)
 	end
 
-	if typeof(values.postShrine) == "table" then
-		self.post:load(values.postShrine)
+	if typeof(values.attributes) == "table" then
+		self.post:load(values.attributes)
 	end
 
 	local stats = values.stats
