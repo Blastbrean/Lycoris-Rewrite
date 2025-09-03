@@ -7,12 +7,15 @@ local Action = getfenv().Action
 return function(self, timing)
 	local distance = self:distance(self.entity)
 	local action = Action.new()
-	action._when = 1100
-	if distance >= 10 then
-		action._when = math.min(1290 + distance * 5.2, 3500)
-	end
+	action._when = 200
 	action._type = "Parry"
-	action.hitbox = Vector3.new(160, 120, 160)
-	action.name = string.format("(%.2f) Dynamic Duke Grasp Timing", distance)
+	action.hitbox = Vector3.new(25, 36, 25)
+	action.name = string.format("(%.2f) Heavenly Wind Timing", distance)
+
+	if self.entity.Name:match(".evengarde") then
+		action._when = 350
+		action.name = string.format("(%.2f) Maestro Heavenly Wind Timing", self.track.Speed)
+	end
+
 	return self:action(timing, action)
 end

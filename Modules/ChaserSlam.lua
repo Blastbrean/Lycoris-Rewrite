@@ -7,12 +7,12 @@ local Action = getfenv().Action
 return function(self, timing)
 	repeat
 		task.wait()
-	until self.track.TimePosition >= 0.45
+	until self.track.TimePosition >= 0.94
 
 	local action = Action.new()
 	action._when = 0
-	action._type = "Dodge"
-	action.hitbox = Vector3.new(40, 40, 40)
-	action.name = string.format("(%.2f) Dynamic Spider Bite Timing", self.track.Speed)
+	action._type = "Parry"
+	action.hitbox = Vector3.new(65, 65, 65)
+	action.name = string.format("(%.2f) Dynamic Chaser Slam Timing", self.track.Speed)
 	self:action(timing, action)
 end

@@ -13,7 +13,7 @@ return function(self, timing)
 	action.name = string.format("(%.2f) Dynamic Spider Timing", speed)
 
 	if speed >= 0.45 and speed <= 0.55 then
-		action._when = 1000
+		action._when = 1050
 	end
 
 	if speed >= 0.75 and speed <= 0.85 then
@@ -21,7 +21,7 @@ return function(self, timing)
 	end
 
 	if speed >= 0.9 and speed <= 1.0 then
-		action._when = 450
+		action._when = 540
 	end
 
 	return self:action(timing, action)
