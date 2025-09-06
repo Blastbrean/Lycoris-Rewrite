@@ -58,7 +58,7 @@ local textChatService = game:GetService("TextChatService")
 -- Constants.
 local MAX_VISUALIZATION_TIME = 5.0
 local MAX_REPEAT_WAIT = 10.0
-local PREDICTION_LENIENCY_MULTI = 7.5
+local PREDICTION_LENIENCY_MULTI = 10.0
 
 ---Log a miss to the UI library with distance check.
 ---@param type string

@@ -35,7 +35,7 @@ local TaskSpawner = require("Utility/TaskSpawner")
 local Logger = require("Utility/Logger")
 
 -- Handle all defense related functions.
-local Defense = { lastMantraActivate = nil }
+local Defense = { lastMantraActivate = nil, defenderObjects = {} }
 
 -- Services.
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -48,7 +48,6 @@ local textChatService = game:GetService("TextChatService")
 local defenseMaid = Maid.new()
 
 -- Defender objects.
-local defenderObjects = {}
 local defenderPartObjects = {}
 local defenderAnimationObjects = {}
 
@@ -97,7 +96,7 @@ end)
 ---@param animator Animator
 local addAnimatorDefender = LPH_NO_VIRTUALIZE(function(animator)
 	local animationDefender = AnimatorDefender.new(animator, mobAnimations)
-	defenderObjects[animator] = animationDefender
+	Defense.defenderObjects[animator] = animationDefender
 	defenderAnimationObjects[animator] = animationDefender
 end)
 
@@ -111,7 +110,7 @@ local addSoundDefender = LPH_NO_VIRTUALIZE(function(sound)
 	end
 
 	-- Add sound defender.
-	defenderObjects[sound] = SoundDefender.new(sound, part)
+	Defense.defenderObjects[sound] = SoundDefender.new(sound, part)
 end)
 
 ---On game descendant added.
@@ -133,7 +132,7 @@ end)
 ---On game descendant removed.
 ---@param descendant Instance
 local onGameDescendantRemoved = LPH_NO_VIRTUALIZE(function(descendant)
-	local object = defenderObjects[descendant]
+	local object = Defense.defenderObjects[descendant]
 	if not object then
 		return
 	end
@@ -167,7 +166,7 @@ local onClientEffectEvent = LPH_NO_VIRTUALIZE(function(name, data)
 		return
 	end
 
-	defenderObjects[data] = EffectDefender.new(name, owner, data)
+	Defense.defenderObjects[data] = EffectDefender.new(name, owner, data)
 end)
 
 ---On effect replicated.
@@ -256,7 +255,7 @@ local updateVisualizations = LPH_NO_VIRTUALIZE(function()
 
 	lastVisualizationUpdate = os.clock()
 
-	for _, object in next, defenderObjects do
+	for _, object in next, Defense.defenderObjects do
 		if not object.vupdate then
 			continue
 		end
@@ -370,7 +369,7 @@ Defense.cdpo = LPH_NO_VIRTUALIZE(function(part, timing)
 		return nil
 	end
 
-	defenderObjects[part] = partDefender
+	Defense.defenderObjects[part] = partDefender
 	defenderPartObjects[part] = partDefender
 
 	return partDefender
@@ -379,7 +378,7 @@ end)
 ---Check if objects have blocking tasks.
 ---@return boolean
 Defense.blocking = LPH_NO_VIRTUALIZE(function()
-	for _, object in next, defenderObjects do
+	for _, object in next, Defense.defenderObjects do
 		if not object:blocking() then
 			continue
 		end
@@ -548,7 +547,7 @@ end
 
 ---Detach defense.
 function Defense.detach()
-	for _, object in next, defenderObjects do
+	for _, object in next, Defense.defenderObjects do
 		object:detach()
 	end
 
