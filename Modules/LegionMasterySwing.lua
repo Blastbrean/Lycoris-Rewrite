@@ -1,5 +1,6 @@
 ---@module Modules.Globals.Weapon
 local Weapon = getfenv().Weapon
+local Action = getfenv().Action
 
 ---Module function.
 ---@param self AnimatorDefender
@@ -10,19 +11,18 @@ return function(self, timing)
 		return
 	end
 
-	action.name = "Dynamic Legion Swing"
+	action.name = "Dynamic Legion Mastery Swing"
 
 	if self.entity.Name:match(".titus") then
-		action.hitbox = action.hitbox * 1.15
+		repeat
+			task.wait()
+		until self.track.TimePosition >= 0.52
 
-		action._when = (530 * 0.49) / self.track.Speed
-
-		action.name = string.format("(%.2f) Dynamic Titus Timing", self.track.Speed)
-		if self.track.Speed >= 0.5 and self.track.Speed <= 0.6 then
-			action._type = "Dodge"
-			action._when = 470
-		end
+		local action = Action.new()
+		action._when = 150
+		action._type = "Parry"
+		action.hitbox = Vector3.new(15, 25, 20)
+		action.name = string.format("(%.2f) Dynamic Titus Punch Timing", self.track.Speed)
+		return self:action(timing, action)
 	end
-
-	return self:action(timing, action)
 end

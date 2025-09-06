@@ -26,7 +26,7 @@ return function(self, timing)
 		end
 
 		local action = Action.new()
-		action._when = 100
+		action._when = 200
 		action._type = "Forced Full Dodge"
 		action.hitbox = Vector3.new(100, 100, 100)
 		action.name = "Lionfish Beam Dodge"

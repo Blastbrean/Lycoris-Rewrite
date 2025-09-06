@@ -5,11 +5,14 @@ local Action = getfenv().Action
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
+	repeat
+		task.wait()
+	until self.track.TimePosition >= 1.18
+
 	local action = Action.new()
-	action._when = 150
-	action._type = "Teleport Up"
+	action._when = 0
+	action._type = "Parry"
 	action.hitbox = Vector3.new(50, 50, 50)
-	action.name = "Bonekeeper Leap"
-	timing.aatk = true
-	return self:action(timing, action)
+	action.name = string.format("(%.2f) Dynamic Flame Ballista Timing", self.track.Speed)
+	self:action(timing, action)
 end

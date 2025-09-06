@@ -41,10 +41,10 @@ return function(self, timing)
 	action.name = "Bone Throw Part"
 
 	local pt = PartTiming.new()
-	pt.uhc = false
+	pt.uhc = true
 	pt.duih = true
 	pt.name = "BoneThrowProjectile"
-	pt.hitbox = Vector3.new(40, 40, 40)
+	pt.hitbox = Vector3.new(50, 50, 50)
 	pt.actions:push(action)
 
 	Defense.cdpo(tracker:wait(), pt)

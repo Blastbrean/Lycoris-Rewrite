@@ -7,9 +7,9 @@ local Action = getfenv().Action
 return function(self, timing)
 	if not self.entity.Name:match("mecha") then
 		local action = Action.new()
-		action._when = 500
-		action._type = "Forced Full Dodge"
-		action.hitbox = Vector3.new(20, 70, 20)
+		action._when = 530
+		action._type = "Dodge"
+		action.hitbox = Vector3.new(25, 70, 25)
 		action.name = "Normal Kick Timing"
 		return self:action(timing, action)
 	end
@@ -17,7 +17,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 0
 	action._type = "Dodge"
-	action.hitbox = Vector3.new(20, 70, 20)
+	action.hitbox = Vector3.new(25, 70, 25)
 	action.name = "Normal Kick Timing"
 
 	local lastTimestamp = os.clock()
@@ -31,8 +31,8 @@ return function(self, timing)
 			continue
 		end
 
-		action._when = 250
-		action._type = "Parry"
+		action._when = 280
+		action._type = "Dodge"
 	end
 
 	return self:action(timing, action)
