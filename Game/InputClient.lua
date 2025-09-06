@@ -697,7 +697,7 @@ InputClient.roll = LPH_NO_VIRTUALIZE(function(pivotStep, rollCancelTime)
 		healthPercentage = 0.25 + healthPercentage * 0.75
 	end
 
-	local rollMoveDirectionMulti = 60 + character.Agility.Value * 0.5 * healthPercentage
+	local rollMoveDirectionMulti = 60 + character.PassiveAgility.Value * 0.5 * healthPercentage
 	local rushOfAncientsBoost = false
 
 	if hasTalent(character, "Lowstride") and effectReplicatorModule:FindEffect("ClientCrouch") then

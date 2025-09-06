@@ -651,6 +651,17 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 		return
 	end
 
+	if
+		typeof(self) == "Instance"
+		and self.Parent
+		and index == "ActiveController"
+		and Configuration.expectToggleValue("NoClip")
+		and Configuration.expectToggleValue("Fly")
+	then
+		local airController = self.Parent:FindFirstChild("AirController")
+		return oldNewIndex(self, index, airController or value)
+	end
+
 	if self == lighting and (index == "FogStart" or index == "FogEnd") and Configuration.expectToggleValue("NoFog") then
 		return
 	end

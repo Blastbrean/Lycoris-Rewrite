@@ -155,6 +155,25 @@ function VisualsTab.initVisualAssistanceSection(groupbox)
 
 	local buildAssistanceDepBox = groupbox:AddDependencyBox()
 
+	local sdoToggle = buildAssistanceDepBox:AddToggle("ShrineDetectionOverride", {
+		Text = "Shrine Detection Override",
+		Tooltip = "Auto-detection for shrine can be wrong especially when it refunds your points. You can use this to override the current state.",
+		Default = true,
+	})
+
+	local sdoDepBox = buildAssistanceDepBox:AddDependencyBox()
+
+	sdoDepBox:AddDropdown("ShrineOverrideState", {
+		Text = "Shrine Override State",
+		Tooltip = "The shrine state to override to.",
+		Default = 1,
+		Values = { "Pre-Shrine", "Post-Shrine", "Must Shrine" },
+	})
+
+	sdoDepBox:SetupDependencies({
+		{ sdoToggle, true },
+	})
+
 	buildAssistanceDepBox:AddInput("BuildAssistanceLink", {
 		Text = "Build Assistance Link",
 		Tooltip = "The builder link that will be used to assist with builds.",

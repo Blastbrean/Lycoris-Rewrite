@@ -292,11 +292,18 @@ local updatePowerBackground = LPH_NO_VIRTUALIZE(function(jframe)
 		return
 	end
 
-	buildAssistanceMap:add(
-		background,
-		"BackgroundColor3",
-		bdata:ipre(drinfo) and Color3.fromRGB(97, 4, 113) or Color3.fromRGB(128, 0, 0)
-	)
+	local color = Color3.fromRGB(245, 137, 5)
+	local pstate = bdata:ipre(drinfo)
+
+	if pstate == 0 then
+		color = Color3.fromRGB(97, 4, 113)
+	end
+
+	if pstate == 1 then
+		color = Color3.fromRGB(37, 129, 236)
+	end
+
+	buildAssistanceMap:add(background, "BackgroundColor3", color)
 end)
 
 ---Update attribute frame.
@@ -360,7 +367,9 @@ local updateAttributeFrame = LPH_NO_VIRTUALIZE(function(jframe)
 			continue
 		end
 
-		local value = tonumber(valueLabel.Text)
+		local value = (bdata:ipre(drinfo) == 0) and tonumber(drinfo["Stat" .. instance.Name])
+			or tonumber(valueLabel.Text)
+
 		if not value then
 			continue
 		end
@@ -775,7 +784,7 @@ local updateTrain = LPH_NO_VIRTUALIZE(function(jframe)
 			continue
 		end
 
-		local value = tonumber(valueLabel.Text)
+		local value = bdata:ipre(drinfo) == 0 and tonumber(drinfo["Stat" .. instance.Name]) or tonumber(valueLabel.Text)
 		if not value then
 			continue
 		end

@@ -129,6 +129,27 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
+		local controllerManager = character:FindFirstChild("ControllerManager")
+		if not controllerManager then
+			return
+		end
+
+		local airController = controllerManager:FindFirstChild("AirController")
+		if not airController then
+			return
+		end
+
+		local groundController = controllerManager:FindFirstChild("GroundController")
+		if not groundController then
+			return
+		end
+
+		if Configuration.expectToggleValue("Fly") then
+			controllerManager.ActiveController = airController
+		else
+			controllerManager.ActiveController = groundController
+		end
+
 		local effectReplicatorModule = require(effectReplicator)
 		local knockedRestore = effectReplicatorModule:FindEffect("Knocked")
 			and Configuration.expectToggleValue("NoClipCollisionsKnocked")
@@ -252,7 +273,7 @@ return LPH_NO_VIRTUALIZE(function()
 	---Update agility spoofer.
 	---@param character Model
 	local function updateAgilitySpoofer(character)
-		local agility = character:FindFirstChild("Agility")
+		local agility = character:FindFirstChild("PassiveAgility")
 		if not agility then
 			return
 		end

@@ -4,6 +4,9 @@ local DeepwokenData = require("Features/Visuals/Objects/DeepwokenData")
 ---@module Features.Visuals.Objects.AttributeData
 local AttributeData = require("Features/Visuals/Objects/AttributeData")
 
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
 ---@class BuilderData
 ---@field ddata DeepwokenData
 ---@field talents string[]
@@ -14,24 +17,63 @@ local AttributeData = require("Features/Visuals/Objects/AttributeData")
 local BuilderData = {}
 BuilderData.__index = BuilderData
 
----@note: Every level has 15 investment points to use. The first 15 are given to you for free.
---- So, we multiply it by 15 to get our current invested points at our level and subtract 15 from our free points.
---- Then, we figure out how many attribute points we have left to spend and subtract it from 15.
-
 ---Fetch attributes based on data replicated info.
 ---@param drinfo table
 ---@return AttributeData
 function BuilderData:attributes(drinfo)
-	return self:ipre(drinfo) and self.pre or self.post
+	return (self:ipre(drinfo) == 0) and self.pre or self.post
 end
 
----Calculate whether or not we are in the pre-shrine state.
+---Calculate whether or not we are in the pre-shrine state. Zero if pre-shrine, one if post-shrine. Two if we must shrine.
 ---@param drinfo table
----@return boolean
+---@return number
 function BuilderData:ipre(drinfo)
-	local currentInvestedPoints = ((drinfo.Level * 15) - 15) + (15 - drinfo.AttributePoints)
+	local currentInvestedPoints = 0
+
+	for idx, value in next, drinfo do
+		if typeof(idx) ~= "string" or not idx:match("Stat") then
+			continue
+		end
+
+		if typeof(value) ~= "number" then
+			continue
+		end
+
+		currentInvestedPoints = currentInvestedPoints + value
+	end
+
 	local pointsToGetToShrine = self.pre:points()
-	return currentInvestedPoints < pointsToGetToShrine
+	local shrineOverrideState = Configuration.expectOptionValue("ShrineOverrideState")
+
+	if not Configuration.expectToggleValue("ShrineDetectionOverride") then
+		shrineOverrideState = nil
+	end
+
+	if shrineOverrideState == "Pre-Shrine" then
+		return 0
+	end
+
+	if shrineOverrideState == "Post-Shrine" then
+		return 1
+	end
+
+	if shrineOverrideState == "Must Shrine" then
+		return 2
+	end
+
+	if not self:dshrine() then
+		return 1
+	end
+
+	if currentInvestedPoints < pointsToGetToShrine then
+		return 0
+	end
+
+	if currentInvestedPoints == pointsToGetToShrine then
+		return 2
+	end
+
+	return 1
 end
 
 ---Did the builder data even shrine of order at all?
