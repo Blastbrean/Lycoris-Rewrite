@@ -553,16 +553,16 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(jframe)
 			return displayName and displayName:match(mantra)
 		end)
 
-		if idx then
-			continue
-		end
-
 		local nlabel = InstanceWrapper.mark(builderAssistanceMaid, mantra, label:Clone())
 		local pshlocked = (bdata.ddata:possible(mantra, bdata.pre) and not bdata.ddata:possible(mantra, bdata.post))
 		nlabel.Name = "Z" .. mantra
 		nlabel.Text = mantra
 		nlabel.TextColor3 = pshlocked and Color3.fromRGB(255, 4, 255) or Color3.fromRGB(255, 0, 2)
 		nlabel.Parent = talentScroll
+
+		if idx then
+			nlabel.TextColor3 = Color3.fromRGB(9, 255, 0)
+		end
 
 		labelMap[nlabel.Name] = data
 	end
