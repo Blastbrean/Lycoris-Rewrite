@@ -5,8 +5,8 @@ local Action = getfenv().Action
 local Entitites = getfenv().Entitites
 
 ---Module function.
----@param self AnimatorDefender
----@param timing AnimationTiming
+---@param self PartDefender
+---@param timing PartTiming
 return function(self, timing)
 	local chaser = Entitites.fe("chaser")
 	if not chaser then
