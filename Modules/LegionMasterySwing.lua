@@ -14,15 +14,17 @@ return function(self, timing)
 	action.name = "Dynamic Legion Mastery Swing"
 
 	if self.entity.Name:match(".titus") then
-		repeat
-			task.wait()
-		until self.track.TimePosition >= 0.52
-
+		local speed = self.track.Speed
 		local action = Action.new()
-		action._when = 150
+
 		action._type = "Parry"
-		action.hitbox = Vector3.new(15, 25, 20)
-		action.name = string.format("(%.2f) Dynamic Titus Punch Timing", self.track.Speed)
+		action.hitbox = Vector3.new(25, 20, 20)
+		action.name = string.format("(%.2f) Dynamic Titus Punch Timing", self.track.Speed, speed)
+		action._when = 530
+		if self.track.Speed >= 0.4 and self.track.Speed <= 0.55 then
+			action._type = "Dodge"
+			action._when = 470
+		end
 		return self:action(timing, action)
 	end
 end
