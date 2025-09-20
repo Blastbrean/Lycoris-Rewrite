@@ -76,6 +76,40 @@ function TimingSave:load(values)
 	end
 end
 
+---Clone timing save.
+---@return TimingSave
+function TimingSave:clone()
+	local save = TimingSave.new()
+
+	for idx, container in next, self._data do
+		save._data[idx] = container:clone()
+	end
+
+	return save
+end
+
+---Equal timing saves.
+---@param other TimingSave
+---@return boolean
+function TimingSave:equals(other)
+	if not other or typeof(other) ~= "table" then
+		return false
+	end
+
+	for idx, container in next, self._data do
+		local otherContainer = other._data[idx]
+		if not otherContainer then
+			return false
+		end
+
+		if not container:equals(otherContainer) then
+			return false
+		end
+	end
+
+	return true
+end
+
 ---Get timing save count.
 ---@return number
 function TimingSave:count()

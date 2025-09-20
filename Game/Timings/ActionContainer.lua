@@ -18,6 +18,28 @@ function ActionContainer:clone()
 	return clone
 end
 
+---Equal check.
+---@param other ActionContainer
+---@return boolean
+function ActionContainer:equals(other)
+	if self:count() ~= other:count() then
+		return false
+	end
+
+	for name, action in next, self._data do
+		local otherAction = other:find(name)
+		if not otherAction then
+			return false
+		end
+
+		if not action:equals(otherAction) then
+			return false
+		end
+	end
+
+	return true
+end
+
 ---Find a action from name.
 ---@param name string
 ---@return Action?
@@ -29,6 +51,7 @@ end
 ---@param action Action
 function ActionContainer:remove(action)
 	self._data[action.name] = nil
+	self._count = self._count - 1
 end
 
 ---Push a action to the list.
@@ -42,6 +65,7 @@ function ActionContainer:push(action)
 	end
 
 	self._data[name] = action
+	self._count = self._count + 1
 end
 
 ---Load from partial values.
@@ -67,13 +91,7 @@ end
 ---Get action count.
 ---@return number
 function ActionContainer:count()
-	local count = 0
-
-	for _, _ in next, self._data do
-		count = count + 1
-	end
-
-	return count
+	return self._count
 end
 
 ---Clear actions.
@@ -106,6 +124,7 @@ function ActionContainer.new(values)
 	local self = setmetatable({}, ActionContainer)
 
 	self._data = {}
+	self._count = 0
 
 	if values then
 		self:load(values)

@@ -56,9 +56,8 @@ return function(self, timing)
 
 	local startTimestamp = os.clock()
 
-	local info = RepeatInfo.new(timing)
+	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 	info.track = track
-	info.irdelay = self.rdelay()
 
 	---@todo: Move to 'rc'
 	self:hook("stopped", function(...)

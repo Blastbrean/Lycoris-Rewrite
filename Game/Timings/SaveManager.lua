@@ -19,14 +19,17 @@ local PartTiming = require("Game/Timings/PartTiming")
 ---@module Game.Timings.SoundTiming
 local SoundTiming = require("Game/Timings/SoundTiming")
 
--- SaveManager module.
-local SaveManager = {
-	-- Last loaded config name.
-	llcn = nil,
+---@module Utility.Maid
+local Maid = require("Utility/Maid")
 
-	-- Should we autosave?
-	sautos = false,
-}
+---@module Utility.Signal
+local Signal = require("Utility/Signal")
+
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
+-- SaveManager module.
+local SaveManager = { llc = nil, llcn = nil, lct = nil }
 
 ---@module Utility.Filesystem
 local Filesystem = require("Utility/Filesystem")
@@ -49,6 +52,12 @@ local fs = Filesystem.new("Lycoris-Rewrite-Timings")
 -- Current timing save.
 local config = TimingSave.new()
 
+-- Services.
+local runService = game:GetService("RunService")
+
+-- Maids.
+local saveMaid = Maid.new()
+
 ---Get save files list.
 ---@return table
 function SaveManager.list()
@@ -58,11 +67,11 @@ function SaveManager.list()
 	for idx = 1, #list do
 		local file = list[idx]
 
-		if file:sub(-4) ~= ".bin" then
+		if file:sub(-4) ~= ".txt" then
 			continue
 		end
 
-		local pos = file:find(".bin", 1, true)
+		local pos = file:find(".txt", 1, true)
 		local char = file:sub(pos, pos)
 		local start = pos
 
@@ -87,7 +96,7 @@ function SaveManager.merge(name, type)
 		return Logger.longNotify("Config name cannot be empty.")
 	end
 
-	local success, result = pcall(fs.read, fs, name .. ".bin")
+	local success, result = pcall(fs.read, fs, name .. ".txt")
 
 	if not success then
 		Logger.longNotify("Failed to read config file %s.", name)
@@ -153,7 +162,7 @@ function SaveManager.create(name)
 		return Logger.longNotify("Config name cannot be empty.")
 	end
 
-	if fs:file(name .. ".bin") then
+	if fs:file(name .. ".txt") then
 		return Logger.longNotify("Config file %s already exists.", name)
 	end
 
@@ -167,7 +176,7 @@ function SaveManager.save(name)
 		return Logger.longNotify("Config name cannot be empty.")
 	end
 
-	if not fs:file(name .. ".bin") then
+	if not fs:file(name .. ".txt") then
 		return Logger.longNotify("Config file %s does not exist.", name)
 	end
 
@@ -191,7 +200,7 @@ function SaveManager.write(name)
 			Logger.warn("Timing manager ran into the error '%s' while attempting to serialize config %s.", result, name)
 	end
 
-	success, result = pcall(fs.write, fs, name .. ".bin", result)
+	success, result = pcall(fs.write, fs, name .. ".txt", result)
 
 	if not success then
 		Logger.longNotify("Failed to write config file %s.", name)
@@ -224,7 +233,7 @@ function SaveManager.clear(name)
 		)
 	end
 
-	success, result = pcall(fs.write, fs, name .. ".bin", result)
+	success, result = pcall(fs.write, fs, name .. ".txt", result)
 
 	if not success then
 		Logger.longNotify("Failed to write config file %s.", name)
@@ -244,7 +253,7 @@ function SaveManager.load(name)
 		return Logger.longNotify("Config name cannot be empty.")
 	end
 
-	local success, result = pcall(fs.read, fs, name .. ".bin")
+	local success, result = pcall(fs.read, fs, name .. ".txt")
 
 	if not success then
 		Logger.longNotify("Failed to read config file %s.", name)
@@ -287,6 +296,7 @@ function SaveManager.load(name)
 		os.clock() - timestamp
 	)
 
+	SaveManager.llc = config:clone()
 	SaveManager.llcn = name
 end
 
@@ -309,6 +319,7 @@ end
 ---Initialize SaveManager.
 function SaveManager.init()
 	local timestamp = os.clock()
+	local preRenderSignal = Signal.new(runService.PreRender)
 
 	-- Create internal timing containers.
 	local internalAnimationContainer = TimingContainer.new(AnimationTiming.new())
@@ -353,6 +364,49 @@ function SaveManager.init()
 
 	-- Sound stack.
 	SaveManager.ss = TimingContainerPair.new(internalSoundContainer, config:get().sound)
+
+	-- Run auto save.
+	saveMaid:add(preRenderSignal:connect("SaveManager_AutoSave", function()
+		local llc = SaveManager.llc
+		if not llc then
+			return
+		end
+
+		local llcn = SaveManager.llcn
+		if not llcn then
+			return
+		end
+
+		if not Configuration.expectToggleValue("PeriodicAutoSave") then
+			return
+		end
+
+		if
+			SaveManager.lct
+			and os.clock() - SaveManager.lct < (Configuration.expectOptionValue("PeriodicAutoSaveInterval") or 60)
+		then
+			return
+		end
+
+		SaveManager.lct = os.clock()
+
+		if config:equals(llc) then
+			return
+		end
+
+		Logger.warn("Auto-saving timings to '%s' config file.", SaveManager.llcn)
+
+		SaveManager.write(SaveManager.llcn)
+
+		SaveManager.llc = config:clone()
+
+		Logger.notify("Timing auto-save has completed successfully.")
+	end))
+end
+
+---Detach SaveManager.
+function SaveManager.detach()
+	saveMaid:clean()
 end
 
 -- Return SaveManager module.

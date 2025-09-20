@@ -18,9 +18,8 @@ return function(self, timing)
 		return true
 	end)
 
-	local info = RepeatInfo.new(timing)
+	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 	info.track = self.track
-	info.irdelay = self.rdelay()
 
 	---@todo: Mantra modifiers.
 	timing.fhb = false

@@ -35,7 +35,7 @@ local TaskSpawner = require("Utility/TaskSpawner")
 local Logger = require("Utility/Logger")
 
 -- Handle all defense related functions.
-local Defense = { lastMantraActivate = nil, defenderObjects = {} }
+local Defense = { lastMantraActivate = nil }
 
 -- Services.
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -50,6 +50,7 @@ local defenseMaid = Maid.new()
 -- Defender objects.
 local defenderPartObjects = {}
 local defenderAnimationObjects = {}
+local defenderObjects = {}
 
 -- Stored deleted playback data.
 local deletedPlaybackData = {}
@@ -67,6 +68,7 @@ local leftClickState = false
 -- Update.
 local lastVisualizationUpdate = os.clock()
 local lastGoldenTongueUpdate = os.clock()
+local lastHistoryUpdate = os.clock()
 local lastAutoWispUpdate = nil
 
 ---Iteratively find effect owner from effect data.
@@ -96,7 +98,7 @@ end)
 ---@param animator Animator
 local addAnimatorDefender = LPH_NO_VIRTUALIZE(function(animator)
 	local animationDefender = AnimatorDefender.new(animator, mobAnimations)
-	Defense.defenderObjects[animator] = animationDefender
+	defenderObjects[animator] = animationDefender
 	defenderAnimationObjects[animator] = animationDefender
 end)
 
@@ -110,7 +112,7 @@ local addSoundDefender = LPH_NO_VIRTUALIZE(function(sound)
 	end
 
 	-- Add sound defender.
-	Defense.defenderObjects[sound] = SoundDefender.new(sound, part)
+	defenderObjects[sound] = SoundDefender.new(sound, part)
 end)
 
 ---On game descendant added.
@@ -132,7 +134,7 @@ end)
 ---On game descendant removed.
 ---@param descendant Instance
 local onGameDescendantRemoved = LPH_NO_VIRTUALIZE(function(descendant)
-	local object = Defense.defenderObjects[descendant]
+	local object = defenderObjects[descendant]
 	if not object then
 		return
 	end
@@ -166,35 +168,17 @@ local onClientEffectEvent = LPH_NO_VIRTUALIZE(function(name, data)
 		return
 	end
 
-	Defense.defenderObjects[data] = EffectDefender.new(name, owner, data)
-end)
-
----On effect replicated.
----@param effect table
-local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
-	if Configuration.expectToggleValue("EffectLogging") then
-		print(string.format("%s", tostring(effect)))
-	end
-
-	---@note: Set a timestamp for light attack effects.
-	--- This is a hack.
-	if effect.Class == "LightAttack" then
-		effect.index.Timestamp = os.clock() - Defender.rtt()
-	end
-end)
-
---On effect removing.
----@param effect table
-local onEffectRemoving = LPH_NO_VIRTUALIZE(function(effect)
-	if not Configuration.expectToggleValue("EffectLogging") then
-		return
-	end
-
-	warn(string.format("%s", tostring(effect)))
+	defenderObjects[data] = EffectDefender.new(name, owner, data)
 end)
 
 ---Update history.
 local updateHistory = LPH_NO_VIRTUALIZE(function()
+	if os.clock() - lastHistoryUpdate <= 0.05 then
+		return
+	end
+
+	lastHistoryUpdate = os.clock()
+
 	local character = players.LocalPlayer.Character
 	if not character then
 		return
@@ -205,7 +189,25 @@ local updateHistory = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	PositionHistory.add(humanoidRootPart.CFrame, tick())
+	PositionHistory.add(players.LocalPlayer, humanoidRootPart.CFrame, tick())
+
+	for _, player in next, players:GetPlayers() do
+		if player == players.LocalPlayer then
+			continue
+		end
+
+		local pcharacter = player.Character
+		if not pcharacter then
+			continue
+		end
+
+		local proot = pcharacter:FindFirstChild("HumanoidRootPart")
+		if not proot then
+			continue
+		end
+
+		PositionHistory.add(pcharacter, proot.CFrame, tick())
+	end
 end)
 
 ---Update golden tongue.
@@ -247,20 +249,40 @@ local updateGoldenTongue = LPH_NO_VIRTUALIZE(function()
 	defenseMaid:mark(TaskSpawner.spawn("Defender_GoldenTongueSendAsync", rbxSystem.SendAsync, rbxSystem, "!a"))
 end)
 
----Update visualizations.
+---Toggle visualizations.
+Defense.visualizations = LPH_NO_VIRTUALIZE(function()
+	for _, object in next, defenderObjects do
+		for _, hitbox in next, object.hmaid._tasks do
+			if typeof(hitbox) ~= "Instance" then
+				continue
+			end
+
+			hitbox.Transparency = Configuration.expectToggleValue("EnableVisualizations") and 0.2 or 1.0
+		end
+	end
+end)
+
+---Update visualization.
 local updateVisualizations = LPH_NO_VIRTUALIZE(function()
-	if os.clock() - lastVisualizationUpdate <= 1.0 then
+	if os.clock() - lastVisualizationUpdate <= 5.0 then
 		return
 	end
 
 	lastVisualizationUpdate = os.clock()
 
-	for _, object in next, Defense.defenderObjects do
-		if not object.vupdate then
-			continue
-		end
+	for _, object in next, defenderObjects do
+		for idx, hitbox in next, object.hmaid._tasks do
+			if typeof(hitbox) ~= "Instance" then
+				continue
+			end
 
-		object:vupdate()
+			---@note: We call :Debris so we don't have to clean it up ourselves. We just unregister it from the maid.
+			if hitbox.Parent then
+				continue
+			end
+
+			object.hmaid._tasks[idx] = nil
+		end
 	end
 end)
 
@@ -369,7 +391,7 @@ Defense.cdpo = LPH_NO_VIRTUALIZE(function(part, timing)
 		return nil
 	end
 
-	Defense.defenderObjects[part] = partDefender
+	defenderObjects[part] = partDefender
 	defenderPartObjects[part] = partDefender
 
 	return partDefender
@@ -378,7 +400,7 @@ end)
 ---Check if objects have blocking tasks.
 ---@return boolean
 Defense.blocking = LPH_NO_VIRTUALIZE(function()
-	for _, object in next, Defense.defenderObjects do
+	for _, object in next, defenderObjects do
 		if not object:blocking() then
 			continue
 		end
@@ -528,26 +550,13 @@ function Defense.init()
 		onGameDescendantAdded(descendant)
 	end
 
-	---@note: Not type of RBXScriptSignal - but it works.
-	local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
-	local effectReplicatorModule = require(effectReplicator)
-	local effectAddedSignal = Signal.new(effectReplicatorModule.EffectAdded)
-	local effectRemovingSignal = Signal.new(effectReplicatorModule.EffectRemoving)
-
-	defenseMaid:mark(effectAddedSignal:connect("Defense_EffectReplicated", onEffectReplicated))
-	defenseMaid:mark(effectRemovingSignal:connect("Defense_EffectRemoving", onEffectRemoving))
-
-	for _, effect in next, effectReplicatorModule.Effects do
-		onEffectReplicated(effect)
-	end
-
 	-- Log.
 	Logger.warn("Defense initialized.")
 end
 
 ---Detach defense.
 function Defense.detach()
-	for _, object in next, Defense.defenderObjects do
+	for _, object in next, defenderObjects do
 		object:detach()
 	end
 

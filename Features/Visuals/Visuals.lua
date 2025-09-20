@@ -367,9 +367,12 @@ local updateAttributeFrame = LPH_NO_VIRTUALIZE(function(jframe)
 			continue
 		end
 
-		local value = (bdata:ipre(drinfo) == 0) and tonumber(drinfo["Stat" .. instance.Name])
-			or tonumber(valueLabel.Text)
+		local statInvested = tonumber(drinfo["Stat" .. instance.Name])
+		if not statInvested then
+			continue
+		end
 
+		local value = (bdata:ipre(drinfo) == 0 and statInvested <= 0) and statInvested or tonumber(valueLabel.Text)
 		if not value then
 			continue
 		end
@@ -784,7 +787,12 @@ local updateTrain = LPH_NO_VIRTUALIZE(function(jframe)
 			continue
 		end
 
-		local value = bdata:ipre(drinfo) == 0 and tonumber(drinfo["Stat" .. instance.Name]) or tonumber(valueLabel.Text)
+		local statInvested = tonumber(drinfo["Stat" .. instance.Name])
+		if not statInvested then
+			continue
+		end
+
+		local value = (bdata:ipre(drinfo) == 0 and statInvested <= 0) and statInvested or tonumber(valueLabel.Text)
 		if not value then
 			continue
 		end

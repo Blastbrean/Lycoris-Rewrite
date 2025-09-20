@@ -3450,6 +3450,10 @@ return LPH_NO_VIRTUALIZE(function()
 	end
 
 	function Library:ManuallyManagedNotify(Text)
+				if shared.Lycoris.silent then
+			return
+		end
+
 		local XSize, YSize = Library:GetTextBounds(Text, Library.Font, 14)
 
 		YSize = YSize + 7
@@ -3566,6 +3570,10 @@ return LPH_NO_VIRTUALIZE(function()
 	end
 
 	function Library:Notify(Text, Time)
+		if shared.Lycoris.silent then
+			return
+		end
+
 		local XSize, YSize = Library:GetTextBounds(Text, Library.Font, 14)
 
 		YSize = YSize + 7

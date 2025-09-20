@@ -35,12 +35,20 @@ return LPH_NO_VIRTUALIZE(function()
 	---Warn message.
 	---@param str string
 	function Logger.warn(str, ...)
+		if shared.Lycoris.silent then
+			return
+		end
+
 		warn(string.format(buildPrefixString(str), ...))
 	end
 
 	---Trace & warn message.
 	---@param str string
 	function Logger.trace(str, ...)
+		if shared.Lycoris.silent then
+			return
+		end
+
 		Logger.warn(str, ...)
 		warn(debug.traceback(2))
 	end

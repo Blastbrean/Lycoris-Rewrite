@@ -1,0 +1,2285 @@
+{
+  "patch_id": "4607e234-ccba-4ea4-9d0b-c53dda20704d",
+  "timestamp": "2025-09-20T10:22:14.647446",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://11468287607": {
+        "status": "removed",
+        "name": "ShadowHb"
+      },
+      "rbxassetid://7004327185": {
+        "status": "removed",
+        "name": "CrazySword"
+      },
+      "rbxassetid://73539621266914": {
+        "status": "removed",
+        "name": "CrescendoCrit"
+      },
+      "rbxassetid://11183196198": {
+        "status": "removed",
+        "name": "IceHeroCrit"
+      },
+      "rbxassetid://12706574441": {
+        "status": "removed",
+        "name": "PromDraw"
+      },
+      "rbxassetid://7007372121": {
+        "status": "removed",
+        "name": "CrazyAxe"
+      },
+      "rbxassetid://7861135817": {
+        "status": "removed",
+        "name": "LightningKick"
+      },
+      "rbxassetid://93803643628347": {
+        "status": "removed",
+        "name": "TitusLariat"
+      },
+      "rbxassetid://14435778571": {
+        "status": "removed",
+        "name": "OneHandedShot3"
+      },
+      "rbxassetid://7960934455": {
+        "status": "removed",
+        "name": "CrabboRexBeam"
+      },
+      "rbxassetid://15789927733": {
+        "status": "removed",
+        "name": "TempestBlitz"
+      },
+      "rbxassetid://6385078248": {
+        "status": "removed",
+        "name": "ClutchingShadow"
+      },
+      "rbxassetid://7675544287": {
+        "status": "removed",
+        "name": "DeepOwlGrab"
+      },
+      "rbxassetid://13319847815": {
+        "status": "removed",
+        "name": "MetalRampart"
+      },
+      "rbxassetid://8290626574": {
+        "status": "removed",
+        "name": "DukeStomp"
+      },
+      "rbxassetid://5968288116": {
+        "status": "removed",
+        "name": "LightningSlash"
+      },
+      "rbxassetid://76842464533258": {
+        "status": "removed",
+        "name": "RedDeathCrit"
+      },
+      "rbxassetid://8215751569": {
+        "status": "removed",
+        "name": "FlameLeapReversal"
+      },
+      "rbxassetid://89507864905366": {
+        "status": "removed",
+        "name": "TitusWarCry"
+      },
+      "rbxassetid://5773120368": {
+        "status": "removed",
+        "name": "FireGun"
+      },
+      "rbxassetid://18441684191": {
+        "status": "removed",
+        "name": "KanaboCritRunning"
+      },
+      "rbxassetid://138417702895229": {
+        "status": "removed",
+        "name": "1TwinbladeM1_1"
+      },
+      "rbxassetid://13989464729": {
+        "status": "removed",
+        "name": "GransudaCrit"
+      },
+      "rbxassetid://9359720148": {
+        "status": "removed",
+        "name": "ShadeDevour"
+      },
+      "rbxassetid://8198492537": {
+        "status": "removed",
+        "name": "ExhaustionStrike"
+      },
+      "rbxassetid://118532593654437": {
+        "status": "removed",
+        "name": "ChorusDivide"
+      },
+      "rbxassetid://13799655062": {
+        "status": "removed",
+        "name": "SquidwardSlash2"
+      },
+      "rbxassetid://16899875441": {
+        "status": "removed",
+        "name": "FrostGrabWindup"
+      },
+      "rbxassetid://137313477686049": {
+        "status": "removed",
+        "name": "BloodOrb"
+      },
+      "rbxassetid://7600224169": {
+        "status": "removed",
+        "name": "SwordSwing2"
+      },
+      "rbxassetid://8379406836": {
+        "status": "removed",
+        "name": "RapidSlashes"
+      },
+      "rbxassetid://9225098544": {
+        "status": "removed",
+        "name": "PrimadonStomp"
+      },
+      "rbxassetid://6428514850": {
+        "status": "removed",
+        "name": "DeepSpiderRightSwing"
+      },
+      "rbxassetid://89448051861345": {
+        "status": "removed",
+        "name": "Lumberaxe"
+      },
+      "rbxassetid://12138863931": {
+        "status": "removed",
+        "name": "MaliceM1_4"
+      },
+      "rbxassetid://81062541535552": {
+        "status": "removed",
+        "name": "MayhemSilentheart"
+      },
+      "rbxassetid://16372479940": {
+        "status": "removed",
+        "name": "JusKaritaSwing3"
+      },
+      "rbxassetid://7627889074": {
+        "status": "removed",
+        "name": "DaggerSwing2"
+      },
+      "rbxassetid://17116756734": {
+        "status": "removed",
+        "name": "PyreKeeperCrit"
+      },
+      "rbxassetid://10976633163": {
+        "status": "removed",
+        "name": "BeastBurrow"
+      },
+      "rbxassetid://14428696078": {
+        "status": "removed",
+        "name": "SoulflareSiphon"
+      },
+      "rbxassetid://82111969749817": {
+        "status": "removed",
+        "name": "SilentheartHeavyRelentless"
+      },
+      "rbxassetid://7627049402": {
+        "status": "removed",
+        "name": "1SpearSwing1"
+      },
+      "rbxassetid://100190998225588": {
+        "status": "removed",
+        "name": "1TwinbladeM1_2"
+      },
+      "rbxassetid://16372478422": {
+        "status": "removed",
+        "name": "JusKaritaSwing2"
+      },
+      "rbxassetid://13408478146": {
+        "status": "removed",
+        "name": "MetalRain"
+      },
+      "rbxassetid://11438175479": {
+        "status": "removed",
+        "name": "CrawlerSwipes"
+      },
+      "rbxassetid://8226933122": {
+        "status": "removed",
+        "name": "CroccoTripleBite"
+      },
+      "rbxassetid://9903304018": {
+        "status": "removed",
+        "name": "SharkoGrab"
+      },
+      "rbxassetid://6017418456": {
+        "status": "removed",
+        "name": "GaleLungeGo"
+      },
+      "rbxassetid://123456225328134": {
+        "status": "removed",
+        "name": "2TwinbladeM1_1"
+      },
+      "rbxassetid://11710290503": {
+        "status": "removed",
+        "name": "SharkoKick"
+      },
+      "rbxassetid://15433825224": {
+        "status": "removed",
+        "name": "ElectroCarveMagnet"
+      },
+      "rbxassetid://5074479705": {
+        "status": "removed",
+        "name": "MiniCrabDoubleSwipe"
+      },
+      "rbxassetid://8228293862": {
+        "status": "removed",
+        "name": "KingCroccoPoisonBreath"
+      },
+      "rbxassetid://6922103707": {
+        "status": "removed",
+        "name": "SquibboAxeKick"
+      },
+      "rbxassetid://7367818208": {
+        "status": "removed",
+        "name": "GreatswordCritical"
+      },
+      "rbxassetid://16707867563": {
+        "status": "removed",
+        "name": "ImperialCrit"
+      },
+      "rbxassetid://122173613929787": {
+        "status": "removed",
+        "name": "ElderPrimaStompFeint"
+      },
+      "rbxassetid://17481286354": {
+        "status": "removed",
+        "name": "SaintLightning"
+      },
+      "rbxassetid://7627372304": {
+        "status": "removed",
+        "name": "SpearSwing1"
+      },
+      "rbxassetid://8375571405": {
+        "status": "removed",
+        "name": "PressureBlast"
+      },
+      "rbxassetid://12990989418": {
+        "status": "removed",
+        "name": "FlarebloodCrit"
+      },
+      "rbxassetid://9681916972": {
+        "status": "removed",
+        "name": "BoneBoySpikeFloor"
+      },
+      "rbxassetid://18592047703": {
+        "status": "removed",
+        "name": "Rupture"
+      },
+      "rbxassetid://106711913879378": {
+        "status": "removed",
+        "name": "StoneKnightKick"
+      },
+      "rbxassetid://7626771915": {
+        "status": "removed",
+        "name": "1SpearSwing2"
+      },
+      "rbxassetid://9366093103": {
+        "status": "removed",
+        "name": "ShadeBringerSpring"
+      },
+      "rbxassetid://99308528426034": {
+        "status": "removed",
+        "name": "UmbriteCrit"
+      },
+      "rbxassetid://15106225064": {
+        "status": "removed",
+        "name": "LFTCrit3"
+      },
+      "rbxassetid://18445492872": {
+        "status": "removed",
+        "name": "WraithclawCrit"
+      },
+      "rbxassetid://126184250609926": {
+        "status": "removed",
+        "name": "IronQuills"
+      },
+      "rbxassetid://13643852843": {
+        "status": "removed",
+        "name": "RocketLance"
+      },
+      "rbxassetid://9657469282": {
+        "status": "removed",
+        "name": "Vent"
+      },
+      "rbxassetid://11328614766": {
+        "status": "removed",
+        "name": "ContractorPull"
+      },
+      "rbxassetid://5953326460": {
+        "status": "removed",
+        "name": "RisingFlameWindup"
+      },
+      "rbxassetid://7014172795": {
+        "status": "removed",
+        "name": "KaidoDoubleSwipe"
+      },
+      "rbxassetid://6428519131": {
+        "status": "removed",
+        "name": "DeepSpiderLeftSwing"
+      },
+      "rbxassetid://6501044846": {
+        "status": "removed",
+        "name": "GolemStomp"
+      },
+      "rbxassetid://11493923277": {
+        "status": "removed",
+        "name": "Scythe_2"
+      },
+      "rbxassetid://12496640760": {
+        "status": "removed",
+        "name": "MaliceAerial"
+      },
+      "rbxassetid://18967397842": {
+        "status": "removed",
+        "name": "ENMITYHOMERUN"
+      },
+      "rbxassetid://13472893499": {
+        "status": "removed",
+        "name": "IronSlam"
+      },
+      "rbxassetid://7018046790": {
+        "status": "removed",
+        "name": "EnforcerSwing1"
+      },
+      "rbxassetid://16654113357": {
+        "status": "removed",
+        "name": "ImperialM1_3"
+      },
+      "rbxassetid://5121733951": {
+        "status": "removed",
+        "name": "DoubleSharkoSwipe"
+      },
+      "rbxassetid://9681905891": {
+        "status": "removed",
+        "name": "BoneBoyRushWindup"
+      },
+      "rbxassetid://137539842058795": {
+        "status": "removed",
+        "name": "VeinTendrils"
+      },
+      "rbxassetid://100709561068031": {
+        "status": "removed",
+        "name": "RisingStarLightSilentheart"
+      },
+      "rbxassetid://11887892548": {
+        "status": "removed",
+        "name": "GreathammerUppercut\r"
+      },
+      "rbxassetid://9149348937": {
+        "status": "removed",
+        "name": "ShadowRisingWind"
+      },
+      "rbxassetid://84010010955504": {
+        "status": "removed",
+        "name": "BloodfoulerCrit"
+      },
+      "rbxassetid://121199564710724": {
+        "status": "removed",
+        "name": "RockmallerCritAerial"
+      },
+      "rbxassetid://99450771029342": {
+        "status": "removed",
+        "name": "BloodFoulerM1_2"
+      },
+      "rbxassetid://17197732174": {
+        "status": "removed",
+        "name": "PyreKeeperM1_3"
+      },
+      "rbxassetid://130566156191218": {
+        "status": "removed",
+        "name": "ReverieCrit"
+      },
+      "rbxassetid://13290263661": {
+        "status": "removed",
+        "name": "CurvedBladeCrit"
+      },
+      "rbxassetid://97570885662399": {
+        "status": "removed",
+        "name": "LegionKataMasteryCrit"
+      },
+      "rbxassetid://5950080662": {
+        "status": "removed",
+        "name": "DaggerFollowUp"
+      },
+      "rbxassetid://10904625331": {
+        "status": "removed",
+        "name": "LightningHb"
+      },
+      "rbxassetid://18445489160": {
+        "status": "removed",
+        "name": "WraithclawCritAerial"
+      },
+      "rbxassetid://85298007288557": {
+        "status": "removed",
+        "name": "RockmallerCrit"
+      },
+      "rbxassetid://6063188218": {
+        "status": "removed",
+        "name": "NavaeSwing2"
+      },
+      "rbxassetid://7827886914": {
+        "status": "removed",
+        "name": "KatanaCritical"
+      },
+      "rbxassetid://15238144593": {
+        "status": "removed",
+        "name": "RelentlessFlames"
+      },
+      "rbxassetid://17665724819": {
+        "status": "removed",
+        "name": "FlareVolley"
+      },
+      "rbxassetid://13567686046": {
+        "status": "removed",
+        "name": "MetalRush"
+      },
+      "rbxassetid://134961845162650": {
+        "status": "removed",
+        "name": "StonesparkHeavy"
+      },
+      "rbxassetid://11308969885": {
+        "status": "removed",
+        "name": "FireHeroCrit"
+      },
+      "rbxassetid://7616407967": {
+        "status": "removed",
+        "name": "NavaeSwing1"
+      },
+      "rbxassetid://9544205634": {
+        "status": "removed",
+        "name": "BounderCharge"
+      },
+      "rbxassetid://6607538047": {
+        "status": "removed",
+        "name": "1HandedGreatswordSwing2"
+      },
+      "rbxassetid://110510943038279": {
+        "status": "removed",
+        "name": "MawbladesCrit"
+      },
+      "rbxassetid://9484850093": {
+        "status": "removed",
+        "name": "SwordKick"
+      },
+      "rbxassetid://72369061749089": {
+        "status": "removed",
+        "name": "StoneKnightSwing1"
+      },
+      "rbxassetid://15331452847": {
+        "status": "removed",
+        "name": "ElectroCarveBlast"
+      },
+      "rbxassetid://8066909599": {
+        "status": "removed",
+        "name": "Revenge"
+      },
+      "rbxassetid://137565901647190": {
+        "status": "removed",
+        "name": "SpectralM1_3"
+      },
+      "rbxassetid://17197593993": {
+        "status": "removed",
+        "name": "PyreKeeperM1_1"
+      },
+      "rbxassetid://7005236296": {
+        "status": "removed",
+        "name": "CrazyDagger"
+      },
+      "rbxassetid://138936750616581": {
+        "status": "removed",
+        "name": "StoneKnightSwing2"
+      },
+      "rbxassetid://9903097211": {
+        "status": "removed",
+        "name": "SharkoDropKick"
+      },
+      "rbxassetid://6428530032": {
+        "status": "removed",
+        "name": "DeepSpiderSpit"
+      },
+      "rbxassetid://80865399851806": {
+        "status": "removed",
+        "name": "TitusKick"
+      },
+      "rbxassetid://14428785439": {
+        "status": "removed",
+        "name": "CrimsonSurge"
+      },
+      "rbxassetid://8095869307": {
+        "status": "removed",
+        "name": "SerpentCrit2"
+      },
+      "rbxassetid://5117879514": {
+        "status": "removed",
+        "name": "SharkoSwipe"
+      },
+      "rbxassetid://9422599069": {
+        "status": "removed",
+        "name": "ShoulderBashWindup"
+      },
+      "rbxassetid://122286859045617": {
+        "status": "removed",
+        "name": "RazorBlitz"
+      },
+      "rbxassetid://8041947316": {
+        "status": "removed",
+        "name": "TerrapodStampede"
+      },
+      "rbxassetid://17119287814": {
+        "status": "removed",
+        "name": "PyreKeeperCritAerial"
+      },
+      "rbxassetid://11862841821": {
+        "status": "removed",
+        "name": "ContractorWhip"
+      },
+      "rbxassetid://107517860698953": {
+        "status": "removed",
+        "name": "SliceNDice"
+      },
+      "rbxassetid://104003503692240": {
+        "status": "removed",
+        "name": "PyreKeeperCritRunning"
+      },
+      "rbxassetid://8467835626": {
+        "status": "removed",
+        "name": "IceForgeCast"
+      },
+      "rbxassetid://8194213529": {
+        "status": "removed",
+        "name": "AerialKick"
+      },
+      "rbxassetid://7350770431": {
+        "status": "removed",
+        "name": "DaggerCritical"
+      },
+      "rbxassetid://13282373122": {
+        "status": "removed",
+        "name": "FiringLine"
+      },
+      "rbxassetid://9474993606": {
+        "status": "removed",
+        "name": "CroccoPoison"
+      },
+      "rbxassetid://7830946229": {
+        "status": "removed",
+        "name": "ShotelCrit"
+      },
+      "rbxassetid://10768748584": {
+        "status": "removed",
+        "name": "EnforcersAxeCrit"
+      },
+      "rbxassetid://7388133473": {
+        "status": "removed",
+        "name": "GreataxeCritical"
+      },
+      "rbxassetid://9422278968": {
+        "status": "removed",
+        "name": "CarbuncleFlail"
+      },
+      "rbxassetid://8230353450": {
+        "status": "removed",
+        "name": "CroccoGroundLeave"
+      },
+      "rbxassetid://10053070573": {
+        "status": "removed",
+        "name": "CrescentCrit"
+      },
+      "rbxassetid://12496646061": {
+        "status": "removed",
+        "name": "MaliceRunning"
+      },
+      "rbxassetid://89177958009696": {
+        "status": "removed",
+        "name": "FangCoilSwing1"
+      },
+      "rbxassetid://17292769123": {
+        "status": "removed",
+        "name": "WardensBladeCrit"
+      },
+      "rbxassetid://18129125142": {
+        "status": "removed",
+        "name": "SkyshatterRound"
+      },
+      "rbxassetid://11887874227": {
+        "status": "removed",
+        "name": "SwordUppercut"
+      },
+      "rbxassetid://107653610777693": {
+        "status": "removed",
+        "name": "2TwinbladeM1_2"
+      },
+      "rbxassetid://75485891279258": {
+        "status": "removed",
+        "name": "NemitsSickleCrit"
+      },
+      "rbxassetid://11312302005": {
+        "status": "removed",
+        "name": "WindHerCrit"
+      },
+      "rbxassetid://7019018522": {
+        "status": "removed",
+        "name": "EnforcerSpin"
+      },
+      "rbxassetid://10413826409": {
+        "status": "removed",
+        "name": "IceGuyThrow"
+      },
+      "rbxassetid://16213151807": {
+        "status": "removed",
+        "name": "Twincleave"
+      },
+      "rbxassetid://9629695751": {
+        "status": "removed",
+        "name": "ChampionsWhirlthrow"
+      },
+      "rbxassetid://121029419529086": {
+        "status": "removed",
+        "name": "DeathFromAbove"
+      },
+      "rbxassetid://17481282052": {
+        "status": "removed",
+        "name": "SaintFire"
+      },
+      "rbxassetid://17134046321": {
+        "status": "removed",
+        "name": "PyreKeeperCritSliding"
+      },
+      "rbxassetid://103284896140202": {
+        "status": "removed",
+        "name": "FangCoilSwing2"
+      },
+      "rbxassetid://10739102450": {
+        "status": "removed",
+        "name": "CoralSpear"
+      },
+      "rbxassetid://134454349271430": {
+        "status": "removed",
+        "name": "StonesparkSwing1"
+      },
+      "rbxassetid://17108275299": {
+        "status": "removed",
+        "name": "BrutePunch2"
+      },
+      "rbxassetid://8375086403": {
+        "status": "removed",
+        "name": "MastersFlourish"
+      },
+      "rbxassetid://9597289518": {
+        "status": "removed",
+        "name": "NavaeFlourish"
+      },
+      "rbxassetid://9921853885": {
+        "status": "removed",
+        "name": "KingCroccoSlam"
+      },
+      "rbxassetid://17481293842": {
+        "status": "removed",
+        "name": "SaintGale"
+      },
+      "rbxassetid://6415085564": {
+        "status": "removed",
+        "name": "ShadowGun"
+      },
+      "rbxassetid://13269418897": {
+        "status": "removed",
+        "name": "MetalDropKick"
+      },
+      "rbxassetid://96265399948947": {
+        "status": "removed",
+        "name": "TitusKickWindup"
+      },
+      "rbxassetid://113419264758259": {
+        "status": "removed",
+        "name": "UmbriteSwing3"
+      },
+      "rbxassetid://9470857690": {
+        "status": "removed",
+        "name": "ShadeBringer"
+      },
+      "rbxassetid://9690822091": {
+        "status": "removed",
+        "name": "BoneBoyRushGo"
+      },
+      "rbxassetid://139465383955578": {
+        "status": "removed",
+        "name": "RisingStarSilentheart"
+      },
+      "rbxassetid://6675703249": {
+        "status": "removed",
+        "name": "GreatswordSwing2"
+      },
+      "rbxassetid://18193351510": {
+        "status": "removed",
+        "name": "DeepspindleRunningCrit"
+      },
+      "rbxassetid://14953939237": {
+        "status": "removed",
+        "name": "MetalBall"
+      },
+      "rbxassetid://8205670183": {
+        "status": "removed",
+        "name": "BrainsuckerDive"
+      },
+      "rbxassetid://6607519294": {
+        "status": "removed",
+        "name": "1HandedGreatswordSwing1"
+      },
+      "rbxassetid://7942002115": {
+        "status": "removed",
+        "name": "CrabboDoubleSlash"
+      },
+      "rbxassetid://123260957812568": {
+        "status": "removed",
+        "name": "TitusGroundPound"
+      },
+      "rbxassetid://17208601112": {
+        "status": "removed",
+        "name": "PyreKeeperM1_Aerial"
+      },
+      "rbxassetid://15309554958": {
+        "status": "removed",
+        "name": "FlameBallista"
+      },
+      "rbxassetid://7576748728": {
+        "status": "removed",
+        "name": "SwordAerialStab"
+      },
+      "rbxassetid://16394277950": {
+        "status": "removed",
+        "name": "TwisterKicks"
+      },
+      "rbxassetid://130877926065710": {
+        "status": "removed",
+        "name": "OwlPrimeExplosion"
+      },
+      "rbxassetid://9400896040": {
+        "status": "removed",
+        "name": "ShoulderBashGo"
+      },
+      "rbxassetid://14181029595": {
+        "status": "removed",
+        "name": "PrecisionCuts"
+      },
+      "rbxassetid://108775350619127": {
+        "status": "removed",
+        "name": "Updraft"
+      },
+      "rbxassetid://7617742471": {
+        "status": "removed",
+        "name": "LightningBeam"
+      },
+      "rbxassetid://7600485223": {
+        "status": "removed",
+        "name": "1SwordSwing2"
+      },
+      "rbxassetid://8085349676": {
+        "status": "removed",
+        "name": "StrongLeft"
+      },
+      "rbxassetid://8227878518": {
+        "status": "removed",
+        "name": "CroccoTailWhip"
+      },
+      "rbxassetid://132792155877270": {
+        "status": "removed",
+        "name": "ChorusCrit"
+      },
+      "rbxassetid://15105011815": {
+        "status": "removed",
+        "name": "LFTCrit2"
+      },
+      "rbxassetid://16021787986": {
+        "status": "removed",
+        "name": "ShatteredKatanaCrit"
+      },
+      "rbxassetid://9536688585": {
+        "status": "removed",
+        "name": "ArcWave"
+      },
+      "rbxassetid://9710538334": {
+        "status": "removed",
+        "name": "BoneBoyChoke"
+      },
+      "rbxassetid://9209255758": {
+        "status": "removed",
+        "name": "WhalingCrit"
+      },
+      "rbxassetid://101880653361558": {
+        "status": "removed",
+        "name": "RisingStarMedSilentheart"
+      },
+      "rbxassetid://14169996512": {
+        "status": "removed",
+        "name": "HairSpray"
+      },
+      "rbxassetid://17108258606": {
+        "status": "removed",
+        "name": "BrutePunch1"
+      },
+      "rbxassetid://8265980703": {
+        "status": "removed",
+        "name": "IceLance"
+      },
+      "rbxassetid://5786514661": {
+        "status": "removed",
+        "name": "WardenBladeWindup"
+      },
+      "rbxassetid://129221485664326": {
+        "status": "removed",
+        "name": "FalchionCrit"
+      },
+      "rbxassetid://91389074160755": {
+        "status": "removed",
+        "name": "SharkoBeam"
+      },
+      "rbxassetid://131597866888761": {
+        "status": "removed",
+        "name": "ENMITYEXECUTE"
+      },
+      "rbxassetid://98206272834105": {
+        "status": "removed",
+        "name": "WSRoll"
+      },
+      "rbxassetid://8227583745": {
+        "status": "removed",
+        "name": "CroccoSwipes"
+      },
+      "rbxassetid://9544183744": {
+        "status": "removed",
+        "name": "BounderSwing2"
+      },
+      "rbxassetid://18742913661": {
+        "status": "removed",
+        "name": "TableFlip"
+      },
+      "rbxassetid://82898164556000": {
+        "status": "removed",
+        "name": "TitusStormbound"
+      },
+      "rbxassetid://9681472252": {
+        "status": "removed",
+        "name": "BoneBoyLeapAttack"
+      },
+      "rbxassetid://15229223629": {
+        "status": "removed",
+        "name": "Onslaught"
+      },
+      "rbxassetid://7639988883": {
+        "status": "removed",
+        "name": "DeepOwlSwipe2"
+      },
+      "rbxassetid://121688591791316": {
+        "status": "removed",
+        "name": "LumensplitterCrit"
+      },
+      "rbxassetid://104396998895690": {
+        "status": "removed",
+        "name": "FangCoilCritical"
+      },
+      "rbxassetid://17481300369": {
+        "status": "removed",
+        "name": "SaintIce"
+      },
+      "rbxassetid://7003342450": {
+        "status": "removed",
+        "name": "ElectroCarve"
+      },
+      "rbxassetid://7627854272": {
+        "status": "removed",
+        "name": "1HandDaggerSwing1"
+      },
+      "rbxassetid://10451138202": {
+        "status": "removed",
+        "name": "BruteSwipe1"
+      },
+      "rbxassetid://118991358495157": {
+        "status": "removed",
+        "name": "ForgeGHCrit"
+      },
+      "rbxassetid://17758627105": {
+        "status": "removed",
+        "name": "EmotionWave"
+      },
+      "rbxassetid://5828315760": {
+        "status": "removed",
+        "name": "AirForce"
+      },
+      "rbxassetid://16372476897": {
+        "status": "removed",
+        "name": "JusKaritaSwing1\r"
+      },
+      "rbxassetid://15104780537": {
+        "status": "removed",
+        "name": "LFTCrit1"
+      },
+      "rbxassetid://6675698010": {
+        "status": "removed",
+        "name": "GreatswordSwing1"
+      },
+      "rbxassetid://73745318478429": {
+        "status": "removed",
+        "name": "CrimsonRainRecall"
+      },
+      "rbxassetid://17665624417": {
+        "status": "removed",
+        "name": "RhythmAdvance"
+      },
+      "rbxassetid://85523657178401": {
+        "status": "removed",
+        "name": "SilentheartLightMayhem"
+      },
+      "rbxassetid://10621877046": {
+        "status": "removed",
+        "name": "BlindingDawn"
+      },
+      "rbxassetid://7542502881": {
+        "status": "removed",
+        "name": "FlameLeap"
+      },
+      "rbxassetid://6470684331": {
+        "status": "removed",
+        "name": "AstralWind"
+      },
+      "rbxassetid://97447284729710": {
+        "status": "removed",
+        "name": "FangCoilSwing3"
+      },
+      "rbxassetid://7351158603": {
+        "status": "removed",
+        "name": "SpearCritical"
+      },
+      "rbxassetid://15881820093": {
+        "status": "removed",
+        "name": "FlashfireSweep"
+      },
+      "rbxassetid://11363599835": {
+        "status": "removed",
+        "name": "HeavyAerial"
+      },
+      "rbxassetid://6054920207": {
+        "status": "removed",
+        "name": "CrystalImpaleWindup"
+      },
+      "rbxassetid://88057174463397": {
+        "status": "removed",
+        "name": "HailbreakerCrit"
+      },
+      "rbxassetid://9919986614": {
+        "status": "removed",
+        "name": "SinisterHalo"
+      },
+      "rbxassetid://6318273143": {
+        "status": "removed",
+        "name": "ShadowAssault"
+      },
+      "rbxassetid://7014547998": {
+        "status": "removed",
+        "name": "KaidoWhip"
+      },
+      "rbxassetid://6501497627": {
+        "status": "removed",
+        "name": "GolemCyclone"
+      },
+      "rbxassetid://12071942369": {
+        "status": "removed",
+        "name": "PetrasCritFollowup"
+      },
+      "rbxassetid://118932415770119": {
+        "status": "removed",
+        "name": "TitusVault"
+      },
+      "rbxassetid://17666287806": {
+        "status": "removed",
+        "name": "AraneaM1_3"
+      },
+      "rbxassetid://13277887570": {
+        "status": "removed",
+        "name": "DualCurvedBladeCrit"
+      },
+      "rbxassetid://13065094279": {
+        "status": "removed",
+        "name": "1CurvedSwing3"
+      },
+      "rbxassetid://123321475025790": {
+        "status": "removed",
+        "name": "AraneaCrit"
+      },
+      "rbxassetid://96701006735071": {
+        "status": "removed",
+        "name": "OwlPrimeStomp"
+      },
+      "rbxassetid://9357410713": {
+        "status": "removed",
+        "name": "SharkoLaser"
+      },
+      "rbxassetid://9544203895": {
+        "status": "removed",
+        "name": "BounderChargePrep"
+      },
+      "rbxassetid://7019686291": {
+        "status": "removed",
+        "name": "EnforcerKick"
+      },
+      "rbxassetid://84099118348290": {
+        "status": "removed",
+        "name": "SanguineDive"
+      },
+      "rbxassetid://110691694093015": {
+        "status": "removed",
+        "name": "SlientheartLightRelentless"
+      },
+      "rbxassetid://6432260013": {
+        "status": "removed",
+        "name": "PrimadonTripleStomp"
+      },
+      "rbxassetid://12138869158": {
+        "status": "removed",
+        "name": "MaliceCrit"
+      },
+      "rbxassetid://18967389067": {
+        "status": "removed",
+        "name": "ENMITYSTOMPSLICE"
+      },
+      "rbxassetid://11887887621": {
+        "status": "removed",
+        "name": "GreatswordUppercut"
+      },
+      "rbxassetid://15449613429": {
+        "status": "removed",
+        "name": "WindForge"
+      },
+      "rbxassetid://5053295423": {
+        "status": "removed",
+        "name": "DarkBladeSpin"
+      },
+      "rbxassetid://77160956516659": {
+        "status": "removed",
+        "name": "UmbriteSwing1"
+      },
+      "rbxassetid://17108566269": {
+        "status": "removed",
+        "name": "BruteHeavyPunch"
+      },
+      "rbxassetid://9681908909": {
+        "status": "removed",
+        "name": "BoneKeeperBoneThrow\r"
+      },
+      "rbxassetid://6669352471": {
+        "status": "removed",
+        "name": "RunningAttackSword1"
+      },
+      "rbxassetid://16214012662": {
+        "status": "removed",
+        "name": "SkyshatterKick"
+      },
+      "rbxassetid://8046864635": {
+        "status": "removed",
+        "name": "FireBlade"
+      },
+      "rbxassetid://9461033190": {
+        "status": "removed",
+        "name": "AscensionWindup"
+      },
+      "rbxassetid://96388262269233": {
+        "status": "removed",
+        "name": "HailbreakerCritHit"
+      },
+      "rbxassetid://18966790283": {
+        "status": "removed",
+        "name": "ENMITYRIGHLEFT"
+      },
+      "rbxassetid://11508725111": {
+        "status": "removed",
+        "name": "EthironPunch"
+      },
+      "rbxassetid://5067090007": {
+        "status": "removed",
+        "name": "GreataxeSwing2"
+      },
+      "rbxassetid://11095471496": {
+        "status": "removed",
+        "name": "CroccoRam"
+      },
+      "rbxassetid://123115833203242": {
+        "status": "removed",
+        "name": "LegionMasteryM1_1"
+      },
+      "rbxassetid://8169914770": {
+        "status": "removed",
+        "name": "Grappler"
+      },
+      "rbxassetid://9544192782": {
+        "status": "removed",
+        "name": "BounderSwing1"
+      },
+      "rbxassetid://17481296528": {
+        "status": "removed",
+        "name": "SaintShadw"
+      },
+      "rbxassetid://14428522483": {
+        "status": "removed",
+        "name": "ViciousDescent"
+      },
+      "rbxassetid://12921226261": {
+        "status": "removed",
+        "name": "ClubCritical"
+      },
+      "rbxassetid://10258479464": {
+        "status": "removed",
+        "name": "DarksteelSwordCrit"
+      },
+      "rbxassetid://5750296638": {
+        "status": "removed",
+        "name": "LightningChoke"
+      },
+      "rbxassetid://12138857946": {
+        "status": "removed",
+        "name": "MaliceM1_1"
+      },
+      "rbxassetid://77966503093128": {
+        "status": "removed",
+        "name": "VigillongswordCrit"
+      },
+      "rbxassetid://11867360757": {
+        "status": "removed",
+        "name": "RogueConstructGroundPound"
+      },
+      "rbxassetid://7961600084": {
+        "status": "removed",
+        "name": "CrabboRexFall"
+      },
+      "rbxassetid://98485831363157": {
+        "status": "removed",
+        "name": "OfficerSaberCrit"
+      },
+      "rbxassetid://9726608174": {
+        "status": "removed",
+        "name": "ContractorGrab"
+      },
+      "rbxassetid://5968282214": {
+        "status": "removed",
+        "name": "LightningChargeUp"
+      },
+      "rbxassetid://98357653035720": {
+        "status": "removed",
+        "name": "TantoCrit"
+      },
+      "rbxassetid://14531935090": {
+        "status": "removed",
+        "name": "ChaserSlam"
+      },
+      "rbxassetid://17120101081": {
+        "status": "removed",
+        "name": "CoralSmash"
+      },
+      "rbxassetid://6437665734": {
+        "status": "removed",
+        "name": "RightGunShot"
+      },
+      "rbxassetid://123056759322514": {
+        "status": "removed",
+        "name": "SkyreapCrit"
+      },
+      "rbxassetid://18953687294": {
+        "status": "removed",
+        "name": "Decimate"
+      },
+      "rbxassetid://100404024900445": {
+        "status": "removed",
+        "name": "StonesparkSwing2"
+      },
+      "rbxassetid://101606363724786": {
+        "status": "removed",
+        "name": "ImperatorsCrit"
+      },
+      "rbxassetid://7794268358": {
+        "status": "removed",
+        "name": "RisingWind"
+      },
+      "rbxassetid://6055558740": {
+        "status": "removed",
+        "name": "IceLasers"
+      },
+      "rbxassetid://9928485641": {
+        "status": "removed",
+        "name": "RifleM1_2"
+      },
+      "rbxassetid://17666284182": {
+        "status": "removed",
+        "name": "AraneaM1_2"
+      },
+      "rbxassetid://18442438270": {
+        "status": "removed",
+        "name": "FlamingScourgeReversal"
+      },
+      "rbxassetid://8199600822": {
+        "status": "removed",
+        "name": "AshSlam"
+      },
+      "rbxassetid://6038858570": {
+        "status": "removed",
+        "name": "DarkBlade\r"
+      },
+      "rbxassetid://11887901212": {
+        "status": "removed",
+        "name": "SpearUppercut"
+      },
+      "rbxassetid://5063313656": {
+        "status": "removed",
+        "name": "FistRunningAttack"
+      },
+      "rbxassetid://6428525211": {
+        "status": "removed",
+        "name": "DeepSpiderDoubleStab"
+      },
+      "rbxassetid://13262891882": {
+        "status": "removed",
+        "name": "MetalLegDrop"
+      },
+      "rbxassetid://7608480718": {
+        "status": "removed",
+        "name": "FireForgeWindup"
+      },
+      "rbxassetid://16955614856": {
+        "status": "removed",
+        "name": "WyrmCrit"
+      },
+      "rbxassetid://7003448248": {
+        "status": "removed",
+        "name": "CrazyGS"
+      },
+      "rbxassetid://14435766591": {
+        "status": "removed",
+        "name": "PistolSmack2"
+      },
+      "rbxassetid://15787213583": {
+        "status": "removed",
+        "name": "RandomWindMove"
+      },
+      "rbxassetid://90136907973692": {
+        "status": "removed",
+        "name": "BloodtideRitual"
+      },
+      "rbxassetid://8278933540": {
+        "status": "removed",
+        "name": "JusKaritaFlourish"
+      },
+      "rbxassetid://18939487172": {
+        "status": "removed",
+        "name": "PalmStrike"
+      },
+      "rbxassetid://6466993564": {
+        "status": "removed",
+        "name": "WindCarve"
+      },
+      "rbxassetid://5067105317": {
+        "status": "removed",
+        "name": "GreataxeSwing3"
+      },
+      "rbxassetid://6500704554": {
+        "status": "removed",
+        "name": "GolemSmack"
+      },
+      "rbxassetid://13253662736": {
+        "status": "removed",
+        "name": "NeedleBarrage"
+      },
+      "rbxassetid://18867175628": {
+        "status": "removed",
+        "name": "BoltcrusherCrit"
+      },
+      "rbxassetid://17481307114": {
+        "status": "removed",
+        "name": "ArdourSlicer"
+      },
+      "rbxassetid://71282727175994": {
+        "status": "removed",
+        "name": "PyreKeeperCritCrouch"
+      },
+      "rbxassetid://9928429385": {
+        "status": "removed",
+        "name": "RifleM1_1"
+      },
+      "rbxassetid://7018083796": {
+        "status": "removed",
+        "name": "EnforcerSwing2"
+      },
+      "rbxassetid://11493920418": {
+        "status": "removed",
+        "name": "Scythe_1"
+      },
+      "rbxassetid://8095873745": {
+        "status": "removed",
+        "name": "SerpentCrit3"
+      },
+      "rbxassetid://8249271040": {
+        "status": "removed",
+        "name": "RapierCritical"
+      },
+      "rbxassetid://12772036355": {
+        "status": "removed",
+        "name": "Punishment"
+      },
+      "rbxassetid://7271659917": {
+        "status": "removed",
+        "name": "EnforcerPullStart"
+      },
+      "rbxassetid://93362023058024": {
+        "status": "removed",
+        "name": "LegionMasteryFlourish"
+      },
+      "rbxassetid://8204924934": {
+        "status": "removed",
+        "name": "BrainsuckerKick"
+      },
+      "rbxassetid://8161094751": {
+        "status": "removed",
+        "name": "LegionM1_4"
+      },
+      "rbxassetid://87085678581483": {
+        "status": "removed",
+        "name": "MirrorIllusion"
+      },
+      "rbxassetid://13338519421": {
+        "status": "removed",
+        "name": "MetalGatling"
+      },
+      "rbxassetid://9863424290": {
+        "status": "removed",
+        "name": "RailbladeCrit"
+      },
+      "rbxassetid://17108040817": {
+        "status": "removed",
+        "name": "PistolRunning"
+      },
+      "rbxassetid://18510057229": {
+        "status": "removed",
+        "name": "SoulthornCrit"
+      },
+      "rbxassetid://7666455222": {
+        "status": "removed",
+        "name": "WindBlade"
+      },
+      "rbxassetid://16926301301": {
+        "status": "removed",
+        "name": "JetstrikerFakeStrike"
+      },
+      "rbxassetid://7543558046": {
+        "status": "removed",
+        "name": "FlameAssault"
+      },
+      "rbxassetid://11887938902": {
+        "status": "removed",
+        "name": "JusKaritaUppercut"
+      },
+      "rbxassetid://10413822826": {
+        "status": "removed",
+        "name": "IceGuyCombo"
+      },
+      "rbxassetid://10451145418": {
+        "status": "removed",
+        "name": "BruteSwipe2"
+      },
+      "rbxassetid://7600160919": {
+        "status": "removed",
+        "name": "SwordSwing1"
+      },
+      "rbxassetid://8310877920": {
+        "status": "removed",
+        "name": "Windgun"
+      },
+      "rbxassetid://15302935464": {
+        "status": "removed",
+        "name": "FlashdrawStrike"
+      },
+      "rbxassetid://18967392881": {
+        "status": "removed",
+        "name": "ENMITYAXETHROW"
+      },
+      "rbxassetid://18556305100": {
+        "status": "removed",
+        "name": "NocturneCritFollowup"
+      },
+      "rbxassetid://7627558238": {
+        "status": "removed",
+        "name": "SpearSwing2"
+      },
+      "rbxassetid://12106091136": {
+        "status": "removed",
+        "name": "1CurvedSwing1"
+      },
+      "rbxassetid://9832721746": {
+        "status": "removed",
+        "name": "RailbladeM1_1"
+      },
+      "rbxassetid://16961331275": {
+        "status": "removed",
+        "name": "WyrmCritSlide"
+      },
+      "rbxassetid://129434390222986": {
+        "status": "removed",
+        "name": "TitusGrab"
+      },
+      "rbxassetid://9832724876": {
+        "status": "removed",
+        "name": "RailbladeM1_2"
+      },
+      "rbxassetid://6030770341": {
+        "status": "removed",
+        "name": "HeavenlyWind"
+      },
+      "rbxassetid://7968088101": {
+        "status": "removed",
+        "name": "Headbutt"
+      },
+      "rbxassetid://9893133020": {
+        "status": "removed",
+        "name": "RailbladeCritAerial"
+      },
+      "rbxassetid://9225086332": {
+        "status": "removed",
+        "name": "PrimadonGrab"
+      },
+      "rbxassetid://12138861998": {
+        "status": "removed",
+        "name": "MaliceM1_3"
+      },
+      "rbxassetid://18319686489": {
+        "status": "removed",
+        "name": "KyrswynterCritRunning"
+      },
+      "rbxassetid://11186652658": {
+        "status": "removed",
+        "name": "TollM1_1"
+      },
+      "rbxassetid://7318254065": {
+        "status": "removed",
+        "name": "SwordCritical"
+      },
+      "rbxassetid://5750353585": {
+        "status": "removed",
+        "name": "FlameGrab"
+      },
+      "rbxassetid://12564120372": {
+        "status": "removed",
+        "name": "GroundSlideSilentheart"
+      },
+      "rbxassetid://131207934895342": {
+        "status": "removed",
+        "name": "SpectralCrit"
+      },
+      "rbxassetid://17666279427": {
+        "status": "removed",
+        "name": "AraneaM1_1"
+      },
+      "rbxassetid://13246809405": {
+        "status": "removed",
+        "name": "NeedleBarrageBlast"
+      },
+      "rbxassetid://15250125394": {
+        "status": "removed",
+        "name": "EdenstaffCrit"
+      },
+      "rbxassetid://82589408775991": {
+        "status": "removed",
+        "name": "ElderPrimaSixStomp"
+      },
+      "rbxassetid://8249177669": {
+        "status": "removed",
+        "name": "RapierSlash2"
+      },
+      "rbxassetid://17197704130": {
+        "status": "removed",
+        "name": "PyreKeeperM1_2"
+      },
+      "rbxassetid://11186654931": {
+        "status": "removed",
+        "name": "TollM1_2"
+      },
+      "rbxassetid://94626092299428": {
+        "status": "removed",
+        "name": "SpectralM1_1"
+      },
+      "rbxassetid://72748965289041": {
+        "status": "removed",
+        "name": "SilentheartMediumRelentless"
+      },
+      "rbxassetid://82342705344145": {
+        "status": "removed",
+        "name": "TwinbladeRunning"
+      },
+      "rbxassetid://8150828674": {
+        "status": "removed",
+        "name": "RapidPunches"
+      },
+      "rbxassetid://11573034823": {
+        "status": "removed",
+        "name": "MudskipperSlash2"
+      },
+      "rbxassetid://8285321158": {
+        "status": "removed",
+        "name": "DukeGrasp"
+      },
+      "rbxassetid://115289020018430": {
+        "status": "removed",
+        "name": "DreadWhisper"
+      },
+      "rbxassetid://7007974914": {
+        "status": "removed",
+        "name": "CrazyGuns"
+      },
+      "rbxassetid://9551012380": {
+        "status": "removed",
+        "name": "IceEruption"
+      },
+      "rbxassetid://6922310516": {
+        "status": "removed",
+        "name": "SquidwardEruption"
+      },
+      "rbxassetid://12138860062": {
+        "status": "removed",
+        "name": "MaliceM1_2"
+      },
+      "rbxassetid://9470822568": {
+        "status": "removed",
+        "name": "ShadeBringer2"
+      },
+      "rbxassetid://15214200859": {
+        "status": "removed",
+        "name": "RisingThunder"
+      },
+      "rbxassetid://11834549387": {
+        "status": "removed",
+        "name": "RogueConstructStomp"
+      },
+      "rbxassetid://17363185033": {
+        "status": "removed",
+        "name": "TridentSpearCrit"
+      },
+      "rbxassetid://12883012690": {
+        "status": "removed",
+        "name": "GremorianLongSpearCrit"
+      },
+      "rbxassetid://16526843767": {
+        "status": "removed",
+        "name": "QuartztoneCritAerial"
+      },
+      "rbxassetid://8365199156": {
+        "status": "removed",
+        "name": "PrimadonMidPunch"
+      },
+      "rbxassetid://18553734325": {
+        "status": "removed",
+        "name": "NocturneCrit"
+      },
+      "rbxassetid://7576614609": {
+        "status": "removed",
+        "name": "DaggerAerial"
+      },
+      "rbxassetid://16873988732": {
+        "status": "removed",
+        "name": "JetstrikerKick"
+      },
+      "rbxassetid://7673097597": {
+        "status": "removed",
+        "name": "OwlCharge"
+      },
+      "rbxassetid://8183996606": {
+        "status": "removed",
+        "name": "GrandJavelin"
+      },
+      "rbxassetid://11834551880": {
+        "status": "removed",
+        "name": "RogueConstructSwipe\r"
+      },
+      "rbxassetid://14435763579": {
+        "status": "removed",
+        "name": "PistolSmack1"
+      },
+      "rbxassetid://7938093143": {
+        "status": "removed",
+        "name": "CrabboGrab"
+      },
+      "rbxassetid://7598889071": {
+        "status": "removed",
+        "name": "IceSmash"
+      },
+      "rbxassetid://18589175041": {
+        "status": "removed",
+        "name": "Restrain"
+      },
+      "rbxassetid://95084976730503": {
+        "status": "removed",
+        "name": "FangCoilFlourish"
+      },
+      "rbxassetid://11493924588": {
+        "status": "removed",
+        "name": "ScytheRunning"
+      },
+      "rbxassetid://11638263796": {
+        "status": "removed",
+        "name": "MechaGatling"
+      },
+      "rbxassetid://5827250000": {
+        "status": "removed",
+        "name": "Spear3RunningAttack"
+      },
+      "rbxassetid://132405692502171": {
+        "status": "removed",
+        "name": "ScarletCyclone"
+      },
+      "rbxassetid://18585956004": {
+        "status": "removed",
+        "name": "Restrain_2"
+      },
+      "rbxassetid://106034159367447": {
+        "status": "removed",
+        "name": "BloodtideRitualEnd"
+      },
+      "rbxassetid://17636520960": {
+        "status": "removed",
+        "name": "AraneaM1_4"
+      },
+      "rbxassetid://10451129790": {
+        "status": "removed",
+        "name": "BruteSlam"
+      },
+      "rbxassetid://8172871094": {
+        "status": "removed",
+        "name": "RifleSpearCrit"
+      },
+      "rbxassetid://8467827292": {
+        "status": "removed",
+        "name": "IceForgeNewCharge"
+      },
+      "rbxassetid://11876148070": {
+        "status": "removed",
+        "name": "EthironBeam"
+      },
+      "rbxassetid://119723009958796": {
+        "status": "removed",
+        "name": "SeraphSpearCrit"
+      },
+      "rbxassetid://9225081967": {
+        "status": "removed",
+        "name": "PrimadonPunch"
+      },
+      "rbxassetid://8295145565": {
+        "status": "removed",
+        "name": "JusKaritaCritical"
+      },
+      "rbxassetid://18675722274": {
+        "status": "removed",
+        "name": "ChainFollowup"
+      },
+      "rbxassetid://6063195211": {
+        "status": "removed",
+        "name": "NavaeSwing3"
+      },
+      "rbxassetid://83367609184503": {
+        "status": "removed",
+        "name": "CrimsonRain"
+      },
+      "rbxassetid://6396523003": {
+        "status": "removed",
+        "name": "CrystalKick"
+      },
+      "rbxassetid://6728950754": {
+        "status": "removed",
+        "name": "TerrapodTripleSwipe"
+      },
+      "rbxassetid://6728862735": {
+        "status": "removed",
+        "name": "TerrapodStandSwipe"
+      },
+      "rbxassetid://93913813469029": {
+        "status": "removed",
+        "name": "PyreKeeperCritRunningWindup"
+      },
+      "rbxassetid://10880473795": {
+        "status": "removed",
+        "name": "EnforcerPullHuman"
+      },
+      "rbxassetid://128613582420698": {
+        "status": "removed",
+        "name": "TitusGrabDodge"
+      },
+      "rbxassetid://96971457742631": {
+        "status": "removed",
+        "name": "WSRoar"
+      },
+      "rbxassetid://18443883458": {
+        "status": "removed",
+        "name": "KanaboCrit"
+      },
+      "rbxassetid://4699358112": {
+        "status": "removed",
+        "name": "RunningAttackKatana"
+      },
+      "rbxassetid://6499077558": {
+        "status": "removed",
+        "name": "GolemDoubleSlam"
+      },
+      "rbxassetid://77591888013193": {
+        "status": "removed",
+        "name": "BloodStakes"
+      },
+      "rbxassetid://16746044904": {
+        "status": "removed",
+        "name": "ImperialSlam"
+      },
+      "rbxassetid://6500291394": {
+        "status": "removed",
+        "name": "LightningImpact"
+      },
+      "rbxassetid://13799614234": {
+        "status": "removed",
+        "name": "SquidwardSlash1"
+      },
+      "rbxassetid://82315723491864": {
+        "status": "removed",
+        "name": "ElderPrimaUltimateStomp"
+      },
+      "rbxassetid://114108670383026": {
+        "status": "removed",
+        "name": "1TwinbladeM1_3"
+      },
+      "rbxassetid://8161043368": {
+        "status": "removed",
+        "name": "LegionM1_2"
+      },
+      "rbxassetid://80709298050884": {
+        "status": "removed",
+        "name": "PastryPasterCrit"
+      },
+      "rbxassetid://7761251007": {
+        "status": "removed",
+        "name": "LightningStream"
+      },
+      "rbxassetid://13529982886": {
+        "status": "removed",
+        "name": "MetalHug"
+      },
+      "rbxassetid://117202493332843": {
+        "status": "removed",
+        "name": "BloodfoulerCritRunning"
+      },
+      "rbxassetid://8176091986": {
+        "status": "removed",
+        "name": "CrabboSlam"
+      },
+      "rbxassetid://7600450739": {
+        "status": "removed",
+        "name": "1SwordSwing1"
+      },
+      "rbxassetid://8095864854": {
+        "status": "removed",
+        "name": "SerpentCrit1"
+      },
+      "rbxassetid://132164383275060": {
+        "status": "removed",
+        "name": "SilentheartMediumMayhem"
+      },
+      "rbxassetid://8378263543": {
+        "status": "removed",
+        "name": "FireEruption"
+      },
+      "rbxassetid://14435773739": {
+        "status": "removed",
+        "name": "OneHandedShot2"
+      },
+      "rbxassetid://7639648215": {
+        "status": "removed",
+        "name": "DeepOwlSwipe1"
+      },
+      "rbxassetid://14435770311": {
+        "status": "removed",
+        "name": "OneHandedShot1"
+      },
+      "rbxassetid://11959603858": {
+        "status": "removed",
+        "name": "EclipseKick"
+      },
+      "rbxassetid://8286153000": {
+        "status": "removed",
+        "name": "DukeWindBlast"
+      },
+      "rbxassetid://125702527468447": {
+        "status": "removed",
+        "name": "PyreKeeperCritRunningHit"
+      },
+      "rbxassetid://12969986902": {
+        "status": "removed",
+        "name": "ShadowEncircle"
+      },
+      "rbxassetid://13527506971": {
+        "status": "removed",
+        "name": "ChainPullWindup"
+      },
+      "rbxassetid://12071495751": {
+        "status": "removed",
+        "name": "PetrasCritWindup"
+      },
+      "rbxassetid://5827423063": {
+        "status": "removed",
+        "name": "SpearRunning"
+      },
+      "rbxassetid://139012331361882": {
+        "status": "removed",
+        "name": "ElderPrimaDoubleHangSwing2"
+      },
+      "rbxassetid://6372560712": {
+        "status": "removed",
+        "name": "LionfishBeam"
+      },
+      "rbxassetid://7618754583": {
+        "status": "removed",
+        "name": "FirePalm"
+      },
+      "rbxassetid://133484657892607": {
+        "status": "removed",
+        "name": "CanorFangCrit"
+      },
+      "rbxassetid://11572468462": {
+        "status": "removed",
+        "name": "MudskipperSlash1"
+      },
+      "rbxassetid://9832727905": {
+        "status": "removed",
+        "name": "RailbladeM1_3"
+      },
+      "rbxassetid://9481395855": {
+        "status": "removed",
+        "name": "ArcBeaaaaaam"
+      },
+      "rbxassetid://88620745767944": {
+        "status": "removed",
+        "name": "SpectralM1_2"
+      },
+      "rbxassetid://5680585677": {
+        "status": "removed",
+        "name": "LionfishTripleBite"
+      },
+      "rbxassetid://6438111139": {
+        "status": "removed",
+        "name": "PrimadonKick"
+      },
+      "rbxassetid://14954130177": {
+        "status": "removed",
+        "name": "Caltrops"
+      },
+      "rbxassetid://16707905895": {
+        "status": "removed",
+        "name": "ImperialVortexGo"
+      },
+      "rbxassetid://83123470732503": {
+        "status": "removed",
+        "name": "NightAxeCrit"
+      },
+      "rbxassetid://9422296675": {
+        "status": "removed",
+        "name": "CarbuncleLeap"
+      },
+      "rbxassetid://7620633231": {
+        "status": "removed",
+        "name": "ShadowRoarWindup"
+      },
+      "rbxassetid://11710417615": {
+        "status": "removed",
+        "name": "SharkoCoral"
+      },
+      "rbxassetid://5769343416": {
+        "status": "removed",
+        "name": "BurningServants"
+      },
+      "rbxassetid://17481302463": {
+        "status": "removed",
+        "name": "SaintIce2"
+      },
+      "rbxassetid://87962259614393": {
+        "status": "removed",
+        "name": "ParalyticDust"
+      },
+      "rbxassetid://9941118927": {
+        "status": "removed",
+        "name": "CelestialAssault"
+      },
+      "rbxassetid://6922042769": {
+        "status": "removed",
+        "name": "SquibboSlide"
+      },
+      "rbxassetid://98679832505566": {
+        "status": "removed",
+        "name": "TitusGroundStomp"
+      },
+      "rbxassetid://90742361803263": {
+        "status": "removed",
+        "name": "LegionMasteryM1_3"
+      },
+      "rbxassetid://13799693320": {
+        "status": "removed",
+        "name": "SquidwardSlash3"
+      },
+      "rbxassetid://97269504567525": {
+        "status": "removed",
+        "name": "SharkoQuadSwipe"
+      },
+      "rbxassetid://9474995715": {
+        "status": "removed",
+        "name": "CroccoPoisonThrow"
+      },
+      "rbxassetid://14181944470": {
+        "status": "removed",
+        "name": "CloseShave"
+      },
+      "rbxassetid://6432920452": {
+        "status": "removed",
+        "name": "SideGunShot"
+      },
+      "rbxassetid://117160121128317": {
+        "status": "removed",
+        "name": "GreatMaulCrit"
+      },
+      "rbxassetid://15375131191": {
+        "status": "removed",
+        "name": "FlameScourge"
+      },
+      "rbxassetid://9930447958": {
+        "status": "removed",
+        "name": "RifleM1_3"
+      },
+      "rbxassetid://16261490439": {
+        "status": "removed",
+        "name": "MaestroTripleSlash"
+      },
+      "rbxassetid://16550960639": {
+        "status": "removed",
+        "name": "MetalFakeout"
+      },
+      "rbxassetid://75119009295288": {
+        "status": "removed",
+        "name": "dsdasdasda"
+      },
+      "rbxassetid://15121611060": {
+        "status": "removed",
+        "name": "RisingFrost"
+      },
+      "rbxassetid://119672037814127": {
+        "status": "removed",
+        "name": "UmbriteSwing2"
+      },
+      "rbxassetid://8161044711": {
+        "status": "removed",
+        "name": "LegionM1_3"
+      },
+      "rbxassetid://8249175106": {
+        "status": "removed",
+        "name": "RapierSlash1"
+      },
+      "rbxassetid://15248806343": {
+        "status": "removed",
+        "name": "DrakemawCrit"
+      },
+      "rbxassetid://16654105888": {
+        "status": "removed",
+        "name": "ImperialM1_2"
+      },
+      "rbxassetid://10437902558": {
+        "status": "removed",
+        "name": "IceGuyFlip"
+      },
+      "rbxassetid://5778357994": {
+        "status": "removed",
+        "name": "FlameRepulsion"
+      },
+      "rbxassetid://16654099937": {
+        "status": "removed",
+        "name": "ImperialM1_1"
+      },
+      "rbxassetid://12106095892": {
+        "status": "removed",
+        "name": "1CurvedSwing2"
+      },
+      "rbxassetid://6017393708": {
+        "status": "removed",
+        "name": "GaleLungeWindup"
+      },
+      "rbxassetid://18322559443": {
+        "status": "removed",
+        "name": "KyrswynterCrit"
+      },
+      "rbxassetid://12071557016": {
+        "status": "removed",
+        "name": "PetrasCritGo"
+      },
+      "rbxassetid://16536580165": {
+        "status": "removed",
+        "name": "QuartztoneCrit"
+      },
+      "rbxassetid://109165501462354": {
+        "status": "removed",
+        "name": "KyrsglaiveCrit"
+      },
+      "rbxassetid://9544206893": {
+        "status": "removed",
+        "name": "BounderLeap"
+      },
+      "rbxassetid://121003629056681": {
+        "status": "removed",
+        "name": "BloodFoulerM1_1"
+      },
+      "rbxassetid://8018953639": {
+        "status": "removed",
+        "name": "ShadowEruptionCast"
+      },
+      "rbxassetid://76185225375967": {
+        "status": "removed",
+        "name": "BloodtideRitualStart"
+      },
+      "rbxassetid://95071929775027": {
+        "status": "removed",
+        "name": "TwinbladeAerial"
+      },
+      "rbxassetid://18208445321": {
+        "status": "removed",
+        "name": "DeepspindleCrit"
+      },
+      "rbxassetid://131576892263777": {
+        "status": "removed",
+        "name": "LegionMasteryM1_2"
+      },
+      "rbxassetid://7391446645": {
+        "status": "removed",
+        "name": "NavaeCritical"
+      },
+      "rbxassetid://9717753391": {
+        "status": "removed",
+        "name": "FireBladeStarkindred"
+      },
+      "rbxassetid://8161039359": {
+        "status": "removed",
+        "name": "LegionM1_1"
+      },
+      "rbxassetid://9681421310": {
+        "status": "removed",
+        "name": "BoneBoyArmSweep1"
+      },
+      "rbxassetid://74422917176963": {
+        "status": "removed",
+        "name": "BlooudFoulerM1_3"
+      },
+      "rbxassetid://5064195992": {
+        "status": "removed",
+        "name": "BattleAxeSwing1"
+      },
+      "rbxassetid://6428533082": {
+        "status": "removed",
+        "name": "DeepSpiderBite"
+      },
+      "rbxassetid://18866452701": {
+        "status": "removed",
+        "name": "BoltcrusherCritRunning"
+      },
+      "rbxassetid://17665602554": {
+        "status": "removed",
+        "name": "TacetKick"
+      },
+      "rbxassetid://111024000122473": {
+        "status": "removed",
+        "name": "StoneKnightPunch"
+      },
+      "rbxassetid://9356892933": {
+        "status": "removed",
+        "name": "SharkoGun"
+      },
+      "rbxassetid://84773513700650": {
+        "status": "removed",
+        "name": "BloodCurdle"
+      },
+      "rbxassetid://13413457604": {
+        "status": "removed",
+        "name": "RadiantDawn"
+      }
+    },
+    "part": {
+      "ShadowShot": {
+        "status": "removed",
+        "name": "DeepspindleProjectile"
+      },
+      "ForgedBlade": {
+        "status": "removed",
+        "name": "WindForgeMultiplying"
+      },
+      "SpikeStabEff": {
+        "status": "removed",
+        "name": "SpikeStabEff"
+      },
+      "ArdourBall2": {
+        "status": "removed",
+        "name": "TrialOrbs"
+      },
+      "PhoenixFlash": {
+        "status": "removed",
+        "name": "FlameBlind"
+      },
+      "sphereinner": {
+        "status": "removed",
+        "name": "ScarletCannon"
+      },
+      "BoneSpear": {
+        "status": "removed",
+        "name": "BoneSpear"
+      },
+      "CENTER": {
+        "status": "removed",
+        "name": "GroundBones"
+      },
+      "SpearPart2": {
+        "status": "removed",
+        "name": "SpearPart2"
+      },
+      "StrikeIndicator": {
+        "status": "removed",
+        "name": "LightningStrike"
+      },
+      "SeekerOrb": {
+        "status": "removed",
+        "name": "ShadowSeekers"
+      },
+      "Rock": {
+        "status": "removed",
+        "name": "Rock"
+      },
+      "BluePart": {
+        "status": "removed",
+        "name": "FlameBallistaBlue"
+      },
+      "StarHail": {
+        "status": "removed",
+        "name": "PaleBriarCrit"
+      },
+      "SoulBeamPart": {
+        "status": "removed",
+        "name": "SoulBeamPart"
+      },
+      "Ball": {
+        "status": "removed",
+        "name": "FlameSentinel"
+      },
+      "WaveMesh": {
+        "status": "removed",
+        "name": "WaveMesh"
+      },
+      "FireBullet": {
+        "status": "removed",
+        "name": "FireBullet"
+      },
+      "SnareTrap": {
+        "status": "removed",
+        "name": "SnareTrap"
+      },
+      "WindSlashProjectileBig": {
+        "status": "removed",
+        "name": "WindSlashProjectile"
+      },
+      "SlotBall": {
+        "status": "removed",
+        "name": "SlotBall"
+      },
+      "WaterComing": {
+        "status": "removed",
+        "name": "AbyssalRidge"
+      },
+      "BloodSlash": {
+        "status": "removed",
+        "name": "CrimsonSurge"
+      },
+      "WindSlashProjectile": {
+        "status": "removed",
+        "name": "WindBlade"
+      },
+      "BoulderProjectile": {
+        "status": "removed",
+        "name": "BoulderProjectile"
+      },
+      "CBNormal": {
+        "status": "removed",
+        "name": "CurvedBlade"
+      },
+      "EruptionPart": {
+        "status": "removed",
+        "name": "Tornado"
+      },
+      "HitTendril": {
+        "status": "removed",
+        "name": "HitTendril"
+      },
+      "Bullet": {
+        "status": "removed",
+        "name": "Bullet"
+      },
+      "Slash": {
+        "status": "removed",
+        "name": "ArdourSlice"
+      },
+      "IceSlash": {
+        "status": "removed",
+        "name": "IceSlash"
+      },
+      "PerilousAttack": {
+        "status": "removed",
+        "name": "PerilousAttack"
+      },
+      "CrystalLaser": {
+        "status": "removed",
+        "name": "CrystalLaser"
+      },
+      "DukeBlast": {
+        "status": "removed",
+        "name": "DukeBlast"
+      },
+      "Cyclone": {
+        "status": "removed",
+        "name": "BloodCyclone"
+      },
+      "EruptionCylinder": {
+        "status": "removed",
+        "name": "EruptionCylinder"
+      },
+      "MetalRod2": {
+        "status": "removed",
+        "name": "MetalRod2"
+      },
+      "WindSlashProjectileBigSnow": {
+        "status": "removed",
+        "name": "SnowWindSlashProjectile"
+      }
+    },
+    "sound": {
+      "rbxassetid://94143618589454": {
+        "status": "removed",
+        "name": "TelegraphMinor"
+      },
+      "rbxassetid://376107250": {
+        "status": "removed",
+        "name": "SightlessBeamCharge"
+      },
+      "rbxassetid://18586599425": {
+        "status": "removed",
+        "name": "RputureSecond"
+      },
+      "rbxassetid://16482866961": {
+        "status": "removed",
+        "name": "KyrswynterCrit"
+      },
+      "rbxassetid://4953084421": {
+        "status": "removed",
+        "name": "Glare"
+      },
+      "rbxassetid://2198217232": {
+        "status": "removed",
+        "name": "Iceberg"
+      }
+    }
+  }
+}

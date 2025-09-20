@@ -4,13 +4,14 @@
 ---@field hitbox Vector3 The hitbox of the action.
 ---@field ihbc boolean Ignore hitbox check.
 ---@field name string The name of the action.
+---@field tp number Time position. Never accessible unless inside of a module or inside of real code. This is never serialized.
 local Action = {}
 Action.__index = Action
 
 ---Getter for when in seconds.
 ---@return number
 function Action:when()
-	return self._when / 1000
+	return PP_SCRAMBLE_NUM(self._when) / 1000
 end
 
 ---Load from partial values.
@@ -35,6 +36,33 @@ function Action:load(values)
 	if typeof(values.ihbc) == "boolean" then
 		self.ihbc = values.ihbc
 	end
+end
+
+---Equals check.
+---@param other Action
+---@return boolean
+function Action:equals(other)
+	if self._type ~= other._type then
+		return false
+	end
+
+	if self._when ~= other._when then
+		return false
+	end
+
+	if self.name ~= other.name then
+		return false
+	end
+
+	if self.hitbox ~= other.hitbox then
+		return false
+	end
+
+	if self.ihbc ~= other.ihbc then
+		return false
+	end
+
+	return true
 end
 
 ---Clone action.
@@ -78,6 +106,7 @@ function Action.new(values)
 	self.name = ""
 	self.hitbox = Vector3.zero
 	self.ihbc = false
+	self.tp = 0
 
 	if values then
 		self:load(values)

@@ -19,9 +19,8 @@ return function(self, timing)
 		action.hitbox = Vector3.new(50, 50, 50)
 		self:action(timing, action)
 	else
-		local info = RepeatInfo.new(timing)
+		local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 		info.track = self.track
-		info.irdelay = self.rdelay()
 
 		timing.fhb = false
 		timing.ieae = false

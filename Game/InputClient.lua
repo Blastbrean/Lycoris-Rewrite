@@ -358,20 +358,9 @@ InputClient.left = LPH_NO_VIRTUALIZE(function()
 	---@note: Missing M1-Hold and Input Buffering functionality but I don't think the caller cares about it.
 end)
 
----Parry function.
-InputClient.parry = LPH_NO_VIRTUALIZE(function()
-	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
-	if not effectReplicator then
-		return Logger.warn("Cannot parry without effect replicator.")
-	end
-
-	local effectReplicatorModule = require(effectReplicator)
-	if not effectReplicatorModule then
-		return Logger.warn("Cannot parry without effect replicator module.")
-	end
-
+---Deflect. This is called this way because it can either give parry or block frames depending on whether or not parry is on cooldown.
+InputClient.deflect = LPH_NO_VIRTUALIZE(function()
 	InputClient.bstart()
-
 	InputClient.bend()
 end)
 

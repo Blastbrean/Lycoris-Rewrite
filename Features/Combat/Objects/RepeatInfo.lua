@@ -4,20 +4,24 @@
 ---@field timing Timing
 ---@field start number
 ---@field index number
----@field irdelay number? Initial receive delay. Only needed for RPUE.
+---@field irdelay number Initial receive delay.
+---@field hmid number Hitbox visualization ID for repeat hitbox check.
 local RepeatInfo = {}
 RepeatInfo.__index = RepeatInfo
 
 ---Create new RepeatInfo object.
 ---@param timing Timing
+---@param irdelay number
+---@param hmid number
 ---@return RepeatInfo
-function RepeatInfo.new(timing)
+function RepeatInfo.new(timing, irdelay, hmid)
 	local self = setmetatable({}, RepeatInfo)
 	self.track = nil
 	self.timing = timing
 	self.start = os.clock()
 	self.index = 0
-	self.irdelay = nil
+	self.irdelay = irdelay
+	self.hmid = hmid
 	return self
 end
 

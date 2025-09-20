@@ -11,10 +11,18 @@ end
 -- Catch the ban evaders :groan:
 
 -- Initialize Luraph globals if they do not exist.
-if not LPH_OBFUSCATED then
-	loadstring([[
-		function LPH_NO_VIRTUALIZE(...) return ... end
-	]])()
+loadstring("getfenv().LPH_NO_VIRTUALIZE = function(...) return ... end")()
+
+getfenv().PP_SCRAMBLE_NUM = function(...)
+	return ...
+end
+
+getfenv().PP_SCRAMBLE_STR = function(...)
+	return ...
+end
+
+getfenv().PP_SCRAMBLE_RE_NUM = function(...)
+	return ...
 end
 
 ---@module Utility.Profiler

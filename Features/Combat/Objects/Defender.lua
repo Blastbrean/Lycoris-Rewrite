@@ -28,11 +28,14 @@ local Targeting = require("Features/Combat/Targeting")
 ---@module Features.Combat.PositionHistory
 local PositionHistory = require("Features/Combat/PositionHistory")
 
----@module Features.Combat.Objects.RepeatInfo
-local RepeatInfo = require("Features/Combat/Objects/RepeatInfo")
-
 ---@module Features.Combat.Objects.HitboxOptions
 local HitboxOptions = require("Features/Combat/Objects/HitboxOptions")
+
+---@module Utility.OriginalStore
+local OriginalStore = require("Utility/OriginalStore")
+
+---@module Features.Combat.EffectListener
+local EffectListener = require("Features/Combat/EffectListener")
 
 ---@class Defender
 ---@field tasks Task[]
@@ -40,10 +43,7 @@ local HitboxOptions = require("Features/Combat/Objects/HitboxOptions")
 ---@field rhook table<string, function> Hooked functions that we can restore on clean-up.
 ---@field markers table<string, boolean> Blocking markers for unknown length timings. If the entry exists and is true, then we're blocking.
 ---@field maid Maid
----@field vpart Part?
----@field ppart Part?
----@field pvpart Part?
----@field pppart Part?
+---@field hmaid Maid Maid for hitbox visualizations.
 local Defender = {}
 Defender.__index = Defender
 Defender.__type = "Defender"
@@ -54,11 +54,12 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 local userInputService = game:GetService("UserInputService")
 local players = game:GetService("Players")
 local textChatService = game:GetService("TextChatService")
+local debrisService = game:GetService("Debris")
 
 -- Constants.
 local MAX_VISUALIZATION_TIME = 5.0
 local MAX_REPEAT_WAIT = 10.0
-local PREDICTION_LENIENCY_MULTI = 10.0
+local PREDICTION_LENIENCY_MULTI = 5.0
 
 ---Log a miss to the UI library with distance check.
 ---@param type string
@@ -123,6 +124,16 @@ Defender.target = LPH_NO_VIRTUALIZE(function(self, entity)
 	return Targeting.find(entity)
 end)
 
+---Get extrapolated seconds.
+---@param self Defender
+---@param timing AnimationTiming
+---@return number
+Defender.fsecs = LPH_NO_VIRTUALIZE(function(self, timing)
+	local player = players:GetPlayerFromCharacter(self.entity)
+	local sd = (player and player:GetAttribute("AveragePing") or 50.0) / 2000
+	return (timing.pfht or 0.15) + (sd + Defender.rdelay())
+end)
+
 ---Repeat until parry end.
 ---@param self Defender
 ---@param entity Model
@@ -131,47 +142,49 @@ end)
 Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 	local distance = self:distance(entity)
 	if not distance then
-		return Logger.warn("Stopping RPUE '%s' because the distance is not valid.", timing.name)
+		return Logger.warn("Stopping RPUE '%s' because the distance is not valid.", PP_SCRAMBLE_STR(timing.name))
 	end
 
-	if timing and (distance < timing.imdd or distance > timing.imxd) then
+	if timing and (distance < PP_SCRAMBLE_NUM(timing.imdd) or distance > PP_SCRAMBLE_NUM(timing.imxd)) then
 		return self:notify(timing, "Distance is out of range.")
 	end
 
 	if not self:rc(info) then
-		return Logger.warn("Stopping RPUE '%s' because the repeat condition is not valid.", timing.name)
-	end
-
-	if not info.irdelay then
-		return Logger.warn("Stopping RPUE '%s' because the initial receive delay is not valid.", timing.name)
+		return Logger.warn(
+			"Stopping RPUE '%s' because the repeat condition is not valid.",
+			PP_SCRAMBLE_STR(timing.name)
+		)
 	end
 
 	local target = self:target(entity)
 
-	local options = HitboxOptions.new(CFrame.new(), timing)
-	options.spredict = true
-	options.part = target and target.root
+	local options = HitboxOptions.new(target and target.root or CFrame.new(), timing)
+	options.spredict = not timing.duih
+	options.ptime = self:fsecs(timing)
 	options.entity = entity
+	options.hmid = info.hmid
 
 	local success = target and self:hc(options, timing.duih and info or nil)
 
 	info.index = info.index + 1
 
-	self:mark(Task.new(string.format("RPUE_%s_%i", timing.name, info.index), function()
+	self:mark(Task.new(string.format("RPUE_%s_%i", PP_SCRAMBLE_STR(timing.name), info.index), function()
 		return timing:rpd() - info.irdelay - self.sdelay()
 	end, timing.punishable, timing.after, self.rpue, self, self.entity, timing, info))
 
 	if not target then
-		return Logger.warn("Skipping RPUE '%s' because the target is not valid.", timing.name)
+		return Logger.warn("Skipping RPUE '%s' because the target is not valid.", PP_SCRAMBLE_STR(timing.name))
 	end
 
 	if not success then
-		return Logger.warn("Skipping RPUE '%s' because we are not in the hitbox.", timing.name)
+		return Logger.warn("Skipping RPUE '%s' because we are not in the hitbox.", PP_SCRAMBLE_STR(timing.name))
 	end
 
-	self:notify(timing, "(%i) Action 'RPUE Parry' is being executed.", info.index)
+	if not timing.srpn then
+		self:notify(timing, "(%i) Action 'RPUE Parry' is being executed.", info.index)
+	end
 
-	InputClient.parry()
+	InputClient.deflect()
 end)
 
 ---Check if we're in a valid state to proceed with action handling. Extend me.
@@ -180,6 +193,13 @@ end)
 ---@param action Action
 ---@return boolean
 Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
+	local integer = Random.new():NextNumber(1.0, 100.0)
+	local rate = Configuration.expectOptionValue("FailureRate") or 0.0
+
+	if Configuration.expectToggleValue("AllowFailure") and integer <= rate then
+		return self:notify(timing, "(%i <= %i) Intentionally did not run.", integer, rate)
+	end
+
 	local keybinds = replicatedStorage:FindFirstChild("KeyBinds")
 	if not keybinds then
 		return self:notify(timing, "No keybinds instance found.")
@@ -193,11 +213,19 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	local selectedFilters = Configuration.expectOptionValue("AutoDefenseFilters") or {}
 
 	for _, keybind in next, keybindsModule.Current["Block"] or {} do
-		if not userInputService:IsKeyDown(Enum.KeyCode[tostring(keybind)]) then
+		local success, keyCode = pcall(function()
+			return Enum.KeyCode[tostring(keybind)]
+		end)
+
+		if not success or not keyCode then
 			continue
 		end
 
-		if not selectedFilters["Disable While Holding Block Key"] then
+		if not userInputService:IsKeyDown(keyCode) then
+			continue
+		end
+
+		if not selectedFilters["Disable While Holding Block"] then
 			continue
 		end
 
@@ -227,11 +255,7 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "No effect replicator module found.")
 	end
 
-	local lightAttack = effectReplicatorModule:FindEffect("LightAttack")
-	local lightAttackData = lightAttack and lightAttack.index
-	local lightAttackTimestamp = lightAttackData and lightAttackData.Timestamp
-
-	if lightAttackTimestamp and os.clock() - lightAttackTimestamp <= 0.25 then
+	if EffectListener.sstun() then
 		return self:notify(timing, "User has the 'LightAttack' effect.")
 	end
 
@@ -258,29 +282,63 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	return true
 end)
 
----Update visualizations.
+---Check if any parts that are in our filter were hit.
+---@note: Solara fallback.
+local function checkParts(parts, filter)
+	for _, part in next, parts do
+		for _, fpart in next, filter do
+			if part ~= fpart and not part:IsDescendantOf(fpart) then
+				continue
+			end
+
+			return true
+		end
+	end
+
+	return false
+end
+
+---Get a unique ID for hitboxes.
+---@param spaces number Determines how many spaces that one UID can occupy.
+---@return number
+function Defender:uid(spaces)
+	-- Increment.
+	self.uids = self.uids + spaces
+
+	-- Return.
+	return self.uids
+end
+
+---Visualize a position and size.
 ---@param self Defender
-Defender.vupdate = LPH_NO_VIRTUALIZE(function(self)
-	-- Calculate whether or not we should be showing visualizations.
-	local showVisualizations = Configuration.expectToggleValue("EnableVisualizations")
-		and os.clock() - self.lvisualization <= MAX_VISUALIZATION_TIME
+---@param identifier number? If the identifier is nil, then we will auto-generate one for each visualization.
+---@param cframe CFrame
+---@param size Vector3
+---@param color Color3
+Defender.visualize = LPH_NO_VIRTUALIZE(function(self, identifier, cframe, size, color)
+	local id = identifier or self:uid(10)
+	local vpart = self.hmaid[id] or Instance.new("Part")
 
-	-- Set transparency.
-	if self.vpart then
-		self.vpart.Transparency = showVisualizations and 0.2 or 1.0
+	vpart.Parent = workspace
+	vpart.Anchored = true
+	vpart.CanCollide = false
+	vpart.CanQuery = false
+	vpart.CanTouch = false
+	vpart.Material = Enum.Material.ForceField
+	vpart.CastShadow = false
+	vpart.Size = size
+	vpart.CFrame = cframe
+	vpart.Color = color
+	vpart.Name = string.format("RW_Visualization_%i", id)
+	vpart.Transparency = Configuration.expectToggleValue("EnableVisualizations") and 0.2 or 1.0
+
+	if self.hmaid[id] then
+		return
 	end
 
-	if self.ppart then
-		self.ppart.Transparency = showVisualizations and 0.2 or 1.0
-	end
+	self.hmaid[id] = vpart
 
-	if self.pvpart then
-		self.pvpart.Transparency = showVisualizations and 0.2 or 1.0
-	end
-
-	if self.pppart then
-		self.pppart.Transparency = showVisualizations and 0.2 or 1.0
-	end
+	debrisService:AddItem(vpart, MAX_VISUALIZATION_TIME)
 end)
 
 ---Run hitbox check. Returns wheter if the hitbox is being touched.
@@ -290,22 +348,23 @@ end)
 ---@param fd boolean
 ---@param size Vector3
 ---@param filter Instance[]
----@param identifier string
----@param predicted boolean
----@return boolean
-Defender.hitbox = LPH_NO_VIRTUALIZE(function(self, cframe, fd, size, filter, identifier, predicted)
+---@return boolean?, CFrame?
+Defender.hitbox = LPH_NO_VIRTUALIZE(function(self, cframe, fd, size, filter)
+	local shouldManualFilter = getexecutorname
+		and (getexecutorname():match("Solara") or getexecutorname():match("Xeno"))
+
 	local overlapParams = OverlapParams.new()
-	overlapParams.FilterDescendantsInstances = filter
-	overlapParams.FilterType = Enum.RaycastFilterType.Include
+	overlapParams.FilterDescendantsInstances = shouldManualFilter and {} or filter
+	overlapParams.FilterType = shouldManualFilter and Enum.RaycastFilterType.Exclude or Enum.RaycastFilterType.Include
 
 	local character = players.LocalPlayer.Character
 	if not character then
-		return nil
+		return nil, nil
 	end
 
 	local root = character:FindFirstChild("HumanoidRootPart")
 	if not root then
-		return nil
+		return nil, nil
 	end
 
 	-- Used CFrame.
@@ -315,63 +374,11 @@ Defender.hitbox = LPH_NO_VIRTUALIZE(function(self, cframe, fd, size, filter, ide
 		usedCFrame = usedCFrame * CFrame.new(0, 0, -(size.Z / 2))
 	end
 
-	-- Detect hit.
-	local hit = #workspace:GetPartBoundsInBox(usedCFrame, size, overlapParams) > 0
+	-- Parts in bounds.
+	local parts = workspace:GetPartBoundsInBox(usedCFrame, size, overlapParams)
 
-	-- Visualize color.
-	local visColor = hit and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
-
-	if predicted then
-		visColor = hit and Color3.fromRGB(255, 0, 255) or Color3.fromRGB(0, 0, 0)
-	end
-
-	-- Indexes.
-	local vpartIndex = predicted and "pvpart" or "vpart"
-	local ppartIndex = predicted and "pppart" or "ppart"
-
-	-- Create visualization part if it doesn't exist.
-	if not self[vpartIndex] then
-		-- Create part.
-		local vpart = Instance.new("Part")
-		vpart.Parent = workspace
-		vpart.Anchored = true
-		vpart.CanCollide = false
-		vpart.Material = Enum.Material.ForceField
-
-		-- Set part.
-		self[vpartIndex] = vpart
-	end
-
-	-- Create player part if it doesn't exist.
-	if not self[ppartIndex] then
-		-- Create part.
-		local ppart = Instance.new("Part")
-		ppart.Parent = workspace
-		ppart.Anchored = true
-		ppart.CanCollide = false
-		ppart.Material = Enum.Material.ForceField
-
-		-- Set part.
-		self[ppartIndex] = ppart
-	end
-
-	-- Visual part.
-	self[vpartIndex].Size = size
-	self[vpartIndex].CFrame = usedCFrame
-	self[vpartIndex].Color = visColor
-	self[vpartIndex].Name = string.format("VP_%s", identifier)
-
-	-- Player part.
-	self[ppartIndex].Size = root.Size
-	self[ppartIndex].CFrame = root.CFrame
-	self[ppartIndex].Color = visColor
-	self[ppartIndex].Name = string.format("PP_%s", identifier)
-
-	-- Set timestamp.
-	self.lvisualization = os.clock()
-
-	-- Return reuslt.
-	return hit
+	-- Return result.
+	return shouldManualFilter and checkParts(parts, filter) or #parts > 0, usedCFrame
 end)
 
 ---Check initial state.
@@ -392,7 +399,7 @@ Defender.initial = LPH_NO_VIRTUALIZE(function(self, from, pair, name, key)
 	end
 
 	-- Check for distance; if we have a timing.
-	if timing and (distance < timing.imdd or distance > timing.imxd) then
+	if timing and (distance < PP_SCRAMBLE_NUM(timing.imdd) or distance > PP_SCRAMBLE_NUM(timing.imxd)) then
 		return nil
 	end
 
@@ -416,7 +423,7 @@ Defender.notify = LPH_NO_VIRTUALIZE(function(self, timing, str, ...)
 		return
 	end
 
-	Logger.notify("[%s] (%s) %s", timing.name, self.__type, string.format(str, ...))
+	Logger.notify("[%s] (%s) %s", PP_SCRAMBLE_STR(timing.name), self.__type, string.format(str, ...))
 end)
 
 ---@note: Perhaps one day, we can get better approximations for these.
@@ -478,12 +485,15 @@ end)
 ---@param info RepeatInfo
 ---@return boolean
 Defender.duih = LPH_NO_VIRTUALIZE(function(self, options, info)
+	local clone = options:clone()
+	clone.hmid = info.hmid
+
 	while task.wait() do
 		if not self:rc(info) then
 			return false
 		end
 
-		if not self:hc(options, nil) then
+		if not self:hc(clone, nil) then
 			continue
 		end
 
@@ -494,36 +504,13 @@ end)
 ---Handle hitbox check options.
 ---@param self Defender
 ---@param options HitboxOptions
----@param info RepeatInfo? Pass this in if you want to use the repeat until in hitbox conditional.
+---@param info RepeatInfo? Pass this in if you want to use the delay until in hitbox.
 ---@return boolean
 Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 	local action = options.action
 	local timing = options.timing
 
-	if action and action.ihbc then
-		return true
-	end
-
-	if info then
-		return self:duih(options, info)
-	end
-
-	local hitbox = action and action.hitbox or timing.hitbox
-
-	if timing.duih then
-		hitbox = timing.hitbox
-	end
-
-	local result = self:hitbox(options:pos(), timing.fhb, hitbox, options.filter, timing.name, false)
-
-	if result then
-		return result
-	end
-
-	if not options.spredict then
-		return false
-	end
-
+	-- Run basic validation.
 	local character = players.LocalPlayer.Character
 	if not character then
 		return false
@@ -534,27 +521,53 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 		return false
 	end
 
-	local leniency = timing.duih and 1.0 or PREDICTION_LENIENCY_MULTI
+	if action and action.ihbc then
+		return true
+	end
 
-	---@note: Multiply for some leniency since it is better to be over than miss
-	local closest = PositionHistory.closest(tick() - (self.sdelay() * leniency))
+	-- If we have info, then we want to delay until in hitbox.
+	if info then
+		return self:duih(options, info)
+	end
+
+	-- Fetch the data that we need.
+	local hitbox = options:hitbox()
+	local eposition = options.spredict and options:extrapolate() or nil
+	local position = options:pos()
+
+	-- Run hitbox check.
+	local result, usedCFrame = self:hitbox(position, timing.fhb, hitbox, options.filter)
+
+	if usedCFrame then
+		self:visualize(options.hmid, usedCFrame, hitbox, options:ghcolor(result))
+		self:visualize(options.hmid and options.hmid + 1 or nil, root.CFrame, root.Size, options:ghcolor(result))
+	end
+
+	if not options.spredict or result then
+		return result
+	end
+
+	-- Run prediction check.
+	local closest = PositionHistory.closest(players.LocalPlayer, tick() - (self.sdelay() * PREDICTION_LENIENCY_MULTI))
 	if not closest then
 		return false
 	end
 
-	local oldCFrame = root.CFrame
+	local store = OriginalStore.new()
 
-	root.CFrame = closest
+	-- Run check.
+	store:run(root, "CFrame", closest, function()
+		result, usedCFrame = self:hitbox(eposition, timing.fhb, hitbox, options.filter)
+	end)
 
-	result = self:hitbox(options:extrapolate(leniency), timing.fhb, hitbox, options.filter, timing.name, true)
-
-	root.CFrame = oldCFrame
-
-	if not result then
-		return false
+	-- Visualize predicted hitbox.
+	if usedCFrame then
+		self:visualize(options.hmid and options.hmid + 1 or nil, usedCFrame, hitbox, options:gphcolor(result))
+		self:visualize(options.hmid and options.hmid + 1 or nil, root.CFrame, root.Size, options:gphcolor(result))
 	end
 
-	return true
+	-- Return result.
+	return result
 end)
 
 ---Handle end block.
@@ -588,8 +601,8 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 		return
 	end
 
-	if notify then
-		self:notify(timing, "Action type '%s' is being executed.", action._type)
+	if not notify then
+		self:notify(timing, "Action type '%s' is being executed.", PP_SCRAMBLE_STR(action._type))
 	end
 
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
@@ -602,33 +615,39 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 		return
 	end
 
-	if action._type == "Start Block" then
+	-- Dash instead of parry.
+	local dashReplacement = Random.new():NextNumber(1.0, 100.0)
+		<= (Configuration.expectOptionValue("DashInsteadOfParryRate") or 0.0)
+
+	if PP_SCRAMBLE_STR(action._type) ~= "Parry" then
+		dashReplacement = false
+	end
+
+	if not Configuration.expectToggleValue("AllowFailure") then
+		dashReplacement = false
+	end
+
+	if timing.umoa or timing.actions:count() ~= 1 then
+		dashReplacement = false
+	end
+
+	if PP_SCRAMBLE_STR(action._type) == "Start Block" then
 		return InputClient.bstart()
 	end
 
-	if action._type == "End Block" then
+	if PP_SCRAMBLE_STR(action._type) == "End Block" then
 		return self:bend()
 	end
 
-	if action._type == "Dodge" or action._type == "Forced Full Dodge" then
-		if effectReplicatorModule:FindEffect("DodgeCool") then
-			return self:notify(timing, "Action group 'Dodge' blocked because of 'DodgeCool' effect.")
-		end
-
-		if effectReplicatorModule:FindEffect("Stun") then
-			return self:notify(timing, "Action group 'Dodge' blocked because of 'Stun' effect.")
-		end
-	end
-
-	if action._type == "Dodge" then
+	if PP_SCRAMBLE_STR(action._type) == "Dodge" then
 		return InputClient.dodge(false)
 	end
 
-	if action._type == "Forced Full Dodge" then
+	if PP_SCRAMBLE_STR(action._type) == "Forced Full Dodge" then
 		return InputClient.dodge(true)
 	end
 
-	if action._type == "Jump" then
+	if PP_SCRAMBLE_STR(action._type) == "Jump" then
 		local character = players.LocalPlayer.Character
 		if not character then
 			return
@@ -642,7 +661,7 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 		return humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	end
 
-	if action._type == "Teleport Up" then
+	if PP_SCRAMBLE_STR(action._type) == "Teleport Up" then
 		local character = players.LocalPlayer.Character
 		if not character then
 			return
@@ -662,25 +681,40 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 
 	-- Parry if possible.
 	-- We'll assume that we're in the parry state. There's no other type.
-	if not effectReplicatorModule:FindEffect("ParryCool") and effectReplicatorModule:FindEffect("Equipped") then
-		return InputClient.parry()
+	if EffectListener.cparry() then
+		if timing.nfdb or not EffectListener.cdodge() or not dashReplacement then
+			return InputClient.deflect()
+		end
+
+		self:notify(timing, "Action type 'Parry' replaced to 'Dodge' type.")
+
+		return InputClient.dodge()
+	end
+
+	---Block fallback function. Returns whether the fallback was successful.
+	---@return boolean
+	local function blockFallback()
+		if not Configuration.expectToggleValue("DeflectBlockFallback") then
+			return false
+		end
+
+		Defender:notify(timing, "Action fallback 'Parry' is using block frames.")
+		InputClient.deflect()
+
+		return true
 	end
 
 	-- Dodge fallback.
 	if not Configuration.expectToggleValue("RollOnParryCooldown") then
-		return
+		return blockFallback()
 	end
 
 	if timing.ndfb then
 		return self:notify(timing, "Action fallback 'Dodge' is disabled for this timing.")
 	end
 
-	if effectReplicatorModule:FindEffect("Stun") then
-		return self:notify(timing, "Action fallback 'Dodge' blocked because of 'Stun' effect.")
-	end
-
-	if effectReplicatorModule:FindEffect("DodgeCool") then
-		return self:notify(timing, "Action fallback 'Dodge' blocked because of 'DodgeCool' effect.")
+	if not EffectListener.cdodge() then
+		return blockFallback() or self:notify(timing, "Action fallback 'Dodge' blocked because we are unable to dash.")
 	end
 
 	self:notify(timing, "Action type 'Parry' overrided to 'Dodge' type.")
@@ -740,22 +774,8 @@ Defender.clean = LPH_NO_VIRTUALIZE(function(self)
 	-- Clear markers.
 	self.markers = {}
 
-	-- Teleport visualizations away.
-	if self.vpart then
-		self.vpart.CFrame = CFrame.new(math.huge, math.huge, math.huge)
-	end
-
-	if self.ppart then
-		self.ppart.CFrame = CFrame.new(math.huge, math.huge, math.huge)
-	end
-
-	if self.pvpart then
-		self.pvpart.CFrame = CFrame.new(math.huge, math.huge, math.huge)
-	end
-
-	if self.pppart then
-		self.pppart.CFrame = CFrame.new(math.huge, math.huge, math.huge)
-	end
+	-- Clean up hitboxes.
+	self.hmaid:clean()
 
 	-- Was there a start block, end block, or parry?
 	local blocking = false
@@ -784,17 +804,17 @@ end)
 ---@varargs any
 Defender.module = LPH_NO_VIRTUALIZE(function(self, timing, ...)
 	-- Get loaded function.
-	local lf = ModuleManager.modules[timing.smod]
+	local lf = ModuleManager.modules[PP_SCRAMBLE_STR(timing.smod)]
 	if not lf then
-		return self:notify(timing, "No module '%s' found.", timing.smod)
+		return self:notify(timing, "No module '%s' found.", PP_SCRAMBLE_STR(timing.smod))
 	end
 
 	-- Create identifier.
-	local identifier = string.format("Defender_RunModule_%s", timing.smod)
+	local identifier = string.format("Defender_RunModule_%s", PP_SCRAMBLE_STR(timing.smod))
 
 	-- Notify.
 	if not timing.smn then
-		self:notify(timing, "Running module '%s' on timing.", timing.smod)
+		self:notify(timing, "Running module '%s' on timing.", PP_SCRAMBLE_STR(timing.smod))
 	end
 
 	-- Run module.
@@ -806,22 +826,42 @@ end)
 ---@param timing Timing
 ---@param action Action
 Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
+	if timing.umoa then
+		action["_type"] = PP_SCRAMBLE_STR(action["_type"])
+		action["name"] = PP_SCRAMBLE_STR(action["name"])
+		action["_when"] = PP_SCRAMBLE_RE_NUM(action["_when"])
+		action["hitbox"] = Vector3.new(
+			PP_SCRAMBLE_RE_NUM(action["hitbox"].X),
+			PP_SCRAMBLE_RE_NUM(action["hitbox"].Y),
+			PP_SCRAMBLE_RE_NUM(action["hitbox"].Z)
+		)
+	end
+
 	-- Get initial receive delay.
 	local rdelay = self.rdelay()
 
 	-- Add action.
-	self:mark(Task.new(action._type, function()
+	self:mark(Task.new(PP_SCRAMBLE_STR(action._type), function()
 		return action:when() - rdelay - self.sdelay()
-	end, timing.punishable, timing.after, self.handle, self, timing, action, true))
+	end, timing.punishable, timing.after, self.handle, self, timing, action))
 
 	-- Log.
-	self:notify(
-		timing,
-		"Added action '%s' (%.2fs) with ping '%.2f' (changing) subtracted.",
-		action.name,
-		action:when(),
-		self.rtt()
-	)
+	if not LRM_UserNote or LRM_UserNote == "tester" then
+		self:notify(
+			timing,
+			"Added action '%s' (%.2fs) with ping '%.2f' (changing) subtracted.",
+			PP_SCRAMBLE_STR(action.name),
+			action:when(),
+			self.rtt()
+		)
+	else
+		self:notify(
+			timing,
+			"Added action '%s' ([redacted]) with ping '%.2f' (changing) subtracted.",
+			PP_SCRAMBLE_STR(action.name),
+			self.rtt()
+		)
+	end
 end)
 
 ---Add actions from timing to defender object.
@@ -871,22 +911,8 @@ function Defender:detach()
 	self:clean()
 	self.maid:clean()
 
-	-- Destroy parts.
-	if self.vpart then
-		self.vpart:Destroy()
-	end
-
-	if self.ppart then
-		self.ppart:Destroy()
-	end
-
-	if self.pvpart then
-		self.pvpart:Destroy()
-	end
-
-	if self.pppart then
-		self.pppart:Destroy()
-	end
+	-- Clean up hitboxes.
+	self.hmaid:clean()
 
 	-- Set object nil.
 	self = nil
@@ -900,8 +926,8 @@ function Defender.new()
 	self.rhook = {}
 	self.tmaid = Maid.new()
 	self.maid = Maid.new()
-	self.ppart = nil
-	self.vpart = nil
+	self.hmaid = Maid.new()
+	self.uids = 0
 	self.markers = {}
 	self.lvisualization = os.clock()
 	return self

@@ -4,6 +4,9 @@ local CombatTab = {}
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
+---@module Features.Combat.Defense
+local Defense = require("Features/Combat/Defense")
+
 -- Initialize combat targeting section.
 ---@param tab table
 function CombatTab.initCombatTargetingSection(tab)
@@ -139,11 +142,17 @@ function CombatTab.initAutoDefenseSection(groupbox)
 	autoDefenseDepBox:AddToggle("EnableVisualizations", {
 		Text = "Enable Visualizations",
 		Default = false,
+		Callback = Defense.visualizations,
 	})
-
 	autoDefenseDepBox:AddToggle("RollOnParryCooldown", {
 		Text = "Roll On Parry Cooldown",
 		Default = false,
+	})
+
+	autoDefenseDepBox:AddToggle("DeflectBlockFallback", {
+		Text = "Deflect Block Fallback",
+		Default = false,
+		Tooltip = "If enabled, the auto defense will fallback to block frames if parry action and/or fallback is not available.",
 	})
 
 	local rollCancelToggle = autoDefenseDepBox:AddToggle("RollCancel", {
@@ -166,6 +175,54 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		{ rollCancelToggle, true },
 	})
 
+	local afToggle = autoDefenseDepBox:AddToggle("AllowFailure", {
+		Text = "Allow Failure",
+		Default = false,
+		Tooltip = "If enabled, the auto defense will sometimes intentionally fail to parry/deflect.",
+	})
+
+	local afDepBox = autoDefenseDepBox:AddDependencyBox()
+
+	afDepBox:AddSlider("FailureRate", {
+		Text = "Failure Rate",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Suffix = "%",
+		Rounding = 2,
+	})
+
+	afDepBox:AddSlider("DashInsteadOfParryRate", {
+		Text = "Dash Instead Of Parry Rate",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Suffix = "%",
+		Rounding = 2,
+	})
+
+	afDepBox:AddSlider("FakeMistimeRate", {
+		Text = "Fake Parry Mistime Rate",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Suffix = "%",
+		Rounding = 2,
+	})
+
+	afDepBox:AddSlider("IgnoreAnimationEndRate", {
+		Text = "Ignore Animation End Rate",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Suffix = "%",
+		Rounding = 2,
+	})
+
+	afDepBox:SetupDependencies({
+		{ afToggle, true },
+	})
+
 	autoDefenseDepBox:AddDropdown("AutoDefenseFilters", {
 		Text = "Auto Defense Filters",
 		Values = {
@@ -175,7 +232,7 @@ function CombatTab.initAutoDefenseSection(groupbox)
 			"Filter Out Undefined",
 			"Disable When Textbox Focused",
 			"Disable When Window Not Active",
-			"Disable While Holding Block Key",
+			"Disable While Holding Block",
 		},
 		Multi = true,
 		AllowNull = true,

@@ -10,6 +10,9 @@ local Configuration = require("Utility/Configuration")
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
+---@module Game.KeyHandling
+local KeyHandling = require("Game/KeyHandling")
+
 -- Services.
 local players = game:GetService("Players")
 
@@ -238,6 +241,28 @@ function GameTab.initLocalCharacterSection(groupbox)
 
 			character:PivotTo(humanoidRootPart.CFrame * CFrame.new(0, 10000000, 0))
 		end,
+	})
+
+	groupbox:AddButton({
+		Text = "Deal Fall Damage To Self",
+		DoubleClick = true,
+		Func = function()
+			local remote = KeyHandling.getRemote("FallDamage")
+			if not remote then
+				return Logger.notify("Failed to find fall damage remote.")
+			end
+
+			remote:FireServer(Configuration.expectOptionValue("FallDamageAmount") or 0.0, false)
+		end,
+	})
+
+	groupbox:AddSlider("FallDamageAmount", {
+		Text = "Fall Damage Amount",
+		Default = 50,
+		Min = 0,
+		Max = 1000,
+		Suffix = "hp",
+		Rounding = 0,
 	})
 
 	agilitySpoofDepBox:SetupDependencies({

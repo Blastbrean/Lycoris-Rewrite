@@ -17,7 +17,8 @@ local ActionContainer = require("Game/Timings/ActionContainer")
 ---@field smod string Selected module string.
 ---@field aatk boolean Allow attacking.
 ---@field fhb boolean Hitbox facing offset.
----@field ndfb boolean No dodge fallback.
+---@field ndfb boolean No dash fallback.
+---@field scrambled boolean Scrambled?
 local Timing = {}
 Timing.__index = Timing
 
@@ -99,6 +100,85 @@ function Timing:load(values)
 	if typeof(values.ndfb) == "boolean" then
 		self.ndfb = values.ndfb
 	end
+
+	if typeof(values.scrambled) == "boolean" then
+		self.scrambled = values.scrambled
+	end
+end
+
+---Equals check.
+---@param other Timing
+---@return boolean
+function Timing:equals(other)
+	if self.name ~= other.name then
+		return false
+	end
+
+	if self.tag ~= other.tag then
+		return false
+	end
+
+	if self.imdd ~= other.imdd then
+		return false
+	end
+
+	if self.imxd ~= other.imxd then
+		return false
+	end
+
+	if self.duih ~= other.duih then
+		return false
+	end
+
+	if self.punishable ~= other.punishable then
+		return false
+	end
+
+	if self.after ~= other.after then
+		return false
+	end
+
+	if not self.actions:equals(other.actions) then
+		return false
+	end
+
+	if self.smn ~= other.smn then
+		return false
+	end
+
+	if self.hitbox ~= other.hitbox then
+		return false
+	end
+
+	if self.umoa ~= other.umoa then
+		return false
+	end
+
+	if self.srpn ~= other.srpn then
+		return false
+	end
+
+	if self.smod ~= other.smod then
+		return false
+	end
+
+	if self.aatk ~= other.aatk then
+		return false
+	end
+
+	if self.fhb ~= other.fhb then
+		return false
+	end
+
+	if self.ndfb ~= other.ndfb then
+		return false
+	end
+
+	if self.scrambled ~= other.scrambled then
+		return false
+	end
+
+	return true
 end
 
 ---Clone timing.
@@ -122,6 +202,7 @@ function Timing:clone()
 	clone.aatk = self.aatk
 	clone.fhb = self.fhb
 	clone.ndfb = self.ndfb
+	clone.scrambled = self.scrambled
 
 	return clone
 end
@@ -150,6 +231,9 @@ function Timing:serialize()
 		aatk = self.aatk,
 		fhb = self.fhb,
 		ndfb = self.ndfb,
+		scrambled = self.scrambled,
+		phd = self.phd,
+		pfh = self.pfh,
 	}
 end
 
@@ -175,6 +259,7 @@ function Timing.new(values)
 	self.aatk = false
 	self.fhb = true
 	self.ndfb = false
+	self.scrambled = false
 
 	if values then
 		self:load(values)

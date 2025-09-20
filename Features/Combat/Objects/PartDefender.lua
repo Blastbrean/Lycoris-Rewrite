@@ -47,7 +47,10 @@ PartDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	options.spredict = false
 	options.action = action
 
-	if not self.timing.duih and not self:hc(options, timing.duih and RepeatInfo.new(timing) or nil) then
+	if
+		not self.timing.duih
+		and not self:hc(options, timing.duih and RepeatInfo.new(timing, self.rdelay(), self:uid(10)) or nil)
+	then
 		return self:notify(timing, "Not in hitbox.")
 	end
 
@@ -77,10 +80,13 @@ PartDefender.update = LPH_NO_VIRTUALIZE(function(self)
 		return
 	end
 
+	local hb = self.timing.hitbox
+
+	hb = Vector3.new(PP_SCRAMBLE_NUM(hb.X), PP_SCRAMBLE_NUM(hb.Y), PP_SCRAMBLE_NUM(hb.Z))
+
 	-- Get current hitbox state.
 	---@note: If we're using PartDefender, why perserve rotation? It's likely wrong or gonna mess us up.
-	local touching =
-		self:hitbox(self:cframe(), self.timing.fhb, self.timing.hitbox, { character }, self.timing.name, false)
+	local touching = self:hitbox(self:cframe(), self.timing.fhb, hb, { character }, PP_SCRAMBLE_STR(self.timing.name))
 
 	-- Deny updates if we're not touching the part.
 	if not touching then

@@ -26,8 +26,7 @@ return function(self, timing)
 	timing.hitbox = Vector3.new(60, 20, 60)
 
 	local track = Waiter.fet("rbxassetid://10622235550", animator)
-	local info = RepeatInfo.new(timing)
+	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 	info.track = track
-	info.irdelay = self.rdelay()
 	self:rpue(self.entity, timing, info)
 end

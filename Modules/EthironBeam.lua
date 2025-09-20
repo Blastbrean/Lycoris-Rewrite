@@ -14,9 +14,8 @@ return function(self, timing)
 	end
 
 	if hrp:WaitForChild("REP_SOUND_2019633907", 0.1) then
-		local info = RepeatInfo.new(timing)
+		local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 		info.track = self.track
-		info.irdelay = self.rdelay()
 
 		timing.fhb = false
 		timing.ieae = true

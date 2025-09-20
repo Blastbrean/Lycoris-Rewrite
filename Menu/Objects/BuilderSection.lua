@@ -83,7 +83,7 @@ function BuilderSection:reset()
 	self.skipModuleNotification:SetRawValue(false)
 	self.selectedModule:SetRawValue("")
 	self.skipRepeatNotification:SetRawValue(false)
-	self.noDodgeFallback:SetRawValue(false)
+	self.noDashFallback:SetRawValue(false)
 	self.hitboxFacingOffset:SetRawValue(true)
 
 	-- Reset action list.
@@ -305,7 +305,7 @@ function BuilderSection:baction(base)
 
 	self.actionType = base:AddDropdown(nil, {
 		Text = "Action Type",
-		Values = { "Parry", "Dodge", "Start Block", "End Block", "Forced Full Dodge", "Jump" },
+		Values = { "Parry", "Dash", "Start Block", "End Block" },
 		Default = 1,
 		Callback = self:anc(function(action, value)
 			action._type = value
@@ -508,7 +508,7 @@ function BuilderSection:timing()
 			self.selectedModule:SetRawValue(found.smod)
 			self.skipRepeatNotification:SetRawValue(found.srpn)
 			self.hitboxFacingOffset:SetRawValue(found.fhb)
-			self.noDodgeFallback:SetRawValue(found.ndfb)
+			self.noDashFallback:SetRawValue(found.ndfb)
 
 			-- Load extra elements.
 			self:exload(found)
@@ -790,9 +790,9 @@ function BuilderSection:builder()
 		end),
 	})
 
-	self.noDodgeFallback = tab:AddToggle(nil, {
-		Text = "No Dodge Fallback",
-		Tooltip = "If enabled, the timing will not fallback to a dodge if the parry action is not available.",
+	self.noDashFallback = tab:AddToggle(nil, {
+		Text = "No Dash Fallback",
+		Tooltip = "If enabled, the timing will not fallback to a dash if the parry action is not available.",
 		Default = false,
 		Callback = self:tnc(function(timing, value)
 			timing.ndfb = value

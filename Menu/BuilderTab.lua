@@ -68,12 +68,24 @@ end
 ---Initialize save manager section.
 ---@param groupbox table
 function BuilderTab.initSaveManagerSection(groupbox)
-	groupbox:AddToggle("AutoSaveOnLeave", {
-		Text = "Auto Save On Leave",
+	local pasToggle = groupbox:AddToggle("PeriodicAutoSave", {
+		Text = "Auto Save Periodically",
 		Default = true,
-		Callback = function(value)
-			SaveManager.sautos = value
-		end,
+	})
+
+	local pasDepBox = groupbox:AddDependencyBox()
+
+	pasDepBox:AddSlider("PeriodicAutoSaveInterval", {
+		Text = "Auto Save Interval",
+		Min = 1,
+		Max = 240,
+		Rounding = 0,
+		Suffix = "s",
+		Default = 60,
+	})
+
+	pasDepBox:SetupDependencies({
+		{ pasToggle, true },
 	})
 
 	local configName = groupbox:AddInput("ConfigName", {
@@ -267,11 +279,6 @@ function BuilderTab.init(window)
 	BuilderTab.initModuleManagerSection(tab:AddDynamicGroupbox("Module Manager"))
 	BuilderTab.initLoggerSection(tab:AddDynamicGroupbox("Logger"))
 	BuilderTab.initGlobalChangesSection(tab:AddDynamicGroupbox("Global Changes"))
-
-	-- Don't initialize builder tab if we're not the 'builder' role.
-	if armorshield and armorshield.current_role ~= "builder" then
-		return
-	end
 
 	-- Create builder sections.
 	BuilderTab.abs =

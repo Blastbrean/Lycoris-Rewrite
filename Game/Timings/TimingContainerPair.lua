@@ -20,6 +20,7 @@ end
 ---@param key any?
 ---@return Timing?
 function TimingContainerPair:index(key)
+	key = PP_SCRAMBLE_STR(key)
 	return self.config.timings[key] or self.internal.timings[key]
 end
 

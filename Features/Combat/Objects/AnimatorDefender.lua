@@ -28,8 +28,18 @@ local HitboxOptions = require("Features/Combat/Objects/HitboxOptions")
 ---@module Features.Combat.Objects.Task
 local Task = require("Features/Combat/Objects/Task")
 
+---@module Utility.OriginalStore
+local OriginalStore = require("Utility/OriginalStore")
+
+---@module Features.Combat.PositionHistory
+local PositionHistory = require("Features/Combat/PositionHistory")
+
+---@module Features.Combat.EffectListener
+local EffectListener = require("Features/Combat/EffectListener")
+
 ---@class AnimatorDefender: Defender
 ---@field animator Animator
+---@field offset number?
 ---@field entity Model
 ---@field heffects Instance[]
 ---@field keyframes Action[]
@@ -49,6 +59,8 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 
 -- Constants.
 local MAX_REPEAT_TIME = 5.0
+local HISTORY_STEPS = 5.0
+local PREDICT_FACING_DELTA = 0.3
 
 ---Is animation stopped? Made into a function for de-duplication.
 ---@param self AnimatorDefender
@@ -56,6 +68,16 @@ local MAX_REPEAT_TIME = 5.0
 ---@param timing AnimationTiming
 ---@return boolean
 AnimatorDefender.stopped = LPH_NO_VIRTUALIZE(function(self, track, timing)
+	if
+		Configuration.expectToggleValue("AllowFailure")
+		and not timing.umoa
+		and not timing.rpue
+		and Random.new():NextNumber(1.0, 100.0) <= (Configuration.expectOptionValue("IgnoreAnimationEndRate") or 0.0)
+		and EffectListener.cdodge()
+	then
+		return false, self:notify(timing, "Intentionally ignoring animation end to simulate human error.")
+	end
+
 	if not timing.iae and not track.IsPlaying then
 		return true, self:notify(timing, "Animation stopped playing.")
 	end
@@ -75,7 +97,7 @@ AnimatorDefender.rc = LPH_NO_VIRTUALIZE(function(self, info)
 	if not info.track then
 		return Logger.warn(
 			"(%s) Did you forget to pass the track? Or perhaps you forgot to place a hook before using this function.",
-			info.timing.name
+			PP_SCRAMBLE_STR(info.timing.name)
 		)
 	end
 
@@ -83,11 +105,85 @@ AnimatorDefender.rc = LPH_NO_VIRTUALIZE(function(self, info)
 		return false
 	end
 
-	if info.timing.iae and info.timing.ieae and os.clock() - info.start >= MAX_REPEAT_TIME then
-		return self:notify(info.timing, "Max repeat time exceeded.")
+	if info.timing.iae and os.clock() - info.start >= ((info.timing.mat / 1000) or MAX_REPEAT_TIME) then
+		return self:notify(info.timing, "Max animation timeout exceeded.")
 	end
 
 	return true
+end)
+
+---Run predict facing hitbox check.
+---@param self AnimatorDefender
+---@param options HitboxOptions
+---@return boolean
+AnimatorDefender.pfh = LPH_NO_VIRTUALIZE(function(self, options)
+	local yrate = PositionHistory.yrate(self.entity)
+	if not yrate then
+		return false
+	end
+
+	local root = self.entity:FindFirstChild("HumanoidRootPart")
+	if not root then
+		return false
+	end
+
+	local localRoot = players.LocalPlayer.Character and players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+	if not localRoot then
+		return false
+	end
+
+	if math.abs(yrate) < PREDICT_FACING_DELTA then
+		return
+	end
+
+	local clone = options:clone()
+	clone.spredict = false
+	clone.hcolor = Color3.new(0, 1, 1)
+	clone.mcolor = Color3.new(1, 1, 0)
+
+	local result = false
+	local store = OriginalStore.new()
+
+	store:run(root, "CFrame", CFrame.lookAt(root.Position, localRoot.Position), function()
+		result = self:hc(clone, nil)
+	end)
+
+	return result
+end)
+
+---Run past hitbox check.
+---@param timing Timing
+---@param options HitboxOptions
+---@return boolean
+AnimatorDefender.phd = LPH_NO_VIRTUALIZE(function(self, timing, options)
+	for _, cframe in next, PositionHistory.stepped(self.entity, HISTORY_STEPS, timing.phds) or {} do
+		local clone = options:clone()
+		clone.spredict = false
+		clone.cframe = cframe
+		clone.hcolor = Color3.new(0.839215, 0.976470, 0.537254)
+		clone.mcolor = Color3.new(0.564705, 0, 1)
+
+		if not self:hc(clone, nil) then
+			continue
+		end
+
+		return true
+	end
+end)
+
+---Run our facing extrapolation / interpolation.
+AnimatorDefender.fpc = LPH_NO_VIRTUALIZE(function(self, timing, options)
+	if timing.duih then
+		return false
+	end
+
+	if timing.pfh and self:pfh(options) then
+		return true
+	end
+
+	if timing.phd and self:phd(timing, options) then
+		return true
+	end
 end)
 
 ---Check if we're in a valid state to proceed with the action.
@@ -160,18 +256,25 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	end
 
 	local options = HitboxOptions.new(root, timing)
-	options.spredict = true
+	options.spredict = not timing.duih and not timing.dp
+	options.ptime = self:fsecs(timing)
 	options.action = action
 	options.entity = self.entity
 
-	local info = RepeatInfo.new(timing)
+	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 	info.track = self.track
 
-	if not self:hc(options, timing.duih and info or nil) then
-		return self:notify(timing, "Not in hitbox.")
+	local hc = self:hc(options, timing.duih and info or nil)
+	if hc then
+		return true
 	end
 
-	return true
+	local pc = self:fpc(timing, options)
+	if pc then
+		return true
+	end
+
+	return self:notify(timing, "Not in hitbox.")
 end)
 
 ---Update keyframe handling.
@@ -273,32 +376,37 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 		return
 	end
 
-	local midAttackEffect = effectReplicatorModule:FindEffect("MidAttack")
-	local midAttackData = midAttackEffect and midAttackEffect.index
-	local midAttackExpiry = midAttackData and midAttackData.Expiration
-	local midAttackCanFeint = midAttackExpiry and (os.clock() - midAttackExpiry) <= 0.45
-
-	-- Stop! We need to feint if we're currently attacking. Input block will handle the rest.
-	-- Assume, we cannot react in time. Example: we attacked just right before this process call.
-	local shouldFeintAttack = midAttackCanFeint and Configuration.expectToggleValue("FeintM1WhileDefending")
-	local shouldFeintMantra = effectReplicatorModule:FindEffect("CastingSpell")
-		and Configuration.expectToggleValue("FeintMantrasWhileDefending")
-
-	---@todo: Auto-feint should work on all types and should try to be feinting during every waiting period.
-	if not effectReplicatorModule:FindEffect("FeintCool") and (shouldFeintAttack or shouldFeintMantra) then
-		-- Log.
-		self:notify(timing, "Automatically feinting attack.")
-
-		-- Feint.
-		InputClient.feint()
-	end
-
 	---@note: Clean up previous tasks that are still waiting or suspended because they're in a different track.
 	self:clean()
 
 	-- Set current data.
 	self.timing = timing
 	self.track = track
+	self.offset = self.rdelay()
+
+	-- Fake mistime rate.
+	---@type Action?
+	local _, faction = next(timing.actions._data)
+
+	-- Obviously, we don't want any modules where we don't know how many actions there are.
+	-- We don't want any actions that have a count that is not equal to 1.
+	-- We need to check if we can atleast dash, because we will be going to are fallback.
+	-- We must also check if our action isn't too short or is not a parry type, defeating the purpose.
+	if
+		Configuration.expectToggleValue("AllowFailure")
+		and not timing.umoa
+		and not timing.rpue
+		and timing.actions:count() == 1
+		and Random.new():NextNumber(1.0, 100.0) <= (Configuration.expectOptionValue("FakeMistimeRate") or 0.0)
+		and EffectListener.cdodge()
+		and faction
+		and PP_SCRAMBLE_STR(faction._type) == "Parry"
+		and faction:when() > (self.rtt() + 0.6)
+	then
+		InputClient.deflect()
+
+		self:notify(timing, "Intentionally mistimed to simulate human error.")
+	end
 
 	-- Use module over actions.
 	if timing.umoa then
@@ -311,23 +419,31 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	end
 
 	-- Start RPUE.
-	local info = RepeatInfo.new(timing)
+	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 	info.track = track
-	info.irdelay = self.rdelay()
 
 	self:mark(Task.new(string.format("RPUE_%s_%i", timing.name, 0), function()
 		return timing:rsd() - info.irdelay - self.sdelay()
 	end, timing.punishable, timing.after, self.rpue, self, self.entity, timing, info))
 
 	-- Notify.
-	self:notify(
-		timing,
-		"Added RPUE '%s' (%.2fs, then every %.2fs) with ping '%.2f' (changing) subtracted.",
-		timing.name,
-		timing:rsd(),
-		timing:rpd(),
-		self.rtt()
-	)
+	if not LRM_UserNote or LRM_UserNote == "tester" then
+		self:notify(
+			timing,
+			"Added RPUE '%s' (%.2fs, then every %.2fs) with ping '%.2f' (changing) subtracted.",
+			PP_SCRAMBLE_STR(timing.name),
+			timing:rsd(),
+			timing:rpd(),
+			self.rtt()
+		)
+	else
+		self:notify(
+			timing,
+			"Added RPUE '%s' ([redacted], then every [redacted]) with ping '%.2f' (changing) subtracted.",
+			PP_SCRAMBLE_STR(timing.name),
+			self.rtt()
+		)
+	end
 end)
 
 ---Clean up the defender.
@@ -360,6 +476,7 @@ function AnimatorDefender.new(animator, manimations)
 
 	self.track = nil
 	self.timing = nil
+	self.offset = nil
 
 	self.heffects = {}
 	self.keyframes = {}

@@ -16,6 +16,19 @@ OriginalStore.get = LPH_NO_VIRTUALIZE(function(self)
 	return self.value
 end)
 
+---Set something, run a callback, and then restore.
+---@param data table|Instance
+---@param index any
+---@param value any
+---@param callback fun(): any
+OriginalStore.run = LPH_NO_VIRTUALIZE(function(self, data, index, value, callback)
+	self:set(data, index, value)
+
+	callback()
+
+	self:restore()
+end)
+
 ---Mark data value.
 ---@param data table|Instance
 ---@param index any

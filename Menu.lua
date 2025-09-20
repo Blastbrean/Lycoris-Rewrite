@@ -57,13 +57,20 @@ local menuMaid = Maid.new()
 -- Constants.
 local MENU_TITLE = "Linoria V2 | Deepwoken"
 
+if LRM_UserNote then
+	MENU_TITLE = string.format(
+		"(Commit %s) Linoria V2 | Deepwoken First Release",
+		string.sub("6b677a0b30a3113820f80e482d09ddbf0b53223f", 1, 6)
+	)
+end
+
 ---Initialize menu.
 function Menu.init()
 	-- Create window.
 	local window = Library:CreateWindow({
 		Title = MENU_TITLE,
 		Center = true,
-		AutoShow = true,
+		AutoShow = not shared.Lycoris.silent,
 		TabPadding = 8,
 		MenuFadeTime = 0.0,
 	})
@@ -86,15 +93,13 @@ function Menu.init()
 	})
 
 	-- Initialize all tabs. Don't initialize them if we have the 'exploit_tester' role.
-	if not armorshield or armorshield.current_role ~= "exploit_tester" then
-		CombatTab.init(window)
-		BuilderTab.init(window)
-		GameTab.init(window)
-		VisualsTab.init(window)
-		AutomationTab.init(window)
-		ExploitTab.init(window)
-		LycorisTab.init(window)
-	end
+	CombatTab.init(window)
+	BuilderTab.init(window)
+	GameTab.init(window)
+	VisualsTab.init(window)
+	AutomationTab.init(window)
+	ExploitTab.init(window)
+	LycorisTab.init(window)
 
 	-- Last update.
 	local lastUpdate = os.clock()

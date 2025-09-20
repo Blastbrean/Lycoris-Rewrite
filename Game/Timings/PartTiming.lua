@@ -27,6 +27,25 @@ function PartTiming:load(values)
 	end
 end
 
+---Equals check.
+---@param other PartTiming
+---@return boolean
+function PartTiming:equals(other)
+	if not Timing.equals(self, other) then
+		return false
+	end
+
+	if self.pname ~= other.pname then
+		return false
+	end
+
+	if self.uhc ~= other.uhc then
+		return false
+	end
+
+	return true
+end
+
 ---Clone timing.
 ---@return PartTiming
 function PartTiming:clone()

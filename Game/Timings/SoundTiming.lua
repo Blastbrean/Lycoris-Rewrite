@@ -18,13 +18,39 @@ end
 -- Getter for repeat start delay in seconds.
 ---@return number
 function SoundTiming:rsd()
-	return self._rsd / 1000
+	return PP_SCRAMBLE_NUM(self._rsd) / 1000
 end
 
 -- Getter for repeat start delay in seconds.
 ---@return number
 function SoundTiming:rpd()
-	return self._rpd / 1000
+	return PP_SCRAMBLE_NUM(self._rpd) / 1000
+end
+
+---Equals check.
+---@param other SoundTiming
+function SoundTiming:equals(other)
+	if not Timing.equals(self, other) then
+		return false
+	end
+
+	if self._rsd ~= other._rsd then
+		return false
+	end
+
+	if self._rpd ~= other._rpd then
+		return false
+	end
+
+	if self.rpue ~= other.rpue then
+		return false
+	end
+
+	if self._id ~= other._id then
+		return false
+	end
+
+	return true
 end
 
 ---Load from partial values.

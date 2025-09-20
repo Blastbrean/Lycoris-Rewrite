@@ -15,16 +15,43 @@ function EffectTiming:id()
 	return self.ename
 end
 
+---Equals check.
+---@param other EffectTiming
+---@return boolean
+function EffectTiming:equals(other)
+	if not Timing.equals(self, other) then
+		return false
+	end
+
+	if self._rsd ~= other._rsd then
+		return false
+	end
+
+	if self._rpd ~= other._rpd then
+		return false
+	end
+
+	if self.rpue ~= other.rpue then
+		return false
+	end
+
+	if self.ename ~= other.ename then
+		return false
+	end
+
+	return true
+end
+
 ---Getter for repeat start delay in seconds.
 ---@return number
 function EffectTiming:rsd()
-	return self._rsd / 1000
+	return PP_SCRAMBLE_NUM(self._rsd) / 1000
 end
 
 ---Getter for repeat start delay in seconds.
 ---@return number
 function EffectTiming:rpd()
-	return self._rpd / 1000
+	return PP_SCRAMBLE_NUM(self._rpd) / 1000
 end
 
 ---Load from partial values.

@@ -1,5 +1,5 @@
 -- Detach and initialize a Lycoris instance.
-local Lycoris = { queued = false }
+local Lycoris = { queued = false, silent = false, dpscanning = false }
 
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
@@ -24,6 +24,9 @@ local PlayerScanning = require("Game/PlayerScanning")
 
 ---@module Game.Timings.SaveManager
 local SaveManager = require("Game/Timings/SaveManager")
+
+---@module Features.Combat.EffectListener
+local EffectListener = require("Features/Combat/EffectListener")
 
 ---@module Utility.PersistentData
 local PersistentData = require("Utility/PersistentData")
@@ -68,11 +71,19 @@ function Lycoris.init()
 		localPlayer = playersService.LocalPlayer
 	until localPlayer ~= nil
 
-	if armorshield and queue_on_teleport and not Lycoris.queued and not no_queue_on_teleport then
+	if isfile and isfile("smarker.txt") then
+		Lycoris.silent = true
+	end
+
+	if isfile and isfile("dpscanning.txt") then
+		Lycoris.dpscanning = true
+	end
+
+	if script_key and queue_on_teleport and not Lycoris.queued and not no_queue_on_teleport then
 		-- String.
-		local scriptKeyQueueString = string.format("script_key = '%s'", armorshield.key or "N/A")
+		local scriptKeyQueueString = string.format("script_key = '%s'", script_key or "N/A")
 		local loadStringQueueString =
-			'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/5ac35cc8c071938af640f639b49c629b.lua"))()'
+			'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/0216eb5f95556e660be56009441409ae.lua"))()'
 
 		-- Queue.
 		queue_on_teleport(scriptKeyQueueString .. "\n" .. loadStringQueueString)
@@ -84,22 +95,7 @@ function Lycoris.init()
 		Logger.warn("Script has been queued for next teleport.")
 	else
 		-- Fail.
-		Logger.warn(
-			"Script has failed to queue on teleport because ArmorShield internals or the function do not exist."
-		)
-	end
-
-	---@note: What is this stupid issue which breaks my entire UI? WaitForChild on Cursor??
-	--- Looks like it has something to do with hooking?
-
-	if getexecutorname and getexecutorname():match("Zenith") then
-		-- Wait for the character to be loaded.
-		repeat
-			task.wait()
-		until localPlayer.Character
-
-		-- Wait 5 seconds.
-		task.wait(5)
+		Logger.warn("Script has failed to queue on teleport because Luarmor internals or the function do not exist.")
 	end
 
 	if game.PlaceId ~= LOBBY_PLACE_ID then
@@ -131,6 +127,8 @@ function Lycoris.init()
 	Menu.init()
 
 	PlayerScanning.init()
+
+	EffectListener.init()
 
 	Logger.notify("Script has been initialized in %ims.", (os.clock() - startTimestamp) * 1000)
 
@@ -174,23 +172,6 @@ function Lycoris.init()
 			return
 		end
 
-		-- Auto-save.
-		local initial, result = SaveManager.autosave()
-
-		-- Make a marker to show that we were able to autosave properly.
-		pcall(function()
-			writefile(
-				"Lycoris_LastAutoSaveTimestamp.txt",
-				string.format(
-					"%s : %s the config file '%s' with result %i after player removal.",
-					DateTime.now():FormatLocalTime("LLLL", "en-us"),
-					initial and "(1) Attempted to save" or "(2) Attempted to save",
-					SaveManager.llcn or "N/A",
-					result
-				)
-			)
-		end)
-
 		-- Clear BloxstrapRPC.
 		bloxstrapRPCModule.SetRichPresence({
 			details = "",
@@ -213,17 +194,19 @@ function Lycoris.detach()
 
 	ModuleManager.detach()
 
-	SaveManager.autosave()
-
 	Menu.detach()
 
 	ControlModule.detach()
 
 	Features.detach()
 
+	SaveManager.detach()
+
 	PlayerScanning.detach()
 
 	CoreGuiManager.clear()
+
+	EffectListener.detach()
 
 	local modules = replicatedStorage:FindFirstChild("Modules")
 	local bloxstrapRPC = modules and modules:FindFirstChild("BloxstrapRPC")

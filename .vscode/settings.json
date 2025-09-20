@@ -58,7 +58,12 @@
         "firesignal",
         "should_queue_on_teleport",
         "no_queue_on_teleport",
-        "Entitites"
+        "Entitites",
+        "script_key",
+        "LRM_UserNote",
+        "PP_SCRAMBLE_STR",
+        "PP_SCRAMBLE_NUM",
+        "PP_SCRAMBLE_RE_NUM"
     ],
     "robloxLsp.suggestedImports.importIgnore": [
         "**/_Index/**",
