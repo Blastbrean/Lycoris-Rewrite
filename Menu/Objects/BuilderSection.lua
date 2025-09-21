@@ -305,7 +305,7 @@ function BuilderSection:baction(base)
 
 	self.actionType = base:AddDropdown(nil, {
 		Text = "Action Type",
-		Values = { "Parry", "Dash", "Start Block", "End Block" },
+		Values = { "Parry", "Dodge", "Start Block", "End Block" },
 		Default = 1,
 		Callback = self:anc(function(action, value)
 			action._type = value
