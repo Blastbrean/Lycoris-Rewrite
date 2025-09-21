@@ -1,3 +1,7 @@
+-- Internal modules if they exist, provided by to by preprocessor.
+local INTERNAL_MODULES = {}
+local INTERNAL_GLOBALS = {}
+
 -- Module manager.
 ---@note: All globals get executed first but never ran. This gets set in the global environment of every future module after.
 local ModuleManager = { modules = {}, globals = {} }
@@ -51,6 +55,60 @@ local gfs = Filesystem.new(fs:append("Globals"))
 -- Detach table.
 local tdetach = {}
 
+---Execute module function.
+---@param lf function
+---@param id string
+---@param file string?
+---@param global boolean
+function ModuleManager.execute(lf, id, file, global)
+	---@module Features.Combat.Defense
+	---@note: For some reason, it broke lol. Returned nil.
+	-- Has to do with loadingPlaceholder issue. A very wide cyclic dependency where depdendencies rely on each other can break the bundler.
+	local Defense = require("Features/Combat/Defense")
+
+	-- Set function environment to allow for internal modules.
+	getfenv(lf).Timing = Timing
+	getfenv(lf).PartTiming = PartTiming
+	getfenv(lf).Defense = Defense
+	getfenv(lf).Action = Action
+	getfenv(lf).Task = Task
+	getfenv(lf).Maid = Maid
+	getfenv(lf).Signal = Signal
+	getfenv(lf).InputClient = InputClient
+	getfenv(lf).TaskSpawner = TaskSpawner
+	getfenv(lf).Targeting = Targeting
+	getfenv(lf).Entitites = Entitites
+	getfenv(lf).Logger = Logger
+	getfenv(lf).HitboxOptions = HitboxOptions
+	getfenv(lf).RepeatInfo = RepeatInfo
+
+	-- Load globals if we should.
+	for name, entry in next, (not global) and ModuleManager.globals or {} do
+		getfenv(lf)[name] = entry
+	end
+
+	-- Run executable function to initialize it.
+	local success, result = pcall(lf)
+	if not success then
+		return Logger.warn("Module '%s' failed to load due to error '%s' while executing.", file or id, result)
+	end
+
+	if global and typeof(result) ~= "table" then
+		return Logger.warn("Global module '%s' is invalid because it does not return a table.", file or id)
+	end
+
+	-- Output table.
+	local output = global and ModuleManager.globals or ModuleManager.modules
+
+	-- Get the result as a function.
+	output[id] = result
+
+	-- If this is a global, the result is a table, and it has a detach function, store it for later.
+	if typeof(result) == "table" and typeof(result.detach) == "function" then
+		tdetach[#tdetach + 1] = result.detach
+	end
+end
+
 ---Load file modules from filesystem.
 ---@param tfs Filesystem The filesystem to load from.
 ---@param global boolean Whether we're loading global modules or not.
@@ -71,53 +129,7 @@ function ModuleManager.load(tfs, global)
 			continue
 		end
 
-		---@module Features.Combat.Defense
-		---@note: For some reason, it broke lol. Returned nil.
-		local Defense = require("Features/Combat/Defense")
-
-		-- Set function environment to allow for internal modules.
-		getfenv(lf).Timing = Timing
-		getfenv(lf).PartTiming = PartTiming
-		getfenv(lf).Defense = Defense
-		getfenv(lf).Action = Action
-		getfenv(lf).InputClient = InputClient
-		getfenv(lf).Task = Task
-		getfenv(lf).Maid = Maid
-		getfenv(lf).Signal = Signal
-		getfenv(lf).TaskSpawner = TaskSpawner
-		getfenv(lf).Entitites = Entitites
-		getfenv(lf).Targeting = Targeting
-		getfenv(lf).Logger = Logger
-		getfenv(lf).HitboxOptions = HitboxOptions
-		getfenv(lf).RepeatInfo = RepeatInfo
-
-		-- Load globals if we should.
-		for name, entry in next, (not global) and ModuleManager.globals or {} do
-			getfenv(lf)[name] = entry
-		end
-
-		-- Run executable function to initialize it.
-		local success, result = pcall(lf)
-		if not success then
-			Logger.warn("Module file '%s' failed to load due to error '%s' while executing.", file, result)
-			continue
-		end
-
-		if global and typeof(result) ~= "table" then
-			Logger.warn("Global module file '%s' is invalid because it does not return a table.", file)
-			continue
-		end
-
-		-- Output table.
-		local output = global and ModuleManager.globals or ModuleManager.modules
-
-		-- Get the result as a function.
-		output[string.sub(file, 1, #file - 4)] = result
-
-		-- If this is a global, the result is a table, and it has a detach function, store it for later.
-		if typeof(result) == "table" and typeof(result.detach) == "function" then
-			tdetach[#tdetach + 1] = result.detach
-		end
+		ModuleManager.execute(lf, string.sub(file, 1, #file - 4), file, global)
 	end
 end
 
@@ -151,6 +163,14 @@ function ModuleManager.refresh()
 	-- Reset current list.
 	ModuleManager.modules = {}
 	ModuleManager.globals = {}
+
+	for id, lf in next, INTERNAL_GLOBALS do
+		ModuleManager.execute(lf, id, nil, true)
+	end
+
+	for id, lf in next, INTERNAL_MODULES do
+		ModuleManager.execute(lf, id, nil, false)
+	end
 
 	-- Load all globals in our filesystem.
 	ModuleManager.load(gfs, true)
