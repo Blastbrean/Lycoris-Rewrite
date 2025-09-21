@@ -1014,6 +1014,7 @@ def main(argv: list[str]) -> int:
             "Menu/BuilderTab", 
             "Menu/Objects/PartBuilderSection", 
             "Menu/Objects/SoundBuilderSection",
+            "Menu/Objects/EffectBuilderSection"
         ],
         help="Module path to exclude from bundle (repeatable). Example: -x Menu/Objects/AnimationBuilderSection",
     )
