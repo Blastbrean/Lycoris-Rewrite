@@ -79,6 +79,7 @@ function Lycoris.init()
 		Lycoris.dpscanning = true
 	end
 
+	--[[
 	if script_key and queue_on_teleport and not Lycoris.queued and not no_queue_on_teleport then
 		-- String.
 		local scriptKeyQueueString = string.format("script_key = '%s'", script_key or "N/A")
@@ -97,6 +98,8 @@ function Lycoris.init()
 		-- Fail.
 		Logger.warn("Script has failed to queue on teleport because Luarmor internals or the function do not exist.")
 	end
+	]]
+	--
 
 	if game.PlaceId ~= LOBBY_PLACE_ID then
 		-- Attempt to initialize KeyHandling.
