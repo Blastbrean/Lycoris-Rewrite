@@ -1,3 +1,8 @@
+-- Check, are we even a tester?
+if LRM_UserNote and LRM_UserNote ~= "tester" then
+	return warn("You are not a tester, you cannot run this script.")
+end
+
 -- Check for table that is shared between executions.
 if not shared then
 	return warn("No shared, no script.")

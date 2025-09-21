@@ -5,7 +5,7 @@ local Waiter = {}
 ---@param aid string Animation ID to look for.
 ---@param animator Animator The animator to search in.
 ---@return AnimationTrack?
-local function findTrack(aid, animator)
+function Waiter.ftrack(aid, animator)
 	for _, track in next, animator:GetPlayingAnimationTracks() do
 		local animation = track.Animation
 		if not animation then
@@ -56,7 +56,7 @@ end
 ---@return AnimationTrack?
 function Waiter.fet(aid, animator)
 	while task.wait() do
-		local track = findTrack(aid, animator)
+		local track = Waiter.ftrack(aid, animator)
 		if not track then
 			continue
 		end

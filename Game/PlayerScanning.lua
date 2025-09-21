@@ -38,6 +38,7 @@ local playerScanningMaid = Maid.new()
 -- Timestamp.
 local lastRateLimit = nil
 local lastCheckedTimestamp = os.clock()
+local lastPlayerScanTimestamp = os.clock()
 
 -- Seen tools.
 local seenTools = {}
@@ -176,7 +177,7 @@ end
 ---@param url string
 ---@return boolean, string?
 local function fetchRobloxData(url)
-	if lastRateLimit and os.clock() - lastRateLimit <= 30 then
+	if lastRateLimit and os.clock() - lastRateLimit <= 120 then
 		return false, "On rate-limit cooldown."
 	end
 
@@ -302,6 +303,12 @@ function PlayerScanning.update()
 	if os.clock() - lastCheckedTimestamp >= 5.0 then
 		checkInventoriesForTools()
 	end
+
+	if os.clock() - lastPlayerScanTimestamp <= 1.0 then
+		return
+	end
+
+	lastPlayerScanTimestamp = os.clock()
 
 	if PlayerScanning.scanning then
 		return

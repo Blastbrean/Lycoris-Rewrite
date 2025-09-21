@@ -33,6 +33,11 @@ return LPH_NO_VIRTUALIZE(function()
 	-- Maids.
 	local removalMaid = Maid.new()
 
+	-- Acid water.
+	local originalAcidRemote = nil
+	local placeholderRemote = Instance.new("RemoteEvent")
+	placeholderRemote.Name = "AcidRemote"
+
 	-- Original stores.
 	local noShadows = removalMaid:mark(OriginalStore.new())
 	local noBlur = removalMaid:mark(OriginalStore.new())
@@ -196,9 +201,40 @@ return LPH_NO_VIRTUALIZE(function()
 		end
 	end
 
+	---Update no acid water.
+	local function updateNoAcidWater()
+		if originalAcidRemote then
+			return
+		end
+
+		local requests = replicatedStorage:FindFirstChild("Requests")
+		if not requests then
+			return
+		end
+
+		local acidRemote = requests:FindFirstChild("AcidRemote")
+		if not acidRemote then
+			return
+		end
+
+		originalAcidRemote = acidRemote
+		originalAcidRemote.Name = "AcidRemote_Original"
+		placeholderRemote.Parent = requests
+	end
+
+	---Restore no acid water.
+	local function restoreNoAcidWater()
+		if not originalAcidRemote then
+			return
+		end
+
+		originalAcidRemote.Name = "AcidRemote"
+		placeholderRemote.Parent = nil
+	end
+
 	---Update removal.
 	local function updateRemoval()
-		if os.clock() - lastUpdate <= 2.0 then
+		if os.clock() - lastUpdate <= 3.0 then
 			return
 		end
 
@@ -256,6 +292,12 @@ return LPH_NO_VIRTUALIZE(function()
 			updateNoBlur()
 		else
 			noBlur:restore()
+		end
+
+		if Configuration.expectToggleValue("NoAcidWater") then
+			updateNoAcidWater()
+		else
+			restoreNoAcidWater()
 		end
 
 		if Configuration.expectToggleValue("NoShadows") then
@@ -423,6 +465,9 @@ return LPH_NO_VIRTUALIZE(function()
 	function Removal.detach()
 		-- Clean.
 		removalMaid:clean()
+
+		-- Restore.
+		restoreNoAcidWater()
 
 		-- Log.
 		Logger.warn("Removal detached.")

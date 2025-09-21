@@ -57,7 +57,7 @@ function Weapon.action(entity, base, scale)
 	local action = Action.new()
 	action._when = scale and base / ss or base
 	action._type = "Parry"
-	action.hitbox = Vector3.new(length * 1.75, length * 1.5, (length * 1.5) - 2.5)
+	action.hitbox = Vector3.new(length * 1.75, length * 1.5, length * 2)
 	return action
 end
 

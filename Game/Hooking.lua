@@ -41,6 +41,7 @@ local oldTaskSpawn = nil
 local oldIndex = nil
 local oldPrint = nil
 local oldWarn = nil
+local oldHasEffect = nil
 
 -- Ban remotes table.
 local banRemotes = {}
@@ -51,8 +52,7 @@ local INPUT_RIGHT_CLICK = 2
 
 ---On intercepted input.
 ---@param type number
----@param block boolean
-local function onInterceptedInput(type, block)
+local function onInterceptedInput(type)
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
 		return
@@ -64,10 +64,6 @@ local function onInterceptedInput(type, block)
 	end
 
 	if not Configuration.expectToggleValue("AutoFlowState") then
-		return
-	end
-
-	if block then
 		return
 	end
 
@@ -402,17 +398,18 @@ local onIndex = LPH_NO_VIRTUALIZE(function(...)
 	end
 
 	local args = { ... }
-	local self = args[1]
 	local index = args[2]
 
 	---@note: Patch out InputClient detection for __index hooking to prevent annoying errors.
-	if typeof(index) == "table" and findInputClientLevel() then
+	if typeof(args[2]) == "table" then
 		return error("InputClient - Lycoris On Top")
 	end
 
 	if Spoofing.force or not Configuration.expectToggleValue("InfoSpoofing") then
 		return oldIndex(...)
 	end
+
+	local self = args[1]
 
 	if typeof(self) == "Instance" and typeof(index) == "string" and index == "Value" then
 		if self.Name == "SERVER_NAME" then
@@ -441,105 +438,89 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 	local args = { ... }
 	local self = args[1]
 
-	if
-		typeof(self) == "Instance"
-		and typeof(args[2]) == "string"
-		and getnamecallmethod() == "GetAttribute"
-		and Configuration.expectToggleValue("InfoSpoofing")
-		and not Spoofing.force
-	then
-		local character = playersService.LocalPlayer.Character
-		local humanoid = game.FindFirstChild(character, "Humanoid")
-		local foreign = true
-
-		if character and humanoid and (self.Parent == character or self.Parent == humanoid) then
-			foreign = false
-		end
-
-		if foreign and not Configuration.expectToggleValue("SpoofOtherPlayers") then
-			return oldNameCall(...)
-		end
-
-		if args[2] == "FirstName" then
-			return foreign and "Linoria V2" or Configuration.expectOptionValue("SpoofedFirstName")
-		end
-
-		if args[2] == "LastName" then
-			return foreign and "On Top" or Configuration.expectOptionValue("SpoofedLastName")
-		end
-
-		if args[2] == "CharacterName" then
-			local characterName = Configuration.expectOptionValue("SpoofedFirstName")
-				.. " "
-				.. Configuration.expectOptionValue("SpoofedLastName")
-
-			return foreign and "Linoria V2 On Top" or characterName
-		end
-
-		if args[2] == "Guild" then
-			return foreign and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuild")
-		end
-
-		if args[2] == "GuildRich" then
-			return foreign and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuildName")
-		end
-	end
-
 	if banRemotes[self] then
 		return Logger.warn("(%s) Anticheat is referencing a ban remote.", self.Name)
 	end
 
-	local isActivatingMantra = self.Name == "ActivateMantra"
-	local blockInputOptions = Configuration.expectOptionValue("BlockInputOptions") or {}
+	if typeof(self) ~= "Instance" then
+		return oldNameCall(...)
+	end
 
-	if typeof(args[2]) == "Instance" and isActivatingMantra then
+	local method = getnamecallmethod()
+	local name = self.Name
+
+	if method == "Create" then
+		---@note: Fix object if we're using a lighting template.
+		local lightingTemplate = args[4]
+
+		if typeof(lightingTemplate) == "table" then
+			if
+				lightingTemplate["FogStart"]
+				and lightingTemplate["FogEnd"]
+				and Configuration.expectToggleValue("NoFog")
+			then
+				lightingTemplate["FogStart"] = 9e9
+				lightingTemplate["FogEnd"] = 9e9
+			end
+
+			if lightingTemplate["Ambient"] and Configuration.expectToggleValue("ModifyAmbience") then
+				lightingTemplate["Ambient"] = modifyAmbienceColor(lightingTemplate["Ambient"])
+			end
+
+			if lightingTemplate["Density"] and Configuration.expectToggleValue("NoFog") then
+				lightingTemplate["Density"] = 0
+			end
+
+			return oldNameCall(unpack(args))
+		end
+	end
+
+	if Configuration.expectToggleValue("InfoSpoofing") then
+		if typeof(args[2]) == "string" and method == "GetAttribute" and not Spoofing.force then
+			local character = playersService.LocalPlayer.Character
+			local humanoid = game.FindFirstChild(character, "Humanoid")
+			local foreign = true
+
+			if character and humanoid and (self.Parent == character or self.Parent == humanoid) then
+				foreign = false
+			end
+
+			if foreign and not Configuration.expectToggleValue("SpoofOtherPlayers") then
+				return oldNameCall(...)
+			end
+
+			if args[2] == "FirstName" then
+				return foreign and "Linoria V2" or Configuration.expectOptionValue("SpoofedFirstName")
+			end
+
+			if args[2] == "LastName" then
+				return foreign and "On Top" or Configuration.expectOptionValue("SpoofedLastName")
+			end
+
+			if args[2] == "CharacterName" then
+				local characterName = Configuration.expectOptionValue("SpoofedFirstName")
+					.. " "
+					.. Configuration.expectOptionValue("SpoofedLastName")
+
+				return foreign and "Linoria V2 On Top" or characterName
+			end
+
+			if args[2] == "Guild" then
+				return foreign and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuild")
+			end
+
+			if args[2] == "GuildRich" then
+				return foreign and "discord.gg/lyc" or Configuration.expectOptionValue("SpoofedGuildName")
+			end
+		end
+	end
+
+	if name == "ActivateMantra" then
 		Defense.lastMantraActivate = args[2]
 	end
 
-	if blockInputOptions["Punishable Mantras"] and isActivatingMantra and Defense.blocking() then
-		return
-	end
-
-	---@note: Fix object if we're using a lighting template.
-	local lightingTemplate = args[4]
-
-	if getnamecallmethod() == "Create" and typeof(lightingTemplate) == "table" then
-		if lightingTemplate["FogStart"] and lightingTemplate["FogEnd"] and Configuration.expectToggleValue("NoFog") then
-			lightingTemplate["FogStart"] = 9e9
-			lightingTemplate["FogEnd"] = 9e9
-		end
-
-		if lightingTemplate["Ambient"] and Configuration.expectToggleValue("ModifyAmbience") then
-			lightingTemplate["Ambient"] = modifyAmbienceColor(lightingTemplate["Ambient"])
-		end
-
-		if lightingTemplate["Density"] and Configuration.expectToggleValue("NoFog") then
-			lightingTemplate["Density"] = 0
-		end
-
-		return oldNameCall(unpack(args))
-	end
-
-	if self.Name == "AcidCheck" and Configuration.expectToggleValue("NoAcidWater") then
-		return
-	end
-
-	if self.Name == "Gesture" and Configuration.expectToggleValue("EmoteSpoofer") and typeof(args[2]) == "string" then
+	if name == "Gesture" and Configuration.expectToggleValue("EmoteSpoofer") and typeof(args[2]) == "string" then
 		return replicateGesture(args[2])
-	end
-
-	local fallDamageRemote = KeyHandling.getRemote("FallDamage")
-
-	if fallDamageRemote and self == fallDamageRemote and Configuration.expectToggleValue("NoFallDamage") then
-		return
-	end
-
-	if
-		self.Name == "ServerSprint"
-		and (self.ClassName == "UnreliableRemoteEvent" or self.ClassName == "RemoteEvent")
-		and Configuration.expectToggleValue("RunAttack")
-	then
-		return oldNameCall(self, true)
 	end
 
 	return oldNameCall(...)
@@ -560,23 +541,17 @@ local onUnreliableFireServer = LPH_NO_VIRTUALIZE(function(...)
 	end
 
 	local leftClickRemote = KeyHandling.getRemote("LeftClick")
-	local criticalClickRemote = KeyHandling.getRemote("CriticalClick")
-	local rightClickRemote = KeyHandling.getRemote("RightClick")
-	local blockInputOptions = Configuration.expectOptionValue("BlockInputOptions") or {}
-
-	if rightClickRemote and self == rightClickRemote then
-		onInterceptedInput(INPUT_RIGHT_CLICK, false)
-	end
 
 	if leftClickRemote and self == leftClickRemote then
-		local block = (blockInputOptions["Punishable M1s"] and Defense.blocking())
-		onInterceptedInput(INPUT_LEFT_CLICK, block)
-		return (not block) and oldUnreliableFireServer(...)
+		onInterceptedInput(INPUT_LEFT_CLICK)
+		return oldUnreliableFireServer(...)
 	end
 
-	if criticalClickRemote and self == criticalClickRemote then
-		local block = (blockInputOptions["Punishable Criticals"] and Defense.blocking())
-		return (not block) and oldUnreliableFireServer(...)
+	local rightClickRemote = KeyHandling.getRemote("RightClick")
+
+	if rightClickRemote and self == rightClickRemote then
+		onInterceptedInput(INPUT_RIGHT_CLICK)
+		return oldUnreliableFireServer(...)
 	end
 
 	return oldUnreliableFireServer(...)
@@ -611,76 +586,38 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 	local index = args[2]
 	local value = args[3]
 
-	if
-		typeof(self) == "Instance"
-		and (self.Name == "InputClient" or self.Name == "CharacterHandler")
-		and index:lower():match("parent")
-	then
-		return Logger.warn(
-			"(%s) Caller attempted to set the parent of InputClient or CharacterHandler",
-			debug.getinfo(3).short_src
-		)
+	if typeof(self) ~= "Instance" then
+		return oldNewIndex(...)
 	end
 
-	if
-		Configuration.expectToggleValue("InfoSpoofing")
-		and typeof(self) == "Instance"
-		and game.IsA(self, "TextLabel")
-		and index == "Text"
-		and not Spoofing.force
-	then
-		if self.Name == "Slot" and self.Parent.Name == "CharacterInfo" then
-			return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedSlotString"))
-		end
+	if Configuration.expectToggleValue("InfoSpoofing") then
+		if game.IsA(self, "TextLabel") and index == "Text" and not Spoofing.force then
+			if self.Name == "Slot" and self.Parent.Name == "CharacterInfo" then
+				return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedSlotString"))
+			end
 
-		if self.Name == "GameVersion" then
-			return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedGameVersion"))
-		end
+			if self.Name == "GameVersion" then
+				return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedGameVersion"))
+			end
 
-		if self.Name == "Date" then
-			return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedDateString"))
+			if self.Name == "Date" then
+				return oldNewIndex(self, index, Configuration.expectOptionValue("SpoofedDateString"))
+			end
 		end
 	end
 
-	if
-		typeof(self) == "Instance"
-		and (self.Name == "GenericBlur" or self.Name == "UnderwaterBlur")
-		and index == "Size"
-		and Configuration.expectToggleValue("NoBlur")
-	then
-		return
-	end
-
-	if
-		typeof(self) == "Instance"
-		and self.Parent
-		and index == "ActiveController"
-		and Configuration.expectToggleValue("NoClip")
-		and Configuration.expectToggleValue("Fly")
-	then
-		local airController = self.Parent:FindFirstChild("AirController")
-		return oldNewIndex(self, index, airController or value)
-	end
-
-	if self == lighting and (index == "FogStart" or index == "FogEnd") and Configuration.expectToggleValue("NoFog") then
-		return
-	end
-
-	if self:IsA("Atmosphere") and index == "Density" and Configuration.expectToggleValue("NoFog") then
-		return
-	end
-
-	if self == lighting and index == "Ambient" and Configuration.expectToggleValue("ModifyAmbience") then
-		return oldNewIndex(self, index, modifyAmbienceColor(value))
-	end
-
-	if self == workspace.CurrentCamera then
-		if index == "FieldOfView" and Configuration.expectToggleValue("ModifyFieldOfView") then
-			return
+	if Configuration.expectToggleValue("NoClip") and Configuration.expectToggleValue("Fly") then
+		if index == "ActiveController" then
+			if self.Parent then
+				local airController = self.Parent:FindFirstChild("AirController")
+				return oldNewIndex(self, index, airController or value)
+			end
 		end
+	end
 
-		if index == "CameraSubject" and Monitoring.subject then
-			return
+	if index == "Ambient" then
+		if self == lighting and Configuration.expectToggleValue("ModifyAmbience") then
+			return oldNewIndex(self, index, modifyAmbienceColor(value))
 		end
 	end
 
@@ -761,6 +698,19 @@ local onTaskSpawn = LPH_NO_VIRTUALIZE(function(...)
 	return oldTaskSpawn(unpack(args))
 end)
 
+---On has effect.
+---@return any
+local onHasEffect = LPH_NO_VIRTUALIZE(function(...)
+	local args = { ... }
+	local class = args[2]
+
+	if Configuration.expectToggleValue("NoFallDamage") and class == "NoFall" then
+		return true
+	end
+
+	return oldHasEffect(...)
+end)
+
 ---Hooking initialization.
 function Hooking.init()
 	local localPlayer = playersService.LocalPlayer
@@ -801,6 +751,11 @@ function Hooking.init()
 	oldTick = hookfunction(tick, onTick)
 	oldWarn = hookfunction(warn, onWarn)
 	oldPrint = hookfunction(print, onPrint)
+
+	local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
+	local effectReplicatorModule = require(effectReplicator)
+
+	oldHasEffect = hookfunction(effectReplicatorModule.HasEffect, onHasEffect)
 
 	-- Okay, we're done.
 	Logger.warn("Client-side anticheat has been penetrated.")
@@ -848,6 +803,13 @@ function Hooking.detach()
 
 	if oldUnreliableFireServer then
 		hookfunction(Instance.new("UnreliableRemoteEvent").FireServer, oldUnreliableFireServer)
+	end
+
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	local effectReplicatorModule = effectReplicator and require(effectReplicator)
+
+	if oldHasEffect and effectReplicatorModule then
+		hookfunction(effectReplicatorModule.HasEffect, oldHasEffect)
 	end
 
 	local playerScripts = localPlayer:FindFirstChild("PlayerScripts")

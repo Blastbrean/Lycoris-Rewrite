@@ -28,9 +28,6 @@ local Profiler = require("Utility/Profiler")
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
----@module Utility.OriginalStore
-local OriginalStore = require("Utility/OriginalStore")
-
 ---@module Utility.OriginalStoreManager
 local OriginalStoreManager = require("Utility/OriginalStoreManager")
 
@@ -48,6 +45,8 @@ local Visuals = { bdata = nil, drinfo = nil }
 
 -- Last visuals update.
 local lastVisualsUpdate = os.clock()
+local lastHoveringUpdate = os.clock()
+local lastESPUpdate = os.clock()
 
 -- Services.
 local runService = game:GetService("RunService")
@@ -78,7 +77,7 @@ local attachments = {}
 local groups = {}
 
 -- Original stores.
-local fieldOfView = visualsMaid:mark(OriginalStore.new())
+local fieldOfView = nil
 
 -- Original store managers.
 local showRobloxChatMap = visualsMaid:mark(OriginalStoreManager.new())
@@ -573,6 +572,12 @@ end)
 
 ---Update card hovering.
 local updateCardHovering = LPH_NO_VIRTUALIZE(function()
+	if os.clock() - lastHoveringUpdate <= 0.1 then
+		return
+	end
+
+	lastHoveringUpdate = os.clock()
+
 	local localPlayer = players.LocalPlayer
 	local playerGui = localPlayer and localPlayer:FindFirstChild("PlayerGui")
 	local backpackGui = playerGui and playerGui:FindFirstChild("BackpackGui")
@@ -927,17 +932,28 @@ local updateTerrainAttachments = LPH_NO_VIRTUALIZE(function()
 	end
 end)
 
----Update visuals.
-local updateVisuals = LPH_NO_VIRTUALIZE(function()
+---Update ESP.
+local updateESP = LPH_NO_VIRTUALIZE(function()
+	if os.clock() - lastESPUpdate <= (1 / Configuration.expectOptionValue("ESPRefreshRate")) then
+		return
+	end
+
+	lastESPUpdate = os.clock()
+
 	for _, group in next, groups do
 		group:update()
 	end
+end)
+
+---Update visuals.
+local updateVisuals = LPH_NO_VIRTUALIZE(function()
+	updateESP()
 
 	if Configuration.expectToggleValue("BuildAssistance") then
 		updateCardHovering()
 	end
 
-	if os.clock() - lastVisualsUpdate <= 1.0 then
+	if os.clock() - lastVisualsUpdate <= 2.5 then
 		return
 	end
 
@@ -975,9 +991,17 @@ local updateVisuals = LPH_NO_VIRTUALIZE(function()
 	end
 
 	if Configuration.expectToggleValue("ModifyFieldOfView") then
-		fieldOfView:set(workspace.CurrentCamera, "FieldOfView", Configuration.expectOptionValue("FieldOfView"))
-	else
-		fieldOfView:restore()
+		-- Save original.
+		fieldOfView = fieldOfView or players.LocalPlayer:GetAttribute("FieldOfView")
+
+		-- Set modified.
+		players.LocalPlayer:SetAttribute("FieldOfView", Configuration.expectOptionValue("FieldOfView"))
+	elseif fieldOfView then
+		-- Set original.
+		players.LocalPlayer:SetAttribute("FieldOfView", fieldOfView)
+
+		-- Clear.
+		fieldOfView = nil
 	end
 
 	if Configuration.expectToggleValue("ShowRobloxChat") then

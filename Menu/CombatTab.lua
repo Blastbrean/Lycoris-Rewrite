@@ -175,6 +175,7 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		{ rollCancelToggle, true },
 	})
 
+	--[[
 	local afToggle = autoDefenseDepBox:AddToggle("AllowFailure", {
 		Text = "Allow Failure",
 		Default = false,
@@ -222,6 +223,8 @@ function CombatTab.initAutoDefenseSection(groupbox)
 	afDepBox:SetupDependencies({
 		{ afToggle, true },
 	})
+	]]
+	--
 
 	autoDefenseDepBox:AddDropdown("AutoDefenseFilters", {
 		Text = "Auto Defense Filters",
@@ -250,49 +253,7 @@ function CombatTab.initFeintDetectionSection(groupbox) end
 
 -- Initialize attack assistance section.
 ---@param groupbox table
-function CombatTab.initAttackAssistanceSection(groupbox)
-	groupbox:AddToggle("FeintM1WhileDefending", {
-		Text = "Feint M1 While Defending",
-		Default = false,
-		Tooltip = "If you are attacking while attempting to defend, feint your M1s so you can perform actions.",
-	})
-
-	groupbox:AddToggle("FeintMantrasWhileDefending", {
-		Text = "Feint Mantras While Defending",
-		Default = false,
-		Tooltip = "If you are attacking while attempting to defend, feint your mantras so you can perform actions.",
-	})
-
-	groupbox:AddDropdown("BlockInputOptions", {
-		Text = "Block Input Options",
-		Values = {
-			"Punishable M1s",
-			"Punishable Criticals",
-			"Punishable Mantras",
-		},
-		Multi = true,
-		AllowNull = true,
-		Default = {},
-	})
-
-	groupbox:AddSlider("DefaultPunishableWindow", {
-		Text = "Default Punishable Window",
-		Min = 0,
-		Max = 2,
-		Default = 0.7,
-		Suffix = "s",
-		Rounding = 1,
-	})
-
-	groupbox:AddSlider("DefaultAfterWindow", {
-		Text = "Default After Window",
-		Min = 0,
-		Max = 1,
-		Default = 0.1,
-		Suffix = "s",
-		Rounding = 1,
-	})
-end
+function CombatTab.initAttackAssistanceSection(groupbox) end
 
 ---Initialize combat assistance section.
 ---@param groupbox table

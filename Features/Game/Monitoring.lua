@@ -210,6 +210,12 @@ return LPH_NO_VIRTUALIZE(function()
 		-- Set camera subject.
 		cameraSubject:set(workspace.CurrentCamera, "CameraSubject", Monitoring.subject)
 
+		if Monitoring.subject ~= nil then
+			players.LocalPlayer:AddTag("ForcedSubject")
+		else
+			players.LocalPlayer:RemoveTag("ForcedSubject")
+		end
+
 		-- Request stream.
 		spectateMaid:add(
 			TaskSpawner.spawn(

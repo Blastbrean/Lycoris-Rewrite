@@ -52,6 +52,28 @@ end
 ---Initialize ESP Optimizations section.
 ---@param groupbox table
 function VisualsTab.initESPOptimizations(groupbox)
+	groupbox:AddToggle("ESPLimitUpdates", {
+		Text = "ESP Limit Updates",
+		Tooltip = "Limit when ESP updates can happen in a given amount of frames.",
+		Default = true,
+	})
+
+	local eluDepBox = groupbox:AddDependencyBox()
+
+	eluDepBox:AddSlider("ESPRefreshRate", {
+		Text = "ESP Refresh Rate",
+		Tooltip = "The frames that the ESP will attempt to update in.",
+		Suffix = "f",
+		Default = 30,
+		Min = 1,
+		Max = 144,
+		Rounding = 0,
+	})
+
+	eluDepBox:SetupDependencies({
+		{ Toggles.ESPLimitUpdates, true },
+	})
+
 	groupbox:AddToggle("ESPSplitUpdates", {
 		Text = "ESP Split Updates",
 		Tooltip = "This is an optimization where the ESP will split updating the object pool into multiple frames.",

@@ -1,0 +1,174 @@
+{
+  "patch_id": "c6843387-9ede-4057-85b6-830256ec811a",
+  "timestamp": "2025-09-20T23:53:34.793506",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://6669352471": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 17,
+              "X": 8.000000953674316,
+              "Z": 16.000001907348633
+            },
+            "to": {
+              "Y": 18,
+              "X": 8.000000953674316,
+              "Z": 16.000001907348633
+            }
+          }
+        }
+      },
+      "rbxassetid://7960934455": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": false,
+            "to": true
+          },
+          "hitbox": {
+            "from": {
+              "Y": 0,
+              "X": 0,
+              "Z": 0
+            },
+            "to": {
+              "Y": 43,
+              "X": 42,
+              "Z": 40
+            }
+          },
+          "mat": {
+            "from": 2000,
+            "to": 5000
+          },
+          "iae": {
+            "from": false,
+            "to": true
+          }
+        }
+      },
+      "rbxassetid://122256431354649": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": false,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 10,
+                "X": 9,
+                "Z": 15
+              },
+              "when": 500,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://122256431354649",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "GreatcannonSwing2",
+          "imxd": 96,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://11363599835": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 18,
+              "X": 15.75,
+              "Z": 18
+            },
+            "to": {
+              "Y": 17,
+              "X": 8.000000953674316,
+              "Z": 17
+            }
+          }
+        }
+      },
+      "rbxassetid://106858298622632": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": false,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 10,
+                "X": 9,
+                "Z": 15
+              },
+              "when": 500,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://106858298622632",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "GreatcannonSwing1",
+          "imxd": 96,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}
