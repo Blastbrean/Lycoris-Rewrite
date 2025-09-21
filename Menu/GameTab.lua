@@ -553,38 +553,6 @@ end
 ---Debugging section.
 ---@param groupbox table
 function GameTab.initDebuggingSection(groupbox)
-	local irltSlider = nil
-
-	local irlToggle = groupbox:AddToggle("IncomingReplicationLag", {
-		Text = "Incoming Replication Lag",
-		Default = false,
-		Callback = function(value)
-			if not irltSlider then
-				return
-			end
-
-			settings().Network.IncomingReplicationLag = value and irltSlider.Value or 0
-		end,
-	})
-
-	local irltDepBox = groupbox:AddDependencyBox()
-
-	irltSlider = irltDepBox:AddSlider("IncomingReplicationLagTime", {
-		Text = "Incoming Replication Lag Time",
-		Default = 0.1,
-		Min = 0,
-		Max = 5,
-		Suffix = "s",
-		Rounding = 2,
-		Callback = function(value)
-			settings().Network.IncomingReplicationLag = value
-		end,
-	})
-
-	irltDepBox:SetupDependencies({
-		{ irlToggle, true },
-	})
-
 	groupbox:AddToggle("ShowDebugInformation", {
 		Text = "Show Debug Information",
 		Default = false,
