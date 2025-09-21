@@ -1,0 +1,120 @@
+{
+  "patch_id": "bf71dfb9-3bc3-4321-b9ab-5c83f9668dcb",
+  "timestamp": "2025-09-21T00:59:07.250053",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11363599835": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 17,
+              "X": 8.000000953674316,
+              "Z": 17
+            },
+            "to": {
+              "Y": 17,
+              "X": 14.875,
+              "Z": 17
+            }
+          }
+        }
+      },
+      "rbxassetid://14428522483": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 60,
+                  "X": 21,
+                  "Z": 21
+                },
+                "when": 750,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 50,
+                  "X": 21,
+                  "Z": 21
+                },
+                "when": 700,
+                "ihbc": false
+              }
+            ]
+          },
+          "hitbox": {
+            "from": {
+              "Y": 175,
+              "X": 21,
+              "Z": 21
+            },
+            "to": {
+              "Y": 0,
+              "X": 0,
+              "Z": 0
+            }
+          }
+        }
+      },
+      "rbxassetid://87546275535152": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": false,
+            "to": true
+          },
+          "umoa": {
+            "from": true,
+            "to": false
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Dodge",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Dash",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ]
+          },
+          "smod": {
+            "from": "Veinbreaker",
+            "to": "N/A"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "patch_id": "6084859a-9e1e-4195-9e77-69cae7fff778",
+  "timestamp": "2025-09-21T03:59:41.403867",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://9236066780": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": false,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 31,
+                "X": 31,
+                "Z": 31
+              },
+              "when": 350,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://9236066780",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "ShardBow",
+          "imxd": 75,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

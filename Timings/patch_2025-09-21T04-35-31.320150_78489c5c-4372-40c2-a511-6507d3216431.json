@@ -1,0 +1,69 @@
+{
+  "patch_id": "78489c5c-4372-40c2-a511-6507d3216431",
+  "timestamp": "2025-09-21T04:35:31.320150",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://82898164556000": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 323,
+            "to": 53
+          }
+        }
+      },
+      "rbxassetid://113791985784867": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": true,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Dodge",
+              "name": "1",
+              "hitbox": {
+                "Y": 32,
+                "X": 32,
+                "Z": 32
+              },
+              "when": 180,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://113791985784867",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 81,
+            "X": 60,
+            "Z": 89
+          },
+          "punishable": 0,
+          "name": "TitusStormboundLoop",
+          "imxd": 140,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

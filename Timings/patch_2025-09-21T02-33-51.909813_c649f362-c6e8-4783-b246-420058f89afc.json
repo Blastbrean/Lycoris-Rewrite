@@ -1,0 +1,42 @@
+{
+  "patch_id": "c649f362-c6e8-4783-b246-420058f89afc",
+  "timestamp": "2025-09-21T02:33:51.909813",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "MalStrike1": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 9
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 10,
+                  "X": 10,
+                  "Z": 10
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

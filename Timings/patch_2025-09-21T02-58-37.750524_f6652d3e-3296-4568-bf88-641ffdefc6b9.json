@@ -1,0 +1,42 @@
+{
+  "patch_id": "f6652d3e-3296-4568-bf88-641ffdefc6b9",
+  "timestamp": "2025-09-21T02:58:37.750524",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://80841795666744": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Dodge",
+                "name": "1",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 25,
+                  "Z": 20
+                },
+                "when": 1900,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Dodge",
+                "name": "1",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 25,
+                  "Z": 25
+                },
+                "when": 1900,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "patch_id": "91b78975-7090-4d63-9ac2-c4026172d82b",
+  "timestamp": "2025-09-21T04:42:31.417160",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://96265399948947": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "TitusKickWindup"
+          }
+        }
+      }
+    }
+  }
+}

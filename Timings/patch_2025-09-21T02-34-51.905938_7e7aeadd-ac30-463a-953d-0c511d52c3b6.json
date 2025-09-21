@@ -1,0 +1,89 @@
+{
+  "patch_id": "7e7aeadd-ac30-463a-953d-0c511d52c3b6",
+  "timestamp": "2025-09-21T02:34:51.905938",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "MalStrike3": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "MalStrike3",
+          "smod": "N/A",
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 10,
+                "X": 10,
+                "Z": 10
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "scrambled": false,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "MalStrike3",
+          "imxd": 107,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "MalStrike2": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "MalStrike2",
+          "smod": "N/A",
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 10,
+                "X": 10,
+                "Z": 10
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "scrambled": false,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "MalStrike2",
+          "imxd": 107,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

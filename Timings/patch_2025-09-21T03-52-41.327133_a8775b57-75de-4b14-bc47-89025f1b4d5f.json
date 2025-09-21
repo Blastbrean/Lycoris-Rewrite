@@ -1,0 +1,49 @@
+{
+  "patch_id": "a8775b57-75de-4b14-bc47-89025f1b4d5f",
+  "timestamp": "2025-09-21T03:52:41.327133",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Shard": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "Shard",
+          "smod": "N/A",
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "scrambled": false,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 25,
+            "X": 25,
+            "Z": 25
+          },
+          "punishable": 0,
+          "name": "Shard",
+          "imxd": 150,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

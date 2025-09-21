@@ -1,0 +1,193 @@
+{
+  "patch_id": "d8ee19f5-b831-4bf6-8b9e-3878a26c7fe7",
+  "timestamp": "2025-09-21T00:26:49.070491",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://106858298622632": {
+        "status": "removed",
+        "name": "GreatcannonSwing1"
+      },
+      "rbxassetid://6669352471": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 18,
+              "X": 8.000000953674316,
+              "Z": 16.000001907348633
+            },
+            "to": {
+              "Y": 17,
+              "X": 8.000000953674316,
+              "Z": 16.000001907348633
+            }
+          }
+        }
+      },
+      "rbxassetid://87546275535152": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": false,
+          "duih": true,
+          "actions": [
+            {
+              "_type": "Dash",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://87546275535152",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 12,
+            "X": 15,
+            "Z": 24
+          },
+          "punishable": 0,
+          "name": "Veinbreaker",
+          "imxd": 64,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://6675698010": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.155,
+            "to": 0.15
+          }
+        }
+      },
+      "rbxassetid://8172871094": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": true,
+            "to": false
+          },
+          "iae": {
+            "from": true,
+            "to": false
+          },
+          "smod": {
+            "from": "RifleSpearCrit",
+            "to": "N/A"
+          }
+        }
+      },
+      "rbxassetid://122256431354649": {
+        "status": "removed",
+        "name": "GreatcannonSwing2"
+      },
+      "rbxassetid://137539842058795": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 101,
+                  "X": 102,
+                  "Z": 101
+                },
+                "when": 700,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 101,
+                  "X": 102,
+                  "Z": 101
+                },
+                "when": 850,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://7960934455": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "mat": {
+            "from": 5000,
+            "to": 2000
+          },
+          "iae": {
+            "from": true,
+            "to": false
+          },
+          "hitbox": {
+            "from": {
+              "Y": 43,
+              "X": 42,
+              "Z": 40
+            },
+            "to": {
+              "Y": 0,
+              "X": 0,
+              "Z": 0
+            }
+          }
+        }
+      },
+      "rbxassetid://6675703249": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.155,
+            "to": 0.15
+          }
+        }
+      }
+    },
+    "part": {
+      "Slash": {
+        "status": "modified",
+        "changes": {
+          "imdd": {
+            "from": 17,
+            "to": 21
+          }
+        }
+      }
+    }
+  }
+}

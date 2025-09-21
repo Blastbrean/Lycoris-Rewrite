@@ -1,0 +1,46 @@
+{
+  "patch_id": "decbef03-8443-4549-b95c-78cab0b56d65",
+  "timestamp": "2025-09-21T03:58:41.385412",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Shard": {
+        "status": "modified",
+        "changes": {
+          "imdd": {
+            "from": 0,
+            "to": 16
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 18,
+                  "X": 18,
+                  "Z": 18
+                },
+                "when": 530,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 18,
+                  "X": 18,
+                  "Z": 18
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

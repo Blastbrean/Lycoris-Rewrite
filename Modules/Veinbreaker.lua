@@ -8,16 +8,10 @@ return function(self, timing)
 	local distance = self:distance(self.entity)
 
 	local action = Action.new()
-	action._when = math.min(450 + distance * 5, 800)
-	action._type = "Parry"
-	action.hitbox = Vector3.new(20, 20, 50)
-	action.name = "Dynamic Titus Drive Timing"
-
-	if self.entity.Name:match(".titus") then
-		action.hitbox *= 2.0
-		action._when = 740
-		action._type = "Dodge"
-	end
+	action._when = math.min(0 + distance * 20, 1300)
+	action._type = "Dodge"
+	action.hitbox = Vector3.new(30, 20, 35)
+	action.name = string.format("(%.2f) Dynamic Veinbreaker Timing", distance)
 
 	return self:action(timing, action)
 end

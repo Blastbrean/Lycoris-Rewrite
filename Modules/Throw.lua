@@ -5,12 +5,17 @@ local Action = getfenv().Action
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
-	local speed = self.track.Speed
 	local action = Action.new()
-	action._when = 350
+	action._when = 400
 	action._type = "Parry"
 	action.hitbox = Vector3.new(15, 15, 15)
-	action.name = string.format("(%.2f) Katana Crit Timing", speed)
+	action.name = "Dynamic Titus Drive Timing"
+
+	if self.entity.Name:match(".titus") then
+		action.hitbox *= 1.5
+		action._when = 500
+		action._type = "Dodge"
+	end
 
 	return self:action(timing, action)
 end

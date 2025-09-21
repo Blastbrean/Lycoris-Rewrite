@@ -1,0 +1,60 @@
+{
+  "patch_id": "c7b840d4-6321-4b88-9549-f097f7d83351",
+  "timestamp": "2025-09-21T04:21:16.210515",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11363599835": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 17,
+              "X": 14.875,
+              "Z": 17
+            },
+            "to": {
+              "Y": 17,
+              "X": 8.000000953674316,
+              "Z": 17
+            }
+          }
+        }
+      },
+      "rbxassetid://133310040571072": {
+        "status": "removed",
+        "name": "Heartwing"
+      },
+      "rbxassetid://128613582420698": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 161,
+            "to": 75
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "Throw"
+          }
+        }
+      },
+      "rbxassetid://93803643628347": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "TitusDrive"
+          }
+        }
+      }
+    }
+  }
+}

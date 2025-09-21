@@ -1,0 +1,26 @@
+{
+  "patch_id": "cc167c2e-57f2-48d4-96b8-252041bfdf76",
+  "timestamp": "2025-09-21T03:53:01.753913",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Shard": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 25,
+              "X": 25,
+              "Z": 25
+            },
+            "to": {
+              "Y": 23,
+              "X": 23,
+              "Z": 23
+            }
+          }
+        }
+      }
+    }
+  }
+}

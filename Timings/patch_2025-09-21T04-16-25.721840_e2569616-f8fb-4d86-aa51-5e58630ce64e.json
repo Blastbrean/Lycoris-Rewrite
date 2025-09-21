@@ -1,0 +1,94 @@
+{
+  "patch_id": "e2569616-f8fb-4d86-aa51-5e58630ce64e",
+  "timestamp": "2025-09-21T04:16:25.721840",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11363599835": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 17,
+              "X": 8.000000953674316,
+              "Z": 17
+            },
+            "to": {
+              "Y": 17,
+              "X": 14.875,
+              "Z": 17
+            }
+          }
+        }
+      },
+      "rbxassetid://133310040571072": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": true,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 650,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://133310040571072",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "Heartwing",
+          "imxd": 75,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://128613582420698": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 75,
+            "to": 161
+          },
+          "umoa": {
+            "from": true,
+            "to": false
+          },
+          "smod": {
+            "from": "Throw",
+            "to": "N/A"
+          }
+        }
+      }
+    }
+  }
+}

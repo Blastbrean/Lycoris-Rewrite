@@ -1,0 +1,49 @@
+{
+  "patch_id": "50b4f3be-c5fc-4f9a-8973-4c988d6b5616",
+  "timestamp": "2025-09-21T02:32:51.896359",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "MalStrike1": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "MalStrike1",
+          "smod": "N/A",
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 9
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "scrambled": false,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "MalStrike1",
+          "imxd": 107,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

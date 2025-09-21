@@ -1,0 +1,60 @@
+{
+  "patch_id": "2f48786c-cf26-4fb5-ac6f-21d29238e5fe",
+  "timestamp": "2025-09-21T03:18:18.432897",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://15382135299": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": true,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": true,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://15382135299",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "GolemHammer",
+          "imxd": 96,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "patch_id": "33d6abe2-8095-47c0-a7f7-6816204225f4",
+  "timestamp": "2025-09-21T00:31:04.181502",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://87546275535152": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "Veinbreaker"
+          }
+        }
+      }
+    }
+  }
+}
