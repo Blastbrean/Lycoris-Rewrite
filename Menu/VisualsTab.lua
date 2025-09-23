@@ -202,10 +202,6 @@ function VisualsTab.initVisualAssistanceSection(groupbox)
 		Placeholder = "Enter your builder link here.",
 		Finished = true,
 		Callback = function(value)
-			if not buildAssistanceToggle.Value then
-				return
-			end
-
 			local dresponse = request({
 				Url = "https://api.deepwoken.co/get?type=all",
 				Method = "GET",

@@ -124,6 +124,18 @@ function PartDefender.new(part, timing)
 		return nil
 	end
 
+	if timing.umoa then
+		timing["name"] = PP_SCRAMBLE_STR(timing["name"])
+		timing["pname"] = PP_SCRAMBLE_STR(timing["pname"])
+		timing["imxd"] = PP_SCRAMBLE_RE_NUM(timing["imxd"])
+		timing["imdd"] = PP_SCRAMBLE_RE_NUM(timing["imdd"])
+		timing["hitbox"] = Vector3.new(
+			PP_SCRAMBLE_RE_NUM(timing["hitbox"].X),
+			PP_SCRAMBLE_RE_NUM(timing["hitbox"].Y),
+			PP_SCRAMBLE_RE_NUM(timing["hitbox"].Z)
+		)
+	end
+
 	-- Handle module.
 	if self.timing.umoa then
 		self:module(self.timing)

@@ -39,6 +39,7 @@ return function(self, timing)
 		action._when = 1400
 		action._type = "Parry"
 		action.hitbox = Vector3.new(800, 800, 800)
+		action.name = "Ethiron Blind Timing"
 		self:action(timing, action)
 	end
 end

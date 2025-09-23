@@ -459,10 +459,10 @@ local updateTraits = LPH_NO_VIRTUALIZE(function(jframe)
 end)
 
 ---Update talent sheet.
----@param jframe Frame
-local updateTalentSheet = LPH_NO_VIRTUALIZE(function(jframe)
-	local panels = jframe:FindFirstChild("TalentSheet")
-	local container = panels and panels:FindFirstChild("Container")
+---@param rframe Frame
+local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
+	local talentSheet = rframe:FindFirstChild("TalentSheet")
+	local container = talentSheet and talentSheet:FindFirstChild("Container")
 	local talentScroll = container and container:FindFirstChild("TalentScroll")
 	if not talentScroll then
 		return
@@ -585,12 +585,12 @@ local updateCardHovering = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	local bpJournalFrame = backpackGui and backpackGui:FindFirstChild("JournalFrame")
-	if not bpJournalFrame then
+	local rightFrame = backpackGui and backpackGui:FindFirstChild("RightFrame")
+	if not rightFrame then
 		return
 	end
 
-	local talentSheet = bpJournalFrame:FindFirstChild("TalentSheet")
+	local talentSheet = rightFrame and rightFrame:FindFirstChild("TalentSheet")
 	local container = talentSheet and talentSheet:FindFirstChild("Container")
 	local talentScroll = container and container:FindFirstChild("TalentScroll")
 	if not talentScroll then
@@ -823,7 +823,12 @@ local updateBuildAssistance = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	local bpJournalFrame = backpackGui and backpackGui:FindFirstChild("JournalFrame")
+	local rightFrame = backpackGui and backpackGui:FindFirstChild("RightFrame")
+	if not rightFrame then
+		return
+	end
+
+	local bpJournalFrame = rightFrame and rightFrame:FindFirstChild("JournalFrame")
 	if not bpJournalFrame then
 		return
 	end
@@ -831,7 +836,7 @@ local updateBuildAssistance = LPH_NO_VIRTUALIZE(function()
 	updateAttributeFrame(bpJournalFrame)
 	updateTraits(bpJournalFrame)
 	updatePowerBackground(bpJournalFrame)
-	updateTalentSheet(bpJournalFrame)
+	updateTalentSheet(rightFrame)
 	updateTrain(bpJournalFrame)
 end)
 

@@ -383,7 +383,7 @@ end)
 
 ---Create a defender part object.
 ---@param part BasePart
----@param timing PartTiming
+---@param timing PartTiming?
 ---@return PartDefender?
 Defense.cdpo = LPH_NO_VIRTUALIZE(function(part, timing)
 	local partDefender = PartDefender.new(part, timing)

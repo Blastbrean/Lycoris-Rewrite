@@ -155,16 +155,16 @@ function Lycoris.init()
 		details = "Lycoris Rewrite (Attached)",
 		state = string.format(
 			"Currently attached to the script - time elapsed is a session of %s time spent.",
-			armorshield and "testing" or "developing"
+			LRM_UserNote and "testing" or "developing"
 		),
 		timeStart = PersistentData.get("fli") or os.time(),
 		largeImage = {
-			assetId = armorshield and 13029433631 or 11289930484,
-			hoverText = armorshield and "Testing Deepwoken" or "Developing Deepwoken",
+			assetId = LRM_UserNote and 13029433631 or 11289930484,
+			hoverText = LRM_UserNote and "Testing Deepwoken" or "Developing Deepwoken",
 		},
 		smallImage = {
-			assetId = armorshield and 11809086414 or 15828456271,
-			hoverText = armorshield and "Testing Deepwoken" or "Developing Deepwoken",
+			assetId = LRM_UserNote and 11809086414 or 15828456271,
+			hoverText = LRM_UserNote and "Testing Deepwoken" or "Developing Deepwoken",
 		},
 	})
 
@@ -218,16 +218,16 @@ function Lycoris.detach()
 	if bloxstrapRPCModule then
 		bloxstrapRPCModule.SetRichPresence({
 			details = "Lycoris Rewrite (Detached)",
-			state = armorshield and "Detached from script - something broke or a hot-reload."
+			state = LRM_UserNote and "Detached from script - something broke or a hot-reload."
 				or "Detached from script - something broke, fixing a bug, or a hot-reload.",
 			timeStart = PersistentData.get("fli") or os.time(),
 			largeImage = {
-				assetId = armorshield and 90216003739455 or 11289930484,
-				hoverText = armorshield and "Not Testing Deepwoken" or "Developing Deepwoken",
+				assetId = LRM_UserNote and 90216003739455 or 11289930484,
+				hoverText = LRM_UserNote and "Not Testing Deepwoken" or "Developing Deepwoken",
 			},
 			smallImage = {
-				assetId = armorshield and 13086087956 or 15828456271,
-				hoverText = armorshield and "Not Testing Deepwoken" or "Developing Deepwoken",
+				assetId = LRM_UserNote and 13086087956 or 15828456271,
+				hoverText = LRM_UserNote and "Not Testing Deepwoken" or "Developing Deepwoken",
 			},
 		})
 	end
