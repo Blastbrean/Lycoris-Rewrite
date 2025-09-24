@@ -1,0 +1,62 @@
+{
+  "patch_id": "8de33520-44e2-420e-8e91-67f1bf39325b",
+  "timestamp": "2025-09-23T15:01:03.436733",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://10695391139": {
+        "status": "added",
+        "data": {
+          "imb": false,
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "pfht": 0.15,
+          "rpd": 0,
+          "aatk": false,
+          "smod": "N/A",
+          "hso": 0,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": false,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 50,
+                "X": 50,
+                "Z": 50
+              },
+              "when": 1070,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://10695391139",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "BrachialSpear",
+          "imxd": 86,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

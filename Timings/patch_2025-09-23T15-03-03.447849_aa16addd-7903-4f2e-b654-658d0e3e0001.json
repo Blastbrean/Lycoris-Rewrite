@@ -1,0 +1,50 @@
+{
+  "patch_id": "aa16addd-7903-4f2e-b654-658d0e3e0001",
+  "timestamp": "2025-09-23T15:03:03.447849",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "bonefall": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "bonefall",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "scrambled": false,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 19
+          },
+          "punishable": 0,
+          "name": "BrachialSpear",
+          "imxd": 301,
+          "smn": false,
+          "fhb": true,
+          "imdd": 25,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

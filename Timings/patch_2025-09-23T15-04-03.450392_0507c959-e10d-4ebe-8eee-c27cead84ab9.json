@@ -1,0 +1,38 @@
+{
+  "patch_id": "0507c959-e10d-4ebe-8eee-c27cead84ab9",
+  "timestamp": "2025-09-23T15:04:03.450392",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "bonefall": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 0,
+              "X": 0,
+              "Z": 19
+            },
+            "to": {
+              "Y": 15,
+              "X": 15,
+              "Z": 31
+            }
+          },
+          "imdd": {
+            "from": 25,
+            "to": 0
+          },
+          "fhb": {
+            "from": true,
+            "to": false
+          },
+          "uhc": {
+            "from": true,
+            "to": false
+          }
+        }
+      }
+    }
+  }
+}
