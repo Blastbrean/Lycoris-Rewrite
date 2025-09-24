@@ -124,8 +124,6 @@ def find_differences(data1, data2):
                         return True
         return False
 
-    IGNORE_ONLY_FIELDS = {"dp", "pfht"}  # If a timing's modified changes are confined to this set, ignore it
-
     for container in all_containers:
         list1 = data1.get(container, [])
         list2 = data2.get(container, [])
@@ -339,6 +337,9 @@ def main():
         print(f"Created empty base file: {BASE_TIMING_FILE}")
 
     # 1. If a remote truth already exists, determine which is most recent.
+    local_mod_time = os.path.getmtime(TRUTH_TIMING_FILE)
+    remote_mod_time = os.path.getmtime(TARGET_TRUTH_FILE)
+     
     if os.path.exists(TARGET_TRUTH_FILE) and os.path.getsize(TARGET_TRUTH_FILE) > 0 and os.path.exists(TRUTH_TIMING_FILE):
         try:
             local_mod_time = os.path.getmtime(TRUTH_TIMING_FILE)
@@ -346,27 +347,29 @@ def main():
 
             local_truth_data = load_data(TRUTH_TIMING_FILE)
             remote_truth_data = load_data(TARGET_TRUTH_FILE)
-            print(local_mod_time, remote_mod_time)
-            # If files are identical, do nothing.
-            if str(local_truth_data) == str(remote_truth_data):
-                print("[*] Local and remote truth files are identical.")
-            
-            # If remote is newer, it's the source of truth. Overwrite local.
-            elif remote_mod_time > local_mod_time:
-                print("[!] Remote truth is newer. Overriding local truth file.")
-                shutil.copy2(TARGET_TRUTH_FILE, TRUTH_TIMING_FILE)
-                # No patch needed, remote is the authority.
-            
-            # If local is newer, something changed locally that needs to be patched and pushed.
-            else:
-                initial_diff = find_differences(local_truth_data, remote_truth_data)
-                if initial_diff:
-                    print("[!] Local truth is newer. Rebuilding patches to reflect local changes.")
-                    # Rebuild again to include the new patch.
-                    rebuild_truth_from_patches()
+
+            # If remote is newer, generate a patch just like TimingChangeHandler would.
+            if remote_mod_time > local_mod_time:
+                print("[!] Remote truth is newer. Generating startup patch to reconcile.")
+                if str(local_truth_data) == str(remote_truth_data):
+                    print("[!] Remote newer but no raw differences detected (string compare equal). Skipping patch.")
+                else:
+                    differences = find_differences(local_truth_data, remote_truth_data)
+                    if not differences:
+                        print("[!] Remote newer but no semantic timing differences (ignored fields only). Skipping patch.")
+                    else:
+                        patch_path = write_patch_file(differences, DEV_NAME)
+                        print(f"[+] Startup patch created: {os.path.basename(patch_path)}")
+                        # Rebuild truth from all patches so local truth matches remote state.
+                        rebuild_truth_from_patches()
+                        # (We intentionally do NOT overwrite the remote file here; remote is the source of truth in this branch.)
+                    
         except Exception as e:
             print(f"[!] Failed to compute initial differences: {e}")
-
+    
+    # 2. Rebuild local truth from base + all patches to ensure consistency
+    rebuild_truth_from_patches()
+    
     # 3. Perform sync (this will copy our rebuilt truth outward)
     sync_all_dirs()
 
