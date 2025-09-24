@@ -1,0 +1,205 @@
+{
+  "patch_id": "aced6ea8-456c-4c70-89eb-7c6c3ba9ea48",
+  "timestamp": "2025-09-23T13:52:06.309856",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://76842464533258": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 15,
+                  "X": 15,
+                  "Z": 25
+                },
+                "when": 800,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 15,
+                  "X": 15,
+                  "Z": 20
+                },
+                "when": 660,
+                "ihbc": false
+              }
+            ]
+          },
+          "mat": {
+            "from": 2000,
+            "to": 1350
+          },
+          "duih": {
+            "from": false,
+            "to": true
+          },
+          "hitbox": {
+            "from": {
+              "Y": 0,
+              "X": 0,
+              "Z": 0
+            },
+            "to": {
+              "Y": 15,
+              "X": 29,
+              "Z": 20
+            }
+          },
+          "iae": {
+            "from": false,
+            "to": true
+          },
+          "ieae": {
+            "from": false,
+            "to": true
+          }
+        }
+      },
+      "rbxassetid://70499364296634": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": false,
+          "duih": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 15,
+                "X": 15,
+                "Z": 18
+              },
+              "when": 400,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://70499364296634",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "UmbralSlashMed",
+          "imxd": 53,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://136701179709286": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "aatk": false,
+          "scrambled": false,
+          "iae": false,
+          "ieae": false,
+          "ha": false,
+          "duih": true,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 18,
+                "X": 18,
+                "Z": 27
+              },
+              "when": 2750,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "2",
+              "hitbox": {
+                "Y": 18,
+                "X": 18,
+                "Z": 18
+              },
+              "when": 350,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "_id": "rbxassetid://136701179709286",
+          "mat": 1350,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 16,
+            "X": 18,
+            "Z": 14
+          },
+          "punishable": 0,
+          "name": "RedDeathRunningCrit",
+          "imxd": 75,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://6669352471": {
+        "status": "modified",
+        "changes": {
+          "mat": {
+            "from": 2000,
+            "to": 900
+          }
+        }
+      },
+      "rbxassetid://8378263543": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "FireEruption"
+          }
+        }
+      }
+    }
+  }
+}
