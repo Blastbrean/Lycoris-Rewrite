@@ -615,6 +615,10 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 		end
 	end
 
+	if index == "MouseIconEnabled" then
+		return oldNewIndex(self, index, true)
+	end
+
 	if index == "Ambient" then
 		if self == lighting and Configuration.expectToggleValue("ModifyAmbience") then
 			return oldNewIndex(self, index, modifyAmbienceColor(value))

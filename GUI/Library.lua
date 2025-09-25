@@ -126,7 +126,6 @@ return LPH_NO_VIRTUALIZE(function()
 
 			if Cursor then
 				Cursor.Visible = false
-				game:GetService("UserInputService").MouseIconEnabled = true
 			end
 		end)
 	)
