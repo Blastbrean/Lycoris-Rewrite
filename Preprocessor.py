@@ -402,7 +402,7 @@ class LuaPreprocessor:
                 if not isinstance(entry, dict):
                     key = f"idx_{idx+1}"
                 else:
-                    key = entry.get("_id") or entry.get("pname")
+                    key = entry.get("_id") or entry.get("pname") or entry.get("ename")
                 key_lua = self._escape_lua_string(str(key))
                 # Generate Lua for entry with deeper indent
                 entry_lua = self._to_lua(entry, base_indent=inner_indent + "    ")
@@ -764,6 +764,9 @@ class LuaPreprocessor:
                 
                 if timing.get("pname"):
                     timing["pname"] = self.scramble_str(timing["pname"])
+                
+                if timing.get("ename"):
+                    timing["ename"] = self.scramble_str(timing["ename"])
                 
                 timing["smod"] = self.scramble_str(timing["smod"])
                 timing["name"] = self.scramble_str(timing["name"])
