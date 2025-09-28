@@ -1,0 +1,26 @@
+{
+  "patch_id": "8c94af03-ebf0-4829-bad8-4b7ab57c9680",
+  "timestamp": "2025-09-27T11:55:10.292766",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "STREAMPART": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 32,
+              "X": 32,
+              "Z": 32
+            },
+            "to": {
+              "Y": 45,
+              "X": 45,
+              "Z": 45
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -29,7 +29,7 @@ return function(self, timing)
 	if self:distance(self.entity) <= 20 then
 		local action = Action.new()
 		action._type = "Parry"
-		action._when = 0
+		action._when = 100
 		action.name = "Arc Beam Close Timing"
 		action.ihbc = true
 		return self:action(timing, action)

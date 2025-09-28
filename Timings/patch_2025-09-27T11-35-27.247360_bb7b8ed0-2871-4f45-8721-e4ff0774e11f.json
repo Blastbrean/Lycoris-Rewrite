@@ -1,0 +1,49 @@
+{
+  "patch_id": "bb7b8ed0-2871-4f45-8721-e4ff0774e11f",
+  "timestamp": "2025-09-27T11:35:27.247360",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "SpearPartSplinter": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "SpearPartSplinter",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 20,
+            "X": 20,
+            "Z": 71
+          },
+          "punishable": 0,
+          "name": "GrandSpark",
+          "imxd": 258,
+          "smn": false,
+          "fhb": true,
+          "imdd": 20,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "patch_id": "a26ce49a-b470-4c92-8f4a-c492126dea0c",
+  "timestamp": "2025-09-27T16:14:01.579362",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://13338519421": {
+        "status": "removed",
+        "name": "MetalGatling"
+      }
+    },
+    "part": {
+      "MetalGatling2": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "MetalGatling2",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 14,
+                "X": 14,
+                "Z": 14
+              },
+              "when": 200,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "MetalGatling",
+          "imxd": 32,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

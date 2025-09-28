@@ -1,0 +1,13 @@
+{
+  "patch_id": "e888e09f-d84d-46e0-a058-ab482cd39e7e",
+  "timestamp": "2025-09-27T12:44:21.034536",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://5968282214": {
+        "status": "removed",
+        "name": "WindPassage"
+      }
+    }
+  }
+}

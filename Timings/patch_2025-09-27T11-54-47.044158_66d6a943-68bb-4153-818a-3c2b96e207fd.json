@@ -1,0 +1,64 @@
+{
+  "patch_id": "66d6a943-68bb-4153-818a-3c2b96e207fd",
+  "timestamp": "2025-09-27T11:54:47.044158",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "STREAMPART": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "STREAMPART",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Start Block",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            },
+            {
+              "_type": "End Block",
+              "name": "2",
+              "hitbox": {
+                "Y": 41,
+                "X": 41,
+                "Z": 41
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 32,
+            "X": 32,
+            "Z": 32
+          },
+          "punishable": 0,
+          "name": "LightningStreamPart",
+          "imxd": 301,
+          "smn": false,
+          "fhb": false,
+          "imdd": 15,
+          "tag": "Undefined"
+        }
+      },
+      "LightningStream": {
+        "status": "removed",
+        "name": "LightningStream"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "patch_id": "f2beffae-86ce-43ba-81e1-fe17d3a06b67",
+  "timestamp": "2025-09-27T11:12:39.132583",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "StrikeIndicator": {
+        "status": "removed",
+        "name": "LightningStrike"
+      }
+    }
+  }
+}

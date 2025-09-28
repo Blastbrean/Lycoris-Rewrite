@@ -12,16 +12,16 @@ return function(self, timing)
 		action._when = 570
 	end
 	if distance >= 15 then
-		action._when = 600
+		action._when = 630
 	end
 	if distance >= 20 then
-		action._when = 630
+		action._when = 650
 	end
 	if distance >= 25 then
 		action._when = 670
 	end
 	action._type = "Parry"
-	action.hitbox = Vector3.new(25, 12, 60)
+	action.hitbox = Vector3.new(25, 15, 30)
 	action.name = string.format("(%.2f) Dynamic Twister Kicks Timing", distance)
 	return self:action(timing, action)
 end

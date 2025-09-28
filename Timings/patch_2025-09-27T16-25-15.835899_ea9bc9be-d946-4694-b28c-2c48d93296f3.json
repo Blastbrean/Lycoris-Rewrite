@@ -1,0 +1,26 @@
+{
+  "patch_id": "ea9bc9be-d946-4694-b28c-2c48d93296f3",
+  "timestamp": "2025-09-27T16:25:15.835899",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Cannonball": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 32,
+              "X": 32,
+              "Z": 60
+            },
+            "to": {
+              "Y": 32,
+              "X": 32,
+              "Z": 68
+            }
+          }
+        }
+      }
+    }
+  }
+}

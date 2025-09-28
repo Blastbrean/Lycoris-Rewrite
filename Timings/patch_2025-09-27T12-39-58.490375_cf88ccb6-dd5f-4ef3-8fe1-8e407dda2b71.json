@@ -1,0 +1,66 @@
+{
+  "patch_id": "cf88ccb6-dd5f-4ef3-8fe1-8e407dda2b71",
+  "timestamp": "2025-09-27T12:39:58.490375",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://5968282214": {
+        "status": "modified",
+        "changes": {
+          "rpd": {
+            "from": 100,
+            "to": 0
+          },
+          "smod": {
+            "from": "LightningChargeUp",
+            "to": "N/A"
+          },
+          "hitbox": {
+            "from": {
+              "Y": 50,
+              "X": 50,
+              "Z": 50
+            },
+            "to": {
+              "Y": 0,
+              "X": 0,
+              "Z": 0
+            }
+          },
+          "fhb": {
+            "from": false,
+            "to": true
+          },
+          "imxd": {
+            "from": 150,
+            "to": 129
+          },
+          "name": {
+            "from": "LightningChargeUp",
+            "to": "WindPassage"
+          },
+          "umoa": {
+            "from": true,
+            "to": false
+          },
+          "actions": {
+            "from": [],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 25,
+                  "X": 25,
+                  "Z": 50
+                },
+                "when": 800,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

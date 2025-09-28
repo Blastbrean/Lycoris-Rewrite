@@ -31,7 +31,7 @@ return function(self, timing)
 		end
 
 		local action = Action.new()
-		action._when = 300
+		action._when = 350
 		action._type = "Dodge"
 		action.hitbox = Vector3.new(20, 20, 100)
 		action.name = "Krysiger Timing"

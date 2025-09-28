@@ -1,0 +1,46 @@
+{
+  "patch_id": "419a54d6-3884-4bb8-a178-304383b37acf",
+  "timestamp": "2025-09-27T16:15:01.588219",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "MetalGatling2": {
+        "status": "modified",
+        "changes": {
+          "uhc": {
+            "from": false,
+            "to": true
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 14,
+                  "X": 14,
+                  "Z": 14
+                },
+                "when": 200,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 14,
+                  "X": 14,
+                  "Z": 20
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "patch_id": "efaf8ca7-ec9d-4b54-8cd8-351dace9b240",
+  "timestamp": "2025-09-27T16:24:40.303172",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11363599835": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 18,
+              "X": 15.75,
+              "Z": 18
+            },
+            "to": {
+              "Y": 18,
+              "X": 8.000000953674316,
+              "Z": 18
+            }
+          }
+        }
+      },
+      "rbxassetid://4699358112": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 15,
+              "X": 13.125,
+              "Z": 18.75
+            },
+            "to": {
+              "Y": 15,
+              "X": 8.000000953674316,
+              "Z": 16.000001907348633
+            }
+          }
+        }
+      }
+    },
+    "part": {
+      "Cannonball": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 32,
+              "X": 32,
+              "Z": 45
+            },
+            "to": {
+              "Y": 32,
+              "X": 32,
+              "Z": 60
+            }
+          }
+        }
+      }
+    }
+  }
+}

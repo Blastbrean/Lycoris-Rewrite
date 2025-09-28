@@ -38,9 +38,9 @@ return function(self, timing)
 		radiantKickTiming.name = "RadiantKick"
 
 		local action = Action.new()
-		action._when = 500
+		action._when = 600
 		action._type = "Parry"
-		action.hitbox = Vector3.new(60, 60, 60)
+		action.hitbox = Vector3.new(80, 80, 80)
 		action.name = "Radiant Kick Shared"
 		return self:action(radiantKickTiming, action)
 	end

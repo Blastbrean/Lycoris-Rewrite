@@ -12,16 +12,19 @@ return function(self, timing)
 		action._when = 350
 	end
 	if distance >= 15 then
-		action._when = 450
+		action._when = 480
 	end
 	if distance >= 20 then
 		action._when = 500
 	end
 	if distance >= 22 then
-		action._when = 600
+		action._when = 680
 	end
 	if distance >= 27 then
-		action._when = 640
+		action._when = 710
+	end
+	if distance >= 30 then
+		action._when = 800
 	end
 	action._type = "Parry"
 	action.hitbox = Vector3.new(25, 15, 40)

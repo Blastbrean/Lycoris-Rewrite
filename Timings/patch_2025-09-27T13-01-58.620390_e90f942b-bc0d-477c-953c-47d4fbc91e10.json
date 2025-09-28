@@ -1,0 +1,18 @@
+{
+  "patch_id": "e90f942b-bc0d-477c-953c-47d4fbc91e10",
+  "timestamp": "2025-09-27T13:01:58.620390",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "CBNormal": {
+        "status": "modified",
+        "changes": {
+          "uhc": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

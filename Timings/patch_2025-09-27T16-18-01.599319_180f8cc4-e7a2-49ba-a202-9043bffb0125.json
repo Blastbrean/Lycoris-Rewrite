@@ -1,0 +1,49 @@
+{
+  "patch_id": "180f8cc4-e7a2-49ba-a202-9043bffb0125",
+  "timestamp": "2025-09-27T16:18:01.599319",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Cannonball": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "Cannonball",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Dodge",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 32,
+            "X": 32,
+            "Z": 32
+          },
+          "punishable": 0,
+          "name": "Cannonball",
+          "imxd": 312,
+          "smn": false,
+          "fhb": false,
+          "imdd": 31,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "patch_id": "b7775b24-3015-4a90-af2c-0c93b367c20b",
+  "timestamp": "2025-09-27T15:52:01.144641",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "ImpactIndicator": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "ImpactIndicator",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 15,
+                "X": 18,
+                "Z": 18
+              },
+              "when": 200,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "ShadowMetero",
+          "imxd": 161,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

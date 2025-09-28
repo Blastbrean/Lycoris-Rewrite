@@ -1,0 +1,49 @@
+{
+  "patch_id": "52ee24de-763d-43ab-b72b-d7ed8063aa0b",
+  "timestamp": "2025-09-27T16:59:14.805286",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "BlueBall": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "BlueBall",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 9,
+            "X": 9,
+            "Z": 13
+          },
+          "punishable": 0,
+          "name": "FlameSentinelAzure",
+          "imxd": 80,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

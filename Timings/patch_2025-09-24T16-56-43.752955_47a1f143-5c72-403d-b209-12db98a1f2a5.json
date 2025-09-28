@@ -1,0 +1,46 @@
+{
+  "patch_id": "47a1f143-5c72-403d-b209-12db98a1f2a5",
+  "timestamp": "2025-09-24T16:56:43.752955",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Spike": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 19
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 11,
+                  "X": 11,
+                  "Z": 18
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ]
+          },
+          "fhb": {
+            "from": true,
+            "to": false
+          }
+        }
+      }
+    }
+  }
+}
