@@ -25,7 +25,7 @@ return function(self, timing)
 	end
 
 	if sc == 2 then
-		action._when = 1000
+		action._when = 900
 	end
 
 	if sc == 3 then

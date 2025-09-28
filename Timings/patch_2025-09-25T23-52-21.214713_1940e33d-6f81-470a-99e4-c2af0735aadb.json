@@ -1,0 +1,13 @@
+{
+  "patch_id": "1940e33d-6f81-470a-99e4-c2af0735aadb",
+  "timestamp": "2025-09-25T23:52:21.214713",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "EruptionCylinder": {
+        "status": "removed",
+        "name": "EruptionCylinder"
+      }
+    }
+  }
+}

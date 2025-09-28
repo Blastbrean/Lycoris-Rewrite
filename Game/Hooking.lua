@@ -547,9 +547,10 @@ local onUnreliableFireServer = LPH_NO_VIRTUALIZE(function(...)
 		return oldUnreliableFireServer(...)
 	end
 
-	local rightClickRemote = KeyHandling.getRemote("RightClick")
+	local feintClickRemote = KeyHandling.getRemote("FeintClick")
+	local offhandAttackRemote = KeyHandling.getRemote("OffhandAttack")
 
-	if rightClickRemote and self == rightClickRemote then
+	if (feintClickRemote and self == feintClickRemote) or (offhandAttackRemote and self == offhandAttackRemote) then
 		onInterceptedInput(INPUT_RIGHT_CLICK)
 		return oldUnreliableFireServer(...)
 	end

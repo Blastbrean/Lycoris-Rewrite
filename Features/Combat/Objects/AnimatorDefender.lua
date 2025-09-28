@@ -347,16 +347,17 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 		return
 	end
 
-	-- Add to playback data list.
-	if Configuration.expectToggleValue("ShowAnimationVisualizer") then
-		self.pbdata[track] = PlaybackData.new(self.entity)
-	end
-
 	-- Animation ID.
 	local aid = tostring(track.Animation.AnimationId)
 
 	---@type AnimationTiming?
 	local timing = self:initial(self.entity, SaveManager.as, self.entity.Name, aid)
+
+	-- A bit of a hack, but it works.
+	if timing ~= nil and Configuration.expectToggleValue("ShowAnimationVisualizer") then
+		self.pbdata[track] = PlaybackData.new(self.entity)
+	end
+
 	if not timing then
 		return
 	end

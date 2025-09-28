@@ -4,6 +4,9 @@ local PartTiming = getfenv().PartTiming
 ---@type Action
 local Action = getfenv().Action
 
+---@module Modules.Globals.Weapon
+local Weapon = getfenv().Weapon
+
 ---@type ProjectileTracker
 ---@diagnostic disable-next-line: unused-local
 local ProjectileTracker = getfenv().ProjectileTracker
@@ -24,14 +27,14 @@ return function(self, timing)
 		return candidate.Name == "Bullet" or candidate.Name:match("ScrapsingerBullet")
 	end)
 
-	task.wait(0.35 - self.rtt())
-
 	if self:distance(self.entity) <= 20 then
-		local action = Action.new()
-		action._type = "Parry"
-		action._when = 0
-		action.name = "Gun Close Timing"
-		action.ihbc = true
+		local action = Weapon.action(self.entity, 400 * 1.17, true)
+		if not action then
+			return
+		end
+
+		action.name = "Dynamic Gun Close Timing"
+
 		return self:action(timing, action)
 	end
 

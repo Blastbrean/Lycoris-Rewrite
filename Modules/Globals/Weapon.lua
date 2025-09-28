@@ -33,10 +33,17 @@ function Weapon.data(entity)
 		return
 	end
 
+	local type = hw:FindFirstChild("Type")
+	if not type then
+		return
+	end
+
 	return {
 		hw = hw,
 		ss = ssv.Value,
+		oss = ssv:GetAttribute("OldValue"),
 		length = lv.Value,
+		type = type.Value or "N/A",
 	}
 end
 
@@ -55,9 +62,9 @@ function Weapon.action(entity, base, scale)
 	local length = data.length
 
 	local action = Action.new()
-	action._when = scale and base / ss or base
+	action._when = scale and (base / ss) or base
 	action._type = "Parry"
-	action.hitbox = Vector3.new(length * 1.75, length * 1.5, length * 2)
+	action.hitbox = Vector3.new(length * 2, length * 2.5, length * 2)
 	return action
 end
 

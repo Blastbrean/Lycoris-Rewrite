@@ -5,7 +5,7 @@ local Weapon = getfenv().Weapon
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
-	local action = Weapon.action(self.entity, 400 * 1.09, true)
+	local action = Weapon.action(self.entity, 400, true)
 	if not action then
 		return
 	end
