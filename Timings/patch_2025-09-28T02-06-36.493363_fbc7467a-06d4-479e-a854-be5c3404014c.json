@@ -1,0 +1,72 @@
+{
+  "patch_id": "fbc7467a-06d4-479e-a854-be5c3404014c",
+  "timestamp": "2025-09-28T02:06:36.493363",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://13246809405": {
+        "status": "modified",
+        "changes": {
+          "tag": {
+            "from": "Undefined",
+            "to": "Mantra"
+          }
+        }
+      },
+      "rbxassetid://13567686046": {
+        "status": "modified",
+        "changes": {
+          "tag": {
+            "from": "Undefined",
+            "to": "Mantra"
+          }
+        }
+      },
+      "rbxassetid://83123470732503": {
+        "status": "modified",
+        "changes": {
+          "tag": {
+            "from": "Undefined",
+            "to": "Critical"
+          }
+        }
+      },
+      "rbxassetid://87085678581483": {
+        "status": "modified",
+        "changes": {
+          "tag": {
+            "from": "Undefined",
+            "to": "Mantra"
+          }
+        }
+      },
+      "rbxassetid://13319847815": {
+        "status": "modified",
+        "changes": {
+          "tag": {
+            "from": "Undefined",
+            "to": "Mantra"
+          }
+        }
+      },
+      "rbxassetid://13253662736": {
+        "status": "modified",
+        "changes": {
+          "tag": {
+            "from": "Undefined",
+            "to": "Mantra"
+          }
+        }
+      },
+      "rbxassetid://13408478146": {
+        "status": "modified",
+        "changes": {
+          "tag": {
+            "from": "Undefined",
+            "to": "Mantra"
+          }
+        }
+      }
+    }
+  }
+}
