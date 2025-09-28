@@ -16,7 +16,7 @@ return function(self, timing)
 	end
 
 	action.name = "Dynamic Dagger Aerial Attack"
-	action.hitbox = Vector3.new(data.length * 1.75, data.length * 2, data.length * 2)
+	action.hitbox = Vector3.new(data.length * 2, data.length * 2.5, data.length * 3)
 
 	timing.duih = true
 	timing.hitbox = action.hitbox

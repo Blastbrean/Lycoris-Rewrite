@@ -10,16 +10,17 @@ return function(self, timing)
 		return
 	end
 
-	local action = Weapon.action(self.entity, 400, false)
+	local action = Weapon.action(self.entity, 350, false)
 	if not action then
 		return
 	end
 
 	action.name = "Dynamic Fist Running Attack"
-	action.hitbox = Vector3.new(data.length * 1.75, data.length * 2, data.length * 2)
+	action.hitbox = Vector3.new(data.length * 2, data.length * 2, data.length * 2.5)
 
 	timing.duih = true
 	timing.hitbox = action.hitbox
+	timing.fhb = true
 
 	return self:action(timing, action)
 end

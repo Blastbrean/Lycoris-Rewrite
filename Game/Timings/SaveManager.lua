@@ -241,7 +241,7 @@ function SaveManager.clear(name)
 		return Logger.warn("Timing manager ran into the error '%s' while attempting to write config %s.", result, name)
 	end
 
-	Logger.notify("Config file %s has cleared.", name)
+	Logger.notify("Config file %s has been cleared.", name)
 end
 
 ---Load timing from config name.

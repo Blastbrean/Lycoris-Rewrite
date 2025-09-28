@@ -230,32 +230,23 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 	InputClient.deflect()
 end)
 
----Check if we're in a valid state to proceed with action handling. Extend me.
----@param self Defender
----@param timing Timing
----@param action Action
+---Check if we're holding block and we're not supposed to do anything.
 ---@return boolean
-Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
-	local integer = Random.new():NextNumber(1.0, 100.0)
-	local rate = Configuration.expectOptionValue("FailureRate") or 0.0
-
-	if Configuration.expectToggleValue("AllowFailure") and integer <= rate then
-		return self:notify(timing, "(%i <= %i) Intentionally did not run.", integer, rate)
-	end
-
+Defender.cblocking = LPH_NO_VIRTUALIZE(function()
 	local keybinds = replicatedStorage:FindFirstChild("KeyBinds")
 	if not keybinds then
-		return self:notify(timing, "No keybinds instance found.")
+		return false
 	end
 
 	local keybindsModule = require(keybinds)
 	if not keybindsModule or not keybindsModule.Current then
-		return self:notify(timing, "No keybinds module found.")
+		return false
 	end
 
 	local selectedFilters = Configuration.expectOptionValue("AutoDefenseFilters") or {}
+	local bindings = keybindsModule:GetBindings() or {}
 
-	for _, keybind in next, keybindsModule.Current["Block"] or {} do
+	for _, keybind in next, bindings["Block"] do
 		local success, keyCode = pcall(function()
 			return Enum.KeyCode[tostring(keybind)]
 		end)
@@ -272,6 +263,28 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 			continue
 		end
 
+		return true
+	end
+
+	return false
+end)
+
+---Check if we're in a valid state to proceed with action handling. Extend me.
+---@param self Defender
+---@param timing Timing
+---@param action Action
+---@return boolean
+Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
+	local integer = Random.new():NextNumber(1.0, 100.0)
+	local rate = Configuration.expectOptionValue("FailureRate") or 0.0
+
+	if Configuration.expectToggleValue("AllowFailure") and integer <= rate then
+		return self:notify(timing, "(%i <= %i) Intentionally did not run.", integer, rate)
+	end
+
+	local selectedFilters = Configuration.expectOptionValue("AutoDefenseFilters") or {}
+
+	if self:cblocking() then
 		return self:notify(timing, "User is pressing down on a key binded to Block.")
 	end
 
@@ -455,7 +468,7 @@ Defender.initial = LPH_NO_VIRTUALIZE(function(self, from, pair, name, key)
 	---@note: Ignore return value.
 	if not timing then
 		self:miss(self.__type, key, name, distance, from and tostring(from.Parent) or nil)
-		return nil
+		return false
 	end
 
 	-- Return timing.
@@ -611,7 +624,7 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 	-- Visualize predicted hitbox.
 	if usedCFrame then
 		self:visualize(options.hmid and options.hmid + 1 or nil, usedCFrame, hitbox, options:gphcolor(result))
-		self:visualize(options.hmid and options.hmid + 1 or nil, root.CFrame, root.Size, options:gphcolor(result))
+		self:visualize(options.hmid and options.hmid + 1 or nil, closest, root.Size, options:gphcolor(result))
 	end
 
 	-- Return result.
@@ -636,7 +649,9 @@ Defender.bend = LPH_NO_VIRTUALIZE(function(self)
 	end
 
 	-- End block.
-	InputClient.bend(false)
+	if not self:cblocking() then
+		InputClient.bend(false)
+	end
 end)
 
 ---Handle action.
@@ -838,7 +853,7 @@ Defender.clean = LPH_NO_VIRTUALIZE(function(self)
 	end
 
 	-- Run end block, just in case we get stuck.
-	if blocking then
+	if blocking and not self:cblocking() then
 		InputClient.bend(true)
 	end
 end)

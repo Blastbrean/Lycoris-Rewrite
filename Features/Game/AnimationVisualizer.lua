@@ -434,6 +434,14 @@ return LPH_NO_VIRTUALIZE(function()
 		-- Update speed amount.
 		speedText.Text = currentTrack and string.format("Speed (%.2f)", currentTrack.Speed) or "Speed (???)"
 
+		if currentTrack and isPaused then
+			speedText.Text = string.format(
+				"Speed (%.2f)",
+				currentPlaybackData:last(getTimeElapsedFromTp(currentTrack.TimePosition, currentTrack.Length) or 0.0)
+					or 0.0
+			)
+		end
+
 		if not currentTrack or not currentPlaybackData then
 			return
 		end
