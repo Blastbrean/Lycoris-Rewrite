@@ -1,5 +1,5 @@
 -- EffectListener module.
-local EffectListener = {}
+local EffectListener = { lastMantraActivated = nil }
 
 ---@module Utility.Signal
 local Signal = require("Utility/Signal")
@@ -17,6 +17,7 @@ local Logger = require("Utility/Logger")
 local effectMaid = Maid.new()
 
 -- Services.
+local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 ---Is an effect within a specific time?
@@ -39,6 +40,51 @@ local function withinTime(effect, time)
 	end
 
 	return os.clock() - timestamp <= dtime
+end
+
+---Are we currently casting Sightless Beam?
+---@return boolean
+function EffectListener.csb()
+	if not EffectListener.lastMantraActivated then
+		return false
+	end
+
+	local name = tostring(EffectListener.lastMantraActivated)
+	if not name or not name:match("Sightless Beam") then
+		return false
+	end
+
+	local character = players.LocalPlayer and players.LocalPlayer.Character
+	if not character then
+		return false
+	end
+
+	local hrp = character:FindFirstChild("HumanoidRootPart")
+	if not hrp then
+		return false
+	end
+
+	if hrp:FindFirstChild("REP_SOUND_376107250") then
+		return true
+	end
+
+	for _, child in next, hrp:GetChildren() do
+		if not child:IsA("Sound") then
+			continue
+		end
+
+		if child.Name ~= "Telekin" then
+			continue
+		end
+
+		if not child.IsPlaying then
+			continue
+		end
+
+		return true
+	end
+
+	return false
 end
 
 ---Are we in swinging stun? That small window after swinging where you can't do anything.

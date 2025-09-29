@@ -10,14 +10,11 @@ local Logger = require("Utility/Logger")
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
----@module Features.Game.Monitoring
-local Monitoring = require("Features/Game/Monitoring")
-
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
----@module Features.Combat.Defense
-local Defense = require("Features/Combat/Defense")
+---@module Features.Combat.EffectListener
+local EffectListener = require("Features/Combat/EffectListener")
 
 ---@module Game.LeaderboardClient
 local LeaderboardClient = require("Game/LeaderboardClient")
@@ -525,7 +522,7 @@ local onNameCall = LPH_NO_VIRTUALIZE(function(...)
 	end
 
 	if name == "ActivateMantra" then
-		Defense.lastMantraActivate = args[2]
+		EffectListener.lastMantraActivated = args[2]
 	end
 
 	if name == "Gesture" and Configuration.expectToggleValue("EmoteSpoofer") and typeof(args[2]) == "string" then

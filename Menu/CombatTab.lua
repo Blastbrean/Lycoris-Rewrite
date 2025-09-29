@@ -236,6 +236,7 @@ function CombatTab.initAutoDefenseSection(groupbox)
 			"Disable When Textbox Focused",
 			"Disable When Window Not Active",
 			"Disable While Holding Block",
+			"Disable While Using Sightless Beam",
 		},
 		Multi = true,
 		AllowNull = true,

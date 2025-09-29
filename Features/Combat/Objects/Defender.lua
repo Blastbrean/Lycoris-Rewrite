@@ -297,6 +297,10 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(timing, "User is typing in a text box.")
 	end
 
+	if selectedFilters["Disable While Using Sightless Beam"] and EffectListener.csb() then
+		return self:notify(timing, "User is using the 'Sightless Beam' move.")
+	end
+
 	if selectedFilters["Disable When Window Not Active"] and not iswindowactive() then
 		return self:notify(timing, "Window is not active.")
 	end
@@ -375,18 +379,19 @@ Defender.visualize = LPH_NO_VIRTUALIZE(function(self, identifier, cframe, size, 
 	local id = identifier or self:uid(10)
 	local vpart = self.hmaid[id] or Instance.new("Part")
 
-	vpart.Parent = workspace
-	vpart.Anchored = true
-	vpart.CanCollide = false
-	vpart.CanQuery = false
-	vpart.CanTouch = false
-	vpart.Material = Enum.Material.ForceField
-	vpart.CastShadow = false
-	vpart.Size = size
-	vpart.CFrame = cframe
-	vpart.Color = color
-	vpart.Name = string.format("RW_Visualization_%i", id)
-	vpart.Transparency = Configuration.expectToggleValue("EnableVisualizations") and 0.2 or 1.0
+	if vpart.Parent then
+		vpart.Parent = workspace
+		vpart.Anchored = true
+		vpart.CanCollide = false
+		vpart.CanQuery = false
+		vpart.CanTouch = false
+		vpart.Material = Enum.Material.ForceField
+		vpart.CastShadow = false
+		vpart.Size = size
+		vpart.CFrame = cframe
+		vpart.Color = color
+		vpart.Transparency = Configuration.expectToggleValue("EnableVisualizations") and 0.2 or 1.0
+	end
 
 	if self.hmaid[id] then
 		return
