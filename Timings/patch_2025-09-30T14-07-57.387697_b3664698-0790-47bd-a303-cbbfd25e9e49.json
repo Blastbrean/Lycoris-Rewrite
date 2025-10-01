@@ -1,0 +1,26 @@
+{
+  "patch_id": "b3664698-0790-47bd-a303-cbbfd25e9e49",
+  "timestamp": "2025-09-30T14:07:57.387697",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "ChainwardenProjectile": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 10,
+              "X": 10,
+              "Z": 24
+            },
+            "to": {
+              "Y": 10,
+              "X": 10,
+              "Z": 20
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "patch_id": "271b2e69-8644-43fc-9996-c7a8390b43d3",
+  "timestamp": "2025-09-30T14:06:45.392419",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "ChainwardenProjectile": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 10,
+              "X": 10,
+              "Z": 31
+            },
+            "to": {
+              "Y": 10,
+              "X": 10,
+              "Z": 27
+            }
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Start Block",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              },
+              {
+                "_type": "End Block",
+                "name": "2",
+                "hitbox": {
+                  "Y": 40,
+                  "X": 40,
+                  "Z": 40
+                },
+                "when": 150,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

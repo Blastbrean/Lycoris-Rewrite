@@ -1,0 +1,70 @@
+{
+  "patch_id": "8e54a006-f4f5-4bc1-98cd-42f0b7ef5496",
+  "timestamp": "2025-09-30T14:28:57.663410",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://18592047703": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 75,
+            "to": 64
+          }
+        }
+      },
+      "rbxassetid://18592050844": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "Release",
+              "hitbox": {
+                "Y": 10,
+                "X": 10,
+                "Z": 10
+              },
+              "when": 500,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://18592050844",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "Rupture2",
+          "imxd": 75,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Mantra"
+        }
+      }
+    }
+  }
+}

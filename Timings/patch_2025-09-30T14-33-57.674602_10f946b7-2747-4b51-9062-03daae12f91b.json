@@ -1,0 +1,55 @@
+{
+  "patch_id": "10f946b7-2747-4b51-9062-03daae12f91b",
+  "timestamp": "2025-09-30T14:33:57.674602",
+  "author": "Juanito",
+  "diff": {
+    "sound": {
+      "rbxassetid://18586599425": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": false,
+          "rpd": 0,
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 51
+              },
+              "when": 500,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "_id": "rbxassetid://18586599425",
+          "duih": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "Rupture",
+          "imxd": 107,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://18591199355": {
+        "status": "removed",
+        "name": "Rupture"
+      }
+    }
+  }
+}

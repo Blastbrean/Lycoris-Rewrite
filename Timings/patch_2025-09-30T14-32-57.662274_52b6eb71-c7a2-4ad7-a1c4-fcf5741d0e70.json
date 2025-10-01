@@ -1,0 +1,43 @@
+{
+  "patch_id": "52b6eb71-c7a2-4ad7-a1c4-fcf5741d0e70",
+  "timestamp": "2025-09-30T14:32:57.662274",
+  "author": "Juanito",
+  "diff": {
+    "sound": {
+      "rbxassetid://18586599425": {
+        "status": "removed",
+        "name": "RputureSecond"
+      },
+      "rbxassetid://18591199355": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": false,
+          "rpd": 0,
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "after": 0,
+          "_id": "rbxassetid://18591199355",
+          "duih": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "Rupture",
+          "imxd": 0,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

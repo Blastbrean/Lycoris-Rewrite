@@ -1,0 +1,55 @@
+{
+  "patch_id": "0f6e9f57-25b8-4604-be0b-6131c7824dcd",
+  "timestamp": "2025-09-30T14:36:57.682422",
+  "author": "Juanito",
+  "diff": {
+    "sound": {
+      "rbxassetid://18586599425": {
+        "status": "removed",
+        "name": "Rupture"
+      },
+      "rbxassetid://18591199355": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": false,
+          "rpd": 0,
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 72,
+                "X": 72,
+                "Z": 72
+              },
+              "when": 460,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "_id": "rbxassetid://18591199355",
+          "duih": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "RuptureChained",
+          "imxd": 107,
+          "smn": false,
+          "fhb": false,
+          "imdd": 2,
+          "tag": "Mantra"
+        }
+      }
+    }
+  }
+}

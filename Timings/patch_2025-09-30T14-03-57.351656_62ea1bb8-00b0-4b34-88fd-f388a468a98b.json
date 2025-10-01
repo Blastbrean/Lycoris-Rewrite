@@ -1,0 +1,49 @@
+{
+  "patch_id": "62ea1bb8-00b0-4b34-88fd-f388a468a98b",
+  "timestamp": "2025-09-30T14:03:57.351656",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "ChainwardenProjectile": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "ChainwardenProjectile",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 25,
+            "X": 25,
+            "Z": 25
+          },
+          "punishable": 0,
+          "name": "ChainwardenProjectile",
+          "imxd": 129,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}
