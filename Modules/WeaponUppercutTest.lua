@@ -13,6 +13,8 @@ return function(self, timing)
 		return
 	end
 
+	timing.pfh = true
+
 	local windup = nil
 
 	-- Windup + 0-speed duration.
@@ -21,8 +23,33 @@ return function(self, timing)
 		windup = (0.166 / self.track.Speed) + 0.120
 	elseif data.type == "Greataxe" then
 		windup = (0.141 / self.track.Speed) + 0.140
+	elseif data.type == "Greathammer" then
+		windup = (0.150 / self.track.Speed) + 0.150
+	elseif data.type == "Greatsword" then
+		windup = (0.157 / self.track.Speed) + 0.130
+	elseif data.type == "Greatcannon" then
+		windup = (0.166 / self.track.Speed) + 0.130
+	elseif data.type == "Twinblade" then
+		windup = (0.163 / self.track.Speed) + 0.130
+	elseif data.type == "Bow" then
+		windup = (0.150 / self.track.Speed) + 0.140
+	elseif data.type == "Pistol" then
+		repeat
+			task.wait()
+		until self.track.Speed >= 0.1
+
+		windup = (0.166 / self.track.Speed) + 0.150
+	elseif data.type == "Rifle" then
+		windup = (0.159 / self.track.Speed) + 0.140
+	elseif data.type == "Rapier" then
+		windup = (0.181 / self.track.Speed) + 0.130
+	elseif data.type == "Fist" then
+		windup = (0.150 / self.track.Speed) + 0.120
 	elseif data.type == "Sword" then
 		windup = (0.150 / self.track.Speed) + 0.150
+	elseif data.type == "Spear" then
+		windup = (0.163 / self.track.Speed) + 0.100
+		windup += 0.100 / data.ss
 	end
 
 	if not windup then

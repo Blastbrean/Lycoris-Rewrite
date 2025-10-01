@@ -379,8 +379,11 @@ Defender.visualize = LPH_NO_VIRTUALIZE(function(self, identifier, cframe, size, 
 	local id = identifier or self:uid(10)
 	local vpart = self.hmaid[id] or Instance.new("Part")
 
-	if vpart.Parent then
+	pcall(function()
 		vpart.Parent = workspace
+	end)
+
+	if vpart.Parent then
 		vpart.Anchored = true
 		vpart.CanCollide = false
 		vpart.CanQuery = false

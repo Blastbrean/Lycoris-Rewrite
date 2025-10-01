@@ -49,6 +49,8 @@ local EffectListener = require("Features/Combat/EffectListener")
 ---@field manimations table<number, Animation>
 ---@field track AnimationTrack? Don't be confused. This is the **valid && last** animation track played.
 ---@field maid Maid This maid is cleaned up after every new animation track. Safe to use for on-animation-track setup.
+---@field sct table<AnimationTrack, boolean> Tracks that need to have their speed changed.
+---@field tsc table<AnimationTrack, number> Tracks that are saving their last speed.
 local AnimatorDefender = setmetatable({}, { __index = Defender })
 AnimatorDefender.__index = AnimatorDefender
 AnimatorDefender.__type = "Animation"
@@ -304,6 +306,29 @@ AnimatorDefender.update = LPH_NO_VIRTUALIZE(function(self)
 		-- Start tracking the animation's speed.
 		data:astrack(track.Speed)
 	end
+
+	if not Configuration.expectToggleValue("AnimationSpeedChanger") then
+		return
+	end
+
+	-- Animation speed changer.
+	for track, _ in next, self.sct do
+		if not track.IsPlaying then
+			self.sct[track] = nil
+			self.tsc[track] = nil
+			continue
+		end
+
+		if self.tsc[track] == tostring(track.Speed) then
+			continue
+		end
+
+		local adjusted = track.Speed * (Configuration.expectOptionValue("AnimationSpeedMultiplier") or 1.0)
+
+		track:AdjustSpeed(adjusted)
+
+		self.tsc[track] = tostring(track.Speed)
+	end
 end)
 
 ---Virtualized processing checks.
@@ -353,15 +378,7 @@ AnimatorDefender.asc = LPH_NO_VIRTUALIZE(function(self, track)
 		)
 	end
 
-	Logger.warn(
-		"(%s) Adjusting the track '%s' speed from %.2f to %.2f",
-		self.entity.Name,
-		track.Animation.AnimationId,
-		track.Speed,
-		track.Speed * (Configuration.expectOptionValue("AnimationSpeedMultiplier") or 1.0)
-	)
-
-	track:AdjustSpeed(track.Speed * (Configuration.expectOptionValue("AnimationSpeedMultiplier") or 1.0))
+	self.sct[track] = true
 end)
 
 ---Process animation track.
@@ -495,6 +512,8 @@ function AnimatorDefender.new(animator, manimations)
 	self.keyframes = {}
 	self.pbdata = {}
 	self.rpbdata = {}
+	self.sct = {}
+	self.tsc = {}
 
 	self.maid:mark(
 		entityDescendantAdded:connect(

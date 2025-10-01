@@ -19,6 +19,26 @@ return function(self, timing)
 
 	if data.type == "Greataxe" then
 		windup = (0.18 / self.track.Speed) + 0.100
+	elseif data.type == "Greathammer" then
+		windup = (0.14 / self.track.Speed) + 0.140
+	elseif data.type == "Greatsword" then
+		windup = (0.17 / self.track.Speed) + 0.150
+	elseif data.type == "Twinblade" then
+		windup = (0.166 / self.track.Speed) + 0.140
+	elseif data.type == "Bow" then
+		windup = (0.172 / self.track.Speed) + 0.140
+	elseif data.type == "Pistol" then
+		windup = 0.500 / data.ss
+	elseif data.type == "Greatcannon" then
+		windup = (0.173 / self.track.Speed) + 0.160
+	elseif data.type == "Dagger" then
+		windup = (0.165 / self.track.Speed) + 0.120
+	elseif data.type == "Rapier" then
+		windup = (0.163 / self.track.Speed) + 0.120
+	elseif data.type == "Spear" then
+		windup = (0.135 / self.track.Speed) + 0.180
+	elseif data.type == "Fist" then
+		windup = (0.160 / self.track.Speed) + 0.140
 	elseif data.type == "Sword" then
 		windup = (0.16 / self.track.Speed) + 0.100
 	end

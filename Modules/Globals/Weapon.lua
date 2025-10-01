@@ -38,12 +38,28 @@ function Weapon.data(entity)
 		return
 	end
 
+	local nemesis = false
+
+	for _, inst in next, hw:GetChildren() do
+		if not inst:IsA("ParticleEmitter") then
+			continue
+		end
+
+		if inst.Texture ~= "rbxassetid://11889781532" then
+			continue
+		end
+
+		nemesis = true
+		break
+	end
+
 	return {
 		hw = hw,
 		ss = ssv.Value,
 		oss = ssv:GetAttribute("OldValue"),
 		length = lv.Value,
 		type = type.Value or "N/A",
+		nemesis = nemesis,
 	}
 end
 

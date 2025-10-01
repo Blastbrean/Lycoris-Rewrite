@@ -5,17 +5,10 @@ local Action = getfenv().Action
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
-	timing.pfh = true
-
 	local action = Action.new()
-	action._when = 600
-
-	if self.track.Speed >= 0.7 then
-		action._when = 300
-	end
-
+	action._when = (700 * 1.00) / self.track.Speed
 	action._type = "Parry"
-	action.hitbox = Vector3.new(10, 40, 30)
+	action.hitbox = Vector3.new(20, 20, 50)
 	action.name = string.format("(%.2f) Mayhem Silentheart Timing", self.track.Speed)
 	self:action(timing, action)
 end

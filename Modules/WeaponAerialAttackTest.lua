@@ -14,16 +14,43 @@ return function(self, timing)
 	end
 
 	local windup = nil
+	local ispeed = self.track.Speed
 
 	-- Windup + 0-speed duration.
 
 	if data.type == "Dagger" then
 		windup = (0.169 / self.track.Speed) + 0.120
 	elseif data.type == "Greataxe" then
-		windup = (0.168 / self.track.Speed) + 0.110
-		windup += 0.100 * data.ss
+		windup = (0.168 / self.track.Speed) + 0.100
+		windup += 0.075 / data.ss
+	elseif data.type == "Twinblade" then
+		windup = (0.151 / self.track.Speed) + 0.140
+	elseif data.type == "Bow" then
+		windup = (0.145 / self.track.Speed) + 0.170
+	elseif data.type == "Pistol" then
+		windup = 0.500 / data.ss
+	elseif data.type == "Rifle" and not timing.name:match("Fist") then
+		repeat
+			task.wait()
+		until self.track.Speed ~= ispeed
+
+		windup = (0.300 / self.track.Speed)
+	elseif data.type == "Rifle" then
+		windup = (0.199 / self.track.Speed) + 0.100
+	elseif data.type == "Greatsword" then
+		windup = (0.166 / self.track.Speed) + 0.160
+	elseif data.type == "Rapier" then
+		windup = (0.255 / self.track.Speed) + 0.080
+	elseif data.type == "Greatcannon" then
+		windup = (0.163 / self.track.Speed) + 0.183
+	elseif data.type == "Greathammer" then
+		windup = (0.15 / self.track.Speed) + 0.170
+	elseif data.type == "Fist" then
+		windup = (0.160 / self.track.Speed) + 0.130
 	elseif data.type == "Sword" then
 		windup = (0.18 / self.track.Speed) + 0.120
+	elseif data.type == "Spear" then
+		windup = (0.150 / self.track.Speed) + 0.170
 	end
 
 	if not windup then

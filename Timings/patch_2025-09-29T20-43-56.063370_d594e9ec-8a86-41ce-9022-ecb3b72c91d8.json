@@ -1,0 +1,32 @@
+{
+  "patch_id": "d594e9ec-8a86-41ce-9022-ecb3b72c91d8",
+  "timestamp": "2025-09-29T20:43:56.063370",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://11363599835": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 17,
+              "X": 14.875,
+              "Z": 17
+            },
+            "to": {
+              "Y": 17,
+              "X": 8.000000953674316,
+              "Z": 17
+            }
+          }
+        }
+      }
+    },
+    "effect": {
+      "Mani": {
+        "status": "removed",
+        "name": "ManiKatti"
+      }
+    }
+  }
+}
