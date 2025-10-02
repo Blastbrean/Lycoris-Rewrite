@@ -1,10 +1,10 @@
 # What do we need to do?
 - Combat ❌
     - Auto Defense ❌
-        - Failure Rate ❌
-        - Fake Mistime Rate ❌
+        - Failure Rate ✅
+        - Fake Mistime Rate 🟨
         - Fallback To Counter Mantras ❌
-        - Fallback To Blocking ❌
+        - Fallback To Blocking ✅
         - Blatant Roll ❌
     - Feint Detection ❌
         - Detect M1 Feints ❌
@@ -18,16 +18,16 @@
         - Silent Aim ❌
         - Allow Flourish Feints ❌
         - Allow Attacks While Rolling ❌
-        - Attack Animation Speed ❌
-            - Animation Speed Slider (0.5x - 1x - 2x) ❌ 
+        - Attack Animation Speed ✅
+            - Animation Speed Slider (0.5x - 1x - 2x) ✅ 
 
 - Game ❌
     - Local Character ❌
-        - Always Sprint ❌
+        - Always Sprint ✅
         - Remove "Loot All" CD ❌
     - Player Monitoring ❌
         - Show All Players in Map ❌
-        - Chat Spy ❌
+        - Chat Spy ✅
     
     Check out "Hide From Heartbeat Sensor"
 
@@ -52,8 +52,8 @@
     Add Auto Loot and Account for Innate Stats
 
 - Exploit ❌
-    - Mob Exploits ❌
-        - Pathfind Breaker ❌
+    - Mob Exploits ✅
+        - Pathfind Breaker ✅
     - Local Character Exploits ❌
         - Extended Item Pickup ❌
         - Extended Job Board Interact ❌
