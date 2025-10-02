@@ -1,0 +1,22 @@
+{
+  "patch_id": "2dbf89ad-ba53-4061-87b7-47d32f74e102",
+  "timestamp": "2025-10-01T16:26:10.474403",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11493923277": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "Scythe"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

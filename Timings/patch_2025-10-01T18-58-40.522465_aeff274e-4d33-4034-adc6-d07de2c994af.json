@@ -1,0 +1,13 @@
+{
+  "patch_id": "aeff274e-4d33-4034-adc6-d07de2c994af",
+  "timestamp": "2025-10-01T18:58:40.522465",
+  "author": "Juanito",
+  "diff": {
+    "sound": {
+      "rbxassetid://4988621968": {
+        "status": "removed",
+        "name": "MetalTurret"
+      }
+    }
+  }
+}

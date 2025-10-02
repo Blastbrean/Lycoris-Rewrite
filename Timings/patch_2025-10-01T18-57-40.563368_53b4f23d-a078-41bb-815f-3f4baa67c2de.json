@@ -1,0 +1,51 @@
+{
+  "patch_id": "53b4f23d-a078-41bb-815f-3f4baa67c2de",
+  "timestamp": "2025-10-01T18:57:40.563368",
+  "author": "Juanito",
+  "diff": {
+    "sound": {
+      "rbxassetid://4988621968": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": false,
+          "rpd": 0,
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 7,
+                "X": 6,
+                "Z": 20
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "_id": "rbxassetid://4988621968",
+          "duih": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "MetalTurret",
+          "imxd": 86,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

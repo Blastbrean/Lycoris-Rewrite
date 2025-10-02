@@ -1,0 +1,26 @@
+{
+  "patch_id": "a6ed80b6-aa87-4d09-8694-403be43ce1e5",
+  "timestamp": "2025-10-01T17:30:19.531725",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Meshes/etherorb (1)": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 7,
+              "X": 7,
+              "Z": 34
+            },
+            "to": {
+              "Y": 4,
+              "X": 4,
+              "Z": 34
+            }
+          }
+        }
+      }
+    }
+  }
+}

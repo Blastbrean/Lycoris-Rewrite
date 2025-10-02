@@ -1,0 +1,49 @@
+{
+  "patch_id": "87e80d06-f703-433a-8e89-d45a5a28edcf",
+  "timestamp": "2025-10-01T17:27:19.466718",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "EtherBarrage": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "EtherBarrage",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "Meshes/etherorb (1)",
+          "imxd": 118,
+          "smn": false,
+          "fhb": true,
+          "imdd": 2,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

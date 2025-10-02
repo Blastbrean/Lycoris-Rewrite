@@ -1,0 +1,26 @@
+{
+  "patch_id": "9713f931-7be3-4b02-9236-2fc49a970163",
+  "timestamp": "2025-10-01T19:06:02.062113",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Gun": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 7,
+              "X": 7,
+              "Z": 34
+            },
+            "to": {
+              "Y": 7,
+              "X": 7,
+              "Z": 40
+            }
+          }
+        }
+      }
+    }
+  }
+}

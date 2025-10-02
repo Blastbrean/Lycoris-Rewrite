@@ -12,16 +12,16 @@ return function(self, timing)
 
 	if hrp:WaitForChild("REP_SOUND_15776883341", 0.1) then
 		local action = Action.new()
-		action._when = 350
+		action._when = 400
 		action._type = "Parry"
-		action.hitbox = Vector3.new(10, 10, 10)
+		action.hitbox = Vector3.new(15, 15, 20)
 		action.name = "Blood Scythe Timing"
 		return self:action(timing, action)
 	else
 		local action = Action.new()
 		action._when = 500
 		action._type = "Parry"
-		action.hitbox = Vector3.new(10, 10, 10)
+		action.hitbox = Vector3.new(10, 10, 12)
 		action.name = "Scythe Timing"
 		return self:action(timing, action)
 	end

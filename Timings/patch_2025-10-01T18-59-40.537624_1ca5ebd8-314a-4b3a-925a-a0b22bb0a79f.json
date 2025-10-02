@@ -1,0 +1,82 @@
+{
+  "patch_id": "1ca5ebd8-314a-4b3a-925a-a0b22bb0a79f",
+  "timestamp": "2025-10-01T18:59:40.537624",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Gun": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "Gun",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "4",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "3",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "2",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 7,
+            "X": 7,
+            "Z": 27
+          },
+          "punishable": 0,
+          "name": "MetalTurret",
+          "imxd": 75,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}
