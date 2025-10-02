@@ -51,7 +51,6 @@ return function(self, timing)
 	firstPartTiming.rpue = false
 	firstPartTiming.name = "RapidPunches"
 
-	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(8))
 	local action = Action.new()
 	action._when = 300
 	action._type = "Parry"
