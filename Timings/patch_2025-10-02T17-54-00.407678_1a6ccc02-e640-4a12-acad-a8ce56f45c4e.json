@@ -1,0 +1,27 @@
+{
+  "patch_id": "1a6ccc02-e640-4a12-acad-a8ce56f45c4e",
+  "timestamp": "2025-10-02T17:54:00.407678",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://7600450739": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "SwordSwing",
+            "to": "WeaponTest"
+          }
+        }
+      },
+      "rbxassetid://7600485223": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "SwordSwing",
+            "to": "WeaponTest"
+          }
+        }
+      }
+    }
+  }
+}

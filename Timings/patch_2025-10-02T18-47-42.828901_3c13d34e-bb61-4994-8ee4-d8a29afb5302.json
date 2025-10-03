@@ -1,0 +1,26 @@
+{
+  "patch_id": "3c13d34e-bb61-4994-8ee4-d8a29afb5302",
+  "timestamp": "2025-10-02T18:47:42.828901",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://18109641443": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "InfernoRunningCrit"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "hso": {
+            "from": 0,
+            "to": 5
+          }
+        }
+      }
+    }
+  }
+}

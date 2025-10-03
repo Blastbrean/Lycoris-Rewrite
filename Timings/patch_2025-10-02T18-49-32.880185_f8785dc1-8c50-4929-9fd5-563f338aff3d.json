@@ -1,0 +1,53 @@
+{
+  "patch_id": "f8785dc1-8c50-4929-9fd5-563f338aff3d",
+  "timestamp": "2025-10-02T18:49:32.880185",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://18109620534": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": true,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "InfernoRunningCrit",
+          "hso": 5,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": true,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://18109620534",
+          "mat": 2500,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "InfernoRunningCritt",
+          "imxd": 204,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Critical"
+        }
+      },
+      "rbxassetid://18109641443": {
+        "status": "removed",
+        "name": "InfernoRunningCrit"
+      }
+    }
+  }
+}

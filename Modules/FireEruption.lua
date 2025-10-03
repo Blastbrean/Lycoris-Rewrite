@@ -24,6 +24,14 @@ return function(self, timing)
 		action2.hitbox = Vector3.new(40, 15, 40)
 		action2.name = "(2) Ignition Crit Timing"
 		self:action(timing, action2)
+	end
+	if hrp:WaitForChild("REP_SOUND_13263429067", 0.1) then
+		local action = Action.new()
+		action._when = 250
+		action._type = "Parry"
+		action.hitbox = Vector3.new(30, 15, 35)
+		action.name = "(1) Pleetsky's Inferno Crit"
+		self:action(timing, action)
 	else
 		local action3 = Action.new()
 		action3._when = 380
