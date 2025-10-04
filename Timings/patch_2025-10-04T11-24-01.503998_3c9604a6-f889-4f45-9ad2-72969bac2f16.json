@@ -1,0 +1,37 @@
+{
+  "patch_id": "3c9604a6-f889-4f45-9ad2-72969bac2f16",
+  "timestamp": "2025-10-04T11:24:01.503998",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "PaybackBeam": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "PaybackBeam",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "PaybackBeam",
+          "imxd": 0,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

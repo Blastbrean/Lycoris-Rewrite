@@ -1,0 +1,49 @@
+{
+  "patch_id": "ee080d31-38f9-49f1-a8ba-971e9b836465",
+  "timestamp": "2025-10-04T10:07:35.868439",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://133871771843754": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": true,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "WeaponRunningAttackTest",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [],
+          "pfh": true,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://133871771843754",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 19,
+            "X": 16.000001907348633,
+            "Z": 16.000001907348633
+          },
+          "punishable": 0,
+          "name": "WealnWoeRunningAttack",
+          "imxd": 75,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "M1"
+        }
+      }
+    }
+  }
+}

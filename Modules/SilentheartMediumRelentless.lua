@@ -6,7 +6,7 @@ local Action = getfenv().Action
 ---@param timing AnimationTiming
 return function(self, timing)
 	local action = Action.new()
-	action._when = 1100
+	action._when = 1200
 	if self.track.Speed >= 1.05 then
 		action._when = 900
 	end

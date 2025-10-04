@@ -1,0 +1,18 @@
+{
+  "patch_id": "66e59952-810e-40ad-8e59-3c09d7f3c9a8",
+  "timestamp": "2025-10-04T11:52:26.720500",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "SmiteBall": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          }
+        }
+      }
+    }
+  }
+}

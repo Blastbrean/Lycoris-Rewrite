@@ -1,0 +1,61 @@
+{
+  "patch_id": "969881b0-f83a-4ddc-8a85-131c6b6f61db",
+  "timestamp": "2025-10-04T10:09:15.304401",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://106306743037005": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "Release",
+              "hitbox": {
+                "Y": 11,
+                "X": 15,
+                "Z": 16
+              },
+              "when": 350,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://106306743037005",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "WealnWoeRunningCrit",
+          "imxd": 150,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Critical"
+        }
+      }
+    }
+  }
+}

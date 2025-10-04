@@ -14,8 +14,8 @@ return function(self, timing)
 		local action = Action.new()
 		action._when = 0
 		action._type = "Parry"
-		action.hitbox = Vector3.new(0, 0, 0)
-		action.name = "Yo mama Timing"
+		action.hitbox = Vector3.new(10, 10, 10)
+		action.name = "Yo Mama Timing"
 		return self:action(timing, action)
 	else
 		local action = Action.new()

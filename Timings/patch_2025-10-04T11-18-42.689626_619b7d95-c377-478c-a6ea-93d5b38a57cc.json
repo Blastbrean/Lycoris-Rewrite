@@ -1,0 +1,61 @@
+{
+  "patch_id": "619b7d95-c377-478c-a6ea-93d5b38a57cc",
+  "timestamp": "2025-10-04T11:18:42.689626",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://80910993304950": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 11,
+                "X": 11,
+                "Z": 19
+              },
+              "when": 400,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://80910993304950",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "SkullPiercerCrit",
+          "imxd": 75,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Critical"
+        }
+      }
+    }
+  }
+}

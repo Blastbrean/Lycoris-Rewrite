@@ -892,11 +892,16 @@ local updateShowRobloxChat = LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		message.PrefixText = string.gsub(message.PrefixText, player.DisplayName, player.Name)
+		message.PrefixText = string.gsub(
+			message.PrefixText,
+			player.DisplayName,
+			Configuration.expectToggleValue("InfoSpoofing") and "[REDACTED]" or player.Name
+		)
+
 		message.PrefixText = string.format(
 			"(%s) %s",
 			player:GetAttribute("CharacterName") or "Unknown Character Name",
-			message.PrefixText
+			Configuration.expectToggleValue("InfoSpoofing") and "[REDACTED]" or player.Name
 		)
 	end
 end)

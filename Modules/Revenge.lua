@@ -8,6 +8,8 @@ local Mantra = getfenv().Mantra
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
+	timing.pfh = true
+
 	local data = Mantra.data(self.entity, "Mantra:RevengeAgility{{Revenge}}")
 	local action = Action.new()
 	action._when = 400

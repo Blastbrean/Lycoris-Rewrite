@@ -687,6 +687,8 @@ class LuaPreprocessor:
                             added_total += 1
                             if len(detail_lines) < detail_cap:
                                 typ = 'Animation' if key == 'animation' else ('Part' if key == 'part' else ('Sound' if key == 'sound' else key))
+                                if typ == 'effect':
+                                    typ = 'Effect'
                                 detail_lines.append(f"+ (added) {typ} : {name_display}")
                             full_len += 1
                         elif start_present and not end_present:
@@ -694,6 +696,8 @@ class LuaPreprocessor:
                             removed_total += 1
                             if len(detail_lines) < detail_cap:
                                 typ = 'Animation' if key == 'animation' else ('Part' if key == 'part' else ('Sound' if key == 'sound' else key))
+                                if typ == 'effect':
+                                    typ = 'Effect'
                                 detail_lines.append(f"- (removed) {typ} : {name_display}")
                             full_len += 1
                         elif start_present and end_present and changed_fields:
@@ -701,6 +705,8 @@ class LuaPreprocessor:
                             modified_total += 1
                             if len(detail_lines) < detail_cap:
                                 typ = 'Animation' if key == 'animation' else ('Part' if key == 'part' else ('Sound' if key == 'sound' else key))
+                                if typ == 'effect':
+                                    typ = 'Effect'
                                 detail_lines.append(f"+ (changed) {typ} : {name_display}")
                             full_len += 1
                         # Cases producing no net change:

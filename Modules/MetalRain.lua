@@ -7,6 +7,9 @@ local Action = getfenv().Action
 ---@module Game.Timings.PartTiming
 local PartTiming = getfenv().PartTiming
 
+---@module Features.Combat.Defense
+local Defense = getfenv().Defense
+
 -- Listener object.
 local plistener = ProjectileListener.new("MetalRain")
 
@@ -23,15 +26,18 @@ return function(self, timing)
 		action._when = 200
 		action._type = "Parry"
 		action.name = "Metal Rod Part"
+		action.ihbc = true
 
 		local pt = PartTiming.new()
-		pt.uhc = true
+		pt.uhc = false
 		pt.duih = false
-		pt.fhb = true
+		pt.fhb = false
 		pt.name = "MetalRodProjectile"
 		pt.hitbox = Vector3.new(100, 100, 100)
+		pt.imdd = 0
+		pt.imxd = 100
 		pt.actions:push(action)
 
-		--Defense.cdpo(child, pt)
+		Defense.cdpo(child, pt)
 	end)
 end

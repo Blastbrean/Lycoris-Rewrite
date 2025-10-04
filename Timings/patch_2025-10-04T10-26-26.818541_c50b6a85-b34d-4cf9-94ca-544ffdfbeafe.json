@@ -1,0 +1,37 @@
+{
+  "patch_id": "c50b6a85-b34d-4cf9-94ca-544ffdfbeafe",
+  "timestamp": "2025-10-04T10:26:26.818541",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "ArcSpell": {
+        "status": "added",
+        "data": {
+          "umoa": true,
+          "pname": "ArcSpell",
+          "smod": "GlacialArc",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "ArcSpell",
+          "imxd": 0,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

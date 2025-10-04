@@ -1,0 +1,49 @@
+{
+  "patch_id": "315cd16c-3ddc-437c-aa88-877e778aad61",
+  "timestamp": "2025-10-04T08:00:23.863972",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://10133821631": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 600,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 200,
+          "ieae": false,
+          "iae": true,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://10133821631",
+          "mat": 2000,
+          "rpue": true,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "ParasiticLeech",
+          "imxd": 118,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

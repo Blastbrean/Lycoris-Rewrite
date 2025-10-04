@@ -1,0 +1,45 @@
+{
+  "patch_id": "fbf654d8-4029-4353-aba3-c918f3e7e61b",
+  "timestamp": "2025-10-04T11:24:26.495898",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "PaybackBeam": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [],
+            "to": [
+              {
+                "_type": "Start Block",
+                "name": "1",
+                "hitbox": {
+                  "Y": 10,
+                  "X": 10,
+                  "Z": 50
+                },
+                "when": 0,
+                "ihbc": false
+              },
+              {
+                "_type": "End Block",
+                "name": "2",
+                "hitbox": {
+                  "Y": 10,
+                  "X": 10,
+                  "Z": 50
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ]
+          },
+          "imxd": {
+            "from": 0,
+            "to": 118
+          }
+        }
+      }
+    }
+  }
+}

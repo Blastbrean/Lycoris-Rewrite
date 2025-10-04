@@ -6,7 +6,7 @@ local Action = getfenv().Action
 ---@param timing AnimationTiming
 return function(self, timing)
 	local action = Action.new()
-	action._when = 200
+	action._when = 150
 	action._type = "Parry"
 	action.hitbox = Vector3.new(30, 30, 30)
 	action.name = "Dynamic Warp Kick Timing"

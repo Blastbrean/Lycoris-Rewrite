@@ -154,7 +154,7 @@ def find_differences(data1, data2):
     if not isinstance(data2, dict):
         data2 = {}
 
-    EXPECTED_CONTAINERS = ("animation", "part", "sound")
+    EXPECTED_CONTAINERS = ("animation", "part", "sound", "effect")
     all_containers = [c for c in EXPECTED_CONTAINERS if c in data1 or c in data2]
 
     def index_timings(raw_list, container):

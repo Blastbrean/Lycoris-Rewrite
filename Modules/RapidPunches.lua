@@ -36,6 +36,7 @@ return function(self, timing)
 		radiantKickTiming.rpue = false
 		radiantKickTiming.iae = true
 		radiantKickTiming.name = "RadiantKick"
+		radiantKickTiming.cbm = true
 
 		local action = Action.new()
 		action._when = 600
@@ -50,6 +51,7 @@ return function(self, timing)
 	firstPartTiming.duih = false
 	firstPartTiming.rpue = false
 	firstPartTiming.name = "RapidPunches"
+	firstPartTiming.cbm = true
 
 	local action = Action.new()
 	action._when = 300

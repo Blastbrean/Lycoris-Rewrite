@@ -1,0 +1,13 @@
+{
+  "patch_id": "bb5c123d-f5a8-417b-9f7b-d520ea351855",
+  "timestamp": "2025-10-04T09:45:15.635454",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://7162928509": {
+        "status": "removed",
+        "name": "LightningImpactBarrage"
+      }
+    }
+  }
+}

@@ -7478,7 +7478,7 @@
           "rsd": 0,
           "umoa": true,
           "rpd": 0,
-          "smod": "SwordSwing",
+          "smod": "WeaponTest",
           "ieae": false,
           "actions": [],
           "iae": false,
@@ -11359,7 +11359,7 @@
           "rsd": 0,
           "umoa": true,
           "rpd": 0,
-          "smod": "SwordSwing",
+          "smod": "WeaponTest",
           "ieae": false,
           "actions": [],
           "iae": false,
@@ -12410,7 +12410,7 @@
                 "X": 10,
                 "Z": 10
               },
-              "when": 300,
+              "when": 400,
               "ihbc": false
             }
           ],
@@ -21157,7 +21157,7 @@
           "rsd": 0,
           "umoa": true,
           "rpd": 0,
-          "smod": "SwordSwing",
+          "smod": "WeaponTest",
           "ieae": false,
           "actions": [],
           "iae": false,

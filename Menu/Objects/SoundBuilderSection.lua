@@ -13,6 +13,7 @@ local SoundTiming = require("Game/Timings/SoundTiming")
 ---@field repeatUntilParryEnd table
 ---@field repeatParryDelay table
 ---@field timing SoundTiming
+---@field allowLocalPlayer table
 local SoundBuilderSection = setmetatable({}, { __index = BuilderSection })
 SoundBuilderSection.__index = SoundBuilderSection
 
@@ -31,6 +32,7 @@ function SoundBuilderSection:exload(timing)
 	self.repeatStartDelay:SetRawValue(timing._rsd)
 	self.repeatUntilParryEnd:SetRawValue(timing.rpue)
 	self.repeatParryDelay:SetRawValue(timing._rpd)
+	self.allowLocalPlayer:SetRawValue(timing.alp)
 end
 
 ---Reset the elements. Extend me.
@@ -40,6 +42,7 @@ function SoundBuilderSection:reset()
 	self.repeatParryDelay:SetRawValue(0)
 	self.repeatStartDelay:SetRawValue(0)
 	self.repeatUntilParryEnd:SetRawValue(false)
+	self.allowLocalPlayer:SetRawValue(false)
 end
 
 ---Check before creating new timing. Override me.
@@ -73,6 +76,18 @@ function SoundBuilderSection:create()
 	local timing = SoundTiming.new()
 	self:cset(timing)
 	return timing
+end
+
+---Initialize extra tab.
+---@param tab table
+function SoundBuilderSection:extra(tab)
+	self.allowLocalPlayer = tab:AddToggle(nil, {
+		Text = "Allow Local Player",
+		Default = false,
+		Callback = self:tnc(function(timing, value)
+			timing.alp = value
+		end),
+	})
 end
 
 ---Initialize action tab.

@@ -15,6 +15,7 @@ return function(self, timing)
 
 	timing.pfh = true
 	timing.duih = false
+	timing.fhb = true
 
 	local windup = nil
 
@@ -42,22 +43,21 @@ return function(self, timing)
 		windup += 0.150 / data.ss
 	elseif data.type == "Rapier" then
 		windup = (0.238 / self.track.Speed) + 0.060
+	elseif data.type == "Club" then
+		windup = (0.173 / self.track.Speed) + 0.140
+		windup += 0.150 / data.ss
 	elseif data.type == "Bow" then
 		windup = (0.160 / self.track.Speed) + 0.130
 	elseif data.type == "Twinblade" then
 		windup = (0.164 / self.track.Speed) + 0.140
 		windup += 0.200 / data.ss
 	elseif data.type == "Fist" then
-		windup = (0.153 / self.track.Speed) + 0.120
+		windup = (0.153 / self.track.Speed) + 0.150
 	end
 
 	if not windup then
 		return self:notify(timing, "(%s) No windup for this weapon type.", data.type)
 	end
-
-	-- Modify timing.
-	timing.pfh = true
-	timing.fhb = true
 
 	-- Create action.
 	local action = Action.new()

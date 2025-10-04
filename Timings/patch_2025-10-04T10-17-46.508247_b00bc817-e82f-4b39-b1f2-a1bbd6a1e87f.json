@@ -1,0 +1,26 @@
+{
+  "patch_id": "b00bc817-e82f-4b39-b1f2-a1bbd6a1e87f",
+  "timestamp": "2025-10-04T10:17:46.508247",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "WindKickBrick": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 25,
+              "X": 10,
+              "Z": 46
+            },
+            "to": {
+              "Y": 10,
+              "X": 10,
+              "Z": 46
+            }
+          }
+        }
+      }
+    }
+  }
+}

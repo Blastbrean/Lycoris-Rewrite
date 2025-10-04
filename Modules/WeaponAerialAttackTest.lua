@@ -13,6 +13,26 @@ return function(self, timing)
 		return
 	end
 
+	local torsoEquipment = self.entity:FindFirstChild("TorsoEquipment")
+
+	if torsoEquipment and torsoEquipment:GetAttribute("DisplayName") == "Mantle of Enmity" then
+		timing.mat = 1200
+		timing.iae = true
+		timing.ieae = true
+		timing.fhb = false
+
+		local action = Action.new()
+		action._when = 900
+		action._type = "Parry"
+		action.hitbox = Vector3.new(30, 30, 30)
+		action.name = "Dynamic Mantle Of Enmity Swing"
+
+		return self:action(timing, action)
+	end
+
+	timing.iae = false
+	timing.fhb = true
+
 	local windup = nil
 	local ispeed = self.track.Speed
 
@@ -21,12 +41,13 @@ return function(self, timing)
 	if data.type == "Dagger" then
 		windup = (0.169 / self.track.Speed) + 0.120
 	elseif data.type == "Greataxe" then
-		windup = (0.168 / self.track.Speed) + 0.100
-		windup += 0.075 / data.ss
+		windup = (0.168 / self.track.Speed) + 0.125
 	elseif data.type == "Twinblade" then
 		windup = (0.151 / self.track.Speed) + 0.140
 	elseif data.type == "Bow" then
 		windup = (0.145 / self.track.Speed) + 0.170
+	elseif data.type == "Club" then
+		windup = (0.163 / self.track.Speed) + 0.140
 	elseif data.type == "Pistol" then
 		windup = 0.500 / data.ss
 	elseif data.type == "Rifle" and not timing.name:match("Fist") then

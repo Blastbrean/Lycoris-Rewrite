@@ -1,0 +1,58 @@
+{
+  "patch_id": "13fe4c21-501d-4fc2-bd2a-9e0d7c68b410",
+  "timestamp": "2025-10-04T09:06:05.748176",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://15577323908": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": false,
+            "to": true
+          },
+          "hitbox": {
+            "from": {
+              "Y": 0,
+              "X": 0,
+              "Z": 0
+            },
+            "to": {
+              "Y": 19,
+              "X": 18,
+              "Z": 16
+            }
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 33,
+                  "X": 31,
+                  "Z": 31
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

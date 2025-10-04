@@ -21,10 +21,10 @@ return function(self, timing)
 		action._when = 750
 	end
 	if distance >= 20 then
-		action._when = 830
+		action._when = 800
 	end
 	action._type = "Parry"
-	action.hitbox = Vector3.new(15, 12, 25)
+	action.hitbox = Vector3.new(15, 25, 25)
 	action.name = string.format("(%.2f) Dynamic Crescent Crit Timing", distance)
 	return self:action(timing, action)
 end

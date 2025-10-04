@@ -1,0 +1,49 @@
+{
+  "patch_id": "aebc38f0-7f54-4af2-9a4c-7a59e03c4200",
+  "timestamp": "2025-10-04T10:06:52.109423",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://96170267983421": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": true,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "WeaponFlourishTest",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://96170267983421",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "WealnWoeFloruish",
+          "imxd": 75,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "M1"
+        }
+      }
+    }
+  }
+}

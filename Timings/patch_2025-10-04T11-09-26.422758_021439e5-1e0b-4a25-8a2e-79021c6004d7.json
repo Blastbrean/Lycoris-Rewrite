@@ -1,0 +1,40 @@
+{
+  "patch_id": "021439e5-1e0b-4a25-8a2e-79021c6004d7",
+  "timestamp": "2025-10-04T11:09:26.422758",
+  "author": "Blastbrean",
+  "diff": {
+    "effect": {
+      "ShadowSludge": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": true,
+          "rpd": 0,
+          "smod": "ShadowSludge",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "ilp": false,
+          "after": 0,
+          "duih": false,
+          "ename": "ShadowSludge",
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "ShadowSludge",
+          "imxd": 193,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

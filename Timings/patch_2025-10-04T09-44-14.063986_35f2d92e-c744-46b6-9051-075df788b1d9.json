@@ -1,0 +1,49 @@
+{
+  "patch_id": "35f2d92e-c744-46b6-9051-075df788b1d9",
+  "timestamp": "2025-10-04T09:44:14.063986",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://7162928509": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 500,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 200,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://7162928509",
+          "mat": 2000,
+          "rpue": true,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "LightningImpactBarrage",
+          "imxd": 129,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

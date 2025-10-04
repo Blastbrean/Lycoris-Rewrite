@@ -1,0 +1,61 @@
+{
+  "patch_id": "2586dede-8d40-4833-a567-889ed600cad8",
+  "timestamp": "2025-10-04T07:59:57.810990",
+  "author": "Blastbrean",
+  "diff": {
+    "effect": {
+      "OwlDisperse": {
+        "status": "modified",
+        "changes": {
+          "ilp": {
+            "from": null,
+            "to": false
+          },
+          "hso": {
+            "from": null,
+            "to": 0
+          }
+        }
+      },
+      "ManiKatti": {
+        "status": "modified",
+        "changes": {
+          "ilp": {
+            "from": null,
+            "to": false
+          },
+          "hso": {
+            "from": null,
+            "to": 0
+          }
+        }
+      },
+      "MetalArmament": {
+        "status": "modified",
+        "changes": {
+          "ilp": {
+            "from": null,
+            "to": false
+          },
+          "hso": {
+            "from": null,
+            "to": 0
+          }
+        }
+      },
+      "GolemBeam": {
+        "status": "modified",
+        "changes": {
+          "ilp": {
+            "from": null,
+            "to": false
+          },
+          "hso": {
+            "from": null,
+            "to": 0
+          }
+        }
+      }
+    }
+  }
+}

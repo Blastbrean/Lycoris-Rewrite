@@ -1,0 +1,37 @@
+{
+  "patch_id": "a31d9429-4c7e-4080-af15-b0de187317f1",
+  "timestamp": "2025-10-04T11:32:51.597169",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "SmiteBall": {
+        "status": "added",
+        "data": {
+          "umoa": true,
+          "pname": "SmiteBall",
+          "smod": "Smite",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "SmiteBall",
+          "imxd": 118,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

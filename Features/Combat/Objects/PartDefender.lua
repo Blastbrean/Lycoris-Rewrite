@@ -49,7 +49,7 @@ PartDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	options.action = action
 
 	if
-		not self.timing.duih
+		(not timing.duih and not timing.umoa)
 		and not self:hc(options, timing.duih and RepeatInfo.new(timing, self.rdelay(), self.vuid) or nil)
 	then
 		return self:notify(timing, "Not in hitbox.")

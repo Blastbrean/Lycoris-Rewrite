@@ -1,0 +1,61 @@
+{
+  "patch_id": "910574bf-9e41-404e-a9dd-cb5a31dfa575",
+  "timestamp": "2025-10-04T09:22:46.855253",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://15420044707": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "WeaponTest",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "Release",
+              "hitbox": {
+                "Y": 31,
+                "X": 10,
+                "Z": 10
+              },
+              "when": 450,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://15420044707",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "KaritaLeap",
+          "imxd": 118,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "patch_id": "5088b5dc-878d-4ac5-8ee0-32f908ab7617",
+  "timestamp": "2025-10-04T09:01:13.301499",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://7618253833": {
+        "status": "removed",
+        "name": "SoulBeam"
+      }
+    }
+  }
+}

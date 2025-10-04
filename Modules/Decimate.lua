@@ -10,7 +10,7 @@ return function(self, timing)
 		return
 	end
 
-	task.wait(0.2 - self.rtt())
+	task.wait(0.1 - self.rtt())
 
 	timing.iae = true
 
@@ -35,7 +35,7 @@ return function(self, timing)
 	end
 
 	local action = Action.new()
-	action._when = 300
+	action._when = 400
 	action._type = "Parry"
 	action.hitbox = Vector3.new(20, 20, 20)
 	action.name = "Decimate Normal"

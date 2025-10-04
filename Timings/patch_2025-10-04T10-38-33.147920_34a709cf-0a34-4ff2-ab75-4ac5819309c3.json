@@ -1,0 +1,51 @@
+{
+  "patch_id": "34a709cf-0a34-4ff2-ab75-4ac5819309c3",
+  "timestamp": "2025-10-04T10:38:33.147920",
+  "author": "Blastbrean",
+  "diff": {
+    "sound": {
+      "rbxassetid://127506023368507": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": false,
+          "rpd": 0,
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "Release",
+              "hitbox": {
+                "Y": 300,
+                "X": 300,
+                "Z": 300
+              },
+              "when": 300,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "_id": "rbxassetid://127506023368507",
+          "duih": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "Bluster",
+          "imxd": 64,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "patch_id": "f530bae1-935f-48e7-a783-767313508b74",
+  "timestamp": "2025-10-04T08:06:29.642477",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "WindTrap": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "WindTrap",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 10,
+            "X": 10,
+            "Z": 10
+          },
+          "punishable": 0,
+          "name": "WindTrap",
+          "imxd": 247,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

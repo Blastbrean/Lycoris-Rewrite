@@ -6,6 +6,7 @@ local Timing = require("Game/Timings/Timing")
 ---@field rpue boolean Repeat parry until end.
 ---@field _rsd number Repeat start delay in miliseconds. Never access directly.
 ---@field _rpd number Delay between each repeat parry in miliseconds. Never access directly.
+---@field alp boolean Allow local player to be hit.
 local SoundTiming = setmetatable({}, { __index = Timing })
 SoundTiming.__index = SoundTiming
 
@@ -50,6 +51,10 @@ function SoundTiming:equals(other)
 		return false
 	end
 
+	if self.alp ~= other.alp then
+		return false
+	end
+
 	return true
 end
 
@@ -73,6 +78,10 @@ function SoundTiming:load(values)
 	if typeof(values.rpd) == "number" then
 		self._rpd = values.rpd
 	end
+
+	if typeof(values.alp) == "boolean" then
+		self.alp = values.alp
+	end
 end
 
 ---Clone timing.
@@ -84,6 +93,7 @@ function SoundTiming:clone()
 	clone.rpue = self.rpue
 	clone._rsd = self._rsd
 	clone._id = self._id
+	clone.alp = self.alp
 
 	return clone
 end
@@ -97,6 +107,7 @@ function SoundTiming:serialize()
 	serializable.rpue = self.rpue
 	serializable.rsd = self._rsd
 	serializable.rpd = self._rpd
+	serializable.alp = self.alp
 
 	return serializable
 end
@@ -111,6 +122,7 @@ function SoundTiming.new(values)
 	self.rpue = false
 	self._rsd = 0
 	self._rpd = 0
+	self.alp = false
 
 	if values then
 		self:load(values)

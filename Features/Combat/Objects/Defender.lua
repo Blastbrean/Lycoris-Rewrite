@@ -140,7 +140,7 @@ end)
 ---@param timing Timing
 ---@param info RepeatInfo
 Defender.srpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
-	if timing.umoa then
+	if timing.umoa or timing.cbm then
 		timing["_rpd"] = PP_SCRAMBLE_RE_NUM(timing["_rpd"])
 		timing["_rsd"] = PP_SCRAMBLE_RE_NUM(timing["_rsd"])
 	end
@@ -894,7 +894,7 @@ end)
 ---@param timing Timing
 ---@param action Action
 Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
-	if timing.umoa then
+	if timing.umoa or timing.cbm then
 		action["_type"] = PP_SCRAMBLE_STR(action["_type"])
 		action["name"] = PP_SCRAMBLE_STR(action["name"])
 		action["_when"] = PP_SCRAMBLE_RE_NUM(action["_when"])

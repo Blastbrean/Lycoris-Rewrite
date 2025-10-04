@@ -19,7 +19,7 @@ local ActionContainer = require("Game/Timings/ActionContainer")
 ---@field fhb boolean Hitbox facing offset.
 ---@field hso number Hitbox shift offset. This offset is applied backwards. Positive is backwards, negative is forwards.
 ---@field ndfb boolean No dash fallback.
----@field scrambled boolean Scrambled?
+---@field cbm boolean A non-saved field to indicate whether this was non-part-timing created by a module.
 local Timing = {}
 Timing.__index = Timing
 

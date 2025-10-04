@@ -5,6 +5,8 @@ local Action = getfenv().Action
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
+	timing.pfh = true
+
 	local distance = self:distance(self.entity)
 	local action = Action.new()
 	action._when = 650

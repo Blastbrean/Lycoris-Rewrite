@@ -38,7 +38,9 @@ SoundDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	end
 
 	if self.owner and not self:target(self.owner) then
-		return self:notify(timing, "Not a viable target.")
+		if not timing.alp or not players.LocalPlayer.Character or self.owner ~= players.LocalPlayer.Character then
+			return self:notify(timing, "Not a viable target.")
+		end
 	end
 
 	local character = players.LocalPlayer.Character
@@ -88,7 +90,7 @@ SoundDefender.process = LPH_NO_VIRTUALIZE(function(self)
 		return
 	end
 
-	if players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character then
+	if not timing.alp and (players.LocalPlayer.Character and self.owner == players.LocalPlayer.Character) then
 		return
 	end
 

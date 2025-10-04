@@ -24,18 +24,19 @@ return function(self, timing)
 	task.wait(0.35 - self.rtt())
 
 	if self:distance(self.entity) <= 10 then
-		local firstPartTiming = Timing.new()
-		firstPartTiming.fhb = true
-		firstPartTiming.duih = false
-		firstPartTiming.rpue = false
-		firstPartTiming.name = "ShoulderBashWindup"
+		local firstTiming = Timing.new()
+		firstTiming.fhb = true
+		firstTiming.duih = false
+		firstTiming.rpue = false
+		firstTiming.name = "ShoulderBashWindup"
+		firstTiming.cbm = true
 
 		local action = Action.new()
 		action._when = 0
 		action._type = "Parry"
 		action.ihbc = true
 		action.name = "Shoulder Bash Close"
-		return self:action(firstPartTiming, action)
+		return self:action(firstTiming, action)
 	end
 
 	local track = Waiter.fet("rbxassetid://9400896040", animator)

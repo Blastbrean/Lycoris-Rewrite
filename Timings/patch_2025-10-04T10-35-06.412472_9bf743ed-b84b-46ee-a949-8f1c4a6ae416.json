@@ -1,0 +1,18 @@
+{
+  "patch_id": "9bf743ed-b84b-46ee-a949-8f1c4a6ae416",
+  "timestamp": "2025-10-04T10:35:06.412472",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "ArcSpell": {
+        "status": "modified",
+        "changes": {
+          "smn": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

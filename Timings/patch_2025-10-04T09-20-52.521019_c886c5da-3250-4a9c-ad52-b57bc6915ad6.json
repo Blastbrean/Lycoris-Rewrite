@@ -1,0 +1,71 @@
+{
+  "patch_id": "c886c5da-3250-4a9c-ad52-b57bc6915ad6",
+  "timestamp": "2025-10-04T09:20:52.521019",
+  "author": "Blastbrean",
+  "diff": {
+    "effect": {
+      "DisplayThornsRed": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": true,
+          "rpd": 0,
+          "smod": "DisplayThornsRed",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "ilp": false,
+          "after": 0,
+          "duih": false,
+          "ename": "DisplayThornsRed",
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "DisplayThornsRed",
+          "imxd": 193,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "DisplayThorns": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": true,
+          "rpd": 0,
+          "smod": "DisplayThorns",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "ilp": false,
+          "after": 0,
+          "duih": false,
+          "ename": "DisplayThorns",
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "DisplayThorns",
+          "imxd": 193,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "patch_id": "f30f274d-ec2e-4846-a56b-d40ade6be9a0",
+  "timestamp": "2025-10-04T13:22:36.181706",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://12883012690": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "GremorianLongSpear"
+          }
+        }
+      }
+    }
+  }
+}

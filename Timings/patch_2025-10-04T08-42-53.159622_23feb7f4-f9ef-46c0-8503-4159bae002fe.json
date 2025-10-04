@@ -1,0 +1,18 @@
+{
+  "patch_id": "23feb7f4-f9ef-46c0-8503-4159bae002fe",
+  "timestamp": "2025-10-04T08:42:53.159622",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://7617742471": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "LightningBeam"
+          }
+        }
+      }
+    }
+  }
+}

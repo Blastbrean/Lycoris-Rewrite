@@ -33,6 +33,8 @@ return function(self, timing)
 		windup = (0.163 / self.track.Speed) + 0.130
 	elseif data.type == "Bow" then
 		windup = (0.150 / self.track.Speed) + 0.140
+	elseif data.type == "Club" then
+		windup = (0.166 / self.track.Speed) + 0.140
 	elseif data.type == "Pistol" then
 		repeat
 			task.wait()

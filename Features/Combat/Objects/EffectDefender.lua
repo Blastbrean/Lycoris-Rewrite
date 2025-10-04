@@ -10,6 +10,9 @@ local RepeatInfo = require("Features/Combat/Objects/RepeatInfo")
 ---@module Features.Combat.Objects.HitboxOptions
 local HitboxOptions = require("Features/Combat/Objects/HitboxOptions")
 
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
 ---@class EffectDefender: Defender
 ---@field name string The name of the effect.
 ---@field data table The data of the effect.
@@ -77,6 +80,10 @@ end)
 ---@param self EffectDefender
 EffectDefender.process = LPH_NO_VIRTUALIZE(function(self)
 	if not self.owner then
+		return
+	end
+
+	if not Configuration.expectToggleValue("EnableAutoDefense") then
 		return
 	end
 

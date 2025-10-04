@@ -10,8 +10,8 @@ AttributeData.__index = AttributeData
 ---@param reqs table
 ---@return boolean
 function AttributeData:possible(reqs)
-	local mind = self.base["Intelligence"] + self.base["Willpower"] + self.base["Charisma"]
-	local body = self.base["Strength"] + self.base["Fortitude"] + self.base["Agility"]
+	local mind = math.max(self.base["Intelligence"], self.base["Willpower"], self.base["Charisma"])
+	local body = math.max(self.base["Strength"], self.base["Fortitude"], self.base["Agility"])
 
 	for idx, value in pairs(reqs) do
 		if self.weapon[idx] and self.weapon[idx] < value then

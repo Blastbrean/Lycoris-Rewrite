@@ -18,20 +18,20 @@ local plistener = ProjectileListener.new("FiringLine")
 ---@param timing AnimationTiming
 return function(self, timing)
 	plistener:connect(function(child)
-		if child.Name ~= "MetalBullet" then
+		if child.Name ~= "MetalBullet" and child.Name ~= "CannonBullet" then
 			return
 		end
 
 		local action = Action.new()
 		action._when = 0
 		action._type = "Parry"
-		action.name = "Metal Bullet Part"
+		action.name = "Bullet Part"
 
 		local pt = PartTiming.new()
 		pt.uhc = true
 		pt.duih = true
 		pt.fhb = true
-		pt.name = "MetalBulletProjectile"
+		pt.name = "BulletProjectile"
 		pt.hitbox = Vector3.new(100, 50, 100)
 		pt.actions:push(action)
 
