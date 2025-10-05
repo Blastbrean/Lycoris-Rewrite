@@ -48,7 +48,8 @@
     - Local Character Exploits ❌
         - Extended Item Pickup ❌
         - Extended Job Board Interact ❌
-
+        - Remove Relic Cap ❌
+  
 - Chaser tween to objective + tween to nearest jar instead
   
 - Ethiron tween to objective
