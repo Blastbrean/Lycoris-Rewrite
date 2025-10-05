@@ -1,0 +1,36 @@
+{
+  "patch_id": "d484ae3f-a36a-4738-bef5-82ba797e9e0b",
+  "timestamp": "2025-10-05T01:38:22.347761",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://12106091136": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "SwordSwing",
+            "to": "WeaponTest"
+          }
+        }
+      },
+      "rbxassetid://12106095892": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "SwordSwing",
+            "to": "WeaponTest"
+          }
+        }
+      },
+      "rbxassetid://13065094279": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "SwordSwing",
+            "to": "WeaponTest"
+          }
+        }
+      }
+    }
+  }
+}
