@@ -38,8 +38,7 @@
         - Don't Show If There Is A Bone ❌
 
 - Automation ❌
-    - Maestro Farm ❌
-    - Fish Farm ❌
+    - Fish Farm 🟨
 
     Add Auto Loot and Account for Innate Stats
 
