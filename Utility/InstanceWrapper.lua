@@ -3,34 +3,9 @@ local InstanceWrapper = {}
 
 -- Services.
 local collectionService = game:GetService("CollectionService")
-local tweenService = game:GetService("TweenService")
 
 ---@module Utility.Signal
 local Signal = require("Utility/Signal")
-
----Add an instance to the cache, clean the instance up through maid, and automatically uncache on deletion.
----@param instanceMaid Maid
----@param identifier string
-InstanceWrapper.tween = LPH_NO_VIRTUALIZE(function(instanceMaid, identifier, ...)
-	local maidInstance = instanceMaid[identifier]
-	if maidInstance then
-		return maidInstance
-	end
-
-	local instance = tweenService:Create(...)
-	local onAncestorChange = Signal.new(instance.AncestryChanged)
-
-	instanceMaid[identifier] = instance
-	instanceMaid:add(onAncestorChange:connect("Instance_OnAncestorChange", function(_)
-		if instance:IsDescendantOf(game) then
-			return
-		end
-
-		instanceMaid:removeTask(identifier)
-	end))
-
-	return instance
-end)
 
 ---Cache an instance, clean the instance up through a maid, and automatically uncache on deletion.
 ---@param instanceMaid Maid

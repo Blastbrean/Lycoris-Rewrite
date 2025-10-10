@@ -5,7 +5,7 @@ local Action = getfenv().Action
 ---@param self EffectDefender
 ---@param timing EffectTiming
 return function(self, timing)
-	if self:distance(self.owner) >= 20 then
+	if self:distance(self.owner) >= 50 then
 		return
 	end
 
@@ -29,7 +29,7 @@ return function(self, timing)
 		return
 	end
 
-	if (attachment.Position - humanoidRootPart.Position).Magnitude >= 5 then
+	if (attachment.Position - humanoidRootPart.Position).Magnitude >= 10 then
 		return
 	end
 

@@ -1,14 +1,14 @@
 ---@class Action
 local Action = getfenv().Action
 
----@module Utility.Entitites
-local Entitites = getfenv().Entitites
+---@module Utility.Finder
+local Finder = getfenv().Finder
 
 ---Module function.
 ---@param self PartDefender
 ---@param timing PartTiming
 return function(self, timing)
-	local chaser = Entitites.fe("chaser")
+	local chaser = Finder.entity("chaser")
 	if not chaser then
 		return
 	end

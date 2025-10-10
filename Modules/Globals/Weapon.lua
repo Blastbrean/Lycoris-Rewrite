@@ -56,7 +56,7 @@ function Weapon.data(entity)
 	return {
 		hw = hw,
 		ss = ssv.Value,
-		oss = ssv:GetAttribute("OldValue"),
+		oss = ssv:GetAttribute("OldValue") or ssv.Value,
 		length = lv.Value,
 		type = type.Value or "N/A",
 		nemesis = nemesis,

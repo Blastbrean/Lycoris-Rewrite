@@ -30,8 +30,11 @@ return LPH_NO_VIRTUALIZE(function()
 	---@module Utility.ControlModule
 	local ControlModule = require("Utility/ControlModule")
 
-	---@module Utility.Entitites
-	local Entitites = require("Utility/Entitites")
+	---@module Utility.Finder
+	local Finder = require("Utility/Finder")
+
+	---@module Features.Game.Tweening
+	local Tweening = require("Features/Game/Tweening")
 
 	---@module Utility.Logger
 	local Logger = require("Utility/Logger")
@@ -39,9 +42,6 @@ return LPH_NO_VIRTUALIZE(function()
 	-- Services.
 	local runService = game:GetService("RunService")
 	local userInputService = game:GetService("UserInputService")
-
-	-- Instances.
-	local bloodJarTarget = nil
 
 	-- Original stores.
 	local agilitySpoofer = movementMaid:mark(OriginalStore.new())
@@ -52,28 +52,8 @@ return LPH_NO_VIRTUALIZE(function()
 	-- Signals.
 	local preSimulation = Signal.new(runService.PreSimulation)
 
-	---Reset blood jar tween.
-	---@param tween Tween?
-	local function resetBloodJarTween(tween)
-		movementMaid["bloodJarTween"] = nil
-		bloodJarTarget = nil
-	end
-
-	-- Find an empty altar.
-	---@param bossRoomContainer Folder
-	local function findEmptyAltar(bossRoomContainer)
-		for _, instance in next, bossRoomContainer:GetChildren() do
-			if instance.Name ~= "Altar" or not instance:IsA("Model") then
-				continue
-			end
-
-			if instance:FindFirstChild("BoneSpear") then
-				continue
-			end
-
-			return instance
-		end
-	end
+	-- Instances.
+	local cachedTarget = nil
 
 	---Update noclip.
 	---@param character Model
@@ -108,6 +88,10 @@ return LPH_NO_VIRTUALIZE(function()
 		local effectReplicatorModule = require(effectReplicator)
 		local knockedRestore = effectReplicatorModule:FindEffect("Knocked")
 			and Configuration.expectToggleValue("NoClipCollisionsKnocked")
+
+		if Tweening.active then
+			knockedRestore = false
+		end
 
 		for _, instance in pairs(character:GetChildren()) do
 			if not instance:IsA("BasePart") then
@@ -183,28 +167,6 @@ return LPH_NO_VIRTUALIZE(function()
 		flyBodyVelocity.Velocity = flyVelocity
 	end
 
-	---Update attach to back.
-	---@param rootPart BasePart
-	local function updateAttachToBack(rootPart)
-		local attachTarget = Entitites.findNearestEntity(200)
-		if not attachTarget then
-			return
-		end
-
-		local attachTargetHrp = attachTarget:FindFirstChild("HumanoidRootPart")
-		if not attachTargetHrp then
-			return
-		end
-
-		local offsetCFrame = CFrame.new(
-			0.0,
-			Configuration.expectOptionValue("HeightOffset"),
-			Configuration.expectOptionValue("BackOffset")
-		)
-
-		rootPart.CFrame = rootPart.CFrame:Lerp(attachTargetHrp.CFrame * offsetCFrame, 0.3)
-	end
-
 	---Update max momentum spoofer.
 	local function updateMaxMomentumSpoofer()
 		local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
@@ -246,61 +208,83 @@ return LPH_NO_VIRTUALIZE(function()
 		agilitySpoofer:set(agility, "Value", agilitySpoofValue)
 	end
 
+	---Update tween to back.
+	local function updateTweenToBack()
+		local validTargets = Finder.geir(300, Configuration.expectToggleValue("IgnorePlayers") and false or nil)
+		if not validTargets then
+			return true
+		end
+
+		local attachTarget = Configuration.expectToggleValue("StickyAttach") and cachedTarget or validTargets[1]
+		if not attachTarget then
+			return true
+		end
+
+		local attachTargetHrp = attachTarget:FindFirstChild("HumanoidRootPart")
+		if not attachTargetHrp then
+			return false
+		end
+
+		local attachTargetHumanoid = attachTarget:FindFirstChild("Humanoid")
+		if not attachTargetHumanoid then
+			return false
+		end
+
+		if attachTargetHumanoid.Health <= 0 then
+			return false
+		end
+
+		cachedTarget = cachedTarget or attachTarget
+
+		local offsetCFrame = CFrame.new(
+			0.0,
+			Configuration.expectOptionValue("HeightOffset"),
+			Configuration.expectOptionValue("BackOffset")
+		)
+
+		local targetPosition = (attachTargetHrp.CFrame * offsetCFrame).Position
+		local goalCFrame = CFrame.lookAt(targetPosition, attachTargetHrp.Position)
+
+		Tweening.goal("TweenToBack", goalCFrame)
+
+		return true
+	end
+
 	---Tween to altars.
 	---@param rootPart BasePart
 	---@param bossRoomContainer Folder
 	local function tweenToAltars(rootPart, bossRoomContainer)
-		if movementMaid["altarTween"] then
+		local emptyAltars = Finder.sdparts(bossRoomContainer, function(part)
+			return part.Name == "Altar" and not part:FindFirstChild("BoneSpear")
+		end, 200)
+
+		if not emptyAltars then
 			return
 		end
 
-		local emptyAltar = findEmptyAltar(bossRoomContainer)
-		if not emptyAltar then
+		local closestEmptyAltar = emptyAltars[1]
+		if not closestEmptyAltar then
 			return
 		end
 
-		local distance = (emptyAltar:GetPivot().Position - rootPart.Position).Magnitude
-		local altarTween = InstanceWrapper.tween(movementMaid, "altarTween", rootPart, TweenInfo.new(distance / 80), {
-			CFrame = CFrame.new(emptyAltar:GetPivot().Position),
-		})
-
-		altarTween:Play()
-		altarTween.Completed:Connect(function()
-			movementMaid["altarTween"] = nil
-		end)
+		Tweening.goal("TweenToObjective", closestEmptyAltar)
 	end
 
 	---Tween to blood jars.
 	---@param rootPart BasePart
-	---@param chaserEntity Model
-	local function tweenToBloodJars(rootPart, chaserEntity)
-		local chaserHrp = chaserEntity:FindFirstChild("HumanoidRootPart")
-		local chaserBloodJar = chaserHrp and chaserHrp:FindFirstChild("BloodJar") or nil
-
-		if
-			not chaserBloodJar
-			or not chaserBloodJar.Value
-			or (bloodJarTarget and bloodJarTarget ~= chaserBloodJar.Value)
-		then
-			return resetBloodJarTween()
-		end
-
-		if movementMaid["bloodJarTween"] then
+	---@param chaser Model
+	local function tweenToBloodJars(rootPart, chaser)
+		local hrp = chaser:FindFirstChild("HumanoidRootPart")
+		if not hrp then
 			return
 		end
 
-		bloodJarTarget = chaserBloodJar.Value
+		local jar = hrp:FindFirstChild("BloodJar")
+		if not jar then
+			return
+		end
 
-		local distance = (bloodJarTarget:GetPivot().Position - rootPart.Position).Magnitude
-		local bloodJarTween =
-			InstanceWrapper.tween(movementMaid, "bloodJarTween", rootPart, TweenInfo.new(distance / 80), {
-				CFrame = CFrame.new(bloodJarTarget:GetPivot().Position),
-			})
-
-		bloodJarTween:Play()
-		bloodJarTween.Completed:Connect(function()
-			movementMaid["bloodJarTween"] = nil
-		end)
+		Tweening.goal("TweenToObjective", jar)
 	end
 
 	---Update tween to objectives.
@@ -313,17 +297,7 @@ return LPH_NO_VIRTUALIZE(function()
 			return tweenToAltars(rootPart, bossRoomContainer)
 		end
 
-		local live = workspace:FindFirstChild("Live")
-		local chaserEntity = nil
-
-		for _, instance in next, live:GetChildren() do
-			if not instance.Name:match("chaser") then
-				continue
-			end
-
-			chaserEntity = instance
-			break
-		end
+		local chaserEntity = Finder.entity("chaser")
 
 		if chaserEntity then
 			return tweenToBloodJars(rootPart, chaserEntity)
@@ -331,7 +305,8 @@ return LPH_NO_VIRTUALIZE(function()
 	end
 
 	---Update movement.
-	local function updateMovement()
+	---@param dt number
+	local function updateMovement(dt)
 		local localPlayer = players.LocalPlayer
 		local character = localPlayer.Character
 		if not character then
@@ -348,12 +323,36 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		if Configuration.expectToggleValue("AttachToBack") then
-			updateAttachToBack(rootPart)
+		if Configuration.expectToggleValue("TweenToBack") then
+			if not updateTweenToBack() then
+				cachedTarget = nil
+			end
+		end
+
+		if Configuration.expectToggleValue("TweenToObjectives") then
+			updateTweenToObjectives(rootPart)
+		end
+
+		if Configuration.expectToggleValue("AgilitySpoof") then
+			updateAgilitySpoofer(character)
+		else
+			agilitySpoofer:restore()
 		end
 
 		if Configuration.expectToggleValue("MaxMomentumSpoof") then
 			updateMaxMomentumSpoofer()
+		end
+
+		if Tweening.active or Configuration.expectToggleValue("NoClip") then
+			updateNoClip(character, rootPart)
+		else
+			noClipMap:restore()
+		end
+
+		Tweening.update(dt)
+
+		if Tweening.active then
+			return
 		end
 
 		if Configuration.expectToggleValue("Fly") then
@@ -368,25 +367,6 @@ return LPH_NO_VIRTUALIZE(function()
 
 		if Configuration.expectToggleValue("InfiniteJump") then
 			updateInfiniteJump(rootPart)
-		end
-
-		if Configuration.expectToggleValue("NoClip") then
-			updateNoClip(character, rootPart)
-		else
-			noClipMap:restore()
-		end
-
-		if Configuration.expectToggleValue("AgilitySpoof") then
-			updateAgilitySpoofer(character)
-		else
-			agilitySpoofer:restore()
-		end
-
-		if Configuration.expectToggleValue("TweenToObjectives") then
-			updateTweenToObjectives(rootPart)
-		else
-			movementMaid["altarTween"] = nil
-			movementMaid["bloodJarTween"] = nil
 		end
 	end
 

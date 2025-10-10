@@ -37,6 +37,9 @@ local OriginalStore = require("Utility/OriginalStore")
 ---@module Features.Combat.EffectListener
 local EffectListener = require("Features/Combat/EffectListener")
 
+---@module Utility.Finder
+local Finder = require("Utility/Finder")
+
 ---@class Defender
 ---@field tasks Task[]
 ---@field tmaid Maid Cleaned up every clean cycle.
@@ -223,11 +226,9 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 		)
 	end
 
-	if not timing.srpn then
-		self:notify(timing, "(%i) Action 'RPUE Parry' is being executed.", info.index)
-	end
+	self:notify(timing, "Action type 'RPUE Parry' is being executed.")
 
-	InputClient.deflect()
+	self:parry(timing, nil)
 end)
 
 ---Check if we're holding block and we're not supposed to do anything.
@@ -688,22 +689,6 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 		return
 	end
 
-	-- Dash instead of parry.
-	local dashReplacement = Random.new():NextNumber(1.0, 100.0)
-		<= (Configuration.expectOptionValue("DashInsteadOfParryRate") or 0.0)
-
-	if PP_SCRAMBLE_STR(action._type) ~= "Parry" then
-		dashReplacement = false
-	end
-
-	if not Configuration.expectToggleValue("AllowFailure") then
-		dashReplacement = false
-	end
-
-	if timing.umoa or timing.actions:count() ~= 1 then
-		dashReplacement = false
-	end
-
 	if PP_SCRAMBLE_STR(action._type) == "Start Block" then
 		return InputClient.bstart()
 	end
@@ -740,11 +725,43 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 			return
 		end
 
-		if Entitites.isNear(humanoidRootPart.Position) then
+		if Finder.pnear(humanoidRootPart.Position) then
 			return self:notify(timing, "Action 'Teleport Up' blocked because there are players nearby.")
 		end
 
 		humanoidRootPart.CFrame = CFrame.new(humanoidRootPart.Position + Vector3.new(0, 25, 0))
+	end
+
+	self:parry(timing, action)
+end)
+
+---Handle parry.
+---@param self Defender
+---@param timing Timing
+---@param action Action
+Defender.parry = LPH_NO_VIRTUALIZE(function(self, timing, action)
+	-- Dash instead of parry.
+	local dashReplacement = Random.new():NextNumber(1.0, 100.0)
+		<= (Configuration.expectOptionValue("DashInsteadOfParryRate") or 0.0)
+
+	if action and PP_SCRAMBLE_STR(action._type) ~= "Parry" then
+		dashReplacement = false
+	end
+
+	if not Configuration.expectToggleValue("AllowFailure") then
+		dashReplacement = false
+	end
+
+	if timing.umoa or timing.actions:count() ~= 1 then
+		dashReplacement = false
+	end
+
+	local function internalNotify(...)
+		if timing.rpue and timing.srpn then
+			return
+		end
+
+		return self:notify(...)
 	end
 
 	-- Parry if possible.
@@ -754,7 +771,7 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 			return InputClient.deflect()
 		end
 
-		self:notify(timing, "Action type 'Parry' replaced to 'Dodge' type.")
+		internalNotify(timing, "Action type 'Parry' replaced to 'Dodge' type.")
 
 		return InputClient.dodge()
 	end
@@ -766,7 +783,8 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 			return false
 		end
 
-		Defender:notify(timing, "Action fallback 'Parry' is using block frames.")
+		internalNotify(timing, "Action fallback 'Parry' is using block frames.")
+
 		InputClient.deflect()
 
 		return true
@@ -778,14 +796,15 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 	end
 
 	if timing.ndfb then
-		return self:notify(timing, "Action fallback 'Dodge' is disabled for this timing.")
+		return internalNotify(timing, "Action fallback 'Dodge' is disabled for this timing.")
 	end
 
 	if not EffectListener.cdodge() then
-		return blockFallback() or self:notify(timing, "Action fallback 'Dodge' blocked because we are unable to dash.")
+		return blockFallback()
+			or internalNotify(timing, "Action fallback 'Dodge' blocked because we are unable to dash.")
 	end
 
-	self:notify(timing, "Action type 'Parry' overrided to 'Dodge' type.")
+	internalNotify(timing, "Action type 'Parry' overrided to 'Dodge' type.")
 
 	return InputClient.dodge()
 end)

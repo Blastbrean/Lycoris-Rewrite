@@ -89,7 +89,7 @@ function Menu.init()
 		"Speedhack",
 		"InfiniteJump",
 		"TweenToObjective",
-		"AttachToBack",
+		"TweenToBack",
 	})
 
 	-- Initialize all tabs. Don't initialize them if we have the 'exploit_tester' role.

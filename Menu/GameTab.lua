@@ -16,6 +16,9 @@ local KeyHandling = require("Game/KeyHandling")
 -- Services.
 local players = game:GetService("Players")
 
+---@module Features.Game.Tweening
+local Tweening = require("Features/Game/Tweening")
+
 ---Initialize local character section.
 ---@param groupbox table
 function GameTab.initLocalCharacterSection(groupbox)
@@ -71,7 +74,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Text = "Spacebar Fly Speed",
 		Default = 150,
 		Min = 0,
-		Max = 300,
+		Max = 450,
 		Suffix = "/s",
 		Rounding = 0,
 	})
@@ -92,26 +95,45 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Default = false,
 	})
 
-	local atbToggle = groupbox:AddToggle("AttachToBack", {
-		Text = "Attach To Back",
+	local ttbToggle = groupbox:AddToggle("TweenToBack", {
+		Text = "Tween To Back",
 		Tooltip = "Start following the nearest entity based on a distance and height offset.",
+		Default = false,
+		Callback = function(state)
+			if state then
+				return
+			end
+
+			Tweening.stop("TweenToBack")
+		end,
+	})
+
+	ttbToggle:AddKeyPicker("TweenToBackKeybind", { Default = "N/A", SyncToggleState = true, Text = "Tween To Back" })
+
+	local ttbDepBox = groupbox:AddDependencyBox()
+
+	ttbDepBox:AddToggle("StickyAttach", {
+		Text = "Sticky Attach",
+		Tooltip = "Continue following the entity until it dies.",
 		Default = false,
 	})
 
-	atbToggle:AddKeyPicker("AttachToBackKeybind", { Default = "N/A", SyncToggleState = true, Text = "Attach To Back" })
+	ttbDepBox:AddToggle("IgnorePlayers", {
+		Text = "Ignore Players",
+		Tooltip = "Do not attach to players.",
+		Default = true,
+	})
 
-	local atbDepBox = groupbox:AddDependencyBox()
-
-	atbDepBox:AddSlider("BackOffset", {
+	ttbDepBox:AddSlider("BackOffset", {
 		Text = "Distance To Entity",
 		Default = 5,
-		Min = -30,
-		Max = 30,
+		Min = -100,
+		Max = 100,
 		Suffix = "studs",
 		Rounding = 0,
 	})
 
-	atbDepBox:AddSlider("HeightOffset", {
+	ttbDepBox:AddSlider("HeightOffset", {
 		Text = "Height Offset",
 		Default = 0,
 		Min = -100,
@@ -170,6 +192,13 @@ function GameTab.initLocalCharacterSection(groupbox)
 			Text = "Tween To Objectives",
 			Tooltip = "Smoothly move to objectives inside of Ethiron and Chaser's boss fights.",
 			Default = false,
+			Callback = function(state)
+				if state then
+					return
+				end
+
+				Tweening.stop("TweenToObjective")
+			end,
 		})
 		:AddKeyPicker(
 			"TweenToObjectivesKeybind",
@@ -293,8 +322,8 @@ function GameTab.initLocalCharacterSection(groupbox)
 		{ Toggles.NoClip, true },
 	})
 
-	atbDepBox:SetupDependencies({
-		{ Toggles.AttachToBack, true },
+	ttbDepBox:SetupDependencies({
+		{ Toggles.TweenToBack, true },
 	})
 end
 
@@ -406,6 +435,11 @@ function GameTab.initPlayerMonitoringSection(groupbox)
 		Default = false,
 	})
 
+	groupbox:AddToggle("BuildStealer", {
+		Text = "Build Stealer",
+		Tooltip = "Steal builds by hovering on them in the player list and pressing 'P' on your keyboard.",
+		Default = false,
+	})
 	groupbox:AddToggle("ShowHiddenPlayers", {
 		Text = "Show Hidden Players",
 		Tooltip = "Show hidden players on the player list.",
@@ -687,6 +721,19 @@ function GameTab.initInfoSpoofingSection(groupbox)
 	})
 end
 
+---Tweening section.
+---@param groupbox table
+function GameTab.initTweeningSection(groupbox)
+	groupbox:AddSlider("TweenStudsPerSecond", {
+		Text = "Tween Speed",
+		Default = 200,
+		Min = 50,
+		Max = 450,
+		Suffix = "/s",
+		Rounding = 0,
+	})
+end
+
 ---Initialize tab.
 function GameTab.init(window)
 	-- Create tab.
@@ -699,6 +746,7 @@ function GameTab.init(window)
 	GameTab.initInstanceRemovalsSection(tab:AddDynamicGroupbox("Instance Removals"))
 	GameTab.initPlayerMonitoringSection(tab:AddDynamicGroupbox("Player Monitoring"))
 	GameTab.initInfoSpoofingSection(tab:AddDynamicGroupbox("Info Spoofing"))
+	GameTab.initTweeningSection(tab:AddDynamicGroupbox("Tweening Customization"))
 end
 
 -- Return GameTab module.

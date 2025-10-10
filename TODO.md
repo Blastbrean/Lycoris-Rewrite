@@ -50,9 +50,8 @@
         - Extended Item Pickup ❌
         - Extended Job Board Interact ❌
   
-- Chaser tween to objective + tween to nearest jar instead
-  
-- Ethiron tween to objective
+
+- Full L2 Tween To Objective Perfection
 
 - Finish "Auto Fish"
     - Auto Eat
@@ -74,5 +73,11 @@
 - Auto Ragdoll Recover
 
 - Chaser Multi Player Support
+  
 - Hide Obelisks That Are Already Turned On
+  
 - PVP Safety
+  
+- Fix "Info Spoofing" for Guild Chat & Server 
+
+- Mob ESP Filtering

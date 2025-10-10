@@ -27,8 +27,8 @@ local Timing = require("Game/Timings/Timing")
 ---@module Utility.TaskSpawner
 local TaskSpawner = require("Utility/TaskSpawner")
 
----@module Utility.Entitites
-local Entitites = require("Utility/Entitites")
+---@module Utility.Finder
+local Finder = require("Utility/Finder")
 
 ---@module Features.Combat.Targeting
 local Targeting = require("Features/Combat/Targeting")
@@ -77,7 +77,7 @@ function ModuleManager.execute(lf, id, file, global)
 	getfenv(lf).InputClient = InputClient
 	getfenv(lf).TaskSpawner = TaskSpawner
 	getfenv(lf).Targeting = Targeting
-	getfenv(lf).Entitites = Entitites
+	getfenv(lf).Finder = Finder
 	getfenv(lf).Logger = Logger
 	getfenv(lf).HitboxOptions = HitboxOptions
 	getfenv(lf).RepeatInfo = RepeatInfo
