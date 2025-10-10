@@ -1,0 +1,53 @@
+{
+  "patch_id": "0604ade1-2537-4382-a5fc-3657926e7b2d",
+  "timestamp": "2025-10-08T03:24:46.112576",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://7599155704": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://7599155704",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "LightningBlade",
+          "imxd": 0,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://7599168630": {
+        "status": "removed",
+        "name": "LightningBlades"
+      }
+    }
+  }
+}

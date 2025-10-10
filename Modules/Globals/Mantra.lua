@@ -19,6 +19,8 @@ function Mantra.data(entity, name)
 	local clc = rs and string.match(rs, "(%d+)%s*[xX]%s*Crystal Lens")
 	local stc = rs and string.match(rs, "(%d+)%s*[xX]%s*Stratus Stone")
 	local csc = rs and string.match(rs, "(%d+)%s*[xX]%s*Cloudstone")
+	local gsc = rs and string.match(rs, "(%d+)%s*[xX]%s*Glass Stone")
+	local msc = rs and string.match(rs, "(%d+)%s*[xX]%s*Magnifying Stone")
 
 	return {
 		blast = bsp and true or false,
@@ -28,6 +30,8 @@ function Mantra.data(entity, name)
 		crystal = clc and tonumber(clc) or 0,
 		stratus = stc and tonumber(stc) or 0,
 		cloud = csc and tonumber(csc) or 0,
+		glass = gsc and tonumber(gsc) or 0,
+		magnifying = msc and tonumber(msc) or 0,
 	}
 end
 

@@ -1,0 +1,49 @@
+{
+  "patch_id": "4741d309-2335-4fda-b984-ebf0ab017434",
+  "timestamp": "2025-10-06T23:05:39.208050",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "StaticBall": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "StaticBall",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 50,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 11,
+            "X": 11,
+            "Z": 11
+          },
+          "punishable": 0,
+          "name": "StaticBall",
+          "imxd": 150,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

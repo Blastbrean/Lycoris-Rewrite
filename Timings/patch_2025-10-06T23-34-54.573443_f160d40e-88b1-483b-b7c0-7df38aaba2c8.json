@@ -1,0 +1,13 @@
+{
+  "patch_id": "f160d40e-88b1-483b-b7c0-7df38aaba2c8",
+  "timestamp": "2025-10-06T23:34:54.573443",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "LightningMote": {
+        "status": "removed",
+        "name": "LightningMote"
+      }
+    }
+  }
+}

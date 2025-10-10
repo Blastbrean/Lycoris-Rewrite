@@ -1,0 +1,27 @@
+{
+  "patch_id": "bc73f753-b85c-4765-b6fc-c2fb6fc66e4b",
+  "timestamp": "2025-10-09T01:44:47.858643",
+  "author": "Juanito",
+  "diff": {
+    "effect": {
+      "DisplayThornsRed": {
+        "status": "modified",
+        "changes": {
+          "fhb": {
+            "from": true,
+            "to": false
+          }
+        }
+      },
+      "DisplayThorns": {
+        "status": "modified",
+        "changes": {
+          "fhb": {
+            "from": true,
+            "to": false
+          }
+        }
+      }
+    }
+  }
+}

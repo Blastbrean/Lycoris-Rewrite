@@ -1,0 +1,40 @@
+{
+  "patch_id": "5015c951-16b1-4daa-ad77-3c26bcd9d162",
+  "timestamp": "2025-10-09T01:39:08.436400",
+  "author": "Juanito",
+  "diff": {
+    "sound": {
+      "rbxassetid://108039156843653": {
+        "status": "added",
+        "data": {
+          "rsd": 0,
+          "umoa": false,
+          "rpd": 0,
+          "alp": false,
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "after": 0,
+          "_id": "rbxassetid://108039156843653",
+          "duih": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "GrandWardensAxe",
+          "imxd": 0,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

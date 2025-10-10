@@ -1,0 +1,30 @@
+{
+  "patch_id": "6c080010-7b49-4239-85e8-9600125bd3af",
+  "timestamp": "2025-10-06T23:30:39.391577",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "StaticBall": {
+        "status": "modified",
+        "changes": {
+          "imdd": {
+            "from": 31,
+            "to": 0
+          },
+          "hitbox": {
+            "from": {
+              "Y": 20,
+              "X": 20,
+              "Z": 20
+            },
+            "to": {
+              "Y": 25,
+              "X": 20,
+              "Z": 20
+            }
+          }
+        }
+      }
+    }
+  }
+}

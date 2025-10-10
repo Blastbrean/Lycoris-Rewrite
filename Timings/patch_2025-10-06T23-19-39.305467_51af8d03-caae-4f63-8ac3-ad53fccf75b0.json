@@ -1,0 +1,72 @@
+{
+  "patch_id": "51af8d03-caae-4f63-8ac3-ad53fccf75b0",
+  "timestamp": "2025-10-06T23:19:39.305467",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://7162928509": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.06,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Start Block",
+              "name": "1",
+              "hitbox": {
+                "Y": 80,
+                "X": 60,
+                "Z": 60
+              },
+              "when": 100,
+              "ihbc": false
+            },
+            {
+              "_type": "End Block",
+              "name": "2",
+              "hitbox": {
+                "Y": 80,
+                "X": 60,
+                "Z": 60
+              },
+              "when": 1000,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://7162928509",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "LightningImpactOrbs",
+          "imxd": 150,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

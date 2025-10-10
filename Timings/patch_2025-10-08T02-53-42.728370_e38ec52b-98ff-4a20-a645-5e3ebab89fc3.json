@@ -1,0 +1,65 @@
+{
+  "patch_id": "e38ec52b-98ff-4a20-a645-5e3ebab89fc3",
+  "timestamp": "2025-10-08T02:53:42.728370",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://16337196055": {
+        "status": "removed",
+        "name": "IceCarveSpin"
+      },
+      "rbxassetid://16337192866": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": true,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 300,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": true,
+          "after": 0,
+          "_id": "rbxassetid://16337192866",
+          "mat": 3000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 20,
+            "X": 20,
+            "Z": 20
+          },
+          "punishable": 0,
+          "name": "IceCarveSpin",
+          "imxd": 0,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

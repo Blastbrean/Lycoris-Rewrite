@@ -1,0 +1,57 @@
+{
+  "patch_id": "88158af7-819b-4906-9b9e-ab8cac3653dd",
+  "timestamp": "2025-10-08T03:32:34.940891",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://7599155704": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 14,
+                  "X": 15,
+                  "Z": 12
+                },
+                "when": 300,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 14,
+                  "X": 15,
+                  "Z": 12
+                },
+                "when": 0,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 14,
+                  "X": 15,
+                  "Z": 12
+                },
+                "when": 300,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://7599168630": {
+        "status": "removed",
+        "name": "LightningBladeWindup"
+      }
+    }
+  }
+}

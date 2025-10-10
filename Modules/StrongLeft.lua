@@ -9,7 +9,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 500
 	action._type = "Parry"
-	action.hitbox = Vector3.new(14, 15, 15)
+	action.hitbox = Vector3.new(23, 15, 25)
 	action.name = string.format("(%.2f) Strong Left Timing", distance)
 
 	if self.entity.Name:match(".theduke") then

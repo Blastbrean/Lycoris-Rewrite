@@ -1,0 +1,49 @@
+{
+  "patch_id": "a89ffa56-bd03-4036-aec2-5a154ae427a0",
+  "timestamp": "2025-10-08T03:12:45.628798",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "IceCircle": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "IceCircle",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 20,
+                "X": 20,
+                "Z": 20
+              },
+              "when": 300,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "IceSpike",
+          "imxd": 75,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "patch_id": "d3070255-1040-48e3-8770-244997e2aedb",
+  "timestamp": "2025-10-06T23:10:39.253695",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "StaticBall": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 14,
+              "X": 15,
+              "Z": 15
+            },
+            "to": {
+              "Y": 16,
+              "X": 16,
+              "Z": 16
+            }
+          },
+          "fhb": {
+            "from": false,
+            "to": true
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 50,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

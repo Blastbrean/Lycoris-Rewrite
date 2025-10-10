@@ -1,0 +1,13 @@
+{
+  "patch_id": "7e23ffee-59e1-42a8-9a2a-32db20da5548",
+  "timestamp": "2025-10-06T23:30:48.013054",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://7162928509": {
+        "status": "removed",
+        "name": "LightningImpactOrbs"
+      }
+    }
+  }
+}

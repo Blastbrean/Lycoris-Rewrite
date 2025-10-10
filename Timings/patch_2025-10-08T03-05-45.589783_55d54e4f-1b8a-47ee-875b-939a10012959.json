@@ -1,0 +1,86 @@
+{
+  "patch_id": "55d54e4f-1b8a-47ee-875b-939a10012959",
+  "timestamp": "2025-10-08T03:05:45.589783",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://15121611060": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 29,
+                  "Z": 31
+                },
+                "when": 1200,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "3",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 32,
+                  "Z": 32
+                },
+                "when": 400,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 32,
+                  "Z": 32
+                },
+                "when": 700,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 29,
+                  "Z": 31
+                },
+                "when": 1200,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "3",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 30,
+                  "Z": 29
+                },
+                "when": 400,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 32,
+                  "Z": 32
+                },
+                "when": 700,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

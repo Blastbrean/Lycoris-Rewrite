@@ -1,0 +1,70 @@
+{
+  "patch_id": "1a804ae0-1225-4ddb-ad9c-d8a8a9b32624",
+  "timestamp": "2025-10-08T03:33:46.201469",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://5052240252": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 11,
+                "X": 11,
+                "Z": 11
+              },
+              "when": 200,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://5052240252",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "LightningBladeMagnet",
+          "imxd": 43,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://7599155704": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 64,
+            "to": 0
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "patch_id": "86c577a2-2877-4c5b-8102-a29d606465ec",
+  "timestamp": "2025-10-08T02:16:50.235620",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "BluePart": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 15,
+              "X": 15,
+              "Z": 32
+            },
+            "to": {
+              "Y": 15,
+              "X": 15,
+              "Z": 40
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -9,13 +9,13 @@ local Mantra = getfenv().Mantra
 ---@param timing AnimationTiming
 return function(self, timing)
 	local data = Mantra.data(self.entity, "Mantra:GunShadow{{Shadow Gun}}")
-	local range = data.perfect * 2 + data.crystal * 1
-	local size = data.stratus * 2 + data.cloud * 1
+	local range = data.perfect * 3 + data.crystal * 2
+	local size = data.stratus * 3 + data.cloud * 2
 
 	local action = Action.new()
-	action._when = 750
+	action._when = 650
 	action._type = "Parry"
-	action.hitbox = Vector3.new(5 + size, 5 + size, 20 + range)
+	action.hitbox = Vector3.new(10 + size, 10 + size, 25 + range)
 	action.name = "Dynamic Shadow Gun Timing"
 
 	if data.blast then

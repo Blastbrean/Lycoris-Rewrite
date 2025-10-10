@@ -1,0 +1,26 @@
+{
+  "patch_id": "cfe2fb89-70b1-4e24-9634-9fa888714520",
+  "timestamp": "2025-10-08T02:16:39.330779",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Hitb": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 15,
+              "X": 15,
+              "Z": 32
+            },
+            "to": {
+              "Y": 15,
+              "X": 15,
+              "Z": 40
+            }
+          }
+        }
+      }
+    }
+  }
+}

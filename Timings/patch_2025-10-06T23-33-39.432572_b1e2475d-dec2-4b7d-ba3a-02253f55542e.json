@@ -1,0 +1,49 @@
+{
+  "patch_id": "b1e2475d-dec2-4b7d-ba3a-02253f55542e",
+  "timestamp": "2025-10-06T23:33:39.432572",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "LightningMote": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "LightningMote",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 24,
+            "X": 24,
+            "Z": 24
+          },
+          "punishable": 0,
+          "name": "LightningMote",
+          "imxd": 107,
+          "smn": false,
+          "fhb": false,
+          "imdd": 10,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

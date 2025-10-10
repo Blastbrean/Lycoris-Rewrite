@@ -1,0 +1,22 @@
+{
+  "patch_id": "6c9c368a-6e6a-4ce7-aea6-02b3310cd63f",
+  "timestamp": "2025-10-06T22:43:43.525176",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://15420044707": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "WeaponTest",
+            "to": "KaritaLeap"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "patch_id": "3f69a3f2-9892-4b28-bba8-44240fc58f75",
+  "timestamp": "2025-10-08T02:15:32.699035",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Hitb": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "Hitb",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 0,
+                "X": 0,
+                "Z": 0
+              },
+              "when": 0,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 15,
+            "X": 15,
+            "Z": 32
+          },
+          "punishable": 0,
+          "name": "FlameBallista",
+          "imxd": 506,
+          "smn": false,
+          "fhb": true,
+          "imdd": 23,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

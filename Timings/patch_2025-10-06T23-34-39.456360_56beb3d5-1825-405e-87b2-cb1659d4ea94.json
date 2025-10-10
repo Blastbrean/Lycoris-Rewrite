@@ -1,0 +1,30 @@
+{
+  "patch_id": "56beb3d5-1825-405e-87b2-cb1659d4ea94",
+  "timestamp": "2025-10-06T23:34:39.456360",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "LightningMote": {
+        "status": "modified",
+        "changes": {
+          "imdd": {
+            "from": 10,
+            "to": 20
+          },
+          "hitbox": {
+            "from": {
+              "Y": 24,
+              "X": 24,
+              "Z": 24
+            },
+            "to": {
+              "Y": 42,
+              "X": 41,
+              "Z": 41
+            }
+          }
+        }
+      }
+    }
+  }
+}

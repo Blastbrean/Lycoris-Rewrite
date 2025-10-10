@@ -1,0 +1,13 @@
+{
+  "patch_id": "6ef34823-6f28-4343-8ae2-1ff3e4b3bca5",
+  "timestamp": "2025-10-06T20:50:57.544573",
+  "author": "Juanito",
+  "diff": {
+    "effect": {
+      "ManiKatti": {
+        "status": "removed",
+        "name": "ManiKatti"
+      }
+    }
+  }
+}
