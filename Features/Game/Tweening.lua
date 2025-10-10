@@ -1,5 +1,5 @@
 -- Tweening module.
-local Tweening = { active = true, queue = {} }
+local Tweening = { active = false, queue = {} }
 
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
