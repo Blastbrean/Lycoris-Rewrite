@@ -75,6 +75,16 @@ Tweening.update = LPH_NO_VIRTUALIZE(function(dt)
 	else
 		humanoidRootPart.CFrame = CFrame.new(newPosition)
 	end
+
+	if not recent.swc then
+		return
+	end
+
+	local newDistanceToTarget = (targetPosition - startPosition).Magnitude
+
+	if newDistanceToTarget <= 1.0 then
+		return Tweening.stop(recent.identifier)
+	end
 end)
 
 ---Get the tween data of an identifier.
@@ -95,13 +105,15 @@ end
 ---Set a goal to follow.
 ---@param identifier string
 ---@param goal BasePart|CFrame
-function Tweening.goal(identifier, goal)
+---@param swc boolean? Whether or not to stop when we reach the goal.
+function Tweening.goal(identifier, goal, swc)
 	local _, data = Tweening.get(identifier)
 
 	if data then
 		data.goal = goal
+		data.swc = swc
 	else
-		Tweening.queue[#Tweening.queue + 1] = { identifier = identifier, goal = goal }
+		Tweening.queue[#Tweening.queue + 1] = { identifier = identifier, goal = goal, swc = swc }
 	end
 end
 

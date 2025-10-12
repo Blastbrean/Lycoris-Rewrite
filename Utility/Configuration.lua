@@ -36,6 +36,23 @@ Configuration.expectOptionValue = LPH_NO_VIRTUALIZE(function(key)
 	return option.Value
 end)
 
+---Expect option values.
+---@param key string
+---@return any?
+Configuration.expectOptionValues = LPH_NO_VIRTUALIZE(function(key)
+	if not Options then
+		return nil
+	end
+
+	local option = Options[key]
+
+	if not option then
+		return nil
+	end
+
+	return option.Values
+end)
+
 ---Identify element.
 ---@param identifier string
 ---@param topLevelIdentifier string

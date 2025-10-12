@@ -3188,9 +3188,16 @@ return LPH_NO_VIRTUALIZE(function()
 			Parent = ScreenGui,
 		})
 
+		Library.PositionList = {}
+		Library.Recording = false
+
 		WatermarkOuter.InputBegan:Connect(function(Input)
 			xpcall(function()
-				if Input.UserInputType == Enum.UserInputType.MouseButton2 and Toggles["ShowDebugInformation"].Value then
+				if not Toggles["ShowDebugInformation"].Value then
+					return
+				end
+
+				if Input.UserInputType == Enum.UserInputType.MouseButton2 then
 					local Character = LocalPlayer and LocalPlayer.Character
 					local HumanoidRootPart = Character and Character:FindFirstChild("HumanoidRootPart")
 					local Position = HumanoidRootPart and HumanoidRootPart.Position
@@ -3201,6 +3208,22 @@ return LPH_NO_VIRTUALIZE(function()
 					setclipboard(tostring(PositionFormat))
 
 					Library:Notify("Your current position has been copied to your clipboard.", 5)
+				end
+
+				if Input.KeyCode == Enum.KeyCode.I then
+					if not Library.Recording then
+						Library.PositionList = {}
+						Library.Recording = true
+						Library:Notify("Positions are now recording. Press the '=' key to set a waypoint.", 5)
+					else
+						Library.Recording = false
+						local Formatted = "{" .. table.concat(Library.PositionList, ", ") .. "}"
+						setclipboard(Formatted)
+						Library:Notify(
+							"Positions have stopped recording. These positions are copied to your clipboard.",
+							5
+						)
+					end
 				end
 			end, warn)
 		end)

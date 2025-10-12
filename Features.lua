@@ -43,6 +43,9 @@ local FishFarm = require("Features/Automation/FishFarm")
 ---@module Features.Game.Teleport
 local Teleport = require("Features/Game/Teleport")
 
+---@module Features.Automation.AutoLoot
+local AutoLoot = require("Features/Automation/AutoLoot")
+
 ---Initialize features.
 ---@note: Careful with features that have entire return LPH_NO_VIRTUALIZE(function() blocks. We assume that we don't care about what's placed in there.
 function Features.init()
@@ -58,6 +61,7 @@ function Features.init()
 	IntelligenceFarm.init()
 	FishFarm.init()
 	Teleport.init()
+	AutoLoot.init()
 
 	-- Only initialize if we're a builder.
 	if not armorshield or armorshield.current_role == "builder" then
@@ -86,6 +90,7 @@ function Features.detach()
 	Monitoring.detach()
 	Exploits.detach()
 	Visuals.detach()
+	AutoLoot.detach()
 	Logger.warn("Features detached.")
 end
 

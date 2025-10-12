@@ -161,7 +161,6 @@ end)
 ---@return boolean
 AnimatorDefender.phd = LPH_NO_VIRTUALIZE(function(self, timing, options)
 	for _, cframe in next, PositionHistory.stepped(self.entity, HISTORY_STEPS, timing.phds) or {} do
-		print(cframe)
 		local clone = options:clone()
 		clone.spredict = false
 		clone.cframe = cframe
@@ -175,7 +174,6 @@ AnimatorDefender.phd = LPH_NO_VIRTUALIZE(function(self, timing, options)
 
 		return true
 	end
-	print("noooo we return false")
 end)
 
 ---Run our facing extrapolation / interpolation.

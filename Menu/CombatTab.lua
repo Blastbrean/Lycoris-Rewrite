@@ -69,9 +69,9 @@ function CombatTab.initCombatTargetingSection(tab)
 end
 
 -- Initialize combat whitelist section.
----@param tab table
-function CombatTab.initCombatWhitelistSection(tab)
-	local usernameList = tab:AddDropdown("UsernameList", {
+---@param groupbox table
+function CombatTab.initCombatWhitelistSection(groupbox)
+	local usernameList = groupbox:AddDropdown("UsernameList", {
 		Text = "Username List",
 		Values = {},
 		SaveValues = true,
@@ -79,12 +79,12 @@ function CombatTab.initCombatWhitelistSection(tab)
 		AllowNull = true,
 	})
 
-	local usernameInput = tab:AddInput("UsernameInput", {
+	local usernameInput = groupbox:AddInput("UsernameInput", {
 		Text = "Username Input",
 		Placeholder = "Display name or username.",
 	})
 
-	tab:AddButton("Add Username To Whitelist", function()
+	groupbox:AddButton("Add Username To Whitelist", function()
 		local username = usernameInput.Value
 		if #username <= 0 then
 			return Logger.longNotify("Please enter a valid username.")
@@ -100,7 +100,7 @@ function CombatTab.initCombatWhitelistSection(tab)
 		usernameList:Display()
 	end)
 
-	tab:AddButton("Remove Selected Usernames", function()
+	groupbox:AddButton("Remove Selected Usernames", function()
 		local values = usernameList.Values
 		local value = usernameList.Value
 

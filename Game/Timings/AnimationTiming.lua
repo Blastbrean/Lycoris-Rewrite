@@ -16,7 +16,7 @@ local Timing = require("Game/Timings/Timing")
 ---@field mat number Max animation timeout in milliseconds.
 ---@field dp boolean Disable prediction.
 ---@field imb boolean Ignore megalodaunt block. Hidden option.
----@field ffh boolean Flag to see whether or not this timing should force facing hitbox to the user. Hidden option.
+---@field ffh boolean Flag to see whether or not this timing should force facing hitbox to the user, no matter what. Hidden option.
 local AnimationTiming = setmetatable({}, { __index = Timing })
 AnimationTiming.__index = AnimationTiming
 

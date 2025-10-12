@@ -1,6 +1,9 @@
 -- AutomationTab module.
 local AutomationTab = {}
 
+---@module Utility.Logger
+local Logger = require("Utility/Logger")
+
 ---Attribute section.
 ---@param groupbox table
 function AutomationTab.initAttributeSection(groupbox)
@@ -61,6 +64,107 @@ function AutomationTab.initFishFarmSection(groupbox)
 		})
 end
 
+---Initialize Auto Loot section.
+---@param groupbox table
+function AutomationTab.initAutoLootSection(groupbox)
+	groupbox
+		:AddToggle("AutoLoot", {
+			Text = "Auto Loot",
+			Tooltip = "Automatically loot items from choice prompts with filtering options.",
+			Default = false,
+		})
+		:AddKeyPicker("AutoLootKeybind", {
+			Default = "N/A",
+			SyncToggleState = true,
+			Text = "Auto Loot",
+		})
+
+	local autoLootDepBox = groupbox:AddDependencyBox()
+
+	autoLootDepBox:AddToggle("AutoLootAll", {
+		Text = "Loot All Items",
+		Tooltip = "Loot all items from choice prompts. This will ignore filtering options.",
+		Default = false,
+	})
+
+	local autoLootAllDepBox = autoLootDepBox:AddDependencyBox()
+
+	autoLootAllDepBox:AddSlider("AutoLootStarsMin", {
+		Text = "Minimum Stars",
+		Tooltip = "The minimum number of stars an item must have to be looted.",
+		Min = 0,
+		Max = 3,
+		Rounding = 0,
+		Suffix = "★",
+		Default = 0,
+	})
+
+	autoLootAllDepBox:AddSlider("AutoLootStarsMax", {
+		Text = "Maximum Stars",
+		Tooltip = "The maximum number of stars an item can have to be looted.",
+		Min = 0,
+		Max = 3,
+		Rounding = 0,
+		Suffix = "★",
+		Default = 0,
+	})
+
+	local itemNameList = autoLootAllDepBox:AddDropdown("ItemNameList", {
+		Text = "Item Name List",
+		Values = {},
+		SaveValues = true,
+		Multi = true,
+		AllowNull = true,
+	})
+
+	local itemNameInput = autoLootAllDepBox:AddInput("ItemNameInput", {
+		Text = "Item Name Input",
+		Placeholder = "Exact or partial names.",
+	})
+
+	autoLootAllDepBox:AddButton("Add Item Name To Filter", function()
+		local itemName = itemNameInput.Value
+		if #itemName <= 0 then
+			return Logger.longNotify("Please enter a valid item name.")
+		end
+
+		local values = itemNameList.Values
+		if not table.find(values, itemName) then
+			table.insert(values, itemName)
+		end
+
+		itemNameList:SetValues(values)
+		itemNameList:SetValue({})
+		itemNameList:Display()
+	end)
+
+	autoLootAllDepBox:AddButton("Remove Selected Item Names", function()
+		local values = itemNameList.Values
+		local value = itemNameList.Value
+
+		for selected, _ in next, value do
+			local index = table.find(values, selected)
+			if not index then
+				continue
+			end
+
+			table.remove(values, index)
+		end
+
+		itemNameList:SetValues(values)
+		itemNameList:SetValue({})
+		itemNameList:Display()
+	end)
+
+	autoLootAllDepBox:SetupDependencies({
+		{ Toggles.AutoLootAll, false },
+	})
+
+	autoLootDepBox:SetupDependencies({
+		{ Toggles.AutoLoot, true },
+	})
+end
+
 ---Initialize Effect Automation section.
 ---@param groupbox table
 function AutomationTab.initEffectAutomation(groupbox)
@@ -81,6 +185,7 @@ function AutomationTab.init(window)
 	AutomationTab.initFishFarmSection(tab:AddDynamicGroupbox("Fish Farm"))
 	AutomationTab.initAttributeSection(tab:AddDynamicGroupbox("Attribute Farm"))
 	AutomationTab.initEffectAutomation(tab:AddDynamicGroupbox("Effect Automation"))
+	AutomationTab.initAutoLootSection(tab:AddLeftGroupbox("Auto Loot"))
 end
 
 -- Return AutomationTab module.

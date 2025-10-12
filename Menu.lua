@@ -47,6 +47,7 @@ local Configuration = require("Utility/Configuration")
 local runService = game:GetService("RunService")
 local stats = game:GetService("Stats")
 local players = game:GetService("Players")
+local userInputService = game:GetService("UserInputService")
 
 -- Signals.
 local renderStepped = Signal.new(runService.RenderStepped)
@@ -152,6 +153,41 @@ function Menu.init()
 			Library:SetWatermark(str)
 		end)
 	))
+
+	local inputBegan = Signal.new(userInputService.InputBegan)
+
+	inputBegan:connect("Menu_InputBegan", function(input, gameProcessed)
+		if gameProcessed then
+			return
+		end
+
+		if not Configuration.expectToggleValue("ShowDebugInformation") then
+			return
+		end
+
+		if input.KeyCode == Enum.KeyCode.F8 then
+			local mouse = players.LocalPlayer and players.LocalPlayer:GetMouse()
+			local target = mouse and mouse.Target
+			if not target then
+				return
+			end
+
+			target.Name = tostring(math.random(100000, 1000000))
+
+			return Logger.mnnotify("The target has been renamed to '%s' as a marker.", target.Name)
+		end
+
+		if input.KeyCode == Enum.KeyCode.Equals and Library.Recording then
+			local Character = players.LocalPlayer and players.LocalPlayer.Character
+			local HumanoidRootPart = Character and Character:FindFirstChild("HumanoidRootPart")
+			local Position = HumanoidRootPart and HumanoidRootPart.Position
+			local PositionFormat = Position
+					and string.format("CFrame.new(%.2f, %.2f, %.2f)", Position.X, Position.Y, Position.Z)
+				or "N/A"
+
+			Library.PositionList[#Library.PositionList + 1] = PositionFormat
+		end
+	end)
 
 	-- Configure Library.
 	Library.ToggleKeybind = Options.MenuKeybind

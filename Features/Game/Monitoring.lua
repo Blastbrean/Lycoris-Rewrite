@@ -195,7 +195,7 @@ return LPH_NO_VIRTUALIZE(function()
 				attunement = {
 					Flamecharm = character:GetAttribute("Stat_ElementFire"),
 					Frostdraw = character:GetAttribute("Stat_ElementIce"),
-					Thundercall = character:GetAttribute("Stat_ElementThunder"),
+					Thundercall = character:GetAttribute("Stat_ElementLightning"),
 					Galebreathe = character:GetAttribute("Stat_ElementWind"),
 					Shadowcast = character:GetAttribute("Stat_ElementShadow"),
 					Ironsing = character:GetAttribute("Stat_ElementMetal"),

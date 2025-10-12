@@ -253,7 +253,7 @@ return LPH_NO_VIRTUALIZE(function()
 		local targetPosition = (attachTargetHrp.CFrame * offsetCFrame).Position
 		local goalCFrame = CFrame.lookAt(targetPosition, attachTargetHrp.Position)
 
-		Tweening.goal("TweenToBack", goalCFrame)
+		Tweening.goal("TweenToBack", goalCFrame, false)
 
 		return true
 	end
@@ -275,7 +275,7 @@ return LPH_NO_VIRTUALIZE(function()
 			return Tweening.stop("TweenToObjective")
 		end
 
-		Tweening.goal("TweenToObjective", closestEmptyAltar)
+		Tweening.goal("TweenToObjective", closestEmptyAltar, false)
 	end
 
 	---Tween to blood jars.
@@ -292,7 +292,7 @@ return LPH_NO_VIRTUALIZE(function()
 			return Tweening.stop("TweenToObjective")
 		end
 
-		Tweening.goal("TweenToObjective", jar)
+		Tweening.goal("TweenToObjective", jar, false)
 	end
 
 	---Update tween to objectives.
