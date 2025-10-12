@@ -17,9 +17,9 @@ return function(self, timing)
 
 		-- Handle first swing.
 		local actionOne = Action.new()
-		actionOne._when = 500
+		actionOne._when = 900
 		actionOne._type = "Parry"
-		actionOne.hitbox = Vector3.new(40, 40, 40)
+		actionOne.hitbox = Vector3.new(20, 25, 23)
 		actionOne.name = string.format("(%d) Terrapod Barrage Swing 1", count)
 		self:action(timing, actionOne)
 
@@ -29,9 +29,9 @@ return function(self, timing)
 
 		-- Handle second swing.
 		local actionTwo = Action.new()
-		actionTwo._when = 1000
+		actionTwo._when = 1400
 		actionTwo._type = "Parry"
-		actionTwo.hitbox = Vector3.new(40, 40, 40)
+		actionTwo.hitbox = Vector3.new(20, 25, 23)
 		actionTwo.name = string.format("(%d) Terrapod Barrage Swing 2", count)
 		self:action(timing, actionTwo)
 

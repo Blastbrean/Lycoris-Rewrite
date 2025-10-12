@@ -1,0 +1,26 @@
+{
+  "patch_id": "b011ade2-a129-466d-8630-70b9eee1df01",
+  "timestamp": "2025-10-10T19:55:56.559795",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "ArdourBall2": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 29,
+              "X": 29,
+              "Z": 29
+            },
+            "to": {
+              "Y": 24,
+              "X": 24,
+              "Z": 24
+            }
+          }
+        }
+      }
+    }
+  }
+}

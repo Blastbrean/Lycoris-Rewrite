@@ -1,0 +1,90 @@
+{
+  "patch_id": "59ccf563-e5e8-41bb-88bc-ea5ef93b0344",
+  "timestamp": "2025-10-10T20:31:57.160508",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://6728950754": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 36,
+                  "X": 24,
+                  "Z": 36
+                },
+                "when": 500,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "3",
+                "hitbox": {
+                  "Y": 36,
+                  "X": 24,
+                  "Z": 31
+                },
+                "when": 1800,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 36,
+                  "X": 24,
+                  "Z": 31
+                },
+                "when": 1100,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 36,
+                  "X": 24,
+                  "Z": 31
+                },
+                "when": 500,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "3",
+                "hitbox": {
+                  "Y": 36,
+                  "X": 24,
+                  "Z": 31
+                },
+                "when": 1800,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 36,
+                  "X": 24,
+                  "Z": 31
+                },
+                "when": 1100,
+                "ihbc": false
+              }
+            ]
+          },
+          "hso": {
+            "from": -3,
+            "to": -10
+          }
+        }
+      }
+    }
+  }
+}
