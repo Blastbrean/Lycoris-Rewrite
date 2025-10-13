@@ -1,0 +1,18 @@
+{
+  "patch_id": "037badbd-4921-4aeb-86c3-99c3a81ac3a5",
+  "timestamp": "2025-10-13T04:22:01.991822",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "StrikeIndicator": {
+        "status": "modified",
+        "changes": {
+          "imdd": {
+            "from": 0,
+            "to": 7
+          }
+        }
+      }
+    }
+  }
+}

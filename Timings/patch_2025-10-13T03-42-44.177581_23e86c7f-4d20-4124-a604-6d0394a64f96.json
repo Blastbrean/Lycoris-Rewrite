@@ -1,0 +1,70 @@
+{
+  "patch_id": "23e86c7f-4d20-4124-a604-6d0394a64f96",
+  "timestamp": "2025-10-13T03:42:44.177581",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://109488905019243": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 14,
+                "X": 14,
+                "Z": 14
+              },
+              "when": 300,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://109488905019243",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "TwinstrikesFollowup",
+          "imxd": 0,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://101420289979512": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 43,
+            "to": 0
+          }
+        }
+      }
+    }
+  }
+}

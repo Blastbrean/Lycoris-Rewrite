@@ -1,0 +1,42 @@
+{
+  "patch_id": "90fc3ae6-1154-41f4-89a9-9197d4f635eb",
+  "timestamp": "2025-10-13T05:05:42.652625",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://18322559443": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 14,
+                  "X": 24,
+                  "Z": 28
+                },
+                "when": 480,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 14,
+                  "X": 24,
+                  "Z": 28
+                },
+                "when": 500,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

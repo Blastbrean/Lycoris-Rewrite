@@ -54,9 +54,9 @@ return function(self, timing)
 	firstPartTiming.cbm = true
 
 	local action = Action.new()
-	action._when = 300
+	action._when = 350
 	action._type = "Parry"
-	action.hitbox = Vector3.new(10, 10, 12)
+	action.hitbox = Vector3.new(10, 10, 14)
 	action.name = "Rapid Punches First Part"
 	self:action(firstPartTiming, action)
 
@@ -65,7 +65,7 @@ return function(self, timing)
 	timing._rpd = 150
 	timing.duih = true
 	timing.rpue = true
-	timing.hitbox = Vector3.new(10, 10, 19)
+	timing.hitbox = Vector3.new(16, 10, 12)
 
 	local track = Waiter.fet("rbxassetid://8150846354", animator)
 	if not track then

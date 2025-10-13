@@ -1,0 +1,97 @@
+{
+  "patch_id": "68eacf39-6d0c-4d57-98af-b1166291511d",
+  "timestamp": "2025-10-13T03:52:44.279437",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://5067090007": {
+        "status": "modified",
+        "changes": {
+          "phd": {
+            "from": false,
+            "to": true
+          },
+          "pfh": {
+            "from": true,
+            "to": false
+          }
+        }
+      },
+      "rbxassetid://6466993564": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 16,
+              "X": 23,
+              "Z": 19
+            },
+            "to": {
+              "Y": 16,
+              "X": 23,
+              "Z": 16
+            }
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Start Block",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 400,
+                "ihbc": false
+              },
+              {
+                "_type": "End Block",
+                "name": "2",
+                "hitbox": {
+                  "Y": 38,
+                  "X": 40,
+                  "Z": 40
+                },
+                "when": 2100,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Start Block",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 400,
+                "ihbc": false
+              },
+              {
+                "_type": "End Block",
+                "name": "2",
+                "hitbox": {
+                  "Y": 38,
+                  "X": 40,
+                  "Z": 40
+                },
+                "when": 2000,
+                "ihbc": false
+              }
+            ]
+          },
+          "iae": {
+            "from": true,
+            "to": false
+          },
+          "mat": {
+            "from": 2100,
+            "to": 2000
+          }
+        }
+      }
+    }
+  }
+}
