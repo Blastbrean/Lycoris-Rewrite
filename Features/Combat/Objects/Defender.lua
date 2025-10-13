@@ -165,7 +165,7 @@ Defender.srpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 		self:notify(
 			timing,
 			"Added RPUE '%s' (%.2fs, then every %.2fs) with ping '%.2f' (changing) subtracted.",
-			PP_SCRAMBLE_STR(timing.name),
+			cache["name"],
 			cache["rsd"],
 			cache["rpd"],
 			self.rtt()
@@ -174,7 +174,7 @@ Defender.srpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 		self:notify(
 			timing,
 			"Added RPUE '%s' ([redacted], then every [redacted]) with ping '%.2f' (changing) subtracted.",
-			PP_SCRAMBLE_STR(timing.name),
+			cache["name"],
 			self.rtt()
 		)
 	end
@@ -219,7 +219,7 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info, cache)
 
 	self:mark(Task.new(string.format("RPUE_%s_%i", cache.name, info.index), function()
 		return cache["rpd"] - info.irdelay - self.sdelay()
-	end, timing.punishable, timing.after, self.rpue, self, entity, timing, info))
+	end, timing.punishable, timing.after, self.rpue, self, entity, timing, info, cache))
 
 	if not target then
 		return Logger.warn("Skipping RPUE '%s' because the target is not valid.", cache.name)
