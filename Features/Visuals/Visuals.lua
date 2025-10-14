@@ -1112,20 +1112,22 @@ local onThrownChildAdded = LPH_NO_VIRTUALIZE(function(child)
 	end))
 end)
 
----Create children listener.
+---Create listener.
 ---@param instance Instance
 ---@param identifier string
 ---@param addedCallback function
 ---@param removingCallback function
-local createChildrenListener = LPH_NO_VIRTUALIZE(function(instance, identifier, addedCallback, removingCallback)
-	local childAdded = Signal.new(instance.ChildAdded)
-	local childRemoved = Signal.new(instance.ChildRemoved)
+---@param childFlag boolean
+local createListener = LPH_NO_VIRTUALIZE(function(instance, identifier, addedCallback, removingCallback, childFlag)
+	local type = childFlag and "Child" or "Descendant"
+	local added = Signal.new(childFlag and instance.ChildAdded or instance.DescendantAdded)
+	local removed = Signal.new(childFlag and instance.ChildRemoved or instance.DescendantRemoving)
 
-	visualsMaid:add(childAdded:connect(string.format("Visuals_%sOnChildAdded", identifier), addedCallback))
-	visualsMaid:add(childRemoved:connect(string.format("Visuals_%sOnChildRemoved", identifier), removingCallback))
+	visualsMaid:add(added:connect(string.format("Visuals_%sOn%sAdded", identifier, type), addedCallback))
+	visualsMaid:add(removed:connect(string.format("Visuals_%sOn%sRemoved", identifier, type), removingCallback))
 
-	Profiler.run(string.format("Visuals_%sAddInitialChildren", identifier), function()
-		for _, child in next, instance:GetChildren() do
+	Profiler.run(string.format("Visuals_%sAddInitial", identifier), function()
+		for _, child in next, (childFlag and instance:GetChildren() or instance:GetDescendants()) do
 			addedCallback(child)
 		end
 	end)
@@ -1147,13 +1149,27 @@ local onInstanceRemoving = LPH_NO_VIRTUALIZE(function(inst)
 	end
 end)
 
+---On Avatar Room DescendantAdded.
+---@param descendant Instance
+local onAvatarRoomDescendantAdded = LPH_NO_VIRTUALIZE(function(descendant)
+	if descendant.Name ~= "Altar" then
+		return
+	end
+
+	return emplaceObject(descendant, BoneAltarESP.new("BoneAltar", descendant, "Bone Altar"))
+end)
+
 ---On Workspace ChildAdded.
 ---@param child Instance
 onWorkspaceChildAdded = LPH_NO_VIRTUALIZE(function(child)
 	local name = child.Name
 
 	if name == "Layer2Floor2" then
-		return createChildrenListener(child, "Layer2Floor2", onWorkspaceChildAdded, onInstanceRemoving)
+		return createListener(child, "Layer2Floor2", onWorkspaceChildAdded, onInstanceRemoving, true)
+	end
+
+	if name == "TrueAvatarBossRoom" then
+		return createListener(child, "TrueAvatarBossRoom", onAvatarRoomDescendantAdded, onInstanceRemoving, false)
 	end
 
 	if name == "BellKeys" then
@@ -1227,10 +1243,6 @@ onWorkspaceChildAdded = LPH_NO_VIRTUALIZE(function(child)
 		return emplaceObject(child, ModelESP.new("MantraObelisk", child, "Mantra Obelisk"))
 	end
 
-	if name == "BoneAltar" then
-		return emplaceObject(child, BoneAltarESP.new("BoneAltar", child, "Bone Altar"))
-	end
-
 	visualsMaid:mark(TaskSpawner.spawn("Visuals_BRWeaponCheck", function()
 		if child:IsA("MeshPart") and child:WaitForChild("InteractPrompt", 0.1) and not name:match("Barrel") then
 			return emplaceObject(child, PartESP.new("BRWeapon", child, name))
@@ -1292,13 +1304,13 @@ function Visuals.init()
 	local thrown = workspace:WaitForChild("Thrown")
 	local terrain = workspace:WaitForChild("Terrain")
 
-	createChildrenListener(terrain, "Terrain", onTerrainChildAdded, onInstanceRemoving)
-	createChildrenListener(workspace, "Workspace", onWorkspaceChildAdded, onInstanceRemoving)
-	createChildrenListener(thrown, "Thrown", onThrownChildAdded, onInstanceRemoving)
-	createChildrenListener(live, "Live", onLiveChildrenAdded, onInstanceRemoving)
-	createChildrenListener(npcs, "NPCs", onNPCsChildAdded, onInstanceRemoving)
-	createChildrenListener(ingredients, "Ingredients", onIngredientsChildAdded, onInstanceRemoving)
-	createChildrenListener(players, "Players", onPlayerAdded, onInstanceRemoving)
+	createListener(terrain, "Terrain", onTerrainChildAdded, onInstanceRemoving, true)
+	createListener(workspace, "Workspace", onWorkspaceChildAdded, onInstanceRemoving, true)
+	createListener(thrown, "Thrown", onThrownChildAdded, onInstanceRemoving, true)
+	createListener(live, "Live", onLiveChildrenAdded, onInstanceRemoving, true)
+	createListener(npcs, "NPCs", onNPCsChildAdded, onInstanceRemoving, true)
+	createListener(ingredients, "Ingredients", onIngredientsChildAdded, onInstanceRemoving, true)
+	createListener(players, "Players", onPlayerAdded, onInstanceRemoving, true)
 
 	---@note: We only need to get this once.
 	for _, descendant in next, replicatedStorage:WaitForChild("MarkerWorkspace"):GetDescendants() do
