@@ -37,8 +37,6 @@ local function telemetryLog(...)
 	end
 
 	Logger.warn(...)
-
-	task.wait(1)
 end
 
 ---Get the blacklist list.

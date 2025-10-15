@@ -33,8 +33,6 @@ local function telemetryLog(...)
 	end
 
 	Logger.warn(...)
-
-	task.wait(1)
 end
 
 ---Wait until we're in the fragments of self area.
