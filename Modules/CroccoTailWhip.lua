@@ -8,7 +8,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 700
 	action._type = "Parry"
-	action.hitbox = Vector3.new(25, 25, 25)
+	action.hitbox = Vector3.new(25, 25, 30)
 	action.name = "Dynamic Crocco Timing"
 
 	if self.entity.Name:match("king") then

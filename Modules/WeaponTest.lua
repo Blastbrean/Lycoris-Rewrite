@@ -56,7 +56,7 @@ return function(self, timing)
 			task.wait()
 		until self.track.Speed ~= ispeed
 
-		windup = 0.100 / self.track.Speed
+		windup = 0.080 / self.track.Speed
 	elseif data.type == "Rifle" and timing.name:match("2") then
 		repeat
 			task.wait()
@@ -94,6 +94,9 @@ return function(self, timing)
 	action._when = windup * 1000
 	action._type = "Parry"
 	action.hitbox = Vector3.new(data.length * 2.7, data.length * 3, data.length * 2)
+	if data.type == "Pistol" or data.type == "Rapier" or data.type == "Spear" then
+		action.hitbox = Vector3.new(data.length * 1.7, data.length * 3, data.length * 2)
+	end
 	action.name = string.format(
 		"(%.2f, %.2f, %.2f) (%.2f) Dynamic Weapon Swing",
 		data.oss,

@@ -1,0 +1,49 @@
+{
+  "patch_id": "97624abc-9c31-4a16-b132-cd378919062d",
+  "timestamp": "2025-10-15T01:15:20.507055",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://12106093579": {
+        "status": "added",
+        "data": {
+          "phd": true,
+          "umoa": true,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "WeaponTest",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://12106093579",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 1,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "1CurvedSwing4?",
+          "imxd": 32,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "M1"
+        }
+      }
+    }
+  }
+}

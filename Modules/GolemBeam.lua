@@ -23,7 +23,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 2300
 	action._type = "Dodge"
-	action.hitbox = Vector3.new(200, 200, 200)
+	action.hitbox = Vector3.new(40, 200, 200)
 	action.name = "Dynamic Beam Timing"
 	return self:action(timing, action)
 end

@@ -1,0 +1,18 @@
+{
+  "patch_id": "0fa83c78-0ccb-47b3-809c-f1dce84a43d9",
+  "timestamp": "2025-10-15T00:55:48.674617",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "Slash": {
+        "status": "modified",
+        "changes": {
+          "hso": {
+            "from": 25,
+            "to": 35
+          }
+        }
+      }
+    }
+  }
+}

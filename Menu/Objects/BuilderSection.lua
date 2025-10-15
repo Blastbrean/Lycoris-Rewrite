@@ -719,8 +719,8 @@ function BuilderSection:builder()
 
 	self.hitboxShiftOffset = tab:AddSlider(nil, {
 		Text = "Hitbox Backwards Offset",
-		Min = -25,
-		Max = 25,
+		Min = -50,
+		Max = 50,
 		Suffix = "s",
 		Default = 0,
 		Rounding = 0,

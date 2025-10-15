@@ -1,0 +1,76 @@
+{
+  "patch_id": "7d32d7da-37b6-4656-8fa9-1678560d5958",
+  "timestamp": "2025-10-15T05:59:31.227232",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "STREAMPART": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Start Block",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              },
+              {
+                "_type": "End Block",
+                "name": "2",
+                "hitbox": {
+                  "Y": 41,
+                  "X": 41,
+                  "Z": 41
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Start Block",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              },
+              {
+                "_type": "End Block",
+                "name": "2",
+                "hitbox": {
+                  "Y": 82,
+                  "X": 81,
+                  "Z": 84
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          },
+          "hitbox": {
+            "from": {
+              "Y": 59,
+              "X": 55,
+              "Z": 55
+            },
+            "to": {
+              "Y": 81,
+              "X": 80,
+              "Z": 81
+            }
+          }
+        }
+      }
+    }
+  }
+}

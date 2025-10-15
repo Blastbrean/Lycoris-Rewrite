@@ -1,0 +1,56 @@
+{
+  "patch_id": "d992b152-26a5-4408-b333-b7e6782793c0",
+  "timestamp": "2025-10-15T04:40:20.509560",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://94626092299428": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "WeaponTest"
+          },
+          "phds": {
+            "from": 0,
+            "to": 1
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "phd": {
+            "from": false,
+            "to": true
+          }
+        }
+      },
+      "rbxassetid://88620745767944": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "WeaponTest"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      },
+      "rbxassetid://137565901647190": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "WeaponTest"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

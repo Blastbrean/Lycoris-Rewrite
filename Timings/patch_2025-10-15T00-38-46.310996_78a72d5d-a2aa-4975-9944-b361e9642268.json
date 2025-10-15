@@ -1,0 +1,22 @@
+{
+  "patch_id": "78a72d5d-a2aa-4975-9944-b361e9642268",
+  "timestamp": "2025-10-15T00:38:46.310996",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://12706574441": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "PromDraw"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

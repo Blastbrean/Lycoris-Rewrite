@@ -1,0 +1,24 @@
+{
+  "patch_id": "ac183700-0f1e-46e9-b380-bb5c2cbcdd3e",
+  "timestamp": "2025-10-15T05:39:06.510176",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://8467835626": {
+        "status": "modified",
+        "changes": {
+          "iae": {
+            "from": true,
+            "to": false
+          }
+        }
+      }
+    },
+    "part": {
+      "StrikeIndicator": {
+        "status": "removed",
+        "name": "LightningStrike"
+      }
+    }
+  }
+}
