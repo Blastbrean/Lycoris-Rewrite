@@ -59,8 +59,6 @@ local function telemetryLog(...)
 	end
 
 	Logger.warn(...)
-
-	task.wait(1)
 end
 
 ---Handle CharacterCreation state.
@@ -92,6 +90,15 @@ end
 ---Go to the Titus fight.
 ---@param tdata table Fake data.
 function EchoFarm.titus(tdata)
+	-- Request start.
+	local requests = replicatedStorage:WaitForChild("Requests")
+	local startMenu = requests:WaitForChild("StartMenu")
+	local start = startMenu:WaitForChild("Start")
+
+	telemetryLog("(EchoFarm) Requesting start.")
+
+	start:FireServer()
+
 	local data = tdata or PersistentData.get("efdata")
 	if not data then
 		return error("No EchoFarm data found in PersistentData.")
@@ -218,6 +225,15 @@ end
 ---Kill titus.
 ---@param tdata table Fake data.
 function EchoFarm.ktitus(tdata)
+	-- Request start.
+	local requests = replicatedStorage:WaitForChild("Requests")
+	local startMenu = requests:WaitForChild("StartMenu")
+	local start = startMenu:WaitForChild("Start")
+
+	telemetryLog("(EchoFarm) Requesting start.")
+
+	start:FireServer()
+
 	local data = tdata or PersistentData.get("efdata")
 	if not data then
 		return error("No EchoFarm data found in PersistentData.")
@@ -312,6 +328,15 @@ end
 ---Titus killed.
 ---@param tdata table Fake data.
 function EchoFarm.tkilled(tdata)
+	-- Request start.
+	local requests = replicatedStorage:WaitForChild("Requests")
+	local startMenu = requests:WaitForChild("StartMenu")
+	local start = startMenu:WaitForChild("Start")
+
+	telemetryLog("(EchoFarm) Requesting start.")
+
+	start:FireServer()
+
 	local data = tdata or PersistentData.get("efdata")
 	if not data then
 		return error("No EchoFarm data found in PersistentData.")

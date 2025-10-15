@@ -120,7 +120,7 @@ function Wipe.depths()
 		{ choice = "[The End]" },
 	}, true)
 
-	telemetryLog("(Depths) Wiped slot. Server hopping after removing marker.")
+	telemetryLog("(Depths) Wiped slot. Removing marker.")
 
 	-- Add or remove markers.
 	PersistentData.set("wdata", nil)
@@ -128,9 +128,6 @@ function Wipe.depths()
 	if PersistentData.get("efdata") then
 		PersistentData.stf("efdata", "wiped", true)
 	end
-
-	-- Server hop.
-	ServerHop.hop(wdata.slot, true)
 end
 
 ---Start the process for wiping a slot in the lobby.
