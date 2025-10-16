@@ -82,7 +82,18 @@ function EchoFarm.ccreation()
 
 	toggleMetaModifier:FireServer("All")
 
+	local playerGui = players.LocalPlayer:WaitForChild("PlayerGui")
+
 	repeat
+		-- Choice prompt?
+		local choicePrompt = playerGui:FindFirstChild("ChoicePrompt")
+		local choice = choicePrompt and choicePrompt:FindFirstChild("Choice")
+
+		if choice then
+			choice:FireServer(true)
+		end
+
+		-- Wait.
 		task.wait()
 	until finishCreation:InvokeServer()
 end
@@ -232,7 +243,13 @@ function EchoFarm.ktitus(tdata)
 
 	telemetryLog("(EchoFarm) Requesting start.")
 
-	start:FireServer()
+	repeat
+		-- Fire server.
+		start:FireServer()
+
+		-- Wait.
+		task.wait()
+	until #workspace:WaitForChild("Live"):GetChildren() > 0
 
 	local data = tdata or PersistentData.get("efdata")
 	if not data then
@@ -289,6 +306,9 @@ function EchoFarm.ktitus(tdata)
 	repeat
 		task.wait()
 	until #backpack:GetChildren() > items
+
+	-- Give it two seconds.
+	task.wait(2)
 
 	-- Check if we have an enchant stone.
 	telemetryLog("(EchoFarm) Checking for enchant stone.")
