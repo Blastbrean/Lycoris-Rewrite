@@ -126,6 +126,10 @@ end
 
 ---Update the AutoLoot module.
 function AutoLoot.update()
+	if not AutoLoot.ignore and not Configuration.expectToggleValue("AutoLoot") then
+		return resetAutoLoot()
+	end
+
 	if not choiceRemote or not choiceRemote.Parent then
 		return resetAutoLoot()
 	end
