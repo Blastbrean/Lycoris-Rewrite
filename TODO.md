@@ -53,6 +53,7 @@
 - Exploit ❌
     - Mob Exploits ✅
         - Pathfind Breaker ✅
+            - Bring Mobs ❌
     - Local Character Exploits ❌
         - Extended Item Pickup ❌
         - Extended Job Board Interact ❌
@@ -74,7 +75,6 @@ Juanito's good suggestions:
 
 - Add Parry and Dodge Vent option + Chance slider
     - If both Parry and Dodge vent are enabled, it should do either or
-- Show Players on map
 - Chain of Perfection counter
 - Fix No Blur not working with low water
 - No Blind
@@ -87,3 +87,5 @@ Juanito's good suggestions:
 - No Roll Fatigue (slider for how much less roll fatigue you want) (patched on legacy but maybe try unpatching it on rewrite)
 - Priority Dodge Frame (don't know how useful this is but comp players liked this feature)
 - Rare NPC/Mob Notifier (Silhuett, Grudge, Ministry Heartspiller, Maljuror)
+- Unlock Zoom distance
+- TP Mobs to Self, Camera, Target with Range slider (Add Freecam)
