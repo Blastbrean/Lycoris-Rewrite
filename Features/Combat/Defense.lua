@@ -22,8 +22,8 @@ local Configuration = require("Utility/Configuration")
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
----@module Features.Combat.PositionHistory
-local PositionHistory = require("Features/Combat/PositionHistory")
+---@module Features.Combat.EntityHistory
+local EntityHistory = require("Features/Combat/EntityHistory")
 
 ---@module Features.Combat.Objects.Defender
 local Defender = require("Features/Combat/Objects/Defender")
@@ -167,7 +167,7 @@ local updateHistory = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	PositionHistory.add(players.LocalPlayer, humanoidRootPart.CFrame, tick())
+	EntityHistory.add(players.LocalPlayer, humanoidRootPart.CFrame, humanoidRootPart.AssemblyLinearVelocity, tick())
 
 	for _, player in next, players:GetPlayers() do
 		if player == players.LocalPlayer then
@@ -184,7 +184,7 @@ local updateHistory = LPH_NO_VIRTUALIZE(function()
 			continue
 		end
 
-		PositionHistory.add(pcharacter, proot.CFrame, tick())
+		EntityHistory.add(pcharacter, proot.CFrame, humanoidRootPart.AssemblyLinearVelocity, tick())
 	end
 end)
 
@@ -354,7 +354,7 @@ end)
 ---Update defenders.
 local updateDefenders = LPH_NO_VIRTUALIZE(function()
 	if Configuration.expectToggleValue("M1Hold") and leftClickState then
-		InputClient.left()
+		InputClient.left(true)
 	end
 
 	if Configuration.expectToggleValue("AutoWisp") and cwp and cws then

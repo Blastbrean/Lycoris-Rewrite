@@ -199,25 +199,6 @@ local function onTeleportLoop()
 		character:PivotTo(oneEntrance.CFrame)
 	end
 
-	if dest == "LowerErisia" then
-		tmaid:add(
-			TaskSpawner.spawn(
-				"Teleport_LowerErisiaStream",
-				players.LocalPlayer.RequestStreamAroundAsync,
-				players.LocalPlayer,
-				Vector3.new(1628.80676, 282.467133, 2763.24683),
-				0.1
-			)
-		)
-
-		local lightningTp = workspace:FindFirstChild("LightningTP")
-		if not lightningTp then
-			return
-		end
-
-		character:PivotTo(lightningTp.CFrame)
-	end
-
 	if dest == "GuildDoor" then
 		local guildName = Configuration.expectOptionValue("GuildDoorName")
 		if not guildName or #guildName <= 0 then

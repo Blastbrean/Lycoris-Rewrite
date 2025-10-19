@@ -24,6 +24,9 @@ local Task = require("Features/Combat/Objects/Task")
 ---@module Game.Timings.Timing
 local Timing = require("Game/Timings/Timing")
 
+---@module Features.Combat.EffectListener
+local EffectListener = require("Features/Combat/EffectListener")
+
 ---@module Utility.TaskSpawner
 local TaskSpawner = require("Utility/TaskSpawner")
 
@@ -81,6 +84,7 @@ function ModuleManager.execute(lf, id, file, global)
 	getfenv(lf).Logger = Logger
 	getfenv(lf).HitboxOptions = HitboxOptions
 	getfenv(lf).RepeatInfo = RepeatInfo
+	getfenv(lf).EffectListener = EffectListener
 
 	-- Load globals if we should.
 	for name, entry in next, (not global) and ModuleManager.globals or {} do

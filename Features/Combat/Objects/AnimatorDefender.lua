@@ -31,8 +31,8 @@ local Task = require("Features/Combat/Objects/Task")
 ---@module Utility.OriginalStore
 local OriginalStore = require("Utility/OriginalStore")
 
----@module Features.Combat.PositionHistory
-local PositionHistory = require("Features/Combat/PositionHistory")
+---@module Features.Combat.EntityHistory
+local EntityHistory = require("Features/Combat/EntityHistory")
 
 ---@module Features.Combat.EffectListener
 local EffectListener = require("Features/Combat/EffectListener")
@@ -129,7 +129,7 @@ AnimatorDefender.pfh = LPH_NO_VIRTUALIZE(function(self, options)
 	end
 
 	if not options.timing.ffh then
-		local yrate = PositionHistory.yrate(self.entity)
+		local yrate = EntityHistory.yrate(self.entity)
 		if not yrate then
 			return false
 		end
@@ -140,7 +140,7 @@ AnimatorDefender.pfh = LPH_NO_VIRTUALIZE(function(self, options)
 	end
 
 	local clone = options:clone()
-	clone.spredict = false
+	clone.spredict = true
 	clone.hcolor = Color3.new(0, 1, 1)
 	clone.mcolor = Color3.new(1, 1, 0)
 	clone:ucache()
@@ -160,9 +160,9 @@ end)
 ---@param options HitboxOptions
 ---@return boolean
 AnimatorDefender.phd = LPH_NO_VIRTUALIZE(function(self, timing, options)
-	for _, cframe in next, PositionHistory.stepped(self.entity, HISTORY_STEPS, timing.phds) or {} do
+	for _, cframe in next, EntityHistory.pstepped(self.entity, HISTORY_STEPS, timing.phds) or {} do
 		local clone = options:clone()
-		clone.spredict = false
+		clone.spredict = true
 		clone.cframe = cframe
 		clone.hcolor = Color3.new(0.839215, 0.976470, 0.537254)
 		clone.mcolor = Color3.new(0.564705, 0, 1)

@@ -21,7 +21,7 @@ return function(self, timing)
 		return
 	end
 
-	timing.pfh = false
+	timing.pfh = true
 
 	local windup = nil
 	local ispeed = self.track.Speed
@@ -33,16 +33,13 @@ return function(self, timing)
 	elseif data.type == "Greataxe" and self.track.Speed == 1.0 then
 		windup = (0.171 / self.track.Speed)
 		windup += 0.250 / data.ss
-		timing.pfh = true
 	elseif data.type == "Greathammer" and self.track.Speed ~= 1.0 then
 		windup = (0.150 / self.track.Speed) + 0.200
 	elseif data.type == "Greathammer" and self.track.Speed == 1.0 then
 		windup = (0.150 / self.track.Speed)
 		windup += 0.250 / data.ss
-		timing.pfh = true
 	elseif data.type == "Greatcannon" and self.track.Speed ~= 1.0 then
 		windup = (0.155 / self.track.Speed) + 0.160
-		timing.pfh = true
 	elseif data.type == "Greatcannon" and self.track.Speed == 1.0 then
 		windup = (0.155 / self.track.Speed) + 0.300
 	elseif data.type == "Rapier" then
@@ -57,18 +54,26 @@ return function(self, timing)
 		until self.track.Speed ~= ispeed
 
 		windup = 0.080 / self.track.Speed
+
+		if self.track.Speed == 0.0 then
+			windup = 0.100
+		end
 	elseif data.type == "Rifle" and timing.name:match("2") then
 		repeat
 			task.wait()
 		until self.track.Speed ~= ispeed
 
 		windup = (0.200 / self.track.Speed)
+
+		if self.track.Speed == 0.0 then
+			windup = 0.100
+		end
 	elseif data.type == "Rifle" then
 		windup = (0.174 / self.track.Speed) + 0.150
 	elseif data.type == "Club" then
 		windup = (0.180 / self.track.Speed) + 0.150
 	elseif data.type == "Twinblade" then
-		windup = (0.155 / self.track.Speed) + 0.150
+		windup = (0.155 / self.track.Speed) + 0.100
 	elseif data.type == "Spear" then
 		windup = (0.180 / self.track.Speed) + 0.120
 	elseif data.type == "Greatsword" then
@@ -76,14 +81,10 @@ return function(self, timing)
 	elseif data.type == "Fist" then
 		windup = (0.140 / self.track.Speed) + 0.130
 	elseif data.type == "Dagger" then
-		windup = (0.175 / self.track.Speed) + 0.100
+		windup = (0.150 / self.track.Speed) + 0.100
 	elseif data.type == "Sword" then
-		windup = (0.150 / self.track.Speed) + 0.075
+		windup = (0.150 / self.track.Speed) + 0.125
 	end
-
-	-- We only want to turn on 'Past Hitbox Detection' when we're not doing 'Predict Facing Hitbox'
-	timing.phd = not timing.pfh
-	timing.phds = 1.0
 
 	if not windup then
 		return self:notify(timing, "(%s) No windup for this weapon type.", data.type)
@@ -93,10 +94,12 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = windup * 1000
 	action._type = "Parry"
-	action.hitbox = Vector3.new(data.length * 2.7, data.length * 3, data.length * 2)
+	action.hitbox = Vector3.new(data.length * 2.7, data.length * 3, data.length * 2.5)
+
 	if data.type == "Pistol" or data.type == "Rapier" or data.type == "Spear" then
-		action.hitbox = Vector3.new(data.length * 1.7, data.length * 3, data.length * 2)
+		action.hitbox = Vector3.new(data.length * 1.7, data.length * 3, data.length * 2.5)
 	end
+
 	action.name = string.format(
 		"(%.2f, %.2f, %.2f) (%.2f) Dynamic Weapon Swing",
 		data.oss,
@@ -113,7 +116,7 @@ return function(self, timing)
 			return
 		end
 
-		if child.Name ~= "REP_SOUND_5115545256" then
+		if child.Name ~= "REP_SOUND_5115545256" and child.Name ~= "REP_SOUND_4954198253" then
 			return
 		end
 

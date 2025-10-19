@@ -13,6 +13,10 @@ return function(self, timing)
 		return
 	end
 
+	timing.fhb = true
+	timing.dp = false
+	timing.pfht = 0.3
+
 	local windup = nil
 
 	-- Windup + 0-speed duration.
@@ -40,11 +44,8 @@ return function(self, timing)
 	elseif data.type == "Fist" then
 		windup = (0.160 / self.track.Speed) + 0.140
 	elseif data.type == "Sword" then
-		windup = (0.16 / self.track.Speed) + 0.100
+		windup = (0.16 / self.track.Speed) + 0.150
 	end
-
-	timing.phd = true
-	timing.phds = 1.0
 
 	if not windup then
 		return self:notify(timing, "(%s) No windup for this weapon type.", data.type)
@@ -54,7 +55,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = windup * 1000
 	action._type = "Parry"
-	action.hitbox = Vector3.new(data.length * 3, data.length * 3, data.length * 2)
+	action.hitbox = Vector3.new(data.length * 2, data.length * 2, data.length * 2)
 	action.name = string.format(
 		"(%.2f, %.2f, %.2f) (%.2f) Dynamic Weapon Swing",
 		data.oss,

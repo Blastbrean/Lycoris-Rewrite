@@ -9,7 +9,7 @@ local Mantra = getfenv().Mantra
 ---@param timing AnimationTiming
 return function(self, timing)
 	local data = Mantra.data(self.entity, "Mantra:GunShadow{{Shadow Gun}}")
-	local range = data.perfect * 3 + data.crystal * 2
+	local range = data.perfect * 5 + data.crystal * 2
 	local size = data.stratus * 3 + data.cloud * 2
 
 	local action = Action.new()

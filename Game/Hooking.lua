@@ -43,6 +43,9 @@ local oldHasEffect = nil
 -- Ban remotes table.
 local banRemotes = {}
 
+-- Last timestamp.
+local lastTimestamp = os.clock()
+
 -- Input types.
 local INPUT_LEFT_CLICK = 1
 local INPUT_RIGHT_CLICK = 2
@@ -58,6 +61,19 @@ local onInterceptedInput = LPH_NO_VIRTUALIZE(function(type)
 	local effectReplicatorModule = require(effectReplicator)
 	if not effectReplicatorModule then
 		return
+	end
+
+	if
+		Configuration.expectToggleValue("M1Rolling")
+		and type == INPUT_LEFT_CLICK
+		and not effectReplicatorModule:HasEffect("LightAttack")
+		and not effectReplicatorModule:HasEffect("CriticalAttack")
+		and not effectReplicatorModule:HasEffect("Followup")
+		and not effectReplicatorModule:HasEffect("Parried")
+		and os.clock() - lastTimestamp >= 0.5
+	then
+		lastTimestamp = os.clock()
+		InputClient.dodge(false, 0.02)
 	end
 
 	if not Configuration.expectToggleValue("AutoFlowState") then

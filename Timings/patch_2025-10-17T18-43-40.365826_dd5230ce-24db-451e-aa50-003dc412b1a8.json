@@ -1,0 +1,22 @@
+{
+  "patch_id": "dd5230ce-24db-451e-aa50-003dc412b1a8",
+  "timestamp": "2025-10-17T18:43:40.365826",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "sphereinner": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "ScarletCannon"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

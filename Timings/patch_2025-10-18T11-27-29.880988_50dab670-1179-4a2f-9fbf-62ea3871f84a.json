@@ -1,0 +1,22 @@
+{
+  "patch_id": "50dab670-1179-4a2f-9fbf-62ea3871f84a",
+  "timestamp": "2025-10-18T11:27:29.880988",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://16926301301": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "LightningImpact",
+            "to": "JetsrikerFakeStrike"
+          }
+        }
+      }
+    }
+  }
+}

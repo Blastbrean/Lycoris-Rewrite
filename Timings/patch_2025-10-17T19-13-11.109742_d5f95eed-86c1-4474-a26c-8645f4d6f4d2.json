@@ -1,0 +1,22 @@
+{
+  "patch_id": "d5f95eed-86c1-4474-a26c-8645f4d6f4d2",
+  "timestamp": "2025-10-17T19:13:11.109742",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://8310877920": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "Windgun"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -26,9 +26,11 @@ return function(self, timing)
 	timing.ieae = true
 	timing.iae = true
 	timing.rpue = true
+	timing.duih = true
+	timing.imdd = 0
 	timing.imxd = 100
 	timing._rsd = 750
-	timing._rpd = 300
-	timing.hitbox = Vector3.new(20, 20, 20)
+	timing._rpd = 400
+	timing.hitbox = Vector3.new(15, 15, 15)
 	self:srpue(self.entity, timing, info)
 end

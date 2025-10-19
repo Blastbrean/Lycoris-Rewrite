@@ -1,0 +1,22 @@
+{
+  "patch_id": "ed77bd05-f335-4868-bef3-4e4a25b2c4b5",
+  "timestamp": "2025-10-17T18:54:31.227596",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "Shard": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "ShardBow"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

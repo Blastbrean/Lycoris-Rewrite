@@ -25,8 +25,8 @@ local TaskSpawner = require("Utility/TaskSpawner")
 ---@module Features.Combat.Targeting
 local Targeting = require("Features/Combat/Targeting")
 
----@module Features.Combat.PositionHistory
-local PositionHistory = require("Features/Combat/PositionHistory")
+---@module Features.Combat.EntityHistory
+local EntityHistory = require("Features/Combat/EntityHistory")
 
 ---@module Features.Combat.Objects.HitboxOptions
 local HitboxOptions = require("Features/Combat/Objects/HitboxOptions")
@@ -205,7 +205,7 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info, cache)
 	options.hmid = info.hmid
 	options:ucache()
 
-	local success = true
+	local success = false
 
 	if timing.duih and target then
 		success = self:hc(options, info)
@@ -626,7 +626,7 @@ Defender.hc = LPH_NO_VIRTUALIZE(function(self, options, info)
 	end
 
 	-- Run prediction check.
-	local closest = PositionHistory.closest(players.LocalPlayer, tick() - (self.sdelay() * PREDICTION_LENIENCY_MULTI))
+	local closest = EntityHistory.pclosest(players.LocalPlayer, tick() - (self.sdelay() * PREDICTION_LENIENCY_MULTI))
 	if not closest then
 		return false
 	end

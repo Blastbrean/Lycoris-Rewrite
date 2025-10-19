@@ -7,6 +7,8 @@ local Action = getfenv().Action
 return function(self, timing)
 	local distance = self:distance(self.entity)
 
+	timing.pfh = true
+
 	local action = Action.new()
 	action._when = math.min(100 + distance * 16, 1300)
 	action._type = "Dodge"

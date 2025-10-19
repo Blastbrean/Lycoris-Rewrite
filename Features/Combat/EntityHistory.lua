@@ -1,5 +1,5 @@
--- PositionHistory module.
-local PositionHistory = {}
+-- EntityHistory module.
+local EntityHistory = {}
 
 -- Histories table.
 local histories = {}
@@ -10,8 +10,9 @@ local MAX_HISTORY_SECS = 3.0
 ---Add an entry to the history list.
 ---@param idx any
 ---@param position CFrame
+---@param velocity Vector3
 ---@param timestamp number
-function PositionHistory.add(idx, position, timestamp)
+function EntityHistory.add(idx, position, velocity, timestamp)
 	local history = histories[idx] or {}
 
 	if not histories[idx] then
@@ -21,6 +22,7 @@ function PositionHistory.add(idx, position, timestamp)
 	history[#history + 1] = {
 		position = position,
 		timestamp = timestamp,
+		velocity = velocity,
 	}
 
 	while true do
@@ -37,10 +39,33 @@ function PositionHistory.add(idx, position, timestamp)
 	end
 end
 
+---Get every velocity in the history, looking back a given time.
+---@param index any
+---@param time number
+---@return Vector3[]?
+function EntityHistory.vall(index, time)
+	local history = histories[index]
+	if not history then
+		return nil
+	end
+
+	local out = {}
+
+	for _, data in next, history do
+		if tick() - data.timestamp > time then
+			continue
+		end
+
+		out[#out + 1] = data.velocity
+	end
+
+	return out
+end
+
 ---Get the horizontal angular velocity (yaw rate) for a current index.
 ---@param index any
 ---@return number?
-function PositionHistory.yrate(index)
+function EntityHistory.yrate(index)
 	local history = histories[index]
 	if not history or #history < 2 then
 		return nil
@@ -66,7 +91,7 @@ end
 ---@param steps number
 ---@param phds number History second limit for past hitbox detection.
 ---@return CFrame[]?
-function PositionHistory.stepped(idx, steps, phds)
+function EntityHistory.pstepped(idx, steps, phds)
 	local history = histories[idx]
 	if not history or #history == 0 then
 		return nil
@@ -105,7 +130,7 @@ end
 ---@param idx any
 ---@param timestamp number
 ---@return CFrame?
-function PositionHistory.closest(idx, timestamp)
+function EntityHistory.pclosest(idx, timestamp)
 	if not histories[idx] then
 		return nil
 	end
@@ -127,5 +152,5 @@ function PositionHistory.closest(idx, timestamp)
 	return closestPosition
 end
 
--- Return PositionHistory module.
-return PositionHistory
+-- Return EntityHistory module.
+return EntityHistory

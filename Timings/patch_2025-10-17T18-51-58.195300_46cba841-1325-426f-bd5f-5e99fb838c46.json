@@ -1,0 +1,26 @@
+{
+  "patch_id": "46cba841-1325-426f-bd5f-5e99fb838c46",
+  "timestamp": "2025-10-17T18:51:58.195300",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "Shard": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 21,
+              "X": 21,
+              "Z": 21
+            },
+            "to": {
+              "Y": 31,
+              "X": 31,
+              "Z": 31
+            }
+          }
+        }
+      }
+    }
+  }
+}

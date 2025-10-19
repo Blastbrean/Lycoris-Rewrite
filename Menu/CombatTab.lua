@@ -323,6 +323,11 @@ function CombatTab.initCombatAssistance(groupbox)
 		Text = "M1 Hold",
 		Default = false,
 	})
+
+	groupbox:AddToggle("M1Rolling", {
+		Text = "M1 Rolling",
+		Default = false,
+	})
 end
 
 ---Initialize tab.

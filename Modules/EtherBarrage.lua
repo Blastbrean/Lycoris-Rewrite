@@ -36,7 +36,7 @@ return function(self, timing)
 
 	if self:distance(self.entity) <= 20 then
 		local action = Action.new()
-		action._when = 200
+		action._when = 600
 		action._type = "Start Block"
 		action.name = "Close Ether Barrage Start"
 		action.ihbc = true
@@ -88,7 +88,7 @@ return function(self, timing)
 				continue
 			end
 
-			if self:distance(orb) >= 20 then
+			if self:distance(orb) >= 30 then
 				continue
 			end
 

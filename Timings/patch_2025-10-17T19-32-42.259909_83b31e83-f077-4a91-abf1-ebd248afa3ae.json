@@ -1,0 +1,22 @@
+{
+  "patch_id": "83b31e83-f077-4a91-abf1-ebd248afa3ae",
+  "timestamp": "2025-10-17T19:32:42.259909",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://18866452701": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "BoltcrusherRunning"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

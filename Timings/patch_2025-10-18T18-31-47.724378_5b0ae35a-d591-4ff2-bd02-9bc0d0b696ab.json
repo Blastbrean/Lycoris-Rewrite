@@ -1,0 +1,13 @@
+{
+  "patch_id": "5b0ae35a-d591-4ff2-bd02-9bc0d0b696ab",
+  "timestamp": "2025-10-18T18:31:47.724378",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://6017711975": {
+        "status": "removed",
+        "name": "HeavenlyWindTech"
+      }
+    }
+  }
+}

@@ -32,6 +32,8 @@ return function(self, timing)
 
 	timing.iae = false
 	timing.fhb = true
+	timing.dp = false
+	timing.pfht = 0.5
 
 	local windup = nil
 	local ispeed = self.track.Speed
@@ -56,6 +58,10 @@ return function(self, timing)
 		until self.track.Speed ~= ispeed
 
 		windup = (0.300 / self.track.Speed)
+
+		if self.track.Speed == 0.0 then
+			windup = 0.100
+		end
 	elseif data.type == "Rifle" then
 		windup = (0.199 / self.track.Speed) + 0.100
 	elseif data.type == "Greatsword" then
@@ -82,7 +88,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = windup * 1000
 	action._type = "Parry"
-	action.hitbox = Vector3.new(data.length * 2, data.length * 4, data.length * 3.5)
+	action.hitbox = Vector3.new(data.length * 2.7, data.length * 3.5, data.length * 2)
 	action.name = string.format(
 		"(%.2f, %.2f, %.2f) (%.2f) Dynamic Weapon Swing",
 		data.oss,

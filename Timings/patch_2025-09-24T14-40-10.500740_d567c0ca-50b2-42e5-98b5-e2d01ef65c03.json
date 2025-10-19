@@ -133,9 +133,9 @@
               "_type": "Parry",
               "name": "1",
               "hitbox": {
-                "Y": 12,
-                "X": 12,
-                "Z": 18
+                "Y": 25,
+                "X": 25,
+                "Z": 25
               },
               "when": 400,
               "ihbc": false
@@ -159,7 +159,7 @@
           "name": "ScalesplitterCrit",
           "imxd": 43,
           "smn": false,
-          "fhb": true,
+          "fhb": false,
           "imdd": 0,
           "tag": "Undefined"
         }

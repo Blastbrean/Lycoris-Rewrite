@@ -344,7 +344,8 @@ InputClient.bstart = LPH_NO_VIRTUALIZE(function()
 end)
 
 ---Left click function.
-InputClient.left = LPH_NO_VIRTUALIZE(function()
+---@param ignoreChecks boolean
+InputClient.left = LPH_NO_VIRTUALIZE(function(ignoreChecks)
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
 		return
@@ -379,13 +380,15 @@ InputClient.left = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	if
-		effectReplicatorModule:HasEffect("LightAttack")
-		or effectReplicatorModule:HasEffect("CriticalAttack")
-		or effectReplicatorModule:HasEffect("Followup")
-		or effectReplicatorModule:HasEffect("Parried")
-	then
-		return
+	if not ignoreChecks then
+		if
+			effectReplicatorModule:HasEffect("LightAttack")
+			or effectReplicatorModule:HasEffect("CriticalAttack")
+			or effectReplicatorModule:HasEffect("Followup")
+			or effectReplicatorModule:HasEffect("Parried")
+		then
+			return
+		end
 	end
 
 	leftClickRemote:FireServer(inAir(humanoid, effectReplicatorModule), players.LocalPlayer:GetMouse().Hit, inputData)
@@ -401,7 +404,8 @@ end)
 
 ---Dodge function.
 ---@param skipRollCancel boolean
-InputClient.dodge = LPH_NO_VIRTUALIZE(function(skipRollCancel)
+---@param rollCancelDelay number?
+InputClient.dodge = LPH_NO_VIRTUALIZE(function(skipRollCancel, rollCancelDelay)
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
 		return Logger.warn("Cannot dodge without effect replicator.")
@@ -463,7 +467,11 @@ InputClient.dodge = LPH_NO_VIRTUALIZE(function(skipRollCancel)
 		usePivotVelocityRoll = true
 	end
 
-	local rollCancelDelay = Configuration.expectOptionValue("RollCancelDelay") or 0.0
+	local usedRollCancelDelay = Configuration.expectOptionValue("RollCancelDelay") or 0.0
+
+	if rollCancelDelay ~= nil then
+		usedRollCancelDelay = rollCancelDelay
+	end
 
 	if skipRollCancel or not Configuration.expectToggleValue("RollCancel") then
 		rollCancelDelay = nil
@@ -471,7 +479,7 @@ InputClient.dodge = LPH_NO_VIRTUALIZE(function(skipRollCancel)
 
 	---@note: Run this in a seperate task because the roll movement must still continue even when detached and destroyed. Else, it will behave wrong.
 	--- This is OK. Before any yields occur, we fetch the remotes beforehand. Also, the clean up is done at the very end of the function.
-	task.spawn(InputClient.roll, usePivotVelocityRoll and true or nil, rollCancelDelay)
+	task.spawn(InputClient.roll, usePivotVelocityRoll and true or nil, usedRollCancelDelay)
 end)
 
 ---Re-created feint function.

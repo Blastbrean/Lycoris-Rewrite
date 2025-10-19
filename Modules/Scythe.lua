@@ -11,6 +11,7 @@ return function(self, timing)
 	end
 
 	if hrp:WaitForChild("REP_SOUND_15776883341", 0.1) then
+		timing.pfh = true
 		local action = Action.new()
 		action._when = 400
 		action._type = "Parry"
@@ -18,6 +19,7 @@ return function(self, timing)
 		action.name = "Blood Scythe Timing"
 		return self:action(timing, action)
 	else
+		timing.pfh = false
 		local action = Action.new()
 		action._when = 300
 		action._type = "Parry"

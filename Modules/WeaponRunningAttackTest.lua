@@ -16,6 +16,8 @@ return function(self, timing)
 	timing.pfh = true
 	timing.duih = false
 	timing.fhb = true
+	timing.dp = false
+	timing.pfht = 0.3
 
 	local windup = nil
 
@@ -50,7 +52,7 @@ return function(self, timing)
 		windup = (0.160 / self.track.Speed) + 0.130
 	elseif data.type == "Twinblade" then
 		windup = (0.164 / self.track.Speed) + 0.140
-		windup += 0.200 / data.ss
+		windup += 0.150 / data.ss
 	elseif data.type == "Fist" then
 		windup = (0.153 / self.track.Speed) + 0.150
 	end
@@ -78,7 +80,7 @@ return function(self, timing)
 
 		-- Create second action.
 		local secondAction = Action.new()
-		secondAction._when = action._when + (400 / data.ss)
+		secondAction._when = action._when + (300 / data.ss)
 		secondAction._type = "Parry"
 		secondAction.hitbox = action.hitbox
 		secondAction.name = "(2)" .. " " .. action.name
