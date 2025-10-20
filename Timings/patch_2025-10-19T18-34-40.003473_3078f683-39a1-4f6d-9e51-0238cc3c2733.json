@@ -1,0 +1,13 @@
+{
+  "patch_id": "3078f683-39a1-4f6d-9e51-0238cc3c2733",
+  "timestamp": "2025-10-19T18:34:40.003473",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://9149348937": {
+        "status": "removed",
+        "name": "ShadowRisingWind"
+      }
+    }
+  }
+}

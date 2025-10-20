@@ -1,0 +1,42 @@
+{
+  "patch_id": "e341d845-0fca-4d7a-b106-3c140d8cd9c0",
+  "timestamp": "2025-10-19T18:26:04.765158",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "TRACKER": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 300,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "patch_id": "886c2f31-7ce8-4110-8dc4-f325ff03755f",
+  "timestamp": "2025-10-19T18:25:04.743951",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://7620630583": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 150,
+          "pfht": 0.15,
+          "smod": "ShadowRoar",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 100,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 40,
+                "X": 40,
+                "Z": 40
+              },
+              "when": 300,
+              "ihbc": false
+            }
+          ],
+          "pfh": false,
+          "ndfb": false,
+          "duih": true,
+          "after": 0,
+          "_id": "rbxassetid://7620630583",
+          "mat": 2000,
+          "rpue": true,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 34,
+            "X": 34,
+            "Z": 36
+          },
+          "punishable": 0,
+          "name": "ShadowRoar",
+          "imxd": 140,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Mantra"
+        }
+      },
+      "rbxassetid://7620633231": {
+        "status": "modified",
+        "changes": {
+          "rsd": {
+            "from": 0,
+            "to": 100
+          },
+          "rpue": {
+            "from": true,
+            "to": false
+          },
+          "actions": {
+            "from": [],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 34,
+                  "X": 34,
+                  "Z": 36
+                },
+                "when": 450,
+                "ihbc": false
+              }
+            ]
+          },
+          "umoa": {
+            "from": true,
+            "to": false
+          },
+          "imxd": {
+            "from": 140,
+            "to": 53
+          }
+        }
+      },
+      "rbxassetid://7627558238": {
+        "status": "modified",
+        "changes": {
+          "pfh": {
+            "from": true,
+            "to": false
+          }
+        }
+      },
+      "rbxassetid://9149348937": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 118,
+            "to": 0
+          }
+        }
+      },
+      "rbxassetid://5827423063": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.3,
+            "to": 0.15
+          }
+        }
+      }
+    },
+    "part": {
+      "TRACKER": {
+        "status": "modified",
+        "changes": {
+          "imdd": {
+            "from": 20,
+            "to": 0
+          }
+        }
+      }
+    }
+  }
+}

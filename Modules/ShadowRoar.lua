@@ -36,7 +36,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 500
 	action._type = "Parry"
-	action.hitbox = hitbox
+	action.hitbox = Vector3.new(20, 20, 40)
 	action.name = "Shadow Roar First Part"
 	self:action(timing, action)
 

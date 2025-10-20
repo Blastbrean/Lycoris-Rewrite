@@ -1,0 +1,68 @@
+{
+  "patch_id": "c7f7ffc5-3968-485e-a35c-d54018436de9",
+  "timestamp": "2025-10-19T18:18:09.164491",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://7620630583": {
+        "status": "removed",
+        "name": "ShadowRoar"
+      },
+      "rbxassetid://7620633231": {
+        "status": "modified",
+        "changes": {
+          "rsd": {
+            "from": 100,
+            "to": 0
+          },
+          "rpue": {
+            "from": false,
+            "to": true
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 34,
+                  "X": 34,
+                  "Z": 36
+                },
+                "when": 450,
+                "ihbc": false
+              }
+            ],
+            "to": []
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "imxd": {
+            "from": 53,
+            "to": 140
+          }
+        }
+      },
+      "rbxassetid://7627558238": {
+        "status": "modified",
+        "changes": {
+          "pfh": {
+            "from": false,
+            "to": true
+          }
+        }
+      },
+      "rbxassetid://5827423063": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.15,
+            "to": 0.3
+          }
+        }
+      }
+    }
+  }
+}
