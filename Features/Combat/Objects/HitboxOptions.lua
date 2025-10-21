@@ -97,7 +97,6 @@ HitboxOptions.extrapolate = LPH_NO_VIRTUALIZE(function(self)
 	end
 
 	-- Return the extrapolated position.
-	print(self.entity.Humanoid.MoveDirection)
 	return self.part.CFrame + (self.part.AssemblyLinearVelocity * self.ptime)
 end)
 
