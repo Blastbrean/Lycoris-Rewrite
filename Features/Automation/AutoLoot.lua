@@ -19,6 +19,9 @@ local AutoLootOptions = require("Features/Automation/Objects/AutoLootOptions")
 -- AutoLoot module.
 local AutoLoot = { ignore = false }
 
+-- Timestamp.
+local lastTimestamp = os.clock()
+
 -- Maid.
 local autoLootMaid = Maid.new()
 
@@ -126,6 +129,12 @@ end
 
 ---Update the AutoLoot module.
 function AutoLoot.update()
+	if os.clock() - lastTimestamp <= 0.15 then
+		return
+	end
+
+	lastTimestamp = os.clock()
+
 	if not AutoLoot.ignore and not Configuration.expectToggleValue("AutoLoot") then
 		return resetAutoLoot()
 	end
