@@ -1,34 +1,44 @@
----@module Utility.Logger
-local Logger = getfenv().Logger
+---@module Modules.Globals.ProjectileListener
+local ProjectileListener = getfenv().ProjectileListener
 
----@module Features.Combat.Objects.RepeatInfo
-local RepeatInfo = getfenv().RepeatInfo
+---@class Action
+local Action = getfenv().Action
+
+---@module Game.Timings.PartTiming
+local PartTiming = getfenv().PartTiming
+
+---@module Features.Combat.Defense
+local Defense = getfenv().Defense
+
+-- Listener object.
+local plistener = ProjectileListener.new("ScarletCannon")
 
 ---Module function.
----@param self PartDefender
----@param timing PartTiming
+---@param self AnimatorDefender
+---@param timing AnimationTiming
 return function(self, timing)
-	local entity = self.part.Parent.Parent
-	if not entity then
-		return
-	end
-
-	self:hook("rc", function(_, info)
-		if os.clock() - info.start >= 2.0 then
-			return Logger.warn("(%.2f) Stopping RPUE '%s' because we've went past the duration.", 2.0, timing.name)
+	plistener:connect(function(child)
+		if child.Name ~= "sphereinner" then
+			return
 		end
 
-		return true
+		local action = Action.new()
+		action._when = 0
+		action._type = "Parry"
+		action.name = "Scarlet Cannon Part"
+		action.ihbc = true
+
+		local pt = PartTiming.new()
+		pt.uhc = true
+		pt.duih = true
+		pt.fhb = false
+		pt.name = "ScarletCannonProjectile"
+		pt.hitbox = Vector3.new(20, 20, 80)
+		pt.imdd = 0
+		pt.imxd = 100
+		pt.actions:push(action)
+		pt.cbm = true
+
+		Defense.cdpo(child, pt)
 	end)
-
-	timing.rsd = function()
-		return 0.0
-	end
-
-	timing.rpd = function()
-		return 0.2
-	end
-
-	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
-	self:srpue(entity, timing, info)
 end

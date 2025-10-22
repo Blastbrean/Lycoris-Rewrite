@@ -1,0 +1,30 @@
+{
+  "patch_id": "61867cd1-c97c-4bc9-bbad-d593afd2f60e",
+  "timestamp": "2025-10-21T20:31:09.557177",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "sphereinner": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 12,
+              "X": 12,
+              "Z": 21
+            },
+            "to": {
+              "Y": 15,
+              "X": 15,
+              "Z": 81
+            }
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}
