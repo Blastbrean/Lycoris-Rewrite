@@ -324,9 +324,10 @@ function CombatTab.initCombatAssistance(groupbox)
 		Default = false,
 	})
 
-	groupbox:AddToggle("M1Rolling", {
-		Text = "M1 Rolling",
+	groupbox:AddToggle("AutoRagdollRecover", {
+		Text = "Auto Ragdoll Recover",
 		Default = false,
+		Tooltip = "Automatically recover from ragdoll state.",
 	})
 end
 

@@ -13,6 +13,9 @@ local Configuration = require("Utility/Configuration")
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
+---@module Game.InputClient
+local InputClient = require("Game/InputClient")
+
 -- Maids.
 local effectMaid = Maid.new()
 
@@ -161,6 +164,12 @@ end
 local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 	if Configuration.expectToggleValue("EffectLogging") then
 		print(string.format("%s", tostring(effect)))
+	end
+
+	if effect.Class == "Knocked" or effect.Class == "Ragdoll" then
+		if Configuration.expectToggleValue("AutoRagdollRecover") then
+			InputClient.feint()
+		end
 	end
 
 	if effect.Class == "LightAttack" then

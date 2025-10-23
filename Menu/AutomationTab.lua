@@ -199,8 +199,8 @@ end
 ---Initialize Debugging section.
 ---@param groupbox table
 function AutomationTab.initDebuggingSection(groupbox)
-	groupbox:AddButton("Start Echo Farm", EchoFarm.invoke)
-	groupbox:AddButton("Stop Echo Farm", EchoFarm.stop)
+	-- groupbox:AddButton("Start Echo Farm", EchoFarm.invoke)
+	-- groupbox:AddButton("Stop Echo Farm", EchoFarm.stop)
 end
 
 ---Initialize tab.
@@ -214,7 +214,7 @@ function AutomationTab.init(window)
 	AutomationTab.initAttributeSection(tab:AddDynamicGroupbox("Attribute Farm"))
 	AutomationTab.initEffectAutomation(tab:AddDynamicGroupbox("Effect Automation"))
 	AutomationTab.initAutoLootSection(tab:AddLeftGroupbox("Auto Loot"))
-	AutomationTab.initDebuggingSection(tab:AddRightGroupbox("Debugging"))
+	-- AutomationTab.initDebuggingSection(tab:AddRightGroupbox("Debugging"))
 end
 
 -- Return AutomationTab module.

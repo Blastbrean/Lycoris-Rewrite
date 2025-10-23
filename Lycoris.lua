@@ -1,5 +1,5 @@
 -- Detach and initialize a Lycoris instance.
-local Lycoris = { queued = false, silent = false, dpscanning = false }
+local Lycoris = { queued = false, silent = false, dpscanning = false, norpc = false }
 
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
@@ -87,6 +87,10 @@ function Lycoris.init()
 
 	if isfile and isfile("dpscanning.txt") then
 		Lycoris.dpscanning = true
+	end
+
+	if isfile and isfile("norpc.txt") then
+		Lycoris.norpc = true
 	end
 
 	--[[
@@ -185,6 +189,10 @@ function Lycoris.init()
 	local bloxstrapRPCModule = bloxstrapRPC and require(bloxstrapRPC)
 
 	if not bloxstrapRPCModule then
+		return
+	end
+
+	if Lycoris.norpc then
 		return
 	end
 

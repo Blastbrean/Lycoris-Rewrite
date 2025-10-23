@@ -60,6 +60,29 @@ function LycorisTab.initCheatSettingsSection(groupbox)
 		end
 	end)
 
+	groupbox:AddButton("Toggle Bloxstrap RPC", function()
+		if not isfile or not delfile or not writefile then
+			return
+		end
+
+		shared.Lycoris.norpc = not shared.Lycoris.norpc
+
+		if not shared.Lycoris.norpc then
+			Logger.notify("Bloxstrap RPC was enabled.")
+		else
+			Logger.notify("Bloxstrap RPC was disabled.")
+		end
+
+		if isfile("norpc.txt") then
+			delfile("norpc.txt")
+		else
+			writefile(
+				"norpc.txt",
+				"Hello, if you're reading this, that means you have Lycoris-Rewrite (Deepwoken) Bloxstrap RPC turned off. Deleting this file will turn it on."
+			)
+		end
+	end)
+
 	groupbox:AddButton("Unload Cheat", function()
 		shared.Lycoris.detach()
 	end)

@@ -484,19 +484,29 @@ end)
 
 ---Re-created feint function.
 InputClient.feint = LPH_NO_VIRTUALIZE(function()
-	local rightClickRemote = KeyHandling.getRemote("RightClick")
-	if not rightClickRemote then
-		return Logger.warn("Cannot feint without right click remote.")
+	local character = players.LocalPlayer.Character
+	if not character then
+		return Logger.warn("Cannot feint without character.")
 	end
 
-	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
-	if not effectReplicator then
-		return Logger.warn("Cannot feint without effect replicator.")
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then
+		return Logger.warn("Cannot feint without humanoid root part.")
 	end
 
-	local effectReplicatorModule = require(effectReplicator)
-	if not effectReplicatorModule then
-		return Logger.warn("Cannot feint without effect replicator module.")
+	local characterHandler = character:FindFirstChild("CharacterHandler")
+	if not characterHandler then
+		return Logger.warn("Cannot feint without character handler.")
+	end
+
+	local requests = characterHandler:FindFirstChild("Requests")
+	if not requests then
+		return Logger.warn("Cannot feint without requests.")
+	end
+
+	local feintReleaseRemote = requests:FindFirstChild("FeintRelease")
+	if not feintReleaseRemote then
+		return Logger.warn("Cannot feint without feint release remote.")
 	end
 
 	local inputDataTable = InputClient.getInputData()
@@ -504,31 +514,37 @@ InputClient.feint = LPH_NO_VIRTUALIZE(function()
 		return Logger.warn("Cannot feint without input data.")
 	end
 
-	local character = players.LocalPlayer.Character
-	if not character then
-		return Logger.warn("Cannot feint without character.")
+	local feintClickRemote = KeyHandling.getRemote("FeintClick")
+	if not feintClickRemote then
+		return Logger.warn("Cannot feint without feint click remote.")
 	end
 
-	local hrp = character:FindFirstChild("HumanoidRootPart")
-	if not hrp then
-		return Logger.warn("Cannot feint without root.")
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return Logger.warn("Cannot dodge without effect replicator.")
 	end
 
-	inputDataTable.Right = true
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return Logger.warn("Cannot dodge without effect replicator module.")
+	end
 
+	-- ClientFeint inlined
 	if effectReplicatorModule:HasEffect("ClientDodge") then
 		effectReplicatorModule:CreateEffect("ClientFeint"):Debris(0.4)
 	end
 
-	if hrp:FindFirstChild("ClientRemove") then
-		hrp.ClientRemove:Destroy()
+	if humanoidRootPart:FindFirstChild("ClientRemove") then
+		humanoidRootPart.ClientRemove:Destroy()
 	end
 
-	if effectReplicatorModule:HasEffect("Feint") then
-		return
-	end
+	inputDataTable["Right"] = true
 
-	rightClickRemote:FireServer(inputDataTable)
+	feintClickRemote:FireServer(inputDataTable)
+
+	feintReleaseRemote:FireServer(inputDataTable)
+
+	inputDataTable["Right"] = false
 end)
 
 ---Re-created roll function for safety.
