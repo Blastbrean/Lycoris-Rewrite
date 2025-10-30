@@ -99,7 +99,7 @@ return function(self, timing)
 	action._type = "Parry"
 	action.hitbox = Vector3.new(data.length * 2.7, data.length * 3, data.length * 1.8)
 
-	if data.type == "Pistol" or data.type == "Rapier" or data.type == "Spear" then
+	if data.type == "Pistol" or data.type == "Rapier" or data.type == "Spear" or data.type == "Bow" then
 		action.hitbox = Vector3.new(data.length * 1.7, data.length * 3, data.length * 1.8)
 	end
 
