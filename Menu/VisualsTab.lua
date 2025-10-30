@@ -384,6 +384,11 @@ function VisualsTab.addPlayerESP(identifier, depbox)
 		Default = false,
 	})
 
+	depbox:AddToggle(Configuration.identify(identifier, "ShowArmor"), {
+		Text = "Show Armor Tag",
+		Default = false,
+	})
+
 	depbox:AddToggle(Configuration.identify(identifier, "ShowViewAngle"), {
 		Text = "Show View Angle",
 		Default = false,

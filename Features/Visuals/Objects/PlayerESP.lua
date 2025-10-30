@@ -30,6 +30,7 @@ local ESP_VIEW_ANGLE = "[%.2f view angle vs. %.2f]"
 local ESP_HEALTH_PERCENTAGE = "[%i%% health]"
 local ESP_HEALTH_BARS = "[%.1f bars]"
 local ESP_DANGER_TIME = "[%s on timer]"
+local ESP_ARMOR = "[%i%% armor]"
 
 ---Update PlayerESP.
 ---@param self PlayerESP
@@ -82,6 +83,17 @@ PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
 		local breakMeterValue = model:FindFirstChild("BreakMeter")
 		local percentage = breakMeterValue and (breakMeterValue.Value / breakMeterValue.MaxValue * 100)
 		tags[#tags + 1] = breakMeterValue and ESP_POSTURE:format(percentage) or "[Unknown Posture]"
+	end
+
+	if Configuration.idToggleValue(identifier, "ShowArmor") then
+		local armorValue = model:FindFirstChild("Armor")
+
+		if armorValue.Value <= 0 or armorValue.MaxValue <= 0 then
+			tags[#tags + 1] = "[No Armor]"
+		else
+			local percentage = armorValue and (armorValue.Value / armorValue.MaxValue * 100)
+			tags[#tags + 1] = armorValue and ESP_ARMOR:format(percentage) or "[Unknown Armor]"
+		end
 	end
 
 	if Configuration.idToggleValue(identifier, "ShowHealthPercentage") then
