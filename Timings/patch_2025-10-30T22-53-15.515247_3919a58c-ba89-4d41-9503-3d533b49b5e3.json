@@ -1,0 +1,55 @@
+{
+  "patch_id": "3919a58c-ba89-4d41-9503-3d533b49b5e3",
+  "timestamp": "2025-10-30T22:53:15.515247",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://9149348937": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": true,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "RisingShadow",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://9149348937",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "RisingShadow",
+          "imxd": 75,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Mantra"
+        }
+      }
+    },
+    "part": {
+      "TRACKER": {
+        "status": "removed",
+        "name": "RisingShadow"
+      }
+    }
+  }
+}

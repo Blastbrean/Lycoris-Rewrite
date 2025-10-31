@@ -1,0 +1,42 @@
+{
+  "patch_id": "294fc374-6749-4bdb-9e6f-d98358e99340",
+  "timestamp": "2025-10-30T22:25:19.572336",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "WindSlashProjectileBig": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Contact",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 50,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Contact",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 150,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
