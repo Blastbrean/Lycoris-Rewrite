@@ -43,34 +43,44 @@ end)
 
 ---Check if we're in a valid state to proceed with the action.
 ---@param self EffectDefender
----@param timing PartTiming
----@param action Action
+---@param options ValidationOptions
 ---@return boolean
-EffectDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
-	if not Defender.valid(self, timing, action) then
+EffectDefender.valid = LPH_NO_VIRTUALIZE(function(self, options)
+	if not Defender.valid(self, options) then
 		return false
 	end
 
+	local function internalNotifyFunction(timing, message)
+		if not options.notify then
+			return
+		end
+
+		return self:notify(timing, message)
+	end
+
+	local timing = options.timing
+	local action = options.action
+
 	local humanoidRootPart = self.owner:FindFirstChild("HumanoidRootPart")
 	if not humanoidRootPart then
-		return self:notify(timing, "No humanoid root part found.")
+		return internalNotifyFunction(timing, "No humanoid root part found.")
 	end
 
 	local character = players.LocalPlayer.Character
 	if not character then
-		return self:notify(timing, "No character found.")
+		return internalNotifyFunction(timing, "No character found.")
 	end
 
 	if not self:target(self.owner) then
-		return self:notify(timing, "Not a viable target.")
+		return internalNotifyFunction(timing, "Not a viable target.")
 	end
 
-	local options = HitboxOptions.new(humanoidRootPart, timing)
-	options.spredict = false
-	options.action = action
-	options:ucache()
+	local hoptions = HitboxOptions.new(humanoidRootPart, timing)
+	hoptions.spredict = false
+	hoptions.action = action
+	hoptions:ucache()
 
-	if not self:hc(options, timing.duih and RepeatInfo.new(timing) or nil) then
+	if not self:hc(hoptions, timing.duih and RepeatInfo.new(timing) or nil) then
 		return self:notify(timing, "Not in hitbox.")
 	end
 

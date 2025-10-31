@@ -25,6 +25,9 @@ local TaskSpawner = require("Utility/TaskSpawner")
 ---@module Features.Combat.Targeting
 local Targeting = require("Features/Combat/Targeting")
 
+---@module Features.Combat.Objects.ValidationOptions
+local ValidationOptions = require("Features/Combat/Objects/ValidationOptions")
+
 ---@module Features.Combat.EntityHistory
 local EntityHistory = require("Features/Combat/EntityHistory")
 
@@ -279,21 +282,29 @@ end)
 
 ---Check if we're in a valid state to proceed with action handling. Extend me.
 ---@param self Defender
----@param timing Timing
----@param action Action
+---@param options ValidationOptions
 ---@return boolean
-Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
+Defender.valid = LPH_NO_VIRTUALIZE(function(self, options)
 	local integer = Random.new():NextNumber(1.0, 100.0)
 	local rate = Configuration.expectOptionValue("FailureRate") or 0.0
+	local timing = options.timing
+
+	local function internalNotifyFunction(...)
+		if not options.notify then
+			return
+		end
+
+		return self:notify(...)
+	end
 
 	if Configuration.expectToggleValue("AllowFailure") and integer <= rate then
-		return self:notify(timing, "(%i <= %i) Intentionally did not run.", integer, rate)
+		return internalNotifyFunction(timing, "(%i <= %i) Intentionally did not run.", integer, rate)
 	end
 
 	local selectedFilters = Configuration.expectOptionValue("AutoDefenseFilters") or {}
 
 	if self:cblocking() then
-		return self:notify(timing, "User is pressing down on a key binded to Block.")
+		return internalNotifyFunction(timing, "User is pressing down on a key binded to Block.")
 	end
 
 	local chatInputBarConfiguration = textChatService:FindFirstChildOfClass("ChatInputBarConfiguration")
@@ -302,49 +313,49 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		selectedFilters["Disable When Textbox Focused"]
 		and (userInputService:GetFocusedTextBox() or chatInputBarConfiguration.IsFocused)
 	then
-		return self:notify(timing, "User is typing in a text box.")
+		return internalNotifyFunction(timing, "User is typing in a text box.")
 	end
 
 	if selectedFilters["Disable While Using Sightless Beam"] and EffectListener.csb() then
-		return self:notify(timing, "User is using the 'Sightless Beam' move.")
+		return internalNotifyFunction(timing, "User is using the 'Sightless Beam' move.")
 	end
 
 	if selectedFilters["Disable When Window Not Active"] and not iswindowactive() then
-		return self:notify(timing, "Window is not active.")
+		return internalNotifyFunction(timing, "Window is not active.")
 	end
 
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
-		return self:notify(timing, "No effect replicator found.")
+		return internalNotifyFunction(timing, "No effect replicator found.")
 	end
 
 	local effectReplicatorModule = require(effectReplicator)
 	if not effectReplicatorModule then
-		return self:notify(timing, "No effect replicator module found.")
+		return internalNotifyFunction(timing, "No effect replicator module found.")
 	end
 
-	if EffectListener.astun() then
-		return self:notify(timing, "User is action (e.g swinging / critical / mantra) stun.")
+	if not options.sstun and EffectListener.astun() then
+		return internalNotifyFunction(timing, "User is in action (e.g swinging / critical / mantra) stun.")
 	end
 
 	if effectReplicatorModule:FindEffect("Knocked") then
-		return self:notify(timing, "User is knocked.")
+		return internalNotifyFunction(timing, "User is knocked.")
 	end
 
 	if timing.tag == "M1" and selectedFilters["Filter Out M1s"] then
-		return self:notify(timing, "Attacker is using a 'M1' attack.")
+		return internalNotifyFunction(timing, "Attacker is using a 'M1' attack.")
 	end
 
 	if timing.tag == "Mantra" and selectedFilters["Filter Out Mantras"] then
-		return self:notify(timing, "Attacker is using a 'Mantra' attack.")
+		return internalNotifyFunction(timing, "Attacker is using a 'Mantra' attack.")
 	end
 
 	if timing.tag == "Critical" and selectedFilters["Filter Out Criticals"] then
-		return self:notify(timing, "Attacker is using a 'Critical' attack.")
+		return internalNotifyFunction(timing, "Attacker is using a 'Critical' attack.")
 	end
 
 	if timing.tag == "Undefined" and selectedFilters["Filter Out Undefined"] then
-		return self:notify(timing, "Attacker is using an 'Undefined' attack.")
+		return internalNotifyFunction(timing, "Attacker is using an 'Undefined' attack.")
 	end
 
 	return true
@@ -678,7 +689,7 @@ end)
 ---@param notify boolean
 Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
 	if PP_SCRAMBLE_STR(action._type) ~= "End Block" then
-		if not self:valid(timing, action) then
+		if not self:valid(ValidationOptions.new(action, timing)) then
 			return
 		end
 	end
@@ -920,6 +931,30 @@ Defender.module = LPH_NO_VIRTUALIZE(function(self, timing, ...)
 	self.tmaid:mark(TaskSpawner.spawn(identifier, lf, self, timing, ...))
 end)
 
+---Handle auto feint.
+---@param self Defender
+---@param timing Timing
+---@param action Action
+Defender.afeint = LPH_NO_VIRTUALIZE(function(self, timing, action)
+	if not EffectListener.cfeint() then
+		return self:notify(timing, "Auto feint blocked because we are unable to feint.")
+	end
+
+	action.hitbox = action.hitbox * Vector3.new(1.2, 1.2, 1.2)
+
+	local options = ValidationOptions.new(action, timing)
+	options.sstun = true
+	options.notify = false
+
+	if not self:valid(options) then
+		return self:notify(timing, "Auto feint failed because action is not valid.")
+	end
+
+	self:notify(timing, "Auto feint executed.")
+
+	InputClient.feint()
+end)
+
 ---Add a action to the defender object.
 ---@param self Defender
 ---@param timing Timing
@@ -938,6 +973,22 @@ Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
 
 	-- Get initial receive delay.
 	local rdelay = self.rdelay()
+
+	-- Handle auto feint. We want to feint before the parry action gets sent out.
+	-- We don't want to do this for any action that has:
+	-- 1. Delay until in hitbox because we don't know the actual timing
+	-- 2. A zero when time because it is instant
+	-- 3. Is not an animation defender because it won't make sense to feint non-animation actions.
+	if
+		Configuration.expectToggleValue("AutoFeint")
+		and not timing.duih
+		and action._when > 0
+		and self.__type == "Animation"
+	then
+		self:mark(Task.new(string.format("AutoFeint_%s", action.name), function()
+			return action:when() - rdelay - (self.sdelay() * 2)
+		end, timing.punishable, timing.after, self.afeint, self, timing, action))
+	end
 
 	-- Add action.
 	self:mark(Task.new(PP_SCRAMBLE_STR(action._type), function()

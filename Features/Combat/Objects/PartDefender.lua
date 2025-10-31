@@ -34,27 +34,37 @@ end)
 
 ---Check if we're in a valid state to proceed with the action.
 ---@param self PartDefender
----@param timing PartTiming
----@param action Action
+---@param options ValidationOptions
 ---@return boolean
-PartDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
-	if not Defender.valid(self, timing, action) then
+PartDefender.valid = LPH_NO_VIRTUALIZE(function(self, options)
+	if not Defender.valid(self, options) then
 		return false
 	end
 
-	local character = players.LocalPlayer.Character
-	if not character then
-		return self:notify(timing, "No character found.")
+	local function internalNotifyFunction(timing, message)
+		if not options.notify then
+			return
+		end
+
+		return self:notify(timing, message)
 	end
 
-	local options = HitboxOptions.new(self.part, timing)
-	options.spredict = false
-	options.action = action
-	options:ucache()
+	local timing = options.timing
+	local action = options.action
+
+	local character = players.LocalPlayer.Character
+	if not character then
+		return internalNotifyFunction(timing, "No character found.")
+	end
+
+	local hoptions = HitboxOptions.new(self.part, timing)
+	hoptions.spredict = false
+	hoptions.action = action
+	hoptions:ucache()
 
 	if not timing.duih or timing.umoa then
-		if not self:hc(options, timing.duih and RepeatInfo.new(timing, self.rdelay(), self.vuid) or nil) then
-			return self:notify(timing, "Not in hitbox.")
+		if not self:hc(hoptions, timing.duih and RepeatInfo.new(timing, self.rdelay(), self.vuid) or nil) then
+			return internalNotifyFunction(timing, "Not in hitbox.")
 		end
 	end
 

@@ -67,8 +67,17 @@ local PREDICT_FACING_DELTA = 0.3
 ---@param self AnimatorDefender
 ---@param track AnimationTrack
 ---@param timing AnimationTiming
+---@param notify boolean? Whether to notify or not.
 ---@return boolean
-AnimatorDefender.stopped = LPH_NO_VIRTUALIZE(function(self, track, timing)
+AnimatorDefender.stopped = LPH_NO_VIRTUALIZE(function(self, track, timing, notify)
+	local function internalNotifyFunction(...)
+		if not notify then
+			return
+		end
+
+		return self:notify(...)
+	end
+
 	if
 		Configuration.expectToggleValue("AllowFailure")
 		and not timing.umoa
@@ -76,15 +85,15 @@ AnimatorDefender.stopped = LPH_NO_VIRTUALIZE(function(self, track, timing)
 		and Random.new():NextNumber(1.0, 100.0) <= (Configuration.expectOptionValue("IgnoreAnimationEndRate") or 0.0)
 		and EffectListener.cdodge()
 	then
-		return false, self:notify(timing, "Intentionally ignoring animation end to simulate human error.")
+		return false, internalNotifyFunction(timing, "Intentionally ignoring animation end to simulate human error.")
 	end
 
 	if not timing.iae and not track.IsPlaying then
-		return true, self:notify(timing, "Animation stopped playing.")
+		return true, internalNotifyFunction(timing, "Animation stopped playing.")
 	end
 
 	if timing.iae and not timing.ieae and not track.IsPlaying and track.TimePosition < track.Length then
-		return true, self:notify(timing, "Animation stopped playing early.")
+		return true, internalNotifyFunction(timing, "Animation stopped playing early.")
 	end
 end)
 
@@ -193,35 +202,45 @@ end)
 
 ---Check if we're in a valid state to proceed with the action.
 ---@param self AnimatorDefender
----@param timing AnimationTiming
----@param action Action
+---@param options ValidationOptions
 ---@return boolean
-AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
-	if not Defender.valid(self, timing, action) then
+AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, options)
+	if not Defender.valid(self, options) then
 		return false
 	end
 
+	local timing = options.timing
+	local action = options.action
+
+	local function internalNotifyFunction(...)
+		if not options.notify then
+			return
+		end
+
+		return self:notify(...)
+	end
+
 	if not self.track then
-		return self:notify(timing, "No current track.")
+		return internalNotifyFunction(timing, "No current track.")
 	end
 
 	if not self.entity then
-		return self:notify(timing, "No entity found.")
+		return internalNotifyFunction(timing, "No entity found.")
 	end
 
 	local target = self:target(self.entity)
 	if not target then
-		return self:notify(timing, "Not a viable target.")
+		return internalNotifyFunction(timing, "Not a viable target.")
 	end
 
 	local root = self.entity:FindFirstChild("HumanoidRootPart")
 	if not root then
-		return self:notify(timing, "No humanoid root part found.")
+		return internalNotifyFunction(timing, "No humanoid root part found.")
 	end
 
 	local character = players.LocalPlayer.Character
 	if not character then
-		return self:notify(timing, "No character found.")
+		return internalNotifyFunction(timing, "No character found.")
 	end
 
 	local targetInstance = self.entity:FindFirstChild("Target")
@@ -231,17 +250,17 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		and targetInstance.Value ~= character
 		and Configuration.expectToggleValue("CheckTargetingValue")
 	then
-		return self:notify(timing, "Not being targeted.")
+		return internalNotifyFunction(timing, "Not being targeted.")
 	end
 
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
-		return self:notify(timing, "No effect replicator found.")
+		return internalNotifyFunction(timing, "No effect replicator found.")
 	end
 
 	local effectReplicatorModule = require(effectReplicator)
 	if not effectReplicatorModule then
-		return self:notify(timing, "No effect replicator module found.")
+		return internalNotifyFunction(timing, "No effect replicator module found.")
 	end
 
 	if
@@ -249,29 +268,29 @@ AnimatorDefender.valid = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		and root:FindFirstChild("MegalodauntBroken")
 		and not players:GetPlayerFromCharacter(self.entity)
 	then
-		return self:notify(timing, "Entity is block broken.")
+		return internalNotifyFunction(timing, "Entity is block broken.")
 	end
 
-	if self:stopped(self.track, timing) then
+	if self:stopped(self.track, timing, options.notify) then
 		return false
 	end
 
-	local options = HitboxOptions.new(root, timing)
-	options.spredict = not timing.duih and not timing.dp
-	options.ptime = self:fsecs(timing)
-	options.action = action
-	options.entity = self.entity
-	options:ucache()
+	local hoptions = HitboxOptions.new(root, timing)
+	hoptions.spredict = not timing.duih and not timing.dp
+	hoptions.ptime = self:fsecs(timing)
+	hoptions.action = action
+	hoptions.entity = self.entity
+	hoptions:ucache()
 
 	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 	info.track = self.track
 
-	local hc = self:hc(options, timing.duih and info or nil)
+	local hc = self:hc(hoptions, timing.duih and info or nil)
 	if hc then
 		return true
 	end
 
-	local pc = self:fpc(timing, options)
+	local pc = self:fpc(timing, hoptions)
 	if pc then
 		return true
 	end

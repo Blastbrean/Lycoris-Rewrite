@@ -254,7 +254,13 @@ function CombatTab.initFeintDetectionSection(groupbox) end
 
 -- Initialize attack assistance section.
 ---@param groupbox table
-function CombatTab.initAttackAssistanceSection(groupbox) end
+function CombatTab.initAttackAssistanceSection(groupbox)
+	groupbox:AddToggle("AutoFeint", {
+		Text = "Auto Feint",
+		Default = false,
+		Tooltip = "Attempt to automatically feint your attacks before the parry timing to prevent swing-throughs.",
+	})
+end
 
 ---Initialize combat assistance section.
 ---@param groupbox table
@@ -346,7 +352,6 @@ function CombatTab.init(window)
 	CombatTab.initCombatWhitelistSection(tabbox:AddTab("Whitelisting"))
 
 	-- Initialize other sections.
-	CombatTab.initFeintDetectionSection(tab:AddDynamicGroupbox("Feint Detection"))
 	CombatTab.initAttackAssistanceSection(tab:AddDynamicGroupbox("Attack Assistance"))
 	CombatTab.initCombatAssistance(tab:AddDynamicGroupbox("Combat Assistance"))
 end

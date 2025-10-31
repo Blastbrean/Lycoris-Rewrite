@@ -140,6 +140,20 @@ function EffectListener.cparry()
 	return true
 end
 
+---Can we feint?
+---@return boolean
+function EffectListener.cfeint()
+	local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
+	local effectReplicatorModule = require(effectReplicator)
+	local feintCooldownEffect = effectReplicatorModule:FindEffect("FeintCool")
+
+	if feintCooldownEffect then
+		return false
+	end
+
+	return true
+end
+
 ---Can we dodge?
 ---@return boolean
 function EffectListener.cdodge()

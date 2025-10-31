@@ -25,9 +25,6 @@ local InputClient = require("Game/InputClient")
 ---@module Features.Combat.EntityHistory
 local EntityHistory = require("Features/Combat/EntityHistory")
 
----@module Features.Combat.Objects.Defender
-local Defender = require("Features/Combat/Objects/Defender")
-
 ---@module Utility.TaskSpawner
 local TaskSpawner = require("Utility/TaskSpawner")
 
