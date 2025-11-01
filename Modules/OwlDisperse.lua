@@ -32,7 +32,7 @@ return function(self, timing)
 	timing.imxd = 300
 	timing._rsd = (duration / 2.5) * 1000
 	timing._rpd = 250
-	timing.hitbox = Vector3.new(100, 100, 100)
+	timing.hitbox = Vector3.new(120, 120, 120)
 
 	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
 	self:srpue(owner, timing, info)

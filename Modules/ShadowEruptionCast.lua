@@ -1,10 +1,16 @@
 ---@class Action
 local Action = getfenv().Action
 
+---@module Modules.Globals.Mantra
+local Mantra = getfenv().Mantra
+
 ---Module function.
 ---@param self AnimatorDefender
 ---@param timing AnimationTiming
 return function(self, timing)
+	local data = Mantra.data(self.entity, "Mantra:EruptionShadow{{Shadow Eruption}}")
+	local size = data.stratus * 5.5 + data.cloud * 4.5
+
 	local thrown = workspace:FindFirstChild("Thrown")
 	if not thrown then
 		return
@@ -30,8 +36,8 @@ return function(self, timing)
 		action.name = "Shadow Chains Timing"
 		timing.fhb = true
 	else
-		action._when = 50
-		action.hitbox = Vector3.new(30, 30, 30)
+		action._when = 0
+		action.hitbox = Vector3.new(35 + size, 35 + size, 35 + size)
 		action.name = "Shadow Eruption Timing"
 		timing.fhb = false
 	end

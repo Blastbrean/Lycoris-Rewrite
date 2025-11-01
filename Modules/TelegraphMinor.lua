@@ -46,7 +46,7 @@ return function(self, timing)
 		local action = Action.new()
 		action._when = 0
 		action._type = "Dodge"
-		action.hitbox = self.owner.Name:match("king") and Vector3.new(75, 75, 75) or Vector3.new(30, 30, 30)
+		action.hitbox = self.owner.Name:match("king") and Vector3.new(100, 100, 100) or Vector3.new(30, 30, 30)
 		action.name = "Gigamed Shock Timing"
 		return self:action(timing, action)
 	end

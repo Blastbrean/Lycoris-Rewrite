@@ -1,0 +1,26 @@
+{
+  "patch_id": "cd5712bf-13b1-4447-9d3d-6bade5da8eeb",
+  "timestamp": "2025-10-30T19:42:57.628236",
+  "author": "Juanito",
+  "diff": {
+    "effect": {
+      "OwlDisperse": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 100,
+              "X": 100,
+              "Z": 100
+            },
+            "to": {
+              "Y": 120,
+              "X": 120,
+              "Z": 120
+            }
+          }
+        }
+      }
+    }
+  }
+}
