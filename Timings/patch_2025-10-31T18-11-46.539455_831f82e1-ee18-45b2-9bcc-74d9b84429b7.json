@@ -1,0 +1,108 @@
+{
+  "patch_id": "831f82e1-ee18-45b2-9bcc-74d9b84429b7",
+  "timestamp": "2025-10-31T18:11:46.539455",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://106711913879378": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Dodge",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 855.9461059570312,
+                  "X": 213.9865264892578,
+                  "Z": 331.6790466308594
+                },
+                "when": 500,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Dodge",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 1027.1353759765625,
+                  "X": 256.7838439941406,
+                  "Z": 398.0148620605469
+                },
+                "when": 500,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://72369061749089": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 68045.0703125,
+                  "X": 21264.08984375,
+                  "Z": 34022.53515625
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 97984.90625,
+                  "X": 30620.291015625,
+                  "Z": 48992.453125
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://138936750616581": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 1479.0750732421875,
+                  "X": 462.2109069824219,
+                  "Z": 739.5375366210938
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 1774.89013671875,
+                  "X": 554.6531372070312,
+                  "Z": 887.445068359375
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

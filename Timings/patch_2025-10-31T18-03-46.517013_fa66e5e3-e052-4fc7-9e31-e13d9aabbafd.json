@@ -1,0 +1,75 @@
+{
+  "patch_id": "fa66e5e3-e052-4fc7-9e31-e13d9aabbafd",
+  "timestamp": "2025-10-31T18:03:46.517013",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://72369061749089": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 9158.0458984375,
+                  "X": 2861.8896484375,
+                  "Z": 4579.02294921875
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 13187.5869140625,
+                  "X": 4121.12158203125,
+                  "Z": 6593.79345703125
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://138936750616581": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 495.3391418457031,
+                  "X": 154.79347229003906,
+                  "Z": 247.66957092285156
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 594.406982421875,
+                  "X": 185.75216674804688,
+                  "Z": 297.2034912109375
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
