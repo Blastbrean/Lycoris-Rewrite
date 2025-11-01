@@ -64,32 +64,24 @@ return function(self, timing)
 		pt.hitbox = Vector3.new(10, 10, 10)
 		Defense.cdpo(projectile, pt)
 
-		task.spawn(function()
-			local baseHitbox = Vector3.new(10, 10, 10)
-			local lastSpeed = 0
-			local smoothing = 0.3 -- 0.1–0.3 recommended: lower = snappier, higher = smoother
-
-			while projectile and projectile.Parent do
-				local velocity = projectile.AssemblyLinearVelocity or projectile.Velocity or Vector3.zero
-				local rawSpeed = velocity.Magnitude
-
-				-- smooth speed using exponential moving average
-				local smoothedSpeed = lastSpeed + (rawSpeed - lastSpeed) * smoothing
-				lastSpeed = smoothedSpeed
-
-				-- compute scale factor (smoothly changing)
-				local scaleFactor = math.clamp(smoothedSpeed / 5, 1, 4)
-				local newHitbox = baseHitbox * scaleFactor
-
-				-- only update if size changed meaningfully
-				if (pt.hitbox - newHitbox).Magnitude > 0.05 then
-					pt.hitbox = newHitbox
-				end
-
-				task.wait(0.05) -- small step for smoother transitions and lower CPU usage
+		while task.wait() do
+			if not projectile or not projectile.Parent then
+				break
 			end
-		end)
 
+			local velocity = projectile.AssemblyLinearVelocity or projectile.Velocity or Vector3.zero
+			local rawSpeed = velocity.Magnitude
+
+			-- smooth speed using exponential moving average
+			local smoothedSpeed = lastSpeed + (rawSpeed - lastSpeed) * smoothing
+			lastSpeed = smoothedSpeed
+
+			-- compute scale factor (smoothly changing)
+			local scaleFactor = math.clamp(smoothedSpeed / 5, 1, 4)
+			local newHitbox = baseHitbox * scaleFactor
+
+			pt.hitbox = newHitbox
+		end
 	-- === IceDaggers logic ===
 	elseif name == "IceDagger" then
 		if self:distance(self.entity) <= 15 then
