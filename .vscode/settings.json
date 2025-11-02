@@ -64,7 +64,9 @@
         "PP_SCRAMBLE_STR",
         "PP_SCRAMBLE_NUM",
         "PP_SCRAMBLE_RE_NUM",
-        "getcallbackvalue"
+        "getcallbackvalue",
+        "LRM_SEND_WEBHOOK",
+        "LRM_SANITIZE"
     ],
     "robloxLsp.suggestedImports.importIgnore": [
         "**/_Index/**",
