@@ -1,0 +1,24 @@
+{
+  "patch_id": "33d81012-5bb5-42a2-941b-7114545b833a",
+  "timestamp": "2025-10-31T23:22:02.527302",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://6432920452": {
+        "status": "modified",
+        "changes": {
+          "phds": {
+            "from": 1,
+            "to": 0.2
+          }
+        }
+      }
+    },
+    "part": {
+      "VengefulSlash": {
+        "status": "removed",
+        "name": "VengefulSlash"
+      }
+    }
+  }
+}

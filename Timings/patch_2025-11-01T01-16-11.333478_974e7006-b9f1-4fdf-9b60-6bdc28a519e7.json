@@ -1,0 +1,22 @@
+{
+  "patch_id": "974e7006-b9f1-4fdf-9b60-6bdc28a519e7",
+  "timestamp": "2025-11-01T01:16:11.333478",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://106452000190522": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "SmoulderingHallow"
+          }
+        }
+      }
+    }
+  }
+}

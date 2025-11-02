@@ -24,5 +24,8 @@ return function(self, timing)
 		action._when = 540
 	end
 
+	if self.entity.Name:match(".miniwidow") then
+		action.hitbox /= 3.0
+	end
 	return self:action(timing, action)
 end

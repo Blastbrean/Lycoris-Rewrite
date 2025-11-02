@@ -68,7 +68,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = windup * 1000
 	action._type = "Parry"
-	action.hitbox = Vector3.new(data.length * 2, data.length * 2, data.length * 2.5)
+	action.hitbox = Vector3.new(data.length * 2.5, data.length * 2, data.length * 2.5)
 	action.name = string.format(
 		"(%.2f, %.2f, %.2f) (%.2f) Dynamic Weapon Swing",
 		data.oss,
@@ -79,7 +79,7 @@ return function(self, timing)
 
 	if data.type == "Twinblade" then
 		-- Twinblade adjustment.
-		action.hitbox = Vector3.new(data.length * 2, data.length * 2, data.length * 3.5)
+		action.hitbox = Vector3.new(data.length * 2.5, data.length * 2, data.length * 3.5)
 
 		-- Create second action.
 		local secondAction = Action.new()

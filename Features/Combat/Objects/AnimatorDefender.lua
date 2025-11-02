@@ -61,7 +61,7 @@ local replicatedStorage = game:GetService("ReplicatedStorage")
 -- Constants.
 local MAX_REPEAT_TIME = 5.0
 local HISTORY_STEPS = 5.0
-local PREDICT_FACING_DELTA = 0.3
+local PREDICT_FACING_DELTA = 2
 
 ---Is animation stopped? Made into a function for de-duplication.
 ---@param self AnimatorDefender

@@ -1,0 +1,203 @@
+{
+  "patch_id": "a3e333fd-1c86-4eba-9243-02756d41cd8a",
+  "timestamp": "2025-10-31T17:27:46.199570",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://15121611060": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 29,
+                  "Z": 31
+                },
+                "when": 1200,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "3",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 34,
+                  "Z": 34
+                },
+                "when": 350,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 20,
+                  "X": 32,
+                  "Z": 32
+                },
+                "when": 700,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 24,
+                  "X": 34.80000305175781,
+                  "Z": 37.20000076293945
+                },
+                "when": 1200,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "3",
+                "hitbox": {
+                  "Y": 24,
+                  "X": 40.80000305175781,
+                  "Z": 40.80000305175781
+                },
+                "when": 350,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 24,
+                  "X": 38.400001525878906,
+                  "Z": 38.400001525878906
+                },
+                "when": 700,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://7612564657": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 10,
+                  "X": 14,
+                  "Z": 10
+                },
+                "when": 200,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 12,
+                  "X": 16.80000114440918,
+                  "Z": 12
+                },
+                "when": 200,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://7612146010": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 10,
+                  "X": 14,
+                  "Z": 10
+                },
+                "when": 200,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 12,
+                  "X": 16.80000114440918,
+                  "Z": 12
+                },
+                "when": 200,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://7612116246": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 10,
+                  "X": 14,
+                  "Z": 10
+                },
+                "when": 100,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 14.40000057220459,
+                  "X": 20.160001754760742,
+                  "Z": 14.40000057220459
+                },
+                "when": 100,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://11363599835": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      },
+      "rbxassetid://8018953639": {
+        "status": "modified",
+        "changes": {
+          "fhb": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

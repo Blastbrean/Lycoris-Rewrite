@@ -1,0 +1,141 @@
+{
+  "patch_id": "9cc2f5f4-6d86-414e-8b74-b147ec070e8d",
+  "timestamp": "2025-10-31T18:15:46.815570",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://106711913879378": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Dodge",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 1232.5625,
+                  "X": 308.140625,
+                  "Z": 477.61785888671875
+                },
+                "when": 500,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Dodge",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 1479.0750732421875,
+                  "X": 369.7687683105469,
+                  "Z": 573.1414794921875
+                },
+                "when": 500,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://72369061749089": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 117581.890625,
+                  "X": 36744.3515625,
+                  "Z": 58790.9453125
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 169317.9375,
+                  "X": 52911.87109375,
+                  "Z": 84658.96875
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://138936750616581": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 2129.8681640625,
+                  "X": 665.5838012695312,
+                  "Z": 1064.93408203125
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 2555.841796875,
+                  "X": 798.7006225585938,
+                  "Z": 1277.9208984375
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      },
+      "rbxassetid://111024000122473": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Dodge",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 619.1738891601562,
+                  "X": 191.94387817382812,
+                  "Z": 451.99688720703125
+                },
+                "when": 900,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Dodge",
+                "name": "Release",
+                "hitbox": {
+                  "Y": 743.0086669921875,
+                  "X": 230.33265686035156,
+                  "Z": 542.3963012695312
+                },
+                "when": 900,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
