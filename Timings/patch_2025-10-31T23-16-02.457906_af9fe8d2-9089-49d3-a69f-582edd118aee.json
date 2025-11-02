@@ -1,0 +1,37 @@
+{
+  "patch_id": "af9fe8d2-9089-49d3-a69f-582edd118aee",
+  "timestamp": "2025-10-31T23:16:02.457906",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "VengefulSlash": {
+        "status": "added",
+        "data": {
+          "umoa": true,
+          "pname": "VengefulSlash",
+          "smod": "VengefulSlash",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "after": 0,
+          "uhc": false,
+          "duih": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "VengefulSlash",
+          "imxd": 107,
+          "smn": false,
+          "fhb": false,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}
