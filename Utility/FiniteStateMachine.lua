@@ -9,15 +9,13 @@ FiniteStateMachine.__index = FiniteStateMachine
 ---Create a new finite state machine.
 ---@param states FiniteState[]
 ---@param initial string
----@param scallback function? Optional stopped callback. Called when you need to do extra things after stopping.
 ---@return FiniteStateMachine
-function FiniteStateMachine.new(states, initial, scallback)
+function FiniteStateMachine.new(states, initial)
 	local self = setmetatable({}, FiniteStateMachine)
 	self.states = states
 	self.current = initial
 	self.initial = initial
 	self.started = false
-	self.scallback = scallback
 
 	-- Validate initial state.
 	self:get(self.current)
@@ -65,11 +63,6 @@ function FiniteStateMachine:stop()
 	-- Detach current state.
 	local current = self:get(self.current)
 	current:detach()
-
-	-- Invoke stopped callback.
-	if self.scallback then
-		self.scallback()
-	end
 
 	-- Reset state machine.
 	self.started = false

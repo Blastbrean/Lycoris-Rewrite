@@ -174,7 +174,12 @@ end
 ---Initialize Joy Farm section.
 ---@param groupbox table
 function AutomationTab.initJoyFarmSection(groupbox)
-	groupbox:AddButton("Start Joy Farm", JoyFarm.start)
+	groupbox:AddButton({
+		Text = "Start Joy Farm",
+		Tooltip = "Make sure that you are at the start of a cycle.",
+		Func = JoyFarm.start,
+	})
+
 	groupbox:AddButton("Stop Joy Farm", JoyFarm.stop)
 end
 

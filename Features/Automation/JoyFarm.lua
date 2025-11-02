@@ -19,6 +19,9 @@ local Finder = require("Utility/Finder")
 ---@module Utility.Table
 local Table = require("Utility/Table")
 
+---@module Features.Combat.Objects.Defender
+local Defender = require("Features/Combat/Objects/Defender")
+
 ---@module Utility.Maid
 local Maid = require("Utility/Maid")
 
@@ -41,7 +44,7 @@ local oldGetMouseInvoke = nil
 local cachedTarget = nil
 
 -- Tweening offset.
-local offsetCFrame = CFrame.new(-2.0, 30.0, 0.0)
+local offsetCFrame = CFrame.new(0.0, 30.0, 0.0)
 
 -- Attack valid targets.
 local function attackValidTargets()
@@ -100,12 +103,15 @@ local function attackValidTargets()
 		return warn("Failed to get EffectReplicator module for JoyFarm mouse spoofing.")
 	end
 
-	getMouse.OnClientInvoke = function()
-		local pos = workspace.CurrentCamera:WorldToViewportPoint(targetHrp.Position)
-		local ray = workspace.CurrentCamera:ViewportPointToRay(pos.X, pos.Y)
+	---@note: Add some prediction to prevent mobs from running in a straight line.
+	local at = targetHrp.CFrame + (targetHrp.AssemblyLinearVelocity * (0.1 + Defender.rtt()))
+	local pos = workspace.CurrentCamera:WorldToViewportPoint(at.Position)
+	local ray = workspace.CurrentCamera:ViewportPointToRay(pos.X, pos.Y)
 
+	-- Override OnClientInvoke with new data.
+	getMouse.OnClientInvoke = function()
 		return {
-			["Hit"] = targetHrp.CFrame,
+			["Hit"] = at,
 			["Target"] = targetHrp,
 			["UnitRay"] = ray,
 			["X"] = pos.X,
@@ -122,10 +128,6 @@ end
 
 -- States.
 local jfIdleState = FiniteState.new("Idle", function(_, machine)
-	AntiAFK.start("JoyFarm")
-	Tweening.stop("JoyFarm_TweenAboveShrine")
-	Tweening.stop("JoyFarm_TweenToTarget")
-
 	-- Activate shrine.
 	local shrine = Finder.wshrine()
 	local interactPrompt = shrine:WaitForChild("InteractPrompt")
@@ -148,11 +150,11 @@ local jfIdleState = FiniteState.new("Idle", function(_, machine)
 		end
 	end
 
-	-- Move us up and start attacking.
-	Tweening.stop("JoyFarm_TweenToShrine")
-
 	-- Break out of idle state.
 	return machine:transition("Attack")
+end, function()
+	-- Stop tweens.
+	Tweening.stop("JoyFarm_TweenToShrine")
 end)
 
 local jfAttackState = FiniteState.new("Attack", function(_, machine)
@@ -182,12 +184,8 @@ local jfAttackState = FiniteState.new("Attack", function(_, machine)
 		-- We must clear the cached target if we failed to attack valid targets!
 		cachedTarget = nil
 	end
-end)
-
--- State machine.
-local jfStateMachine = FiniteStateMachine.new({ jfIdleState, jfAttackState }, "Idle", function()
-	AntiAFK.stop("JoyFarm")
-	Tweening.stop("JoyFarm_TweenToShrine")
+end, function()
+	-- Stop tweens.
 	Tweening.stop("JoyFarm_TweenAboveShrine")
 	Tweening.stop("JoyFarm_TweenToTarget")
 
@@ -202,13 +200,18 @@ local jfStateMachine = FiniteStateMachine.new({ jfIdleState, jfAttackState }, "I
 	end
 end)
 
+-- State machine.
+local jfStateMachine = FiniteStateMachine.new({ jfIdleState, jfAttackState }, "Idle")
+
 ---Start JoyFarm module.
 function JoyFarm.start()
+	AntiAFK.start("JoyFarm")
 	joyFarmMaid:add(TaskSpawner.spawn("JoyFarm_StateMachineStart", jfStateMachine.start, jfStateMachine))
 end
 
 ---Stop JoyFarm module.
 function JoyFarm.stop()
+	AntiAFK.stop("JoyFarm")
 	jfStateMachine:stop()
 	joyFarmMaid:clean()
 end
