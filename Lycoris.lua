@@ -187,7 +187,7 @@ function Lycoris.init()
 	local eloType = "N/A"
 	local userEloRank = "N/A"
 
-	if game.PlaceId == 18637069183 then
+	if game.PlaceId == 12559711136 then
 		local eloRating = localPlayer:GetAttribute("EloRating")
 		local eloLeaderboardNumber = localPlayer:GetAttribute("EloRankNo")
 
