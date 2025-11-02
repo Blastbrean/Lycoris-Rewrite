@@ -88,10 +88,6 @@ local function attackValidTargets()
 	-- Spoof OnClientEvent too.
 	local requests = replicatedStorage:WaitForChild("Requests")
 	local getMouse = requests:WaitForChild("GetMouse")
-	local inputData = InputClient.getInputData()
-	if not inputData then
-		return warn("Failed to get InputData for JoyFarm mouse spoofing.")
-	end
 
 	if not oldGetMouseInvoke then
 		oldGetMouseInvoke = getcallbackvalue(getMouse, "OnClientInvoke")
@@ -110,6 +106,7 @@ local function attackValidTargets()
 	local ray = currentCamera:ViewportPointToRay(pos.X, pos.Y)
 
 	-- Override OnClientInvoke with new data.
+	---@todo: Spoof better later with proper 1:1 InputClient data.
 	getMouse.OnClientInvoke = function()
 		return {
 			["Hit"] = at,
