@@ -687,17 +687,14 @@ end)
 ---@param self Defender
 ---@param timing Timing
 ---@param action Action
----@param notify boolean
-Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, notify)
+Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	if PP_SCRAMBLE_STR(action._type) ~= "End Block" then
 		if not self:valid(ValidationOptions.new(action, timing)) then
 			return
 		end
 	end
 
-	if not notify then
-		self:notify(timing, "Action type '%s' is being executed.", PP_SCRAMBLE_STR(action._type))
-	end
+	self:notify(timing, "Action type '%s' is being executed.", PP_SCRAMBLE_STR(action._type))
 
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
