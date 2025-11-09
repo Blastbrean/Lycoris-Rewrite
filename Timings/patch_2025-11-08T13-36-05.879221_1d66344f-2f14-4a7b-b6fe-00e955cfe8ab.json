@@ -1,0 +1,13 @@
+{
+  "patch_id": "1d66344f-2f14-4a7b-b6fe-00e955cfe8ab",
+  "timestamp": "2025-11-08T13:36:05.879221",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://119238935719818": {
+        "status": "removed",
+        "name": "MoppetCrit\r"
+      }
+    }
+  }
+}

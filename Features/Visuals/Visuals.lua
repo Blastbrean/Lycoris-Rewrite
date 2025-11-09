@@ -52,6 +52,9 @@ local ObeliskESP = require("Features/Visuals/Objects/ObeliskESP")
 ---@module Features.Visuals.Objects.BoneAltarESP
 local BoneAltarESP = require("Features/Visuals/Objects/BoneAltarESP")
 
+---@module Features.Combat.StateListener
+local StateListener = require("Features/Combat/StateListener")
+
 -- Visuals module.
 local Visuals = { bdata = nil, drinfo = nil }
 
@@ -97,6 +100,67 @@ local noAnimatedSeaMap = visualsMaid:mark(OriginalStoreManager.new())
 local noPersistentMap = visualsMaid:mark(OriginalStoreManager.new())
 local buildAssistanceMap = visualsMaid:mark(OriginalStoreManager.new())
 local jobBoardMap = visualsMaid:mark(OriginalStoreManager.new())
+
+---Update chain of perfection tracker.
+local updateChainOfPerfectionTracker = LPH_NO_VIRTUALIZE(function()
+	local localPlayer = players.LocalPlayer
+	if not localPlayer then
+		return
+	end
+
+	local playerGui = localPlayer.PlayerGui
+	if not playerGui then
+		return
+	end
+
+	local currencyGui = playerGui:FindFirstChild("CurrencyGui")
+	if not currencyGui then
+		return
+	end
+
+	local currencyFrame = currencyGui:FindFirstChild("CurrencyFrame")
+	if not currencyFrame then
+		return
+	end
+
+	local crownsTextLabel = currencyFrame:FindFirstChild("Crowns")
+	if not crownsTextLabel then
+		return
+	end
+
+	-- Setup.
+	local stackTextLabel = InstanceWrapper.mark(visualsMaid, "StackTextLabel", crownsTextLabel:Clone())
+	stackTextLabel.Name = "ChainStacks"
+	stackTextLabel.Parent = currencyFrame
+	stackTextLabel.Visible = true
+
+	-- Amount.
+	local amountLabel = stackTextLabel:FindFirstChild("Amount")
+	if not amountLabel then
+		return
+	end
+
+	amountLabel.Text = tostring(StateListener.chainStacks or 0)
+	amountLabel.TextColor3 = Color3.new(255, 255, 255)
+
+	-- Icon.
+	local icon = stackTextLabel:FindFirstChild("Icon")
+	if not icon then
+		return
+	end
+
+	icon.Image = "rbxassetid://92751444684393"
+	icon.ImageColor3 = Color3.new(255, 255, 255)
+	icon.ImageRectOffset = Vector2.new(0, 0)
+	icon.ImageRectSize = Vector2.new(0, 0)
+
+	-- Lore.
+	stackTextLabel:SetAttribute("Tip_Title", "Chain Stacks")
+	stackTextLabel:SetAttribute(
+		"Tip_Desc",
+		"This shows how many 'Chain of Perfection' stacks you currently have. This number is a prediction."
+	)
+end)
 
 ---Update sanity tracker.
 local updateSanityTracker = LPH_NO_VIRTUALIZE(function()
@@ -982,6 +1046,12 @@ local updateVisuals = LPH_NO_VIRTUALIZE(function()
 		updateTerrainAttachments()
 	else
 		jobBoardMap:restore()
+	end
+
+	if Configuration.expectToggleValue("ChainOfPerfectionTracker") then
+		updateChainOfPerfectionTracker()
+	else
+		visualsMaid["StackTextLabel"] = nil
 	end
 
 	if Configuration.expectToggleValue("SanityTracker") then

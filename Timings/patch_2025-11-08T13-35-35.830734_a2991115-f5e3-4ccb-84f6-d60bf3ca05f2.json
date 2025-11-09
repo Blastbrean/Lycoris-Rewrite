@@ -1,0 +1,49 @@
+{
+  "patch_id": "a2991115-f5e3-4ccb-84f6-d60bf3ca05f2",
+  "timestamp": "2025-11-08T13:35:35.830734",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://119238935719818": {
+        "status": "added",
+        "data": {
+          "phd": false,
+          "umoa": false,
+          "imb": false,
+          "dp": false,
+          "rpd": 0,
+          "pfht": 0.15,
+          "smod": "N/A",
+          "hso": 0,
+          "aatk": false,
+          "rsd": 0,
+          "ieae": false,
+          "iae": false,
+          "ha": false,
+          "actions": [],
+          "pfh": false,
+          "ndfb": false,
+          "duih": false,
+          "after": 0,
+          "_id": "rbxassetid://119238935719818",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "phds": 0,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "MoppetCrit\r",
+          "imxd": 96,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Critical"
+        }
+      }
+    }
+  }
+}
