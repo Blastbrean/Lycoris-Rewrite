@@ -68,7 +68,11 @@ function HitboxOptions:ucache()
 		hitbox = self.timing.hitbox
 	end
 
-	self.cache = Vector3.new(PP_SCRAMBLE_NUM(hitbox.X), PP_SCRAMBLE_NUM(hitbox.Y), PP_SCRAMBLE_NUM(hitbox.Z))
+	if not hitbox then
+		self.cache = Vector3.new(0, 0, 0)
+	else
+		self.cache = Vector3.new(PP_SCRAMBLE_NUM(hitbox.X), PP_SCRAMBLE_NUM(hitbox.Y), PP_SCRAMBLE_NUM(hitbox.Z))
+	end
 end
 
 ---Get the hitbox size.

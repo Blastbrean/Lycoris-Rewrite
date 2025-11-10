@@ -15,6 +15,6 @@ return function(self, timing)
 	action._when = 530
 	action._type = "Parry"
 	action.hitbox = Vector3.new(24 + range, 24, 24 + range)
-	action.name = "Dynamic Rapid Slashes Timing"
+	action.name = "Dynamic Iron Slam Timing"
 	self:action(timing, action)
 end

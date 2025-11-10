@@ -1,5 +1,5 @@
 -- StateListener module. Practically, it is a module to store data / information about what is happening with the character.
-local StateListener = { lMantraActivated = nil, lAnimFaction = nil, lAnimTimestamp = nil }
+local StateListener = { lMantraActivated = nil, lAnimFaction = nil, lAnimTimestamp = nil, chainStacks = nil }
 
 ---@module Utility.Signal
 local Signal = require("Utility/Signal")
@@ -289,11 +289,23 @@ local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 	if effect.Class == "ParryCool" then
 		effect.index.Timestamp = os.clock()
 	end
+
+	if effect.Class == "PerfectStack" then
+		StateListener.chainStacks = 0
+	end
+
+	if effect.Class == "PerfectionCool" and StateListener.chainStacks then
+		StateListener.chainStacks = math.min(StateListener.chainStacks + 1, 20)
+	end
 end)
 
 --On effect removing.
 ---@param effect table
 local onEffectRemoving = LPH_NO_VIRTUALIZE(function(effect)
+	if effect.Class == "PerfectStack" then
+		StateListener.chainStacks = nil
+	end
+
 	if not Configuration.expectToggleValue("EffectLogging") then
 		return
 	end

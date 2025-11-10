@@ -163,6 +163,12 @@ end
 ---Initialize Visual Assistance section.
 ---@param groupbox table
 function VisualsTab.initVisualAssistanceSection(groupbox)
+	groupbox:AddToggle("ChainOfPerfectionTracker", {
+		Text = "Chain Of Perfection Tracker",
+		Tooltip = "Create a tracker marking how many stacks you have in your current Chain of Perfection.",
+		Default = false,
+	})
+
 	groupbox:AddToggle("SanityTracker", {
 		Text = "Sanity Tracker",
 		Tooltip = "Create a tracker marking how much sanity you have left.",
