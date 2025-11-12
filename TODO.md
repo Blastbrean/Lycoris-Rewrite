@@ -1,25 +1,22 @@
 # What do we need to do?
-- Combat ❌
-    - Auto Defense ❌
+- Combat ✅
+    - Auto Defense ✅
         - Failure Rate ✅
-        - Fake Mistime Rate 🟨
-        - Fallback To Counter Mantras ❌
+        - Fake Mistime Rate ✅
         - Fallback To Blocking ✅
-        - Blatant Roll ❌
-    - Combat Assistance ❌
+    - Combat Assistance 🟨
         - Silent Aim ❌
-        - Allow Flourish Feints ❌
-        - Allow Attacks While Rolling ❌
+        - Allow Flourish Feints ✅
         - Attack Animation Speed ✅
-            - Tagging Filter ❌
+            - Tagging Filter ✅
             - Animation Speed Slider (0.5x - 1x - 2x) ✅ 
 
-- Game ❌
+- Game 🟨
     - Local Character ❌
         - Remove Relic Cap ❌
         - Remove "Dialogue" CD ❌
         - Remove "Loot All" CD ❌
-    - Player Monitoring ❌
+    - Player Monitoring 🟨
         - Show All Players in Map ❌
         - Chat Spy ✅
     
@@ -50,48 +47,82 @@
       - Webhook Notification ❌
       - Incorporate Auto Loot ❌
 
-- Exploit ❌
+- Exploit 🟨
     - Mob Exploits ✅
         - Pathfind Breaker ✅
             - Bring Mobs ❌
     - Local Character Exploits ❌
         - Extended Item Pickup ❌
         - Extended Job Board Interact ❌
+
+Essential Fixes
+
+- 1. Auto Execute Fixes
+
+- 2. "Timing Probability" section
   
-- Finish "Extra Keybinds"
+Farming Fixes
+
+- 4. Clean Up "Echo Farm"
+  
+- 5. Make Titus Farm From "Echo Farm"
+
+Gank Fixes
+
+- 6. Ignore Allies Rework
+
+- 7. Easier Whitelist / Blaclist
+  
+- 8. New ESP Port
+  - ESP Fade In / Fade Out
+  - ESP Glow?
+  - ESP Focus Keybind
+  
+Quality Of Life
+
+- 9. Finish "Extra Keybinds"
     - Keybind builder to partial item search find
     - Instant log ability
-  
-- Clean Up "Echo Farm"
-  
-- Chaser Multi Player Fixes
 
-- PVP Safety
+- 10. PVP Safety
   
-- Fix "Info Spoofing" for Guild Chat & Server 
+- 11. Auto Roll Cancel (for Float Like a Butterfly or Death From Above)
 
-- Chain of Perfection Counter
+- 12. No Roll Fatigue (slider for how much less roll fatigue you want)
   
-- Silent Aim
-- 
-- Fix No Blur Not Working With No Water
-  
-- No Blind
-  
-- Auto Roll Cancel (for Float Like a Butterfly or Death From Above)
-  
-- No Roll Fatigue (slider for how much less roll fatigue you want) (patched on legacy but maybe try unpatching it on rewrite)
-  
-- Priority Dodge Frame (don't know how useful this is but comp players liked this feature)
-  
-- Rare NPC/Mob Notifier (Silhuett, Grudge, Ministry Heartspiller, Maljuror)
-  
-- Auto Utility
+- 13. Auto Utility
   - Reinforce
   - Ardour Scream
   - Judgement
   - etc...
  
-- Unlock Zoom Distance
+- 14. Unlock Zoom Distance
 
-- Layer Two Interact Aura
+- 15. Interact Aura
+  - Layer Two Bones
+  - Layer Two Obelisk
+  - Chest   
+  
+Other Stuff
+
+- Fix "No Blur" Breaking On No Water
+  
+- Fix "Info Spoofing"
+    - Guild Chat
+    - User ID 
+
+Research
+
+- Priority Dodge Frame
+
+- Client Side Attack Detection
+
+- No Blind 
+
+- No Hallowing Enchant
+  
+- Roll Parry, Roll M1, etc
+
+- NPC / Mob Notifier (Silhuett, Grudge, Ministry Heartspiller, Maljuror)
+
+- CTU Logging (v.s. logging, timezone & region logging)

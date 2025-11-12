@@ -66,7 +66,9 @@
         "PP_SCRAMBLE_RE_NUM",
         "getcallbackvalue",
         "LRM_SEND_WEBHOOK",
-        "LRM_SANITIZE"
+        "LRM_SANITIZE",
+        "getnilinstances",
+        "getcallingscript"
     ],
     "robloxLsp.suggestedImports.importIgnore": [
         "**/_Index/**",

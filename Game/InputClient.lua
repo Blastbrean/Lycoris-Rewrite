@@ -22,7 +22,6 @@ local debris = game:GetService("Debris")
 
 -- Cache.
 local inputDataCache = nil
-local lastInputDataCache = os.clock()
 
 ---Re-created has talent.
 ---@param character Model
@@ -197,58 +196,7 @@ end)
 ---Fetch input data.
 ---@return table?
 InputClient.getInputData = LPH_NO_VIRTUALIZE(function()
-	-- Get from cache if we can, this is particularly expensive.
-	if inputDataCache and (os.clock() - lastInputDataCache) <= 2.0 then
-		return inputDataCache
-	end
-
-	-- Store input data.
-	local inputData = nil
-
-	-- Get the input data from RenderStepped.
-	for _, connection in next, getconnections(runService.RenderStepped) do
-		local func = connection.Function
-		if not func then
-			continue
-		end
-
-		if iscclosure(func) then
-			continue
-		end
-
-		local consts = debug.getconstants(func)
-		if not table.find(consts, ".lastHBCheck") and not manualTableFind(consts, ".lastHBCheck") then
-			continue
-		end
-
-		local upvalues = debug.getupvalues(func)
-
-		---@note: Only table with boolean values is the input table. Find a better way to filter this?
-		for _, upvalue in next, upvalues do
-			if typeof(upvalue) ~= "table" or getrawmetatable(upvalue) then
-				continue
-			end
-
-			if not hasNonBooleans(upvalue) then
-				continue
-			end
-
-			if getTableLength(upvalue) >= 1 and not validateKeys(upvalue) then
-				continue
-			end
-
-			inputData = upvalue
-			break
-		end
-	end
-
-	-- Add into cache.
-	-- We want to attempt to re-cache again if it's missing.
-	inputDataCache = inputData
-	lastInputDataCache = inputData and os.clock() or lastInputDataCache
-
-	-- Return input data.
-	return inputData
+	return inputDataCache
 end)
 
 ---End block function.
@@ -392,15 +340,85 @@ InputClient.left = LPH_NO_VIRTUALIZE(function(cframe, ignoreChecks)
 		end
 	end
 
-	leftClickRemote:FireServer(inAir(humanoid, effectReplicatorModule), cframe, inputData)
-
 	---@note: Missing M1-Hold and Input Buffering functionality but I don't think the caller cares about it.
+	leftClickRemote:FireServer(inAir(humanoid, effectReplicatorModule), cframe, inputData)
+end)
+
+---Activate mantra.
+---@param tool Tool
+InputClient.amantra = LPH_NO_VIRTUALIZE(function(tool)
+	local character = players.LocalPlayer.Character
+	if not character then
+		return Logger.warn("Cannot activate mantra without character.")
+	end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then
+		return Logger.warn("Cannot activate mantra without humanoid root part.")
+	end
+
+	local characterHandler = character:FindFirstChild("CharacterHandler")
+	if not characterHandler then
+		return Logger.warn("Cannot activate mantra without character handler.")
+	end
+
+	local requests = characterHandler:FindFirstChild("Requests")
+	if not requests then
+		return Logger.warn("Cannot activate mantra without requests.")
+	end
+
+	local activateMantraRemote = requests:FindFirstChild("ActivateMantra")
+	if not activateMantraRemote then
+		return Logger.warn("Cannot activate mantra without ActivateMantra remote.")
+	end
+
+	if typeof(tool) ~= "Instance" or not tool:IsA("Tool") then
+		return Logger.warn("Cannot activate mantra without valid tool.")
+	end
+
+	activateMantraRemote:FireServer(tool)
 end)
 
 ---Deflect. This is called this way because it can either give parry or block frames depending on whether or not parry is on cooldown.
-InputClient.deflect = LPH_NO_VIRTUALIZE(function()
+---@param extraWaitTime number?
+InputClient.deflect = LPH_NO_VIRTUALIZE(function(extraWaitTime)
 	InputClient.bstart()
+
+	if extraWaitTime then
+		task.wait(extraWaitTime)
+	end
+
 	InputClient.bend()
+end)
+
+---Vent function.
+InputClient.vent = LPH_NO_VIRTUALIZE(function()
+	local character = players.LocalPlayer.Character
+	if not character then
+		return Logger.warn("Cannot vent without character.")
+	end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then
+		return Logger.warn("Cannot vent without humanoid root part.")
+	end
+
+	local characterHandler = character:FindFirstChild("CharacterHandler")
+	if not characterHandler then
+		return Logger.warn("Cannot vent without character handler.")
+	end
+
+	local requests = characterHandler:FindFirstChild("Requests")
+	if not requests then
+		return Logger.warn("Cannot vent without requests.")
+	end
+
+	local ventRemote = requests:FindFirstChild("Vent")
+	if not ventRemote then
+		return Logger.warn("Cannot vent without vent remote.")
+	end
+
+	ventRemote:FireServer()
 end)
 
 ---Dodge function.
@@ -1286,33 +1304,15 @@ InputClient.roll = LPH_NO_VIRTUALIZE(function(pivotStep, rollCancelTime)
 	end
 end)
 
----Validate function.
----@param func function
----@return boolean
-InputClient.validate = LPH_NO_VIRTUALIZE(function(func)
-	local upvalues = debug.getupvalues(func)
-
-	if not upvalues or #upvalues <= 0 then
-		Logger.warn("Skipping function (%s) with no upvalues.", tostring(func))
-		return false
-	end
-
-	return true
-end)
-
----Update cache.
----@param consts any[]
-InputClient.update = LPH_NO_VIRTUALIZE(function(consts)
-	if consts[2] ~= "wait" then
-		return Logger.warn("Ignoring bad update cache call for performance.")
-	end
-
-	InputClient.cache()
-end)
-
----Cache InputClient module.
--- @note: I sold my soul to the GC gods because there's no other way. Updates are only done when needed.
+---Cache InputClient module. Returns whether the caching was a success or not.
+---@note: I sold my soul to the GC gods because there's no other way. This basically does a ton of intensive stuff. Updates are only done when needed.
 InputClient.cache = LPH_NO_VIRTUALIZE(function()
+	-- Invalidate previous cache.
+	InputClient.sprintFunctionCache = nil
+	InputClient.rollFunctionCache = nil
+	inputDataCache = nil
+
+	-- Intercept new Sprint and Roll functions.
 	for _, value in next, getgc() do
 		if typeof(value) ~= "function" or iscclosure(value) or isexecutorclosure(value) then
 			continue
@@ -1327,7 +1327,9 @@ InputClient.cache = LPH_NO_VIRTUALIZE(function()
 			continue
 		end
 
-		if not InputClient.validate(value) then
+		local upvalues = debug.getupvalues(value)
+
+		if not upvalues or #upvalues <= 0 then
 			continue
 		end
 
@@ -1347,6 +1349,52 @@ InputClient.cache = LPH_NO_VIRTUALIZE(function()
 			break
 		end
 	end
+
+	-- Store input data.
+	local inputData = nil
+
+	-- Get the input data from RenderStepped.
+	for _, connection in next, getconnections(runService.RenderStepped) do
+		local func = connection.Function
+		if not func then
+			continue
+		end
+
+		if iscclosure(func) then
+			continue
+		end
+
+		local consts = debug.getconstants(func)
+		if not manualTableFind(consts, ".lastHBCheck") then
+			continue
+		end
+
+		local upvalues = debug.getupvalues(func)
+
+		---@note: Only table with boolean values is the input table. Find a better way to filter this?
+		for _, upvalue in next, upvalues do
+			if typeof(upvalue) ~= "table" or getrawmetatable(upvalue) then
+				continue
+			end
+
+			if not hasNonBooleans(upvalue) then
+				continue
+			end
+
+			if getTableLength(upvalue) >= 1 and not validateKeys(upvalue) then
+				continue
+			end
+
+			inputData = upvalue
+			break
+		end
+	end
+
+	-- Add into cache.
+	inputDataCache = inputData
+
+	-- Return whether we were successful.
+	return InputClient.sprintFunctionCache ~= nil and InputClient.rollFunctionCache ~= nil and inputDataCache ~= nil
 end)
 
 -- Return InputClient module.

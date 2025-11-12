@@ -124,6 +124,71 @@ Finder.entity = LPH_NO_VIRTUALIZE(function(name)
 	end
 end)
 
+---Is a tool currently being locked by cooldown?
+---@param tool Tool
+---@return boolean
+Finder.cdlocked = LPH_NO_VIRTUALIZE(function(tool)
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return nil
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return nil
+	end
+
+	for _, effect in next, effectReplicatorModule.Effects do
+		if effect.Value ~= tool then
+			continue
+		end
+
+		return true
+	end
+
+	return false
+end)
+
+---Find a mantra that is not on cooldown.
+---@param name string? Specify the name of the mantra to find. It is matched.
+---@return Tool?
+Finder.ncdm = LPH_NO_VIRTUALIZE(function(name)
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return nil
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return nil
+	end
+
+	local backpack = players.LocalPlayer:FindFirstChild("Backpack")
+	if not backpack then
+		return nil
+	end
+
+	for _, item in next, backpack:GetChildren() do
+		if not item:IsA("Tool") then
+			continue
+		end
+
+		if not item.Name:match("Mantra:") or item.Name:match("Recalled") then
+			continue
+		end
+
+		if name and (not item.Name:match(name)) then
+			continue
+		end
+
+		if Finder.cdlocked(item) then
+			continue
+		end
+
+		return item
+	end
+end)
+
 ---Return all current simple prompt text(s) for the player.
 ---@return table
 Finder.sprompts = LPH_NO_VIRTUALIZE(function()

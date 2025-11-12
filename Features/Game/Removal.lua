@@ -320,20 +320,32 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		if not effect.Id then
+		if not effect.ID then
 			return
 		end
 
-		effectReplicatorModule.Effects[effect.Id] = nil
+		effectReplicatorModule.Effects[effect.ID] = nil
 	end
 
 	---Update removal effects.
 	---@param effect table
 	local function updateRemovalEffects(effect)
-		local stunEffects = { "Stun", "LightAttack", "Action", "MobileAction", "OffhandAttack" }
+		local stunEffects = { "Stun", "Action", "MobileAction" }
 
 		if Configuration.expectToggleValue("NoStun") and table.find(stunEffects, effect.Class) then
-			return hideEffect(effect)
+			hideEffect(effect)
+		end
+
+		local attackEffects = {
+			"LightAttack",
+			"HeavyAttack",
+			"OffhandAttack",
+			"UsingAbility",
+			"CastingSpell",
+		}
+
+		if Configuration.expectToggleValue("NoAttackingClientChecks") and table.find(attackEffects, effect.Class) then
+			hideEffect(effect)
 		end
 
 		if

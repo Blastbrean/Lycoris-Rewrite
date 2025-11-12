@@ -1,5 +1,6 @@
 -- StateListener module. Practically, it is a module to store data / information about what is happening with the character.
-local StateListener = { lMantraActivated = nil, lAnimFaction = nil, lAnimTimestamp = nil, chainStacks = nil }
+local StateListener =
+	{ lMantraActivated = nil, lAnimTiming = nil, lAnimFaction = nil, lAnimTimestamp = nil, chainStacks = nil }
 
 ---@module Utility.Signal
 local Signal = require("Utility/Signal")
@@ -28,6 +29,9 @@ local stateMaid = Maid.new()
 -- Services.
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Constants.
+local CHIME_ARENA_PLACE_ID = 6832944305
 
 ---Handle module data.
 ---@param track AnimationTrack
@@ -74,6 +78,8 @@ local function onLocalAnimationPlayed(track)
 	end
 
 	StateListener.lAnimTimestamp = os.clock()
+	StateListener.lAnimationValidTrack = track
+	StateListener.lAnimTiming = data
 
 	-- If this is a module, we need to extract the actions differently. It expects to be ran normally.
 	-- Run it in a emulated environment.
@@ -181,25 +187,51 @@ end
 ---Are we in action stun? That small window after doing an action where you can't do anything.
 ---@return boolean
 function StateListener.astun()
-	local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
-	local effectReplicatorModule = require(effectReplicator)
-	local lightAttackEffect = effectReplicatorModule:FindEffect("LightAttack")
-	local usingCriticalEffect = effectReplicatorModule:FindEffect("UsingCritical")
-	local usingSpellEffect = effectReplicatorModule:FindEffect("UsingSpell")
+	local lAnimFaction = StateListener.lAnimFaction
+	local lAnimationValidTrack = StateListener.lAnimationValidTrack
+	local lAnimTimestamp = StateListener.lAnimTimestamp
 
-	if lightAttackEffect and withinTime(lightAttackEffect, 0.5, false) then
-		return true
+	if not lAnimFaction and not lAnimationValidTrack and not lAnimTimestamp then
+		return false
 	end
 
-	if usingCriticalEffect and withinTime(usingCriticalEffect, -0.1, true) then
-		return true
-	end
-
-	if usingSpellEffect then
+	if lAnimationValidTrack.IsPlaying and os.clock() - lAnimTimestamp <= (lAnimFaction:when() + 0.1) then
 		return true
 	end
 
 	return false
+end
+
+---Can we vent?
+---@return boolean
+function StateListener.cvent()
+	local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
+	local effectReplicatorModule = require(effectReplicator)
+	local ventCooldownEffect = effectReplicatorModule:FindEffect("NoBurst")
+
+	local character = players.LocalPlayer and players.LocalPlayer.Character
+	if not character then
+		return false
+	end
+
+	local tempo = character:FindFirstChild("Tempo")
+	if not tempo then
+		return false
+	end
+
+	if tempo.Value < 40 then
+		return false
+	end
+
+	if not effectReplicatorModule:FindEffect("Equipped") then
+		return false
+	end
+
+	if ventCooldownEffect then
+		return false
+	end
+
+	return true
 end
 
 ---Can we block?
@@ -261,6 +293,12 @@ function StateListener.cdodge()
 	return true
 end
 
+---Are we in chime countdown?
+---@return boolean
+function StateListener.ccd()
+	return game.PlaceId == CHIME_ARENA_PLACE_ID and workspace.DistributedGameTime < 15
+end
+
 ---On effect replicated.
 ---@param effect table
 local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
@@ -299,7 +337,7 @@ local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 	end
 end)
 
---On effect removing.
+---On effect removing.
 ---@param effect table
 local onEffectRemoving = LPH_NO_VIRTUALIZE(function(effect)
 	if effect.Class == "PerfectStack" then

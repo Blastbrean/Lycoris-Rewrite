@@ -33,12 +33,15 @@ local oldUnreliableFireServer = nil
 local oldNameCall = nil
 local oldNewIndex = nil
 local oldTick = nil
-local oldCoroutineWrap = nil
-local oldTaskSpawn = nil
+local oldToString = nil
 local oldIndex = nil
 local oldPrint = nil
 local oldWarn = nil
 local oldHasEffect = nil
+
+-- InputClient caching.
+local lastCallingFunction = nil
+local lastFunctionCacheAttempt = 0
 
 -- Ban remotes table.
 local banRemotes = {}
@@ -577,6 +580,12 @@ local onUnreliableFireServer = LPH_NO_VIRTUALIZE(function(...)
 		return oldUnreliableFireServer(...)
 	end
 
+	local stopDodgeRemote = KeyHandling.getRemote("StopDodge")
+
+	if stopDodgeRemote and self == stopDodgeRemote and Configuration.expectToggleValue("ExtendRollCancelFrames") then
+		return
+	end
+
 	return oldUnreliableFireServer(...)
 end)
 
@@ -651,78 +660,34 @@ local onNewIndex = LPH_NO_VIRTUALIZE(function(...)
 	return oldNewIndex(...)
 end)
 
----On coroutine call.
+---On to string.
 ---@return any
-local onCoroutineCall = LPH_NO_VIRTUALIZE(function(arg)
-	if arg == "" then
-		return ""
-	else
-		return "LYCORIS_ON_TOP"
-	end
-end)
-
----On coroutine wrap.
----@return any
-local onCoroutineWrap = LPH_NO_VIRTUALIZE(function(...)
-	if checkcaller() then
-		return oldCoroutineWrap(...)
+local onToString = LPH_NO_VIRTUALIZE(function(...)
+	if os.clock() - lastFunctionCacheAttempt <= 0.5 then
+		return oldToString(...)
 	end
 
 	local level, info = findInputClientLevel()
 	if not level or not info then
-		return oldCoroutineWrap(...)
+		return oldToString(...)
 	end
 
-	-- Fetch arguments.
-	local args = { ... }
-
-	---@note: Prevent InputClient detection 16.2 from happening so the Disconnect call never happens.
-	args[1] = onCoroutineCall
-
-	-- Return with modified arguments.
-	return oldCoroutineWrap(unpack(args))
-end)
-
----On task spawn.
----@return any
-local onTaskSpawn = LPH_NO_VIRTUALIZE(function(...)
-	if checkcaller() then
-		return oldTaskSpawn(...)
+	if info.func == lastCallingFunction then
+		return oldToString(...)
 	end
 
-	local level, info = findInputClientLevel()
-	if not level or not info then
-		return oldTaskSpawn(...)
+	lastFunctionCacheAttempt = os.clock()
+
+	-- Cache InputClient data.
+	local success = InputClient.cache()
+
+	-- Update last calling function. Only do this if we successfully cached; else we need to wait for the next frame.
+	if success then
+		lastCallingFunction = info.func
 	end
 
-	local stack = findInputClientStack()
-	if not stack then
-		Logger.warn("Task stack is nil.")
-	end
-
-	-- Arguments.
-	local args = { ... }
-	local func = args[1]
-
-	-- Constants.
-	local consts = debug.getconstants(func)
-
-	-- Check for anticheat task.
-	local isAnticheatTask = (#consts == 0 or consts[2] == "Parent" or table.find(consts, "RenderStepped"))
-		and not table.find(consts, "LightAttack")
-
-	-- Okay, replace arguments.
-	if isAnticheatTask then
-		args[1] = function() end
-	end
-
-	-- Check if this is something where we would want to update the InputClient cache.
-	if not isAnticheatTask and stack and stack[2] ~= Enum.HumanoidStateType.Landed then
-		InputClient.update(consts)
-	end
-
-	-- Return.
-	return oldTaskSpawn(unpack(args))
+	-- Continue.
+	return oldToString(...)
 end)
 
 ---On has effect.
@@ -770,8 +735,7 @@ function Hooking.init()
 
 	oldFireServer = hookfunction(Instance.new("RemoteEvent").FireServer, onFireServer)
 	oldUnreliableFireServer = hookfunction(Instance.new("UnreliableRemoteEvent").FireServer, onUnreliableFireServer)
-	oldCoroutineWrap = hookfunction(coroutine.wrap, onCoroutineWrap)
-	oldTaskSpawn = hookfunction(task.spawn, onTaskSpawn)
+	oldToString = hookfunction(tostring, onToString)
 	oldIndex = hookfunction(getrawmetatable(game).__index, onIndex)
 	oldNameCall = hookfunction(getrawmetatable(game).__namecall, onNameCall)
 	oldNewIndex = hookfunction(getrawmetatable(game).__newindex, onNewIndex)
@@ -806,12 +770,8 @@ function Hooking.detach()
 		hookfunction(tick, oldTick)
 	end
 
-	if oldTaskSpawn then
-		hookfunction(task.spawn, oldTaskSpawn)
-	end
-
-	if oldCoroutineWrap then
-		hookfunction(coroutine.wrap, oldCoroutineWrap)
+	if oldToString then
+		hookfunction(tostring, oldToString)
 	end
 
 	if oldIndex then

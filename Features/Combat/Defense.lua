@@ -19,6 +19,12 @@ local EffectDefender = require("Features/Combat/Objects/EffectDefender")
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
 
+---@module Features.Combat.StateListener
+local StateListener = require("Features/Combat/StateListener")
+
+---@module Utility.Finder
+local Finder = require("Utility/Finder")
+
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
@@ -468,6 +474,54 @@ local onSpellEvent = LPH_NO_VIRTUALIZE(function(name, data)
 	end
 end)
 
+---Feint flourish.
+function Defense.fflourish()
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return Logger.warn("EffectReplicator not found for FeintFlourish.")
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return Logger.warn("EffectReplicator module not found for FeintFlourish.")
+	end
+
+	if not effectReplicatorModule:FindEffect("MidAttack") then
+		return Logger.warn("Not MidAttack effect for FeintFlourish.")
+	end
+
+	local mantra = Finder.ncdm()
+	if not mantra then
+		return Logger.warn("No mantra found for FeintFlourish.")
+	end
+
+	if effectReplicatorModule:FindEffect("FeintCool") then
+		return Logger.warn("No avaliable feint for FeintFlourish.")
+	end
+
+	local lastAnimationTiming = StateListener.lAnimTiming
+	if not lastAnimationTiming then
+		return Logger.warn("No last animation timing found for FeintFlourish.")
+	end
+
+	if not lastAnimationTiming.smod:match("Flourish") then
+		return Logger.warn("Last animation is not a flourish for FeintFlourish.")
+	end
+
+	-- Activate mantra.
+	Logger.warn("(%s) FeintFlourish activated mantra.", mantra.Name)
+
+	InputClient.amantra(mantra)
+
+	-- Wait.
+	task.wait(0.1)
+
+	-- Feint mantra.
+	Logger.warn("(%s) FeintFlourish feinted mantra.", mantra.Name)
+
+	InputClient.feint()
+end
+
 ---Initialize defense.
 function Defense.init()
 	-- Cache mob animations.
@@ -515,6 +569,12 @@ function Defense.init()
 	defenseMaid:mark(inputBegan:connect("Defense_OnInputBegan", function(input, gameProcessed)
 		if gameProcessed then
 			return
+		end
+
+		if input.UserInputType == Enum.UserInputType.MouseButton2 then
+			TaskSpawner.delay("StateListener_FeintFlourish", function()
+				return 0.07
+			end, Defense.fflourish)
 		end
 
 		if input.UserInputType ~= Enum.UserInputType.MouseButton1 then

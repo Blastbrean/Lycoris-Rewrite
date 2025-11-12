@@ -261,8 +261,6 @@ function Lycoris.init()
 		return
 	end
 
-	InputClient.cache()
-
 	SaveManager.init()
 
 	ModuleManager.refresh()

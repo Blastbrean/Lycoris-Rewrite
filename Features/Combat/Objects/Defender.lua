@@ -326,6 +326,10 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, options)
 		return internalNotifyFunction(timing, "Window is not active.")
 	end
 
+	if selectedFilters["Disable During Chime Countdown"] and StateListener.ccd() then
+		return internalNotifyFunction(timing, "Chime countdown is active.")
+	end
+
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
 		return internalNotifyFunction(timing, "No effect replicator found.")
@@ -687,7 +691,22 @@ end)
 ---@param self Defender
 ---@param timing Timing
 ---@param action Action
-Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action)
+---@param started number
+Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, started)
+	-- Handle auto feint. We want to feint before the parry action gets sent out.
+	-- We don't want to do this for any action that has:
+	-- 1. Delay until in hitbox because we don't know the actual timing
+	-- 2. A zero when time because it is instant
+	-- 3. Is not an animation defender because it won't make sense to feint non-animation actions.
+	if
+		Configuration.expectToggleValue("AutoFeint")
+		and not timing.duih
+		and action._when > 0
+		and self.__type == "Animation"
+	then
+		self:afeint(timing, action, started)
+	end
+
 	if PP_SCRAMBLE_STR(action._type) ~= "End Block" then
 		if not self:valid(ValidationOptions.new(action, timing)) then
 			return
@@ -781,8 +800,7 @@ Defender.parry = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return self:notify(...)
 	end
 
-	-- Parry if possible.
-	-- We'll assume that we're in the parry state. There's no other type.
+	-- Parry if possible. Handles replacements.
 	if StateListener.cparry() then
 		if timing.nfdb or not StateListener.cdodge() or not dashReplacement then
 			return InputClient.deflect()
@@ -793,41 +811,39 @@ Defender.parry = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return InputClient.dodge()
 	end
 
-	---Block fallback function. Returns whether the fallback was successful.
-	---@return boolean
-	local function blockFallback()
-		if not Configuration.expectToggleValue("DeflectBlockFallback") then
-			return false
-		end
+	-- What fallbacks can we run?
+	local canBlock = StateListener.cblock() and Configuration.expectToggleValue("DeflectBlockFallback")
+	local canVent = StateListener.cvent() and Configuration.expectToggleValue("VentFallback")
+	local canDodge = StateListener.cdodge()
+		and Configuration.expectToggleValue("RollOnParryCooldown")
+		and not timing.ndfb
 
-		if not StateListener.cblock() then
-			return internalNotify(timing, "We are unable to do anything because we are unable to block.")
-		end
+	if canDodge then
+		-- Dodge.
+		InputClient.dodge()
 
-		internalNotify(timing, "Action fallback 'Parry' is using block frames.")
-
-		InputClient.deflect()
-
-		return true
+		-- Notify.
+		return internalNotify(timing, "Action type 'Parry' fallback to 'Dodge' type.")
 	end
 
-	-- Dodge fallback.
-	if not Configuration.expectToggleValue("RollOnParryCooldown") then
-		return blockFallback()
+	if canBlock then
+		-- Block.
+		InputClient.deflect(Configuration.expectToggleValue("HoldBlockTime"))
+
+		-- Notify.
+		return internalNotify(timing, "Action type 'Parry' fallback to 'Block' type.")
 	end
 
-	if timing.ndfb then
-		return internalNotify(timing, "Action fallback 'Dodge' is disabled for this timing.")
+	if canVent then
+		-- Vent.
+		InputClient.vent()
+
+		-- Notify.
+		return internalNotify(timing, "Action type 'Parry' fallback to 'Vent' type.")
 	end
 
-	if not StateListener.cdodge() then
-		return blockFallback()
-			or internalNotify(timing, "Action fallback 'Dodge' blocked because we are unable to dash.")
-	end
-
-	internalNotify(timing, "Action type 'Parry' overrided to 'Dodge' type.")
-
-	return InputClient.dodge()
+	-- Cannot fallback.
+	return internalNotify(timing, "Action 'Parry' blocked because no fallbacks are available.")
 end)
 
 ---Check if we have input blocking tasks.
@@ -1012,26 +1028,10 @@ Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	-- Get initial receive delay.
 	local rdelay = self.rdelay()
 
-	-- Handle auto feint. We want to feint before the parry action gets sent out.
-	-- We don't want to do this for any action that has:
-	-- 1. Delay until in hitbox because we don't know the actual timing
-	-- 2. A zero when time because it is instant
-	-- 3. Is not an animation defender because it won't make sense to feint non-animation actions.
-	if
-		Configuration.expectToggleValue("AutoFeint")
-		and not timing.duih
-		and action._when > 0
-		and self.__type == "Animation"
-	then
-		self:mark(Task.new(string.format("AutoFeint_%s", action.name), function()
-			return action:when() - rdelay - (self.sdelay() * 2)
-		end, timing.punishable, timing.after, self.afeint, self, timing, action, os.clock()))
-	end
-
 	-- Add action.
 	self:mark(Task.new(PP_SCRAMBLE_STR(action._type), function()
 		return action:when() - rdelay - self.sdelay()
-	end, timing.punishable, timing.after, self.handle, self, timing, action))
+	end, timing.punishable, timing.after, self.handle, self, timing, action, os.clock()))
 
 	-- Log.
 	if not LRM_UserNote or LRM_UserNote == "tester" then

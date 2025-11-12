@@ -144,15 +144,38 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		Default = false,
 		Callback = Defense.visualizations,
 	})
+
 	autoDefenseDepBox:AddToggle("RollOnParryCooldown", {
 		Text = "Roll On Parry Cooldown",
 		Default = false,
 	})
 
-	autoDefenseDepBox:AddToggle("DeflectBlockFallback", {
+	autoDefenseDepBox:AddToggle("VentFallback", {
+		Text = "Vent Fallback",
+		Default = false,
+		Tooltip = "This is used as a last resort. If 'Deflect Block Fallback' is on, it will wait for shaky block.",
+	})
+
+	local dbfToggle = autoDefenseDepBox:AddToggle("DeflectBlockFallback", {
 		Text = "Deflect Block Fallback",
 		Default = false,
 		Tooltip = "If enabled, the auto defense will fallback to block frames if parry action and/or fallback is not available.",
+	})
+
+	local dbfDepBox = autoDefenseDepBox:AddDependencyBox()
+
+	dbfDepBox:AddSlider("HoldBlockTime", {
+		Text = "Hold Block Time",
+		Default = 0.0,
+		Min = 0,
+		Max = 0.3,
+		Suffix = "s",
+		Rounding = 2,
+		Tooltip = "Additional time to hold block for when using block as a fallback.",
+	})
+
+	dbfDepBox:SetupDependencies({
+		{ dbfToggle, true },
 	})
 
 	local rollCancelToggle = autoDefenseDepBox:AddToggle("RollCancel", {
@@ -237,6 +260,7 @@ function CombatTab.initAutoDefenseSection(groupbox)
 			"Disable When Window Not Active",
 			"Disable While Holding Block",
 			"Disable While Using Sightless Beam",
+			"Disable During Chime Countdown",
 		},
 		Multi = true,
 		AllowNull = true,
@@ -248,17 +272,13 @@ function CombatTab.initAutoDefenseSection(groupbox)
 	})
 end
 
--- Initialize feint detection section.
+---Initialize timing probability section.
 ---@param groupbox table
-function CombatTab.initFeintDetectionSection(groupbox) end
+function CombatTab.initTimingProbabilitySection(groupbox) end
 
--- Initialize attack assistance section.
+---Initialize attack assistance section.
 ---@param groupbox table
 function CombatTab.initAttackAssistanceSection(groupbox)
-	if LRM_UserNote then
-		return
-	end
-
 	groupbox:AddToggle("AutoFeint", {
 		Text = "Auto Feint",
 		Default = false,
@@ -339,6 +359,18 @@ function CombatTab.initCombatAssistance(groupbox)
 		Default = false,
 		Tooltip = "Automatically recover from ragdoll state.",
 	})
+
+	groupbox:AddToggle("FeintFlourish", {
+		Text = "Feint Flourish",
+		Default = false,
+		Tooltip = "Allow yourself to feint your flourish attacks. You need a mantra.",
+	})
+
+	groupbox:AddToggle("ExtendRollCancelFrames", {
+		Text = "Extend Roll Cancel Frames",
+		Default = false,
+		Tooltip = "Extends the roll cancel frames to give you more dodge leniency.",
+	})
 end
 
 ---Initialize tab.
@@ -358,6 +390,7 @@ function CombatTab.init(window)
 	-- Initialize other sections.
 	CombatTab.initAttackAssistanceSection(tab:AddDynamicGroupbox("Attack Assistance"))
 	CombatTab.initCombatAssistance(tab:AddDynamicGroupbox("Combat Assistance"))
+	CombatTab.initTimingProbabilitySection(tab:AddDynamicGroupbox("Timing Probability"))
 end
 
 -- Return CombatTab module.
