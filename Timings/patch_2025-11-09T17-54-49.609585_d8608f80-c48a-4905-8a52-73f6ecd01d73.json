@@ -1,0 +1,22 @@
+{
+  "patch_id": "d8608f80-c48a-4905-8a52-73f6ecd01d73",
+  "timestamp": "2025-11-09T17:54:49.609585",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://13253662736": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "NeedleBarrage"
+          }
+        }
+      }
+    }
+  }
+}

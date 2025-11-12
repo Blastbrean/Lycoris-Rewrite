@@ -22,9 +22,9 @@ return function(self, timing)
 		timing.fhb = false
 
 		local action = Action.new()
-		action._when = 900
+		action._when = 1000
 		action._type = "Parry"
-		action.hitbox = Vector3.new(30, 30, 30)
+		action.hitbox = Vector3.new(45, 45, 55)
 		action.name = "Dynamic Mantle Of Enmity Swing"
 
 		return self:action(timing, action)

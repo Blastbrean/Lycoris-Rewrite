@@ -1,0 +1,34 @@
+{
+  "patch_id": "f86d4006-979c-4928-83f1-16667c745820",
+  "timestamp": "2025-11-11T12:14:40.817086",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://12496640760": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "pfh": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "WeaponAerialAttackTest"
+          },
+          "phd": {
+            "from": false,
+            "to": true
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "patch_id": "0f0f70a2-ebfc-4f99-8618-264634a41be9",
+  "timestamp": "2025-11-11T12:39:25.778596",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://12496640760": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "pfh": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "WeaponAerialAttackTest"
+          },
+          "phd": {
+            "from": false,
+            "to": true
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      },
+      "rbxassetid://12138869158": {
+        "status": "modified",
+        "changes": {
+          "hso": {
+            "from": 0,
+            "to": 3
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 15,
+                  "X": 15,
+                  "Z": 16
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 15,
+                  "X": 19,
+                  "Z": 19
+                },
+                "when": 400,
+                "ihbc": false
+              }
+            ]
+          },
+          "hitbox": {
+            "from": {
+              "Y": 15,
+              "X": 18,
+              "Z": 23
+            },
+            "to": {
+              "Y": 18,
+              "X": 23,
+              "Z": 23
+            }
+          }
+        }
+      },
+      "rbxassetid://12496646061": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "pfht": {
+            "from": 0.15,
+            "to": 0.1
+          },
+          "pfh": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "WeaponRunningAttackTest"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

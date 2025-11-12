@@ -1,0 +1,37 @@
+{
+  "patch_id": "e8217ff0-1243-4af6-9505-771a80fb599b",
+  "timestamp": "2025-11-11T17:33:54.217131",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "BombCharge": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "pname": "BombCharge",
+          "smod": "N/A",
+          "hso": 0,
+          "actions": [],
+          "ndfb": false,
+          "after": 0,
+          "uhc": true,
+          "duih": true,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 126
+          },
+          "punishable": 0,
+          "name": "EthironBomb",
+          "imxd": 2500,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "patch_id": "0ea11d3a-a671-4136-b78c-0a7765856beb",
+  "timestamp": "2025-11-09T17:26:15.064052",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "FireBullet": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 5,
+              "X": 5,
+              "Z": 14
+            },
+            "to": {
+              "Y": 5,
+              "X": 5,
+              "Z": 12
+            }
+          },
+          "fhb": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

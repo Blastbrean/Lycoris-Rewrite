@@ -1,0 +1,30 @@
+{
+  "patch_id": "e05bc2fc-7893-4997-8036-b07f0e96b12e",
+  "timestamp": "2025-11-11T11:47:41.068211",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://5828315760": {
+        "status": "modified",
+        "changes": {
+          "pfh": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "AirForce"
+          },
+          "fhb": {
+            "from": true,
+            "to": false
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

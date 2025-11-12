@@ -1,0 +1,26 @@
+{
+  "patch_id": "8f9dbee0-13be-4a06-a388-60e9b209f455",
+  "timestamp": "2025-11-11T17:50:41.337334",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "BombCharge": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 85,
+              "X": 85,
+              "Z": 85
+            },
+            "to": {
+              "Y": 78,
+              "X": 78,
+              "Z": 78
+            }
+          }
+        }
+      }
+    }
+  }
+}

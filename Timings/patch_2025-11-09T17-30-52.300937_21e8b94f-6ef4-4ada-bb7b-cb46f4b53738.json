@@ -1,0 +1,24 @@
+{
+  "patch_id": "21e8b94f-6ef4-4ada-bb7b-cb46f4b53738",
+  "timestamp": "2025-11-09T17:30:52.300937",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://5773120368": {
+        "status": "removed",
+        "name": "FireGun"
+      }
+    },
+    "part": {
+      "FireBullet": {
+        "status": "modified",
+        "changes": {
+          "imdd": {
+            "from": 16,
+            "to": 0
+          }
+        }
+      }
+    }
+  }
+}

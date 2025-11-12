@@ -1,0 +1,26 @@
+{
+  "patch_id": "b9b62db4-e13f-4ce2-b96b-867ebf2b662c",
+  "timestamp": "2025-11-11T11:43:31.529956",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11493924588": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "WeaponRunningAttackTest"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

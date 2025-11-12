@@ -9,11 +9,12 @@ return function(self, timing)
 	action._when = 740
 	action._type = "Parry"
 	action.hitbox = Vector3.new(18, 18, 30)
-	action.name = "Dynamic Titus Drive Timing"
+	action.name = "Dynamic Skycrash Timing"
 
 	if self.entity.Name:match(".titus") then
 		action.hitbox *= 2.0
 		action._type = "Dodge"
+		action.name = "Dynamic Titus Skycrash Timing"
 	end
 
 	return self:action(timing, action)

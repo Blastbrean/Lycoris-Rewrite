@@ -1,0 +1,18 @@
+{
+  "patch_id": "f9b9f99d-b126-44e9-991b-c97211dd7a20",
+  "timestamp": "2025-11-11T10:57:40.843575",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "WindTrap": {
+        "status": "modified",
+        "changes": {
+          "fhb": {
+            "from": true,
+            "to": false
+          }
+        }
+      }
+    }
+  }
+}

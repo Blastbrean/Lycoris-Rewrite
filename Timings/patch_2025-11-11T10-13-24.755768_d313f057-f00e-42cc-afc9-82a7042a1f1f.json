@@ -1,0 +1,22 @@
+{
+  "patch_id": "d313f057-f00e-42cc-afc9-82a7042a1f1f",
+  "timestamp": "2025-11-11T10:13:24.755768",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://113791985784867": {
+        "status": "modified",
+        "changes": {
+          "duih": {
+            "from": true,
+            "to": false
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "TitusSkycrashGo"
+          }
+        }
+      }
+    }
+  }
+}

@@ -29,7 +29,7 @@ return function(self, timing)
 		return candidate.Name == "STREAMPART"
 	end)
 
-	task.wait(0.6 - self.rtt())
+	task.wait(0.575 - self.rtt())
 
 	if self:distance(self.entity) <= 25 then
 		local action = Action.new()

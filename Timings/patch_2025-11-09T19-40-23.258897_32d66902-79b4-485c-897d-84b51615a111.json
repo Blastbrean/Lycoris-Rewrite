@@ -1,0 +1,26 @@
+{
+  "patch_id": "32d66902-79b4-485c-897d-84b51615a111",
+  "timestamp": "2025-11-09T19:40:23.258897",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "SeekerOrb": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 1,
+              "X": 1,
+              "Z": 1
+            },
+            "to": {
+              "Y": 2,
+              "X": 2,
+              "Z": 2
+            }
+          }
+        }
+      }
+    }
+  }
+}

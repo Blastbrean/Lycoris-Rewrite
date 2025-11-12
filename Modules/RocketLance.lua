@@ -9,7 +9,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 400
 	action._type = "Parry"
-	action.hitbox = Vector3.new(15, 15, 20)
+	action.hitbox = Vector3.new(20, 15, 26)
 	action.name = string.format("(%.2f) Static Rocket Lance Timing", distance)
 	return self:action(timing, action)
 end

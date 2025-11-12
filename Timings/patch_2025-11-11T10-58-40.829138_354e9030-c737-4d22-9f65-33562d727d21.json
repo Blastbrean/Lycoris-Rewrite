@@ -1,0 +1,54 @@
+{
+  "patch_id": "354e9030-c737-4d22-9f65-33562d727d21",
+  "timestamp": "2025-11-11T10:58:40.829138",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "WindTrap": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 0,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 0,
+                  "X": 0,
+                  "Z": 0
+                },
+                "when": 150,
+                "ihbc": false
+              }
+            ]
+          },
+          "hitbox": {
+            "from": {
+              "Y": 21,
+              "X": 21,
+              "Z": 21
+            },
+            "to": {
+              "Y": 14,
+              "X": 14,
+              "Z": 14
+            }
+          }
+        }
+      }
+    }
+  }
+}
