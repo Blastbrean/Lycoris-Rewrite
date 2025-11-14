@@ -1,0 +1,22 @@
+{
+  "patch_id": "8b5c1299-5495-460e-b4de-3142c95c20f1",
+  "timestamp": "2025-11-13T20:56:19.907027",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11312302005": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "GaleHeroblade"
+          }
+        }
+      }
+    }
+  }
+}

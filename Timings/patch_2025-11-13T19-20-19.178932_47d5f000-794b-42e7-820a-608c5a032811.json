@@ -1,0 +1,18 @@
+{
+  "patch_id": "47d5f000-794b-42e7-820a-608c5a032811",
+  "timestamp": "2025-11-13T19:20:19.178932",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11328614766": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "LordsSlice"
+          }
+        }
+      }
+    }
+  }
+}
