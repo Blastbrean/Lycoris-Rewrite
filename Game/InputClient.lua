@@ -908,9 +908,8 @@ InputClient.roll = LPH_NO_VIRTUALIZE(function(pivotStep, rollCancelTime)
 		loadedRollAnimation:Play()
 	end
 
-	---@todo: guyz this doesn't work .Sound
+	---@todo: guyz this doesn't work .Sound sometimes
 	local robloxGlobalEnvironment = getrenv()._G
-
 	local arcSuitDash = effectReplicatorModule:HasEffect("ArcSuit") and hasTalent(character, "Arc Module: Dash")
 	local dashItEffect = effectReplicatorModule:CreateEffect("DashIt")
 
@@ -931,7 +930,6 @@ InputClient.roll = LPH_NO_VIRTUALIZE(function(pivotStep, rollCancelTime)
 	rollBodyVelocity.MaxForce = Vector3.new(50000, 0, 50000, 0)
 
 	---@note: Exempt crouch boolean flag.
-
 	if pivotStep then
 		rollMoveDirectionMulti = rollMoveDirectionMulti + 10
 	end

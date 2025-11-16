@@ -10,7 +10,7 @@ local Mantra = getfenv().Mantra
 return function(self, timing)
 	local data = Mantra.data(self.entity, "Mantra:GunWind{{Wind Gun}}")
 
-	task.wait(0.5 - self.rtt())
+	task.wait(0.45 - self.rtt())
 
 	local action = Action.new()
 	action._when = self.track.Speed > 1.00 and 0 or 350

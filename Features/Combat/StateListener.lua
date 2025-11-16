@@ -195,7 +195,7 @@ function StateListener.astun()
 		return false
 	end
 
-	if lAnimationValidTrack.IsPlaying and os.clock() - lAnimTimestamp <= (lAnimFaction:when() + 0.1) then
+	if lAnimationValidTrack.IsPlaying and os.clock() - lAnimTimestamp <= (lAnimFaction:when() + 0.3) then
 		return true
 	end
 

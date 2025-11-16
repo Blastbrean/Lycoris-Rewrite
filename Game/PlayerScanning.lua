@@ -68,6 +68,103 @@ local partialStringFind = LPH_NO_VIRTUALIZE(function(list, value)
 	return nil
 end)
 
+---Fetch roblox data.
+---@param url string
+---@return boolean, string?
+local function fetchRobloxData(url)
+	if lastRateLimit and os.clock() - lastRateLimit <= 30 then
+		return false, "On rate-limit cooldown."
+	end
+
+	local response = request({
+		Url = url,
+		Method = "GET",
+		Headers = {
+			["Content-Type"] = "application/json",
+		},
+	})
+
+	if response.StatusCode == 429 then
+		Logger.longNotify("Player scanning is being rate-limited and results will be delayed.")
+		Logger.longNotify("Please stay in the server with caution.")
+
+		lastRateLimit = os.clock()
+
+		return false, "Rate-limited."
+	end
+
+	if not response then
+		return error("Failed to fetch Roblox data.")
+	end
+
+	if not response.Success then
+		return error(
+			string.format("Failed to successfully fetch Roblox data with status code %i.", response.StatusCode)
+		)
+	end
+
+	if not response.Body then
+		return error("Failed to find Roblox data.")
+	end
+
+	return true, httpService:JSONDecode(response.Body)
+end
+
+---Check inventories for tools.
+local function checkInventoriesForTools()
+	for _, player in next, players:GetPlayers() do
+		if not Configuration.expectToggleValue("NotifyItems") then
+			continue
+		end
+
+		if player == players.LocalPlayer then
+			continue
+		end
+
+		local backpack = player:FindFirstChild("Backpack")
+		if not backpack then
+			continue
+		end
+
+		local notifyItemsList = Options.NotifyItemsList and Options.NotifyItemsList.Values
+		if not notifyItemsList then
+			continue
+		end
+
+		-- Check if the player has any items that match the notify items list.
+		for _, tool in next, backpack:GetChildren() do
+			if seenTools[tool] then
+				continue
+			end
+
+			local itemName = tool:GetAttribute("ItemName")
+			if typeof(itemName) ~= "string" or itemName == "" then
+				continue
+			end
+
+			local matchedString = partialStringFind(notifyItemsList, itemName)
+			if not matchedString then
+				continue
+			end
+
+			seenTools[tool] = matchedString
+
+			Logger.longNotify("%s has item '%s' in their inventory.", fetchName(player), itemName)
+		end
+
+		-- If the matched string that filtered this item is no longer in the list, remove it.
+		for tool, matched in next, seenTools do
+			if table.find(notifyItemsList, matched) then
+				continue
+			end
+
+			seenTools[tool] = nil
+		end
+	end
+
+	lastCheckedTimestamp = os.clock()
+end
+
 ---Run player scans.
 local runPlayerScans = LPH_NO_VIRTUALIZE(function()
 	local localPlayer = players.LocalPlayer
@@ -173,48 +270,6 @@ function PlayerScanning.isAlly(player)
 		or ((localPlayerGuild and #localPlayerGuild >= 1) and player:GetAttribute("Guild") == localPlayerGuild)
 end
 
----Fetch roblox data.
----@param url string
----@return boolean, string?
-local function fetchRobloxData(url)
-	if lastRateLimit and os.clock() - lastRateLimit <= 30 then
-		return false, "On rate-limit cooldown."
-	end
-
-	local response = request({
-		Url = url,
-		Method = "GET",
-		Headers = {
-			["Content-Type"] = "application/json",
-		},
-	})
-
-	if response.StatusCode == 429 then
-		Logger.longNotify("Player scanning is being rate-limited and results will be delayed.")
-		Logger.longNotify("Please stay in the server with caution.")
-
-		lastRateLimit = os.clock()
-
-		return false, "Rate-limited."
-	end
-
-	if not response then
-		return error("Failed to fetch Roblox data.")
-	end
-
-	if not response.Success then
-		return error(
-			string.format("Failed to successfully fetch Roblox data with status code %i.", response.StatusCode)
-		)
-	end
-
-	if not response.Body then
-		return error("Failed to find Roblox data.")
-	end
-
-	return true, httpService:JSONDecode(response.Body)
-end
-
 ---Get staff rank - nil if they're not a staff.
 ---@param player Player
 ---@return string?
@@ -239,61 +294,6 @@ function PlayerScanning.getStaffRank(player)
 	end
 
 	return true, nil
-end
-
----Check inventories for tools.
-local function checkInventoriesForTools()
-	for _, player in next, players:GetPlayers() do
-		if not Configuration.expectToggleValue("NotifyItems") then
-			continue
-		end
-
-		if player == players.LocalPlayer then
-			continue
-		end
-
-		local backpack = player:FindFirstChild("Backpack")
-		if not backpack then
-			continue
-		end
-
-		local notifyItemsList = Options.NotifyItemsList and Options.NotifyItemsList.Values
-		if not notifyItemsList then
-			continue
-		end
-
-		-- Check if the player has any items that match the notify items list.
-		for _, tool in next, backpack:GetChildren() do
-			if seenTools[tool] then
-				continue
-			end
-
-			local itemName = tool:GetAttribute("ItemName")
-			if typeof(itemName) ~= "string" or itemName == "" then
-				continue
-			end
-
-			local matchedString = partialStringFind(notifyItemsList, itemName)
-			if not matchedString then
-				continue
-			end
-
-			seenTools[tool] = matchedString
-
-			Logger.longNotify("%s has item '%s' in their inventory.", fetchName(player), itemName)
-		end
-
-		-- If the matched string that filtered this item is no longer in the list, remove it.
-		for tool, matched in next, seenTools do
-			if table.find(notifyItemsList, matched) then
-				continue
-			end
-
-			seenTools[tool] = nil
-		end
-	end
-
-	lastCheckedTimestamp = os.clock()
 end
 
 ---Update player scanning.

@@ -10,16 +10,20 @@ clientPart:Destroy()
 ---@param part BasePart
 ---@return boolean
 local function hasNetworkOwnership(part)
+	local exploitFallback = isnetworkowner or function(...)
+		return false
+	end
+
 	if getexecutorname():match("AWP") then
-		return isnetworkowner(part)
+		return exploitFallback(part)
 	end
 
 	if getexecutorname():match("Volcano") then
-		return isnetworkowner(part)
+		return exploitFallback(part)
 	end
 
 	if not clientSuccess then
-		return isnetworkowner(part)
+		return exploitFallback(part)
 	end
 
 	local partSuccess, partPeerId = pcall(function()
@@ -27,7 +31,7 @@ local function hasNetworkOwnership(part)
 	end)
 
 	if not partSuccess then
-		return isnetworkowner(part)
+		return exploitFallback(part)
 	end
 
 	return partPeerId == clientPeerId

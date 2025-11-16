@@ -973,7 +973,7 @@ Defender.afeint = LPH_NO_VIRTUALIZE(function(self, timing, action, started)
 	-- If not, then we did our goal, and prevented the user from getting hit.
 
 	-- Time until our animation ends.
-	local animTimeLeft = lfaction:when() - (os.clock() - latimestamp)
+	local animTimeLeft = (lfaction:when() - (os.clock() - latimestamp)) + self.rtt()
 
 	-- Time until the enemy's action hits us.
 	local enemyTimeLeft = action:when() - (os.clock() - started)
