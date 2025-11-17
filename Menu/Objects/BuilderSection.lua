@@ -673,18 +673,6 @@ function BuilderSection:builder()
 		end),
 	})
 
-	self.blockHoldTime = tab:AddSlider(nil, {
-		Text = "Block Fallback Hold Time",
-		Min = 0,
-		Max = 5,
-		Suffix = "s",
-		Default = 0.3,
-		Rounding = 2,
-		Callback = self:tnc(function(timing, value)
-			timing.bfht = value
-		end),
-	})
-
 	self.initialMinimumDistance = tab:AddSlider(nil, {
 		Text = "Initial Minimum Distance",
 		Min = 0,
@@ -730,6 +718,18 @@ function BuilderSection:builder()
 		Rounding = 2,
 		Callback = self:tnc(function(timing, value)
 			timing.after = value
+		end),
+	})
+
+	self.blockFallbackHoldTime = tab:AddSlider(nil, {
+		Text = "Block Fallback Hold Time",
+		Min = 0,
+		Max = 5,
+		Suffix = "s",
+		Default = 0.3,
+		Rounding = 2,
+		Callback = self:tnc(function(timing, value)
+			timing.bfht = value
 		end),
 	})
 

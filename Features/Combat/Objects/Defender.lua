@@ -756,7 +756,7 @@ Defender.parry = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	end
 
 	-- What fallbacks can we run?
-	local canBlock = StateListener.cblock() and Configuration.expectToggleValue("DeflectBlockFallback")
+	local canBlock = Configuration.expectToggleValue("DeflectBlockFallback")
 	local canVent = StateListener.cvent() and Configuration.expectToggleValue("VentFallback") and not timing.nvfb
 	local canDodge = StateListener.cdodge()
 		and Configuration.expectToggleValue("RollOnParryCooldown")

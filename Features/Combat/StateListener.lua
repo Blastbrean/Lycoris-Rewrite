@@ -269,14 +269,6 @@ function StateListener.cvent()
 	return true
 end
 
----Can we block?
----@return boolean
-function StateListener.cblock()
-	local effectReplicator = replicatedStorage:WaitForChild("EffectReplicator")
-	local effectReplicatorModule = require(effectReplicator)
-	return effectReplicatorModule:HasAny("ShakyBlock", "CancelBlock")
-end
-
 ---Can we parry?
 ---@return boolean
 function StateListener.cparry()

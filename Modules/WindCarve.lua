@@ -14,18 +14,20 @@ return function(self, timing)
 	local data = Mantra.data(self.entity, "Mantra:CarveWind{{Wind Carve}}")
 	local range = data.stratus * 1.4 + data.cloud * 0.9
 
-	local info = RepeatInfo.new(timing, self.rdelay(), self:uid(10))
-	info.track = self.track
+	timing.ffh = true
+	timing.fhb = true
+	timing.rpue = false
 
 	local action = Action.new()
-	timing.fhb = true
-	timing.rpue = true
-	timing.duih = true
-	timing.imdd = 0
-	timing.imxd = 100
-	timing._rsd = 400
-	timing._rpd = 500
-	timing.hitbox = Vector3.new(18 + range, 15 + range, 15 + range)
+	action._when = 400
+	action._type = "Start Block"
+	action.hitbox = Vector3.new(18 + range, 15 + range, 15 + range)
+	action.name = "Wind Carve Start"
+	self:action(timing, action)
 
-	self:srpue(self.entity, timing, info)
+	local actionEnd = Action.new()
+	actionEnd._when = 1500
+	actionEnd._type = "End Block"
+	actionEnd.name = "Wind Carve End"
+	return self:action(timing, actionEnd)
 end
