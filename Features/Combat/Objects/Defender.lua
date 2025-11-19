@@ -156,6 +156,8 @@ Defender.srpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 	if timing.umoa or timing.cbm then
 		timing["_rpd"] = PP_SCRAMBLE_RE_NUM(timing["_rpd"])
 		timing["_rsd"] = PP_SCRAMBLE_RE_NUM(timing["_rsd"])
+		timing["imdd"] = PP_SCRAMBLE_RE_NUM(timing["imdd"])
+		timing["imxd"] = PP_SCRAMBLE_RE_NUM(timing["imxd"])
 	end
 
 	local cache = {
@@ -220,7 +222,7 @@ Defender.rpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info, cache)
 	if timing.duih and target then
 		success = self:hc(options, info)
 	end
-
+	print(distance, cache.imdd, cache.imxd)
 	if timing and (distance < cache.imdd or distance > cache.imxd) then
 		success = false
 	end
@@ -312,6 +314,10 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, options)
 
 	if effectReplicatorModule:FindEffect("Knocked") then
 		return internalNotifyFunction(timing, "User is knocked.")
+	end
+
+	if effectReplicatorModule:FindEffect("HitAnim") then
+		return internalNotifyFunction(timing, "User is in hit animation.")
 	end
 
 	if timing.tag == "M1" and selectedFilters["Filter Out M1s"] then

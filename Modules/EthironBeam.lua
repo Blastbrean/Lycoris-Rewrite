@@ -32,7 +32,8 @@ return function(self, timing)
 		timing.iae = true
 		timing.rpue = true
 		timing.duih = false
-		timing.imxd = 600
+		timing.imdd = 0
+		timing.imxd = 1000
 		timing._rsd = 800
 		timing._rpd = 150
 		return self:srpue(self.entity, timing, info)
