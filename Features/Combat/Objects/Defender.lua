@@ -168,6 +168,7 @@ Defender.srpue = LPH_NO_VIRTUALIZE(function(self, entity, timing, info)
 		["rpd"] = timing:rpd(),
 	}
 
+	local target = self:target(entity)
 	local options = HitboxOptions.new(target and target.root or CFrame.new(), timing)
 	options.spredict = not timing.duih
 	options.ptime = self:fsecs(timing)
