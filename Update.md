@@ -31,4 +31,4 @@
 **New features?**
 *No new features. They will come later today. ESP Rework and Whitelisting Rework soon!*
 
-*Your commit ID should be "897de9" when the update is pushed to you.*
+*Your commit ID should be "ebc792" when the update is pushed to you.*
