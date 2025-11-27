@@ -1,0 +1,74 @@
+{
+  "patch_id": "3b3fb051-c51c-4799-aa2e-fe000fe61199",
+  "timestamp": "2025-11-27T15:42:23.310574",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://13290263661": {
+        "status": "modified",
+        "changes": {
+          "bfht": {
+            "from": 0.3,
+            "to": 0.71
+          }
+        }
+      },
+      "rbxassetid://5067090007": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://7627372304": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.2500000298023224,
+            "to": 0.25
+          }
+        }
+      },
+      "rbxassetid://13567686046": {
+        "status": "modified",
+        "changes": {
+          "bfht": {
+            "from": 0.5000000596046448,
+            "to": 0.75
+          }
+        }
+      },
+      "rbxassetid://5064195992": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://5067105317": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      }
+    },
+    "part": {
+      "StaticBall": {
+        "status": "modified",
+        "changes": {
+          "bfht": {
+            "from": 0.3,
+            "to": 0.13
+          }
+        }
+      }
+    }
+  }
+}
