@@ -2637,8 +2637,8 @@
               "name": "Release",
               "hitbox": {
                 "Y": 300,
-                "X": 31,
-                "Z": 31
+                "X": 40,
+                "Z": 40
               },
               "when": 575,
               "ihbc": false
@@ -2669,7 +2669,7 @@
           "dp": false,
           "phd": false,
           "phds": 0,
-          "pfht": 0.15,
+          "pfht": 0.25,
           "aatk": false,
           "nvfb": false,
           "smn": false,
