@@ -1,5 +1,5 @@
----@module Features.Visuals.Objects.InstanceESP
-local InstanceESP = require("Features/Visuals/Objects/InstanceESP")
+---@module Features.Visuals.Objects.EntityESP
+local EntityESP = require("Features/Visuals/Objects/EntityESP")
 
 ---@module Utility.Configuration
 local Configuration = require("Utility/Configuration")
@@ -7,44 +7,88 @@ local Configuration = require("Utility/Configuration")
 ---@module Game.PlayerScanning
 local PlayerScanning = require("Game/PlayerScanning")
 
----@class PlayerESP: InstanceESP
----@field baseLabel string
----@field player Player
----@field character Model
----@field identifier string
----@field shadow Part
-local PlayerESP = setmetatable({}, { __index = InstanceESP })
+---@class PlayerESP: EntityESP
+local PlayerESP = setmetatable({}, { __index = EntityESP })
 PlayerESP.__index = PlayerESP
 PlayerESP.__type = "PlayerESP"
-
--- Services.
-local players = game:GetService("Players")
 
 -- Formats.
 local ESP_HEALTH = "[%i/%i]"
 local ESP_POWER = "[Power %i]"
-local ESP_TEMPO = "[%i%% tempo]"
-local ESP_BLOOD = "[%i%% blood]"
-local ESP_POSTURE = "[%i%% posture]"
-local ESP_VIEW_ANGLE = "[%.2f view angle vs. %.2f]"
-local ESP_HEALTH_PERCENTAGE = "[%i%% health]"
-local ESP_HEALTH_BARS = "[%.1f bars]"
-local ESP_DANGER_TIME = "[%s on timer]"
-local ESP_ARMOR = "[%i%% armor]"
+local ESP_DANGER_TIME = "[%s]"
+
+---Check if a player has an oath.
+---@return boolean
+local hasOath = LPH_NO_VIRTUALIZE(function(player)
+	local backpack = player:FindFirstChildOfClass("Backpack")
+	if not backpack then
+		return false
+	end
+
+	for _, instance in next, backpack:GetChildren() do
+		if not instance.Name:match("Oath") then
+			continue
+		end
+
+		return true
+	end
+
+	return false
+end)
 
 ---Update PlayerESP.
 ---@param self PlayerESP
 PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
-	local model = self.character
+	local entity = self.entity
 	local player = self.player
 	local identifier = self.identifier
 
-	local humanoid = model:FindFirstChildOfClass("Humanoid")
+	local humanoid = entity:FindFirstChildOfClass("Humanoid")
 	if not humanoid then
 		return self:visible(false)
 	end
 
-	local level = model:GetAttribute("Level") or -1
+	-- Update element visibility.
+	local abar = self.abar
+	local pbar = self.pbar
+	local bbar = self.bbar
+	local tbar = self.tbar
+	local sbar = self.sbar
+
+	abar.Visible = Configuration.idToggleValue(identifier, "ArmorBar")
+	pbar.Visible = Configuration.idToggleValue(identifier, "PostureBar")
+	bbar.Visible = Configuration.idToggleValue(identifier, "BloodBar")
+	tbar.Visible = Configuration.idToggleValue(identifier, "TempoBar")
+	sbar.Visible = Configuration.idToggleValue(identifier, "SanityBar")
+
+	-- Update element information.
+	local sanity = self.entity:FindFirstChild("Sanity")
+	local tempo = self.entity:FindFirstChild("Tempo")
+	local armor = self.entity:FindFirstChild("Armor")
+	local blood = self.entity:FindFirstChild("Blood")
+	local posture = self.entity:FindFirstChild("BreakMeter")
+
+	if sbar then
+		self.mbs(sbar, false, sanity and sanity.Value / sanity.MaxValue or 0.0)
+	end
+
+	if tbar then
+		self.mbs(tbar, false, tempo and tempo.Value / tempo.MaxValue or 0.0)
+	end
+
+	if abar then
+		self.mbs(abar, true, armor and armor.Value / armor.MaxValue or 0.0)
+	end
+
+	if bbar then
+		self.mbs(bbar, false, blood and blood.Value / blood.MaxValue or 0.0)
+	end
+
+	if pbar then
+		self.mbs(pbar, false, posture and posture.Value / posture.MaxValue or 0.0)
+	end
+
+	local level = entity:GetAttribute("Level") or -1
 	local playerNameType = Configuration.idOptionValue(identifier, "PlayerNameType")
 	local playerName = "Unknown Player"
 
@@ -62,75 +106,7 @@ PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
 
 	self.label = playerName
 
-	local health = humanoid.Health
-	local maxHealth = humanoid.MaxHealth
-
-	local tags = { ESP_HEALTH:format(health or -1, maxHealth or -1), ESP_POWER:format(level) }
-
-	if Configuration.idToggleValue(identifier, "ShowTempo") then
-		local tempoValue = model:FindFirstChild("Tempo")
-		local percentage = tempoValue and (tempoValue.Value / tempoValue.MaxValue * 100)
-		tags[#tags + 1] = tempoValue and ESP_TEMPO:format(percentage) or "[Unknown Tempo]"
-	end
-
-	if Configuration.idToggleValue(identifier, "ShowBlood") then
-		local bloodValue = model:FindFirstChild("Blood")
-		local percentage = bloodValue and (bloodValue.Value / bloodValue.MaxValue * 100)
-		tags[#tags + 1] = bloodValue and ESP_BLOOD:format(percentage) or "[Unknown Blood]"
-	end
-
-	if Configuration.idToggleValue(identifier, "ShowPosture") then
-		local breakMeterValue = model:FindFirstChild("BreakMeter")
-		local percentage = breakMeterValue and (breakMeterValue.Value / breakMeterValue.MaxValue * 100)
-		tags[#tags + 1] = breakMeterValue and ESP_POSTURE:format(percentage) or "[Unknown Posture]"
-	end
-
-	if Configuration.idToggleValue(identifier, "ShowArmor") then
-		local armorValue = model:FindFirstChild("Armor")
-
-		if armorValue.Value <= 0 or armorValue.MaxValue <= 0 then
-			tags[#tags + 1] = "[No Armor]"
-		else
-			local percentage = armorValue and (armorValue.Value / armorValue.MaxValue * 100)
-			tags[#tags + 1] = armorValue and ESP_ARMOR:format(percentage) or "[Unknown Armor]"
-		end
-	end
-
-	if Configuration.idToggleValue(identifier, "ShowHealthPercentage") then
-		local percentage = health / maxHealth * 100
-		tags[#tags + 1] = ESP_HEALTH_PERCENTAGE:format(percentage)
-	end
-
-	if Configuration.idToggleValue(identifier, "ShowHealthBars") then
-		local healthPercentage = health / maxHealth
-		local healthInBars = math.clamp(healthPercentage / 0.20, 0, 5)
-		tags[#tags + 1] = ESP_HEALTH_BARS:format(healthInBars)
-	end
-
-	local humanoidRootPart = model:FindFirstChild("HumanoidRootPart")
-	local modelPosition = humanoidRootPart and humanoidRootPart.Position or model:GetPivot().Position
-
-	local predictedPosition = nil
-	local usedPosition = nil
-	local mapPosition = model:GetAttribute("MapPos")
-
-	if not humanoidRootPart then
-		predictedPosition = mapPosition and Vector3.new(mapPosition.X, modelPosition.Y, mapPosition.Z) or nil
-		tags[#tags + 1] = mapPosition and "[Unknown Height]" or "[Not Loaded]"
-	end
-
-	usedPosition = predictedPosition or modelPosition
-
-	local currentCamera = workspace.CurrentCamera
-	local character = players.LocalPlayer.Character
-	local rootPart = character and character:FindFirstChild("HumanoidRootPart")
-
-	if Configuration.idToggleValue(identifier, "ShowViewAngle") and rootPart then
-		tags[#tags + 1] = ESP_VIEW_ANGLE:format(
-			currentCamera.CFrame.LookVector:Dot((rootPart.Position - usedPosition).Unit) * -1,
-			math.cos(math.rad((Configuration.expectOptionValue("FOVLimit"))))
-		)
-	end
+	local tags = { ESP_HEALTH:format(humanoid.Health or -1, humanoid.MaxHealth or -1), ESP_POWER:format(level) }
 
 	local dangerTime = humanoid:GetAttribute("DangerExpiration")
 	local dangerTimeLeft = dangerTime and math.ceil(dangerTime - workspace:GetServerTimeNow())
@@ -141,30 +117,48 @@ PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
 		)
 	end
 
-	self.shadow.Position = usedPosition
+	EntityESP.update(self, tags)
 
-	local expectedAdornee = predictedPosition and self.shadow or model
-
-	if expectedAdornee == nil or not expectedAdornee.Parent or not expectedAdornee.Parent:IsDescendantOf(game) then
-		return self:visible(false)
-	end
-
-	---@note: BillboardGUIs only update when a property of it changes.
-	if self.billboard.Adornee ~= expectedAdornee then
-		self.billboard.Adornee = expectedAdornee
-	end
-
-	InstanceESP.update(self, usedPosition, tags)
-
-	if not Configuration.idToggleValue(identifier, "MarkAllies") then
+	local label = self.ncontainer:FindFirstChildOfClass("TextLabel")
+	if not label then
 		return
 	end
 
-	if not PlayerScanning.isAlly(player) then
+	local backpack = player:FindFirstChildOfClass("Backpack")
+	if not backpack then
 		return
 	end
 
-	self.text.TextColor3 = Configuration.idOptionValue(identifier, "AllyColor")
+	if Configuration.idToggleValue(identifier, "MarkOathUsers") and hasOath(player) then
+		label.TextColor3 = Configuration.idOptionValue(identifier, "OathColor")
+	end
+
+	if Configuration.idToggleValue(identifier, "MarkAllies") and PlayerScanning.isAlly(player) then
+		label.TextColor3 = Configuration.idOptionValue(identifier, "AllyColor")
+	end
+end)
+
+---Add extra elements.
+PlayerESP.extra = LPH_NO_VIRTUALIZE(function(self)
+	self.abar = self:add("ArmorBar", "left", 6, function(container)
+		self:cgb(container, false, true, Color3.new(0.00784314, 0.65098, 1))
+	end)
+
+	self.pbar = self:add("PostureBar", "bottom", 3, function(container)
+		self:cgb(container, false, false, Color3.new(0.952941, 1, 0.0235294))
+	end)
+
+	self.bbar = self:add("BloodBar", "bottom", 3, function(container)
+		self:cgb(container, false, false, Color3.new(1, 0, 0.0156863))
+	end)
+
+	self.tbar = self:add("TempoBar", "bottom", 3, function(container)
+		self:cgb(container, false, false, Color3.new(1, 0.54902, 0))
+	end)
+
+	self.sbar = self:add("SanityBar", "bottom", 3, function(container)
+		self:cgb(container, false, false, Color3.new(0, 0.0509804, 1))
+	end)
 end)
 
 ---Create new PlayerESP object.
@@ -172,21 +166,17 @@ end)
 ---@param player Player
 ---@param character Model
 function PlayerESP.new(identifier, player, character)
-	local shadow = Instance.new("Part")
-	shadow.Transparency = 1.0
-	shadow.Anchored = true
-	shadow.Parent = workspace
-	shadow.CanCollide = false
-
-	local self = setmetatable(InstanceESP.new(shadow, identifier, "Unknown Player"), PlayerESP)
+	local self = setmetatable(EntityESP.new(character, identifier, "Unknown Player"), PlayerESP)
 	self.player = player
-	self.character = character
 	self.identifier = identifier
-	self.shadow = self.maid:mark(shadow)
 
 	if character and character:IsA("Model") and not Configuration.expectOptionValue("NoPersisentESP") then
 		character.ModelStreamingMode = Enum.ModelStreamingMode.Persistent
 	end
+
+	self:setup()
+	self:build()
+	self:update()
 
 	return self
 end

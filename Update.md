@@ -12,10 +12,13 @@
 + (changed) GaleHeroblade
 + (changed) WeaponUppercutTest
 + (changed) WeaponRunningAttackTest
++ (changed) WeaponTest
++ (changed) PressureBlast
+
 ```
 Relentless Hunt now should no longer parries your own move. 
 It attempts to parry instead of block with some added information in the notification.
-**All "Medium Weapon" combat hitboxes have been changed, report any bad hitboxes.**
+**Base combat has been changed massively, report any bad hitboxes.**
 
 **Timing diff vs. previous snapshot: +1/-1/~5 (animation: +1/-1/~4, effect: +0/-0/~1)**
 ```diff
@@ -28,6 +31,7 @@ It attempts to parry instead of block with some added information in the notific
 + (changed) Effect : SilentheartWarn (by Blastbrean)
 + (changed) Animation : IceCarve (by Blastbrean)
 + (changed) Animation : DarkBlade (by Blastbrean)
++ (changed) Animation : HeavenlyWind (by Blastbrean)
 ```
 
 **New features?**

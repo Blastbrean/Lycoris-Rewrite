@@ -1,8 +1,8 @@
----@module Features.Visuals.Objects.ModelESP
-local ModelESP = require("Features/Visuals/Objects/ModelESP")
+---@module Features.Visuals.Objects.EntityESP
+local EntityESP = require("Features/Visuals/Objects/EntityESP")
 
----@class MobESP: ModelESP
-local MobESP = setmetatable({}, { __index = ModelESP })
+---@class MobESP: EntityESP
+local MobESP = setmetatable({}, { __index = EntityESP })
 MobESP.__index = MobESP
 MobESP.__type = "MobESP"
 
@@ -12,12 +12,12 @@ local ESP_HEALTH = "[%i/%i]"
 ---Update MobESP.
 ---@param self MobESP
 MobESP.update = LPH_NO_VIRTUALIZE(function(self)
-	local humanoid = self.model:FindFirstChildOfClass("Humanoid")
+	local humanoid = self.entity:FindFirstChildOfClass("Humanoid")
 	if not humanoid then
 		return self:visible(false)
 	end
 
-	ModelESP.update(self, { ESP_HEALTH:format(humanoid.Health, humanoid.MaxHealth) })
+	EntityESP.update(self, { ESP_HEALTH:format(humanoid.Health, humanoid.MaxHealth) })
 end)
 
 ---Create new MobESP object.
@@ -25,7 +25,11 @@ end)
 ---@param model Model
 ---@param label string
 function MobESP.new(identifier, model, label)
-	return setmetatable(ModelESP.new(identifier, model, label), MobESP)
+	local self = setmetatable(EntityESP.new(model, identifier, label), MobESP)
+	self:setup()
+	self:build()
+	self:update()
+	return self
 end
 
 -- Return MobESP module.

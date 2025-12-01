@@ -217,6 +217,17 @@ local handleActionRolling = LPH_NO_VIRTUALIZE(function(type)
 		end
 	end
 
+	if type == INPUT_CAST then
+		local lMantraActivated = StateListener.lMantraActivated
+		if not lMantraActivated then
+			return
+		end
+
+		if lMantraActivated.Name:match("Wisp") then
+			return
+		end
+	end
+
 	if
 		lastActionRoll
 		and os.clock() - lastActionRoll < (Configuration.expectOptionValue("ActionRollCooldown") or 2.0)

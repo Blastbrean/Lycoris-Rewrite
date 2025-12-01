@@ -69,8 +69,9 @@ return function(self, timing)
 		or data.type == "Greataxe"
 	then
 		timing.phd = false
-		timing.pfh = true
-		timing.dp = true
+		timing.ffh = true
+		timing.pfht = 0.5
+		timing.dp = false
 	end
 
 	local windup = nil
@@ -121,7 +122,7 @@ return function(self, timing)
 	elseif data.type == "Rifle" then
 		windup = (0.174 / self.track.Speed) + 0.150
 	elseif data.type == "Club" then
-		windup = (0.180 / self.track.Speed) + 0.150
+		windup = (0.180 / self.track.Speed) + 0.100
 	elseif data.type == "Twinblade" then
 		windup = (0.150 / self.track.Speed) + 0.050
 	elseif data.type == "Spear" then

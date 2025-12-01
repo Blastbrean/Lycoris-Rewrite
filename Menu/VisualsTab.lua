@@ -294,7 +294,7 @@ end
 ---@note: Every ESP object has access to these options.
 ---@param identifier string
 ---@param groupbox table
----@return string, table, table
+---@return string, table
 function VisualsTab.initBaseESPSection(identifier, groupbox)
 	local enableToggle = groupbox
 		:AddToggle(Configuration.identify(identifier, "Enable"), {
@@ -339,36 +339,72 @@ end
 ---Add Chest ESP section.
 ---@param identifier string
 ---@param depbox table
+---@return string, table
 function VisualsTab.addChestESP(identifier, depbox)
 	depbox:AddToggle(Configuration.identify(identifier, "HideIfOpened"), {
 		Text = "Hide If Opened",
 		Default = false,
 	})
+
+	return identifier, depbox
 end
 
 ---Add Obelisk ESP section.
 ---@param identifier string
 ---@param depbox table
+---@return string, table
 function VisualsTab.addObeliskESP(identifier, depbox)
 	depbox:AddToggle(Configuration.identify(identifier, "HideIfTurnedOn"), {
 		Text = "Hide If Turned On",
 		Default = false,
 	})
+
+	return identifier, depbox
 end
 
 ---Add Bone Altar ESP section.
 ---@param identifier string
 ---@param depbox table
+---@return string, table
 function VisualsTab.addBoneAltarESP(identifier, depbox)
 	depbox:AddToggle(Configuration.identify(identifier, "HideIfBoneInside"), {
 		Text = "Hide If Bone Inside",
 		Default = false,
 	})
+
+	return identifier, depbox
+end
+
+---Add Entity ESP section.
+---@param identifier string
+---@param depbox table
+---@return string, table
+function VisualsTab.addEntityESP(identifier, depbox)
+	local hbToggle = depbox:AddToggle(Configuration.identify(identifier, "HealthBar"), {
+		Text = "Show Health Bar",
+		Default = false,
+	})
+
+	hbToggle:AddColorPicker(Configuration.identify(identifier, "FullColor"), {
+		Default = Color3.new(0, 1, 0),
+	})
+
+	hbToggle:AddColorPicker(Configuration.identify(identifier, "EmptyColor"), {
+		Default = Color3.new(1, 0, 0),
+	})
+
+	depbox:AddToggle(Configuration.identify(identifier, "BoundingBox"), {
+		Text = "Show Bounding Box",
+		Default = false,
+	})
+
+	return identifier, depbox
 end
 
 ---Add Player ESP section.
 ---@param identifier string
 ---@param depbox table
+---@return string, table
 function VisualsTab.addPlayerESP(identifier, depbox)
 	local markAlliesToggle = depbox:AddToggle(Configuration.identify(identifier, "MarkAllies"), {
 		Text = "Mark Allies",
@@ -379,29 +415,13 @@ function VisualsTab.addPlayerESP(identifier, depbox)
 		Default = Color3.new(1, 1, 1),
 	})
 
-	depbox:AddToggle(Configuration.identify(identifier, "ShowBlood"), {
-		Text = "Show Blood Tag",
+	local markOathToggle = depbox:AddToggle(Configuration.identify(identifier, "MarkOathUsers"), {
+		Text = "Mark Oath Users",
 		Default = false,
 	})
 
-	depbox:AddToggle(Configuration.identify(identifier, "ShowPosture"), {
-		Text = "Show Posture Tag",
-		Default = false,
-	})
-
-	depbox:AddToggle(Configuration.identify(identifier, "ShowTempo"), {
-		Text = "Show Tempo Tag",
-		Default = false,
-	})
-
-	depbox:AddToggle(Configuration.identify(identifier, "ShowArmor"), {
-		Text = "Show Armor Tag",
-		Default = false,
-	})
-
-	depbox:AddToggle(Configuration.identify(identifier, "ShowViewAngle"), {
-		Text = "Show View Angle",
-		Default = false,
+	markOathToggle:AddColorPicker(Configuration.identify(identifier, "OathColor"), {
+		Default = Color3.new(1, 1, 1),
 	})
 
 	depbox:AddToggle(Configuration.identify(identifier, "ShowDangerTime"), {
@@ -409,13 +429,28 @@ function VisualsTab.addPlayerESP(identifier, depbox)
 		Default = false,
 	})
 
-	depbox:AddToggle(Configuration.identify(identifier, "ShowHealthPercentage"), {
-		Text = "Show Health Percentage",
+	depbox:AddToggle(Configuration.identify(identifier, "ArmorBar"), {
+		Text = "Show Armor Bar",
 		Default = false,
 	})
 
-	depbox:AddToggle(Configuration.identify(identifier, "ShowHealthBars"), {
-		Text = "Show Health In Bars",
+	depbox:AddToggle(Configuration.identify(identifier, "BloodBar"), {
+		Text = "Show Blood Bar",
+		Default = false,
+	})
+
+	depbox:AddToggle(Configuration.identify(identifier, "SanityBar"), {
+		Text = "Show Sanity Bar",
+		Default = false,
+	})
+
+	depbox:AddToggle(Configuration.identify(identifier, "TempoBar"), {
+		Text = "Show Tempo Bar",
+		Default = false,
+	})
+
+	depbox:AddToggle(Configuration.identify(identifier, "PostureBar"), {
+		Text = "Show Posture Bar",
 		Default = false,
 	})
 
@@ -424,11 +459,14 @@ function VisualsTab.addPlayerESP(identifier, depbox)
 		Default = 1,
 		Values = { "Character Name", "Roblox Display Name", "Roblox Username" },
 	})
+
+	return identifier, depbox
 end
 
 ---Add Filtered ESP section.
 ---@param identifier string
 ---@param depbox table
+---@return string, table
 function VisualsTab.addFilterESP(identifier, depbox)
 	local filterObjectsToggle = depbox:AddToggle(Configuration.identify(identifier, "FilterObjects"), {
 		Text = "Filter Objects",
@@ -495,6 +533,8 @@ function VisualsTab.addFilterESP(identifier, depbox)
 	foDepBox:SetupDependencies({
 		{ filterObjectsToggle, true },
 	})
+
+	return identifier, depbox
 end
 
 ---Initialize tab.
@@ -509,8 +549,18 @@ function VisualsTab.init(window)
 	VisualsTab.initWorldVisualsSection(tab:AddDynamicGroupbox("World Visuals"))
 	VisualsTab.initVisualRemovalsSection(tab:AddDynamicGroupbox("Visual Removals"))
 	VisualsTab.initVisualAssistanceSection(tab:AddDynamicGroupbox("Visual Assistance"))
-	VisualsTab.addPlayerESP(VisualsTab.initBaseESPSection("Player", tab:AddDynamicGroupbox("Player ESP")))
-	VisualsTab.initBaseESPSection("Mob", tab:AddDynamicGroupbox("Mob ESP"))
+
+	-- Player ESP.
+	VisualsTab.addPlayerESP(
+		VisualsTab.addEntityESP(VisualsTab.initBaseESPSection("Player", tab:AddDynamicGroupbox("Player ESP")))
+	)
+
+	-- Mob ESP.
+	VisualsTab.addFilterESP(
+		VisualsTab.addEntityESP(VisualsTab.initBaseESPSection("Mob", tab:AddDynamicGroupbox("Mob ESP")))
+	)
+
+	-- Other ESPs.
 	VisualsTab.initBaseESPSection("NPC", tab:AddDynamicGroupbox("NPC ESP"))
 	VisualsTab.addChestESP(VisualsTab.initBaseESPSection("Chest", tab:AddDynamicGroupbox("Chest ESP")))
 	VisualsTab.initBaseESPSection("BagDrop", tab:AddDynamicGroupbox("Bag ESP"))

@@ -65,7 +65,7 @@ local function getGuildDoors(name)
 			continue
 		end
 
-		if not guildName:match(name) then
+		if not guildName:lower():match(name:lower()) then
 			continue
 		end
 

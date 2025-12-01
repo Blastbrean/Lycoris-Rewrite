@@ -1031,7 +1031,7 @@ Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		and not timing.duih
 		and action._when > 0
 		and self.__type == "Animation"
-		and actionType ~= "End Block"
+		and action._type ~= PP_SCRAMBLE_STR("End Block")
 	then
 		self:mark(Task.new(PP_SCRAMBLE_STR(action._type), function()
 			return (action:when() - rdelay - Latency.sdelay()) / 2

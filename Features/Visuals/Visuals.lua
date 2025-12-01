@@ -1134,12 +1134,15 @@ local onLiveChildrenAdded = LPH_NO_VIRTUALIZE(function(child)
 		return
 	end
 
-	-- safeguard lol
+	-- Safeguard to not get players on the Mob ESP.
 	if players:FindFirstChild(child.Name) then
 		return
 	end
 
-	return emplaceObject(child, MobESP.new("Mob", child, child:GetAttribute("MOB_rich_name") or child.Name))
+	return emplaceObject(
+		child,
+		FilteredESP.new(MobESP.new("Mob", child, child:GetAttribute("MOB_rich_name") or child.Name))
+	)
 end)
 
 ---On NPCs ChildAdded.

@@ -69,8 +69,6 @@ Essential Additions
   - Damage / Healing Numbers
 
 - Look into M1 Feint -> Mantra Feint -> M1
-- Fix Auto Feint Respect HA Toggle (add HA marker on mobs)
-- Fix Medium & Heavy Hitboxes
 
 Farming Fixes
 
