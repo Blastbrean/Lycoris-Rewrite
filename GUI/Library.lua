@@ -39,6 +39,7 @@ return LPH_NO_VIRTUALIZE(function()
 		Registry = {},
 		RegistryMap = {},
 
+		OverrideData = {},
 		HudRegistry = {},
 
 		FontColor = Color3.fromRGB(255, 255, 255),
@@ -156,6 +157,14 @@ return LPH_NO_VIRTUALIZE(function()
 		end)
 
 		return TeamList
+	end
+
+	function Library:GetOverrideData(name)
+		for idx, data in next, Library.OverrideData do
+			if name:match(idx) then
+				return data
+			end
+		end
 	end
 
 	function Library:SafeCallback(label, f, ...)
@@ -3191,7 +3200,7 @@ return LPH_NO_VIRTUALIZE(function()
 		Library.PositionList = {}
 		Library.Recording = false
 		Library.Markers = {}
-		
+
 		WatermarkOuter.InputBegan:Connect(function(Input)
 			xpcall(function()
 				if not Toggles["ShowDebugInformation"].Value then

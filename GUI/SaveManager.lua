@@ -137,6 +137,7 @@ return LPH_NO_VIRTUALIZE(function()
 				infoLoggerBlacklist = self.Library.InfoLoggerData.KeyBlacklistList,
 				infoLoggerCycle = self.Library.InfoLoggerData.InfoLoggerCycle,
 				animationVisualizerFramePosition = uDIm2Export(self.Library.AnimationVisualizerFrame.Position),
+				overrideData = self.Library.OverrideData,
 			}
 
 			for idx, toggle in next, Toggles do
@@ -200,6 +201,20 @@ return LPH_NO_VIRTUALIZE(function()
 
 			if decoded.animationVisualizerFramePosition then
 				self.Library.AnimationVisualizerFrame.Position = uDim2Import(decoded.animationVisualizerFramePosition)
+			end
+
+			local timingList = Options["TimingOverrideList"]
+
+			if decoded.overrideData and timingList then
+				self.Library.OverrideData = decoded.overrideData
+
+				local values = {}
+
+				for rname, _ in next, decoded.overrideData do
+					values[#values + 1] = rname
+				end
+
+				timingList:SetValues(values)
 			end
 
 			for _, option in next, decoded.objects do

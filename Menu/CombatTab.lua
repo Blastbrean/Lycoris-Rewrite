@@ -7,6 +7,12 @@ local Logger = require("Utility/Logger")
 ---@module Features.Combat.Defense
 local Defense = require("Features/Combat/Defense")
 
+---@module Utility.Configuration
+local Configuration = require("Utility/Configuration")
+
+---@module GUI.Library
+local Library = require("GUI/Library")
+
 -- Initialize combat targeting section.
 ---@param tab table
 function CombatTab.initCombatTargetingSection(tab)
@@ -226,15 +232,6 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		Rounding = 2,
 	})
 
-	afDepBox:AddSlider("FakeMistimeRate", {
-		Text = "Fake Parry Mistime Rate",
-		Min = 0,
-		Max = 100,
-		Default = 0,
-		Suffix = "%",
-		Rounding = 2,
-	})
-
 	afDepBox:AddSlider("IgnoreAnimationEndRate", {
 		Text = "Ignore Animation End Rate",
 		Min = 0,
@@ -271,9 +268,176 @@ function CombatTab.initAutoDefenseSection(groupbox)
 	})
 end
 
----Initialize timing probability section.
+---Create timing override callback.
+---@param callback function
+---@return function
+local function timingOverrideCallback(callback)
+	return function()
+		local overrideData = Library.OverrideData
+		print(overrideData)
+		if not overrideData then
+			return false
+		end
+
+		local selectedTo = Configuration.expectOptionValue("TimingOverrideList")
+		print(selectedTo)
+		if not selectedTo or #selectedTo == 0 then
+			return false
+		end
+
+		local override = overrideData[selectedTo]
+		print(selectedTo)
+		if not override then
+			return false
+		end
+		for i, v in next, override do
+			print(i, v)
+		end
+		callback(override)
+	end
+end
+
+---Refresh timing override list.
+local function refreshTimingOverrideList()
+	local overrideData = Library.OverrideData
+	if not overrideData then
+		return
+	end
+
+	local timingList = Options["TimingOverrideList"]
+	if not timingList then
+		return
+	end
+
+	local values = {}
+
+	for rname, _ in next, overrideData do
+		values[#values + 1] = rname
+	end
+
+	timingList:SetValues(values)
+end
+
+---Initialize timings section.
 ---@param groupbox table
-function CombatTab.initTimingProbabilitySection(groupbox) end
+function CombatTab:initTimingsSection(groupbox)
+	self.tol = groupbox:AddDropdown("TimingOverrideList", {
+		Text = "Timing Override List",
+		Values = {},
+		SaveValues = false,
+		Multi = false,
+		AllowNull = true,
+		Callback = function()
+			self.dashInsteadOfParryRate:SetRawValue(0)
+			self.failureRate:SetRawValue(0)
+			self.ignoreAnimationEndRate:SetRawValue(0)
+
+			local overrideData = Library.OverrideData
+			if not overrideData then
+				return false
+			end
+
+			local selectedTo = Configuration.expectOptionValue("TimingOverrideList")
+			if not selectedTo or #selectedTo == 0 then
+				return false
+			end
+
+			local override = overrideData[selectedTo]
+			if not override then
+				return false
+			end
+			for i, v in next, override do
+				print(i, v)
+			end
+			self.dashInsteadOfParryRate:SetRawValue(override.dipr or 0)
+			self.failureRate:SetRawValue(override.fr or 0)
+			self.ignoreAnimationEndRate:SetRawValue(override.iaer or 0)
+		end,
+	})
+
+	groupbox:AddDivider()
+
+	self.ti = groupbox:AddInput("TimingOverrideNameInput", {
+		Text = "Timing Override Name Input",
+		Placeholder = "Partial or exact timing name.",
+	})
+
+	groupbox:AddButton("Add Timing Override", function()
+		-- Add data.
+		local override = {
+			fr = self.failureRate.Value,
+			dipr = self.dashInsteadOfParryRate.Value,
+			iaer = self.ignoreAnimationEndRate.Value,
+		}
+
+		Library.OverrideData[self.ti.Value] = override
+
+		-- Refresh timing list.
+		refreshTimingOverrideList()
+
+		-- Set timing list value.
+		self.tol:SetValue(self.ti.Value)
+		self.tol:Display()
+	end)
+
+	groupbox:AddButton("Remove Selected Override", function()
+		-- Remove data.
+		Library.OverrideData[self.tol.Value] = nil
+
+		-- Refresh timing list.
+		refreshTimingOverrideList()
+
+		-- Set timing list value.
+		self.tol:SetValue(nil)
+		self.tol:Display()
+	end)
+
+	-- Initial refresh.
+	refreshTimingOverrideList()
+end
+
+---Initialize probabilities section.
+---@param groupbox table
+function CombatTab:initProbabilitiesSection(groupbox)
+	self.failureRate = groupbox:AddSlider("TP_FailureRate", {
+		Text = "Failure Rate",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Suffix = "%",
+		Rounding = 2,
+		Callback = timingOverrideCallback(function(override)
+			print(override.fr, self.failureRate.Value)
+			override.fr = self.failureRate.Value
+		end),
+	})
+
+	self.dashInsteadOfParryRate = groupbox:AddSlider("TP_DashInsteadOfParryRate", {
+		Text = "Dash Instead Of Parry Rate",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Suffix = "%",
+		Rounding = 2,
+		Callback = timingOverrideCallback(function(override)
+			print(override.dipr, self.dashInsteadOfParryRate.Value)
+			override.dipr = self.dashInsteadOfParryRate.Value
+		end),
+	})
+
+	self.ignoreAnimationEndRate = groupbox:AddSlider("TP_IgnoreAnimationEndRate", {
+		Text = "Ignore Animation End Rate",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Suffix = "%",
+		Rounding = 2,
+		Callback = timingOverrideCallback(function(override)
+			print(override.iaer, self.ignoreAnimationEndRate.Value)
+			override.iaer = self.ignoreAnimationEndRate.Value
+		end),
+	})
+end
 
 ---Initialize attack assistance section.
 ---@param groupbox table
@@ -461,8 +625,11 @@ function CombatTab.init(window)
 
 	-- Initialize other sections.
 	CombatTab.initAttackAssistanceSection(tab:AddDynamicGroupbox("Attack Assistance"))
-	CombatTab.initCombatAssistance(tab:AddDynamicGroupbox("Combat Assistance"))
-	CombatTab.initTimingProbabilitySection(tab:AddDynamicGroupbox("Timing Probability"))
+
+	-- Create timing probability section tab box.
+	local tpTabbox = tab:AddDynamicTabbox()
+	CombatTab:initTimingsSection(tpTabbox:AddTab("Timings"))
+	CombatTab:initProbabilitiesSection(tpTabbox:AddTab("Probabilities"))
 end
 
 -- Return CombatTab module.

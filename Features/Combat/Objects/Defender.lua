@@ -49,6 +49,9 @@ local Finder = require("Utility/Finder")
 ---@module Game.Latency
 local Latency = require("Game/Latency")
 
+---@module GUI.Library
+local Library = require("GUI/Library")
+
 ---@class Defender
 ---@field tasks Task[]
 ---@field tmaid Maid Cleaned up every clean cycle.
@@ -280,7 +283,13 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, options)
 		return self:notify(...)
 	end
 
-	if Configuration.expectToggleValue("AllowFailure") and integer <= rate then
+	local overrideData = Library:GetOverrideData(timing.name)
+
+	if overrideData then
+		rate = overrideData.fr
+	end
+
+	if (Configuration.expectToggleValue("AllowFailure") or overrideData) and integer <= rate then
 		return internalNotifyFunction(timing, "(%i <= %i) Intentionally did not run.", integer, rate)
 	end
 
@@ -735,15 +744,22 @@ Defender.parry = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	options.rollCancelDelay = Configuration.expectOptionValue("RollCancelDelay") or 0.0
 	options.direct = Configuration.expectToggleValue("BlatantRoll")
 
+	-- Rate.
+	local rate = (Configuration.expectOptionValue("DashInsteadOfParryRate") or 0.0)
+	local overrideData = Library:GetOverrideData(timing.name)
+
+	if overrideData then
+		rate = overrideData.dipr
+	end
+
 	-- Dash instead of parry.
-	local dashReplacement = Random.new():NextNumber(1.0, 100.0)
-		<= (Configuration.expectOptionValue("DashInsteadOfParryRate") or 0.0)
+	local dashReplacement = Random.new():NextNumber(1.0, 100.0) <= rate
 
 	if action and PP_SCRAMBLE_STR(action._type) ~= "Parry" then
 		dashReplacement = false
 	end
 
-	if not Configuration.expectToggleValue("AllowFailure") then
+	if not Configuration.expectToggleValue("AllowFailure") and not overrideData then
 		dashReplacement = false
 	end
 

@@ -40,6 +40,9 @@ local StateListener = require("Features/Combat/StateListener")
 ---@module Game.Latency
 local Latency = require("Game/Latency")
 
+---@module GUI.Library
+local Library = require("GUI/Library")
+
 ---@class AnimatorDefender: Defender
 ---@field animator Animator
 ---@field offset number?
@@ -81,10 +84,17 @@ AnimatorDefender.stopped = LPH_NO_VIRTUALIZE(function(self, track, timing, notif
 		return self:notify(...)
 	end
 
+	local overrideData = Library:GetOverrideData(timing.name)
+	local rate = (Configuration.expectOptionValue("IgnoreAnimationEndRate") or 0.0)
+
+	if overrideData then
+		rate = overrideData.iaer
+	end
+
 	if
-		Configuration.expectToggleValue("AllowFailure")
+		(Configuration.expectToggleValue("AllowFailure") or overrideData)
 		and not timing.rpue
-		and Random.new():NextNumber(1.0, 100.0) <= (Configuration.expectOptionValue("IgnoreAnimationEndRate") or 0.0)
+		and Random.new():NextNumber(1.0, 100.0) <= rate
 		and StateListener.cdodge()
 	then
 		return false, internalNotifyFunction(timing, "Intentionally ignoring animation end to simulate human error.")
@@ -482,32 +492,6 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	self.timing = timing
 	self.track = track
 	self.offset = Latency.rdelay()
-
-	-- Fake mistime rate.
-	---@type Action?
-	local faction = timing.actions:stack()[1]
-
-	-- Obviously, we don't want any modules where we don't know how many actions there are.
-	-- We don't want any actions that have a count that is not equal to 1.
-	-- We need to check if we can atleast dash, because we will be going to are fallback.
-	-- We must also check if our action isn't too short or is not a parry type, defeating the purpose.
-	if
-		Configuration.expectToggleValue("AllowFailure")
-		and not timing.umoa
-		and not timing.rpue
-		and timing.actions:count() == 1
-		and Random.new():NextNumber(1.0, 100.0) <= (Configuration.expectOptionValue("FakeMistimeRate") or 0.0)
-		and StateListener.cdodge()
-		and faction
-		and PP_SCRAMBLE_STR(faction._type) == "Parry"
-		and faction:when() > (Latency.rtt() + 0.6)
-	then
-		-- Start deflect.
-		QueuedBlocking.invoke(QueuedBlocking.BLOCK_TYPE_DEFLECT, "Defender_FakeDeflect", nil)
-
-		-- Notify.
-		self:notify(timing, "Intentionally mistimed to simulate human error.")
-	end
 
 	-- Use module over actions.
 	if timing.umoa then
