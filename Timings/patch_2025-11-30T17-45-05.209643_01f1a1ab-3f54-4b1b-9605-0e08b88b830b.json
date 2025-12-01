@@ -1,0 +1,13 @@
+{
+  "patch_id": "01f1a1ab-3f54-4b1b-9605-0e08b88b830b",
+  "timestamp": "2025-11-30T17:45:05.209643",
+  "author": "Juanito",
+  "diff": {
+    "animation": {
+      "rbxassetid://11183196198": {
+        "status": "removed",
+        "name": "IceHeroCrit"
+      }
+    }
+  }
+}
