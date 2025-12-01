@@ -136,6 +136,11 @@ PlayerESP.update = LPH_NO_VIRTUALIZE(function(self)
 	if Configuration.idToggleValue(identifier, "MarkAllies") and PlayerScanning.isAlly(player) then
 		label.TextColor3 = Configuration.idOptionValue(identifier, "AllyColor")
 	end
+
+	local dlabel = self.dcontainer:FindFirstChildOfClass("TextLabel")
+	if dlabel then
+		dlabel.TextColor3 = label.TextColor3
+	end
 end)
 
 ---Add extra elements.

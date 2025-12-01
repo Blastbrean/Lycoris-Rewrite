@@ -40,6 +40,7 @@ It attempts to parry instead of block with some added information in the notific
 - (removed) "User is in hit animation" check is now removed
 + (added) Animation speed changer has new switch between speeds feature
 + (added) Aggressive auto feint type which ignores all player attacking checks
++ (added) Entity ESP rework
 + (changed) Auto feint now respects hyperarmor (this caused auto feint to be useless in PVE) (this data may be missing for some timings; please report if so)
 + (changed) Auto feint now runs another check a bit before the timing to combat feinting latency
 ```

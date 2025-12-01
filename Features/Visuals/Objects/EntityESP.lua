@@ -291,12 +291,12 @@ EntityESP.update = LPH_NO_VIRTUALIZE(function(self, tags)
 
 	local name = self:find("Name")
 	if name then
-		name.space = lines * (Configuration.expectOptionValue("FontSize") + ELEMENT_PADDING)
+		name.space = (lines * Configuration.expectOptionValue("FontSize")) + (ELEMENT_PADDING * 2)
 	end
 
 	local delement = self:find("Distance")
 	if delement then
-		delement.space = Configuration.expectOptionValue("FontSize") + ELEMENT_PADDING
+		delement.space = Configuration.expectOptionValue("FontSize") + (ELEMENT_PADDING * 2)
 	end
 
 	if dcontainer then
@@ -359,8 +359,17 @@ EntityESP.build = LPH_NO_VIRTUALIZE(function(self)
 
 	-- Scale the BillboardGUI accordingly.
 	if not self.sextents then
-		local extentsSize = self.entity:GetExtentsSize()
-		self.sextents = extentsSize
+		local fmodel = self.entity:Clone()
+
+		for _, inst in next, fmodel:GetDescendants() do
+			if inst:IsA("BasePart") then
+				continue
+			end
+
+			inst:Destroy()
+		end
+
+		self.sextents = fmodel:GetExtentsSize()
 	end
 
 	self.billboard.Size = UDim2.new(

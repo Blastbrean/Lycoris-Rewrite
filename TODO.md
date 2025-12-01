@@ -62,11 +62,8 @@ Essential Additions
 - 2. "Timing Probability" section
   - How can we tie "Timing Names" to Probabilities when we click on it in the list?
 
-- 3. New ESP Port
-  - ESP Fade In / Fade Out
-  - ESP Glow?
-  - ESP Focus Keybind
-  - Damage / Healing Numbers
+- ESP Focus Keybind
+- Damage / Healing Numbers
 
 - Look into M1 Feint -> Mantra Feint -> M1
 
