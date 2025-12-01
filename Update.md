@@ -98,6 +98,8 @@ It attempts to parry instead of block with some added information in the notific
 **New features?**
 ```diff
 - (bug fix) Animation speed changer cycled through many random speeds in one timing
+- (bug fix) Updated info spoofing to use the new pathing
+- (bug fix) Info spoofing now spoofs player properties
 - (removed) "User is in hit animation" check is now removed
 - (removed) Temporarily removed using the map position to locate far away players (32k+ studs)
 + (added) Animation speed changer has new switch between speeds feature
@@ -110,5 +112,6 @@ It attempts to parry instead of block with some added information in the notific
 + (changed) Auto feint now runs another check a bit before the timing to combat feinting latency
 + (changed) Whitelisted players are now considered allies
 ```
+*Info spoofing does not prevent you from hovering over the spectate list. If you do so, it will show real usernames.*
 
-*No change in commit ID. This update is super minor.*
+*Your commit ID should == "asdasdasd" when the update is fully pushed to you.*

@@ -311,8 +311,9 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		local worldInfo = playerGui:FindFirstChild("WorldInfo")
-		local infoFrame = worldInfo and worldInfo:FindFirstChild("InfoFrame")
+		local topBarGui = playerGui:FindFirstChild("TopbarGui")
+		local container = topBarGui and topBarGui:FindFirstChild("Container")
+		local infoFrame = container and container:FindFirstChild("InfoFrame")
 		local gameInfo = infoFrame and infoFrame:FindFirstChild("GameInfo")
 		if not gameInfo then
 			return
@@ -339,8 +340,9 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		local worldInfo = playerGui:FindFirstChild("WorldInfo")
-		local infoFrame = worldInfo and worldInfo:FindFirstChild("InfoFrame")
+		local topBarGui = playerGui:FindFirstChild("TopbarGui")
+		local container = topBarGui and topBarGui:FindFirstChild("Container")
+		local infoFrame = container and container:FindFirstChild("InfoFrame")
 		local worldInfoFrame = infoFrame and infoFrame:FindFirstChild("WorldInfo")
 		if not worldInfoFrame then
 			return
@@ -367,8 +369,9 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		local worldInfo = playerGui:FindFirstChild("WorldInfo")
-		local infoFrame = worldInfo and worldInfo:FindFirstChild("InfoFrame")
+		local topBarGui = playerGui:FindFirstChild("TopbarGui")
+		local container = topBarGui and topBarGui:FindFirstChild("Container")
+		local infoFrame = container and container:FindFirstChild("InfoFrame")
 		local characterInfo = infoFrame and infoFrame:FindFirstChild("CharacterInfo")
 		if not characterInfo then
 			return
