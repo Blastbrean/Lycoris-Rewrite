@@ -21,6 +21,9 @@ local Configuration = require("Utility/Configuration")
 ---@module Utility.Logger
 local Logger = require("Utility/Logger")
 
+---@module Utility.TaskSpawner
+local TaskSpawner = require("Utility/TaskSpawner")
+
 ---@module Game.InputClient
 local InputClient = require("Game/InputClient")
 
@@ -32,6 +35,9 @@ local ModuleManager = require("Game/Timings/ModuleManager")
 
 ---@module Game.Latency
 local Latency = require("Game/Latency")
+
+---@module Utility.Table
+local Table = require("Utility/Table")
 
 -- Maids.
 local stateMaid = Maid.new()
@@ -389,6 +395,46 @@ local onEffectReplicated = LPH_NO_VIRTUALIZE(function(effect)
 		if Configuration.expectToggleValue("AutoRagdollRecover") then
 			InputClient.feint()
 		end
+	end
+
+	if effect.Class == "MantraCasted" then
+		TaskSpawner.spawn("StateListener_AutoMantraFollowup", function()
+			---@module Game.QueuedBlocking
+			local QueuedBlocking = require("Game/QueuedBlocking")
+
+			-- Check setting.
+			if not Configuration.expectToggleValue("AutoMantraFollowup") then
+				return
+			end
+
+			-- Get track.
+			local track = StateListener.lAnimationValidTrack
+			if not track or not track.IsPlaying then
+				return
+			end
+
+			local instance = StateListener.lMantraActivated
+			if not instance then
+				return
+			end
+
+			local faction = StateListener.lAnimFaction
+			if not faction then
+				return
+			end
+
+			if not instance.ToolTip:match("Press @Block@") then
+				return
+			end
+
+			QueuedBlocking.invoke(QueuedBlocking.BLOCK_TYPE_NORMAL, "AutoMantraFollowup", nil)
+
+			repeat
+				task.wait()
+			until os.clock() - StateListener.lAnimTimestamp >= (faction:when() + 0.100) - Latency.rtt()
+
+			QueuedBlocking.stop("AutoMantraFollowup")
+		end)
 	end
 
 	if effect.Class == "LightAttack" then

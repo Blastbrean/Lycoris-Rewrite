@@ -1,0 +1,22 @@
+{
+  "patch_id": "1f5139c2-14b2-4592-9aa8-31f3c9a7a653",
+  "timestamp": "2025-12-03T21:42:20.980275",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://7608490737": {
+        "status": "modified",
+        "changes": {
+          "smod": {
+            "from": "N/A",
+            "to": "FireForgeCast"
+          },
+          "umoa": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

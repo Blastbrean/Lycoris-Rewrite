@@ -37,6 +37,7 @@ return function(self, timing)
 		radiantKickTiming.fhb = false
 		radiantKickTiming.duih = false
 		radiantKickTiming.rpue = false
+		radiantKickTiming.imxd = 200
 		radiantKickTiming.name = "RadiantKick"
 		radiantKickTiming.iae = true
 		radiantKickTiming.cbm = true
@@ -44,13 +45,14 @@ return function(self, timing)
 		local action = Action.new()
 		action._when = 500
 		action._type = "Parry"
-		action.hitbox = Vector3.new(80, 80, 80)
+		action.hitbox = Vector3.new(100, 100, 100)
 		action.name = "Radiant Kick Shared"
 		return self:action(radiantKickTiming, action)
 	end
 
 	local firstPartTiming = Timing.new()
 	firstPartTiming.fhb = true
+	firstPartTiming.imxd = 150
 	firstPartTiming.duih = false
 	firstPartTiming.rpue = false
 	firstPartTiming.name = "RapidPunches"

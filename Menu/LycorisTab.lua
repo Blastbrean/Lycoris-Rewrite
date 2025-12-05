@@ -100,6 +100,15 @@ function LycorisTab.initUISettingsSection(groupbox)
 		Suffix = "%",
 	})
 
+	groupbox:AddSlider("QuickNotificationSpeed", {
+		Text = "Quick Notification Speed",
+		Min = 0.1,
+		Max = 2.0,
+		Default = 0.5,
+		Rounding = 2,
+		Suffix = "s",
+	})
+
 	local menuBindLabel = groupbox:AddLabel("Menu Bind")
 
 	menuBindLabel:AddKeyPicker("MenuKeybind", { Default = "LeftAlt", NoUI = true, Text = "Menu Keybind" })

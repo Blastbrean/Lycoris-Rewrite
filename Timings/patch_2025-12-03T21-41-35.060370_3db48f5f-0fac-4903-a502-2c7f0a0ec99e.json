@@ -1,0 +1,13 @@
+{
+  "patch_id": "3db48f5f-0fac-4903-a502-2c7f0a0ec99e",
+  "timestamp": "2025-12-03T21:41:35.060370",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "WindTrap": {
+        "status": "removed",
+        "name": "GaleTrap"
+      }
+    }
+  }
+}

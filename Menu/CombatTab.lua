@@ -363,6 +363,8 @@ function CombatTab:initTimingsSection(groupbox)
 		end
 	end
 
+	table.sort(names)
+
 	self.ti = groupbox:AddDropdown("TimingOverrideTimingList", {
 		Text = "Timing List",
 		Values = names,
@@ -513,6 +515,12 @@ function CombatTab.initCombatAssistance(groupbox)
 
 	agtDepBox:SetupDependencies({
 		{ agtToggle, true },
+	})
+
+	groupbox:AddToggle("AutoMantraFollowup", {
+		Text = "Auto Mantra Followup",
+		Default = false,
+		Tooltip = "Automatically press the followup button while using a mantra.",
 	})
 
 	groupbox:AddToggle("AutoFlowState", {

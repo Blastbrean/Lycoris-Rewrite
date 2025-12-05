@@ -6,6 +6,9 @@ return LPH_NO_VIRTUALIZE(function()
 	---@module GUI.Library
 	local Library = require("GUI/Library")
 
+	---@module Utility.Configuration
+	local Configuration = require("Utility/Configuration")
+
 	---Build a string with a prefix.
 	---@param str string
 	---@return string
@@ -23,7 +26,8 @@ return LPH_NO_VIRTUALIZE(function()
 	---Quick notify message.
 	---@param str string
 	function Logger.qnotify(str, ...)
-		Library:Notify(string.format(str, ...), 0.5)
+		local quickNotificationSpeed = Configuration.expectOptionValue("QuickNotificationSpeed") or 0.5
+		Library:Notify(string.format(str, ...), quickNotificationSpeed)
 	end
 
 	---Notify message with a default short cooldown to create consistent cooldowns between files.

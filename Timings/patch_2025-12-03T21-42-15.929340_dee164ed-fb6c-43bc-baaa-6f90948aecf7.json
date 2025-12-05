@@ -1,0 +1,51 @@
+{
+  "patch_id": "dee164ed-fb6c-43bc-baaa-6f90948aecf7",
+  "timestamp": "2025-12-03T21:42:15.929340",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://7608490737": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [],
+          "ndfb": false,
+          "_id": "rbxassetid://7608490737",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "FireForgeCast",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "phd": false,
+          "phds": 0,
+          "pfht": 0.15,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "ha": false,
+          "iae": false,
+          "imxd": 118,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

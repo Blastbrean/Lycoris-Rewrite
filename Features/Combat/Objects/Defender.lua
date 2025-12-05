@@ -345,6 +345,12 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, options)
 		end
 	end
 
+	if actionType == PP_SCRAMBLE_STR("Parry") then
+		if effectReplicatorModule:FindEffect("AutoParry") then
+			return internalNotifyFunction(timing, "User has auto parry frames.")
+		end
+	end
+
 	if timing.tag == "M1" and selectedFilters["Filter Out M1s"] then
 		return internalNotifyFunction(timing, "Attacker is using a 'M1' attack.")
 	end

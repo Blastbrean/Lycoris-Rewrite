@@ -1,0 +1,26 @@
+{
+  "patch_id": "b1b5b873-c782-471c-86c9-277a9d5691f6",
+  "timestamp": "2025-12-03T21:41:15.898900",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "WindTrap": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 5,
+              "X": 5,
+              "Z": 5
+            },
+            "to": {
+              "Y": 11,
+              "X": 10,
+              "Z": 10
+            }
+          }
+        }
+      }
+    }
+  }
+}
