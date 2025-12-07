@@ -27,7 +27,7 @@ return function(self, timing)
 	-- Funny htibox options.
 	timing.htype = Enum.PartType.Ball
 	timing.fhb = false
-	timing.hso = -4
+	timing.hso = -2
 
 	-- Fallbacks. Reset to normal.
 	timing.nvfb = true
