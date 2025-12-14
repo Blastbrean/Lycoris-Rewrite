@@ -1,0 +1,26 @@
+{
+  "patch_id": "2d016ccd-c5b8-47eb-8adb-db9c5d6c6aa4",
+  "timestamp": "2025-12-14T12:54:09.008160",
+  "author": "Blastbrean",
+  "diff": {
+    "part": {
+      "ArdourBall2": {
+        "status": "modified",
+        "changes": {
+          "hitbox": {
+            "from": {
+              "Y": 23,
+              "X": 23,
+              "Z": 23
+            },
+            "to": {
+              "Y": 20,
+              "X": 20,
+              "Z": 20
+            }
+          }
+        }
+      }
+    }
+  }
+}

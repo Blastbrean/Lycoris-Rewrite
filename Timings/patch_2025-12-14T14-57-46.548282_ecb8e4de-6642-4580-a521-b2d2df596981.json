@@ -1,0 +1,22 @@
+{
+  "patch_id": "ecb8e4de-6642-4580-a521-b2d2df596981",
+  "timestamp": "2025-12-14T14:57:46.548282",
+  "author": "Blastbrean",
+  "diff": {
+    "effect": {
+      "OwlDisperse": {
+        "status": "modified",
+        "changes": {
+          "ndfb": {
+            "from": false,
+            "to": true
+          },
+          "imxd": {
+            "from": 300,
+            "to": 120
+          }
+        }
+      }
+    }
+  }
+}

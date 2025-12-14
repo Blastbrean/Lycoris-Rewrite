@@ -1,0 +1,69 @@
+{
+  "patch_id": "9c7edf63-4618-42b3-a2c5-ee887645f5e5",
+  "timestamp": "2025-12-14T12:34:58.014164",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://11183196198": {
+        "status": "modified",
+        "changes": {
+          "nbfb": {
+            "from": true,
+            "to": false
+          }
+        }
+      },
+      "rbxassetid://96388262269233": {
+        "status": "modified",
+        "changes": {
+          "nbfb": {
+            "from": true,
+            "to": false
+          }
+        }
+      },
+      "rbxassetid://7350770431": {
+        "status": "modified",
+        "changes": {
+          "nbfb": {
+            "from": true,
+            "to": false
+          }
+        }
+      },
+      "rbxassetid://9484850093": {
+        "status": "modified",
+        "changes": {
+          "bfht": {
+            "from": 0.6,
+            "to": 0.3
+          },
+          "pfht": {
+            "from": 0.25,
+            "to": 0.5
+          }
+        }
+      },
+      "rbxassetid://7827886914": {
+        "status": "modified",
+        "changes": {
+          "nbfb": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    },
+    "part": {
+      "ArdourBall2": {
+        "status": "modified",
+        "changes": {
+          "nbfb": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,14 +1,16 @@
 # Deepwoken Rewrite
-**The timing and module list were not able to be auto-generated properly due to some other irrelevant changes.**
-*The new 'Untrained' fist style should be completely in including the critical.*
-*Trial orbs should now be "relatively" fixed? I've heard they're bugged for normal players though.*
+**No new modules were added.**
+
+**No new timings were added.**
 
 **Any new features?**
 ```diff
 + (added) Added 'Mark User Holding Sack' to Player ESP
 + (added) Bag ESP now works on VOI Sacks
 + (added) Chest ESP now works on VOI Chests
-- (bug fix) Should have fixed Abnormal ESP sizes by making cache invalidation more lenient
++ (added) Aggressive Pathfind Breaker
++ (changed) Completely reworked auto-feint system to rely on user input(s)
+- (bug fix) Attempted to prevent abnormal ESP sizes with new cache invalidation
 ```
 
 *If you're wondering on what to use or where to buy from...*

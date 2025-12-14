@@ -500,16 +500,12 @@ EntityESP.build = LPH_NO_VIRTUALIZE(function(self)
 	-- Scale the BillboardGUI accordingly.
 	local extentsSize = self.entity:GetExtentsSize()
 
-	self.lextents = extentsSize
-
 	-- Invalidate cached size if the size has changed significantly.
-	if
-		math.abs(self.lextents.X - extentsSize.X) >= 1.5
-		or math.abs(self.lextents.Y - extentsSize.Y) >= 1.5
-		or math.abs(self.lextents.Z - extentsSize.Z) >= 1.5
-	then
+	if self.lextents and math.abs(self.lextents.Magnitude - extentsSize.Magnitude) >= 10.0 then
 		self.sextents = nil
 	end
+
+	self.lextents = extentsSize
 
 	if not self.sextents then
 		local fmodel = self.entity:Clone()
