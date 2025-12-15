@@ -1,0 +1,56 @@
+{
+  "patch_id": "83daac70-2bb2-4b2e-ae24-ef66d0bdb356",
+  "timestamp": "2025-12-14T17:17:48.196649",
+  "author": "Blastbrean",
+  "diff": {
+    "effect": {
+      "DodgePlsIndicator": {
+        "status": "added",
+        "data": {
+          "umoa": false,
+          "rpd": 0,
+          "smod": "N/A",
+          "hso": 0,
+          "flp": false,
+          "ilp": false,
+          "ename": "DodgePlsIndicator",
+          "nbfb": false,
+          "bfht": 0.3,
+          "actions": [
+            {
+              "_type": "Jump",
+              "name": "1",
+              "hitbox": {
+                "Y": 28,
+                "X": 25,
+                "Z": 25
+              },
+              "when": 400,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "rsd": 0,
+          "after": 0,
+          "duih": false,
+          "nvfb": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "punishable": 0,
+          "name": "DodgePlsIndicator",
+          "imxd": 204,
+          "smn": false,
+          "fhb": true,
+          "imdd": 0,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}

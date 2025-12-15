@@ -1,0 +1,70 @@
+{
+  "patch_id": "a3fc3f42-b684-4e63-8c6c-79a7d5b4c316",
+  "timestamp": "2025-12-14T17:53:07.448049",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://6607519294": {
+        "status": "modified",
+        "changes": {
+          "fhb": {
+            "from": true,
+            "to": false
+          },
+          "pfh": {
+            "from": false,
+            "to": true
+          },
+          "phds": {
+            "from": 0.2,
+            "to": 0.6
+          },
+          "hso": {
+            "from": 3,
+            "to": -5
+          },
+          "dp": {
+            "from": true,
+            "to": false
+          },
+          "pfht": {
+            "from": 0.2500000298023224,
+            "to": 0.5
+          },
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 16,
+                  "X": 16,
+                  "Z": 16
+                },
+                "when": 533,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Jump",
+                "name": "1",
+                "hitbox": {
+                  "Y": 16,
+                  "X": 16,
+                  "Z": 16
+                },
+                "when": 533,
+                "ihbc": false
+              }
+            ]
+          },
+          "phd": {
+            "from": true,
+            "to": false
+          }
+        }
+      }
+    }
+  }
+}
