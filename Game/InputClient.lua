@@ -11,6 +11,9 @@ local Logger = require("Utility/Logger")
 ---@module Game.KeyHandling
 local KeyHandling = require("Game/KeyHandling")
 
+---@module Utility.TaskSpawner
+local TaskSpawner = require("Utility/TaskSpawner")
+
 -- Services.
 local runService = game:GetService("RunService")
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -28,6 +31,7 @@ local freefallTrack = nil
 local slideJumpTrack = nil
 local cancelLeftTrack = nil
 local cancelRightTrack = nil
+local jumpAnimTrack = nil
 
 ---Check if we landed.
 ---@return boolean
@@ -1542,6 +1546,80 @@ InputClient.dodge = LPH_NO_VIRTUALIZE(function(options)
 	end
 end)
 
+---Jump end function.
+InputClient.ejump = LPH_NO_VIRTUALIZE(function()
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	if not effectReplicator then
+		return Logger.warn("Cannot dodge without effect replicator.")
+	end
+
+	local effectReplicatorModule = require(effectReplicator)
+	if not effectReplicatorModule then
+		return Logger.warn("Cannot dodge without effect replicator module.")
+	end
+
+	if not jumpAnimTrack then
+		return Logger.warn("Cannot jump without jump animation track.")
+	end
+
+	local character = players.LocalPlayer.Character
+	if not character then
+		return Logger.warn("Cannot jump without character.")
+	end
+
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	if not humanoidRootPart then
+		return Logger.warn("Cannot jump without humanoid root part.")
+	end
+
+	local characterHandler = character:FindFirstChild("CharacterHandler")
+	if not characterHandler then
+		return Logger.warn("Cannot jump without character handler.")
+	end
+
+	local requests = characterHandler:FindFirstChild("Requests")
+	if not requests then
+		return Logger.warn("Cannot jump without requests.")
+	end
+
+	local jumpRemote = requests:FindFirstChild("Jump")
+	if not jumpRemote then
+		return Logger.warn("Cannot jump without jump remote.")
+	end
+
+	effectReplicatorModule:CreateEffect("Jumped"):Debris(0.1)
+	jumpAnimTrack:Play(0.05)
+
+	if effectReplicatorModule:HasEffect("HasWeapon") then
+		jumpAnimTrack.Priority = Enum.AnimationPriority.Idle
+	else
+		jumpAnimTrack.Priority = Enum.AnimationPriority.Movement
+	end
+
+	TaskSpawner.delay("InputClient_EJump_Track", function()
+		return 0.4
+	end, function()
+		jumpAnimTrack:AdjustSpeed(0.5)
+		jumpAnimTrack:Stop(0.1)
+	end)
+
+	TaskSpawner.spawn("InputClient_EJump_Loop", function()
+		local start = os.clock()
+
+		while task.wait() do
+			if os.clock() - start >= 0.2 then
+				break
+			end
+
+			if not jumpAnimTrack or not jumpAnimTrack.IsPlaying then
+				break
+			end
+
+			jumpRemote:FireServer()
+		end
+	end)
+end)
+
 ---Re-created feint function.
 InputClient.feint = LPH_NO_VIRTUALIZE(function()
 	local character = players.LocalPlayer.Character
@@ -1710,8 +1788,9 @@ InputClient.cache = LPH_NO_VIRTUALIZE(function()
 	local freefallAnim = inputClient and inputClient:FindFirstChild("FreefallAnim")
 	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 	local slideJumpAnim = inputClient and inputClient:FindFirstChild("SlideJump")
+	local jumpAnim = inputClient and inputClient:FindFirstChild("Jump")
 
-	if not slideJumpAnim or not humanoid or not cancelLeft or not cancelRight or not freefallAnim then
+	if not slideJumpAnim or not jumpAnim or not humanoid or not cancelLeft or not cancelRight or not freefallAnim then
 		return false
 	end
 
@@ -1719,6 +1798,7 @@ InputClient.cache = LPH_NO_VIRTUALIZE(function()
 	freefallTrack = humanoid:LoadAnimation(freefallAnim)
 	cancelLeftTrack = humanoid:LoadAnimation(cancelLeft)
 	cancelRightTrack = humanoid:LoadAnimation(cancelRight)
+	jumpAnimTrack = humanoid:LoadAnimation(jumpAnim)
 
 	-- Return whether we were successful.
 	return InputClient.sprintFunctionCache ~= nil and InputClient.rollFunctionCache ~= nil and inputDataCache ~= nil

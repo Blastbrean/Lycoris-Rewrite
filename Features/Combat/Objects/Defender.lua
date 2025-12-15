@@ -733,7 +733,15 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, started)
 			return
 		end
 
-		return humanController:Jump()
+		if effectReplicatorModule:HasAny("Swimming", "Jumped", "NoJump", "Landed") then
+			return
+		end
+
+		if not humanController:Jump() then
+			return
+		end
+
+		return InputClient.ejump()
 	end
 
 	if actionType == "Teleport Up" then
