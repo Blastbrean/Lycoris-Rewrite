@@ -537,11 +537,7 @@ function Defense.init()
 	local animationFolder = assetFolder:WaitForChild("Anims")
 	local mobsAnimationFolder = animationFolder:WaitForChild("Mobs")
 
-	for _, animation in next, mobsAnimationFolder:GetDescendants() do
-		if not animation:IsA("Animation") then
-			continue
-		end
-
+	for _, animation in next, mobsAnimationFolder:QueryDescendants("Animation") do
 		if animation.Name == "RunningAttack" then
 			continue
 		end

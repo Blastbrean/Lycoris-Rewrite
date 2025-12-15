@@ -531,7 +531,7 @@ function StateListener.init()
 		onEffectReplicated(effect)
 	end
 
-	for _, descendant in next, live:GetDescendants() do
+	for _, descendant in next, live:QueryDescendants('Animator') do
 		onDescendantAdded(descendant)
 	end
 
