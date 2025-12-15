@@ -1,0 +1,13 @@
+{
+  "patch_id": "1ffeef39-c072-4a67-888e-ae61f7e80f41",
+  "timestamp": "2025-12-14T18:07:48.640618",
+  "author": "Juanito",
+  "diff": {
+    "part": {
+      "ClusterIndicator": {
+        "status": "removed",
+        "name": "ClusterIndicator"
+      }
+    }
+  }
+}
