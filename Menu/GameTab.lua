@@ -154,34 +154,6 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Rounding = 0,
 	})
 
-	local pvpModeToggle = groupbox:AddToggle("PVPMode", {
-		Text = "PVP Mode",
-		Tooltip = "Disable all movement related features.",
-		Default = false,
-	})
-
-	pvpModeToggle:AddKeyPicker(
-		"PVPModeKeybind",
-		{ Default = "N/A", SyncToggleState = true, Text = "PVP Mode" }
-	)
-
-	local pvpModeDepBox = groupbox:AddDependencyBox()
-	
-	pvpModeDepBox:AddToggle("AutoPVPMode", {
-		Text = "Auto PVP Mode",
-		Tooltip = "Automatically enable PVP mode when a player is within range.",
-		Default = false,
-	})
-
-	pvpModeDepBox:AddSlider("PVPModeDistance", {
-		Text = "PVP Mode Distance",
-		Default = 500,
-		Min = 0,
-		Max = 1500,
-		Suffix = "/studs",
-		Rounding = 0,
-	})
-
 	groupbox:AddToggle("AgilitySpoof", {
 		Text = "Agility Spoofer",
 		Tooltip = "Set your Agility investment points to boost movement.",
