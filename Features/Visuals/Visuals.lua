@@ -1517,21 +1517,36 @@ function Visuals.init()
 	local playerGuiDescendantAdded = Signal.new(playerGui.DescendantAdded)
 	local playerGuiDescendantRemoving = Signal.new(playerGui.DescendantRemoving)
 
-	visualsMaid:add(playerGuiDescendantAdded:connect("Visuals_OnPlayerGuiDescendantAdded", onPlayerGuiDescendantAdded))
-	visualsMaid:add(
-		playerGuiDescendantRemoving:connect("Visuals_OnPlayerGuiDescendantRemoving", onPlayerGuiDescendantRemoving)
-	)
-	visualsMaid:add(renderStepped:connect("Visuals_RenderStepped", updateVisuals))
+	-- Wait for UIVanity to initialize before touching GUI elements.
+	task.defer(function()
+		pcall(function()
+			playerGui:WaitForChild("TalentGui", 10)
+			playerGui:WaitForChild("BackpackGui", 5)
+			playerGui:WaitForChild("StatsGui", 5)
+		end)
 
-	for _, descendant in next, playerGui:GetDescendants() do
-		onPlayerGuiDescendantAdded(descendant)
-	end
+		task.wait(0.2)
+		visualsMaid:add(playerGuiDescendantAdded:connect("Visuals_OnPlayerGuiDescendantAdded", onPlayerGuiDescendantAdded))
+		visualsMaid:add(
+			playerGuiDescendantRemoving:connect("Visuals_OnPlayerGuiDescendantRemoving", onPlayerGuiDescendantRemoving)
+		)
+		visualsMaid:add(renderStepped:connect("Visuals_RenderStepped", updateVisuals))
+
+		for _, descendant in next, playerGui:GetDescendants() do
+			onPlayerGuiDescendantAdded(descendant)
+		end
+	end)
 
 	local info = replicatedStorage:WaitForChild("Info")
 	local dataReplication = info:WaitForChild("DataReplication")
 	local dataReplicationModule = require(dataReplication)
 
-	Visuals.drinfo = dataReplicationModule.GetData()
+	-- GetData() can fail on hot reload.
+	local success, drinfo = pcall(function()
+		return dataReplicationModule.GetData()
+	end)
+
+	Visuals.drinfo = success and drinfo or nil
 
 	Logger.warn("Visuals initialized.")
 end
