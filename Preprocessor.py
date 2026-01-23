@@ -1019,8 +1019,21 @@ class LuaPreprocessor:
 
     def write(self, content: str) -> None:
         self.output_path.parent.mkdir(parents=True, exist_ok=True)
+        # Auto-execute compatibility - wait for game to load before running.
+        header = """-- Wait for game to fully load before running.
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+local plr = game:GetService("Players").LocalPlayer
+local char = plr.Character or plr.CharacterAdded:Wait()
+char:WaitForChild("Humanoid")
+char:WaitForChild("HumanoidRootPart")
+task.wait(5)
+
+"""
         with self.output_path.open("w", encoding="utf-8", newline="") as f:
-            f.write(content)
+            f.write(header + content)
 
     def run(self) -> None:
         source = self.read()
