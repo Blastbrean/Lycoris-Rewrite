@@ -362,6 +362,8 @@ function BuilderSection:baction(base)
 			"Teleport Up",
 			"Start Slide",
 			"End Slide",
+			"Start Crouch",
+			"End Crouch",
 		},
 		Default = 1,
 		Callback = self:anc(function(action, value)

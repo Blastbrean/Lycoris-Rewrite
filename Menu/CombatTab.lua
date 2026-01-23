@@ -178,7 +178,7 @@ function CombatTab.initAutoDefenseSection(groupbox)
 	})
 
 	autoDefenseDepBox:AddToggle("UseIFrames", {
-		Text = "Use Invisibility Frames",
+		Text = "Use Invincibility Frames",
 		Default = false,
 		Tooltip = "If enabled, the auto defense will ignore parry, block and dodge action if there's already an existing invincibility frame.",
 	})

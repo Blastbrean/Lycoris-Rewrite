@@ -1,0 +1,196 @@
+{
+  "patch_id": "949cd6c1-4c67-4409-82b5-91dafe464c33",
+  "timestamp": "2025-12-21T21:09:45.474469",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://87084893315096": {
+        "status": "modified",
+        "changes": {
+          "actions": {
+            "from": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 530,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "8",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 4300,
+                "ihbc": false
+              },
+              {
+                "_type": "Forced Full Dodge",
+                "name": "3",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 1600,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 950,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "5",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 2800,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "4",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 1850,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "7",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 3900,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "6",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 3200,
+                "ihbc": false
+              }
+            ],
+            "to": [
+              {
+                "_type": "Parry",
+                "name": "1",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 530,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "8",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 4300,
+                "ihbc": false
+              },
+              {
+                "_type": "Forced Full Dodge",
+                "name": "3",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 1600,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "2",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 950,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "5",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 2800,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "4",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 1700,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "7",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 3900,
+                "ihbc": false
+              },
+              {
+                "_type": "Parry",
+                "name": "6",
+                "hitbox": {
+                  "Y": 51,
+                  "X": 51,
+                  "Z": 50
+                },
+                "when": 3200,
+                "ihbc": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

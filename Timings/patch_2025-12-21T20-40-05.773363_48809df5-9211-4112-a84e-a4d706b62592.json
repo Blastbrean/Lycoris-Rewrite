@@ -1,0 +1,138 @@
+{
+  "patch_id": "48809df5-9211-4112-a84e-a4d706b62592",
+  "timestamp": "2025-12-21T20:40:05.773363",
+  "author": "Blastbrean",
+  "diff": {
+    "animation": {
+      "rbxassetid://139109176874463": {
+        "status": "modified",
+        "changes": {
+          "phds": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          },
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://7600224169": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      },
+      "rbxassetid://11887874227": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://5067105317": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      },
+      "rbxassetid://5064195992": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      },
+      "rbxassetid://9597289518": {
+        "status": "modified",
+        "changes": {
+          "phds": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          },
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://9484850093": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://106858298622632": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      },
+      "rbxassetid://5067090007": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      },
+      "rbxassetid://81374297342678": {
+        "status": "modified",
+        "changes": {
+          "phds": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          },
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://11887892548": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.25,
+            "to": 0.2500000298023224
+          }
+        }
+      },
+      "rbxassetid://122256431354649": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      },
+      "rbxassetid://7600160919": {
+        "status": "modified",
+        "changes": {
+          "pfht": {
+            "from": 0.5,
+            "to": 0.5000000596046448
+          }
+        }
+      }
+    }
+  }
+}
