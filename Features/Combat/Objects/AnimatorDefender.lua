@@ -448,6 +448,12 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 	-- Animation ID.
 	local aid = tostring(track.Animation.AnimationId)
 
+	-- Block abnormal animation speeds to prevent AP breaker spam.
+	if track.Speed >= 1000 then
+		Logger.warn("(%s) Blocked potential AP breaker from %s (speed: %.0fx)", aid, self.entity.Name, track.Speed)
+		return
+	end
+
 	---@type AnimationTiming?
 	local timing = self:initial(self.entity, SaveManager.as, self.entity.Name, aid)
 
