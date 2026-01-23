@@ -1,4 +1,4 @@
-# Lycoris-Rewrite
+# Lycoris
 
 > **This is a fork of [Blastbrean/Lycoris-Rewrite](https://github.com/Blastbrean/Lycoris-Rewrite)**
 >
