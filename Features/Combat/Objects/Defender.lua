@@ -788,6 +788,54 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, started)
 		return serverSlideStop:FireServer(false)
 	end
 
+	if actionType == "Start Crouch" then
+		local character = players.LocalPlayer.Character
+		if not character then
+			return
+		end
+
+		local characterHandler = character:FindFirstChild("CharacterHandler")
+		if not characterHandler then
+			return
+		end
+
+		local requests = characterHandler:FindFirstChild("Requests")
+		if not requests then
+			return
+		end
+
+		local serverCrouch = requests:FindFirstChild("ServerCrouch")
+		if not serverCrouch then
+			return
+		end
+
+		return serverCrouch:FireServer(true)
+	end
+
+	if actionType == "End Crouch" then
+		local character = players.LocalPlayer.Character
+		if not character then
+			return
+		end
+
+		local characterHandler = character:FindFirstChild("CharacterHandler")
+		if not characterHandler then
+			return
+		end
+
+		local requests = characterHandler:FindFirstChild("Requests")
+		if not requests then
+			return
+		end
+
+		local serverCrouch = requests:FindFirstChild("ServerCrouch")
+		if not serverCrouch then
+			return
+		end
+
+		return serverCrouch:FireServer(false)
+	end
+
 	if actionType == "Jump" then
 		local humanController = InputClient.getHumanController()
 		if not humanController then
