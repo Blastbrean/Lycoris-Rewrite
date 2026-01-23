@@ -12,7 +12,8 @@ local plr = game:GetService("Players").LocalPlayer
 local char = plr.Character or plr.CharacterAdded:Wait()
 char:WaitForChild("Humanoid")
 char:WaitForChild("HumanoidRootPart")
-task.wait(5)
+-- Why 1.4? idk but it works.
+task.wait(1.4)
 
 -- Initialize Luraph globals if they do not exist.
 loadstring("getfenv().LPH_NO_VIRTUALIZE = function(...) return ... end")()

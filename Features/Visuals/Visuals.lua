@@ -578,6 +578,15 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
 		return
 	end
 
+	-- Disable UIVanity script while modifying GUI.
+	local playerGui = players.LocalPlayer:FindFirstChild("PlayerGui")
+	local uiVanity = playerGui and playerGui:FindFirstChild("UIVanity")
+	local wasEnabled = uiVanity and uiVanity.Enabled
+
+	if uiVanity then
+		uiVanity.Enabled = false
+	end
+
 	-- Clean maid to re-setup.
 	builderAssistanceMaid:clean()
 
@@ -703,6 +712,11 @@ local updateTalentSheet = LPH_NO_VIRTUALIZE(function(rframe)
 		newFrame.Parent = talentScroll
 
 		labelMap["Z" .. cleanMantra] = data
+	end
+
+	-- Re-enable UIVanity script.
+	if uiVanity and wasEnabled then
+		uiVanity.Enabled = true
 	end
 end)
 
@@ -1517,15 +1531,18 @@ function Visuals.init()
 	local playerGuiDescendantAdded = Signal.new(playerGui.DescendantAdded)
 	local playerGuiDescendantRemoving = Signal.new(playerGui.DescendantRemoving)
 
-	-- Wait for UIVanity to initialize before touching GUI elements.
-	task.defer(function()
-		pcall(function()
-			playerGui:WaitForChild("TalentGui", 10)
-			playerGui:WaitForChild("BackpackGui", 5)
-			playerGui:WaitForChild("StatsGui", 5)
-		end)
+	-- Wait for UIVanity and fix its initialization.
+	visualsMaid:mark(TaskSpawner.spawn("Visuals_UIVanityWait", function()
+		local uiVanity = playerGui:WaitForChild("UIVanity", 10)
 
-		task.wait(0.2)
+		-- Disable and re-enable UIVanity to fix initialization issues.
+		if uiVanity then
+			uiVanity.Enabled = false
+			task.wait()
+			uiVanity.Enabled = true
+		end
+
+		-- Now safe to connect signals and process GUI.
 		visualsMaid:add(playerGuiDescendantAdded:connect("Visuals_OnPlayerGuiDescendantAdded", onPlayerGuiDescendantAdded))
 		visualsMaid:add(
 			playerGuiDescendantRemoving:connect("Visuals_OnPlayerGuiDescendantRemoving", onPlayerGuiDescendantRemoving)
@@ -1535,7 +1552,7 @@ function Visuals.init()
 		for _, descendant in next, playerGui:GetDescendants() do
 			onPlayerGuiDescendantAdded(descendant)
 		end
-	end)
+	end))
 
 	local info = replicatedStorage:WaitForChild("Info")
 	local dataReplication = info:WaitForChild("DataReplication")
