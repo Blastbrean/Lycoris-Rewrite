@@ -722,7 +722,7 @@ end)
 
 ---Update card hovering.
 local updateCardHovering = LPH_NO_VIRTUALIZE(function()
-	if os.clock() - lastHoveringUpdate <= 0.1 then
+	if os.clock() - lastHoveringUpdate <= 0.05 then
 		return
 	end
 
@@ -772,20 +772,32 @@ local updateCardHovering = LPH_NO_VIRTUALIZE(function()
 
 	local guiObjects = playerGui:GetGuiObjectsAtPosition(mousePosition.X, mousePosition.Y)
 
-	-- Remove any objects that we are no longer hovering over
-	for name, _ in next, hoveringMap do
-		if Table.find(guiObjects, function(object)
-			return object.Name == name
-		end) then
+	-- Build hovering set.
+	local currentlyHovering = {}
+	for _, object in next, guiObjects do
+		if object:IsA("TextLabel") and labelMap[object.Name] then
+			currentlyHovering[object.Name] = object
+		end
+
+		-- Check Frame > Title pattern.
+		if object:IsA("Frame") then
+			local titleLabel = object:FindFirstChild("Title")
+			if titleLabel and titleLabel:IsA("TextLabel") and labelMap[titleLabel.Name] then
+				currentlyHovering[titleLabel.Name] = titleLabel
+			end
+		end
+	end
+
+	-- Remove unhovered objects.
+	for name, storedObject in next, hoveringMap do
+		if currentlyHovering[name] then
 			continue
 		end
 
-		local object = talentScroll:FindFirstChild(name)
-		if not object then
-			continue
+		-- Reset transparency.
+		if storedObject and typeof(storedObject) == "Instance" and storedObject:IsA("TextLabel") then
+			storedObject.TextTransparency = 0.4
 		end
-
-		object.TextTransparency = 0.4
 
 		hoveringMap[name] = nil
 	end
@@ -793,21 +805,25 @@ local updateCardHovering = LPH_NO_VIRTUALIZE(function()
 	local firstHoveringData = nil
 	local hoveringOverTalent = false
 
-	-- Update any objects that we are currently hovering over
+	-- Check talent sheet hover.
 	for _, object in next, guiObjects do
 		if not hoveringOverTalent and object:IsDescendantOf(talentSheet) then
 			hoveringOverTalent = true
 		end
+	end
 
-		local data = labelMap[object.Name]
+	-- Update hovered objects.
+	for name, targetLabel in next, currentlyHovering do
+		local data = labelMap[name]
 		if not data then
 			continue
 		end
 
-		object.TextTransparency = 0.1
+		-- Set transparency.
+		targetLabel.TextTransparency = 0.1
 
-		---@note: Go off names because they should be unique and they constantly regenerate
-		hoveringMap[object.Name] = true
+		-- Store reference.
+		hoveringMap[name] = targetLabel
 
 		-- Set data.
 		firstHoveringData = firstHoveringData or data
