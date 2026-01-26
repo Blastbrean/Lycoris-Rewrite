@@ -3,18 +3,6 @@ if not shared then
 	return warn("No shared, no script.")
 end
 
--- Wait for game to fully load before running.
-if not game:IsLoaded() then
-	game.Loaded:Wait()
-end
-
-local plr = game:GetService("Players").LocalPlayer
-local char = plr.Character or plr.CharacterAdded:Wait()
-char:WaitForChild("Humanoid")
-char:WaitForChild("HumanoidRootPart")
--- Why 1.4? idk but it works.
-task.wait(1.4)
-
 -- Initialize Luraph globals if they do not exist.
 loadstring("getfenv().LPH_NO_VIRTUALIZE = function(...) return ... end")()
 
