@@ -53,7 +53,7 @@ function GameTab.initLocalCharacterSection(groupbox)
 
 	cfsDepBox:AddSlider("CFrameSpeedMultiplier", {
 		Text = "CFrame Speed Multiplier",
-		Default = 8,
+		Default = 1,
 		Min = 1,
 		Max = 20,
 		Suffix = "x",
