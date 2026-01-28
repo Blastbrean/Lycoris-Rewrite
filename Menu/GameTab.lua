@@ -41,6 +41,25 @@ function GameTab.initLocalCharacterSection(groupbox)
 		Rounding = 0,
 	})
 
+	local cframeSpeedToggle = groupbox:AddToggle("CFrameSpeed", {
+		Text = "CFrame Speed",
+		Tooltip = "Use CFrame-based movement. Recommend on low speed, this feature will help your fight and make your combo/movement smoother.",
+		Default = false,
+	})
+
+	cframeSpeedToggle:AddKeyPicker("CFrameSpeedKeybind", { Default = "N/A", SyncToggleState = true, Text = "CFrame Speed" })
+
+	local cfsDepBox = groupbox:AddDependencyBox()
+
+	cfsDepBox:AddSlider("CFrameSpeedMultiplier", {
+		Text = "CFrame Speed Multiplier",
+		Default = 8,
+		Min = 1,
+		Max = 20,
+		Suffix = "x",
+		Rounding = 1,
+	})
+
 	local flyToggle = groupbox:AddToggle("Fly", {
 		Text = "Fly",
 		Tooltip = "Set your character's velocity while moving to imitate flying.",
@@ -290,6 +309,10 @@ function GameTab.initLocalCharacterSection(groupbox)
 
 	speedDepBox:SetupDependencies({
 		{ Toggles.Speedhack, true },
+	})
+
+	cfsDepBox:SetupDependencies({
+		{ Toggles.CFrameSpeed, true },
 	})
 
 	flyDepBox:SetupDependencies({

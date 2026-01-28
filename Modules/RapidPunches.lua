@@ -43,7 +43,7 @@ return function(self, timing)
 		radiantKickTiming.cbm = true
 
 		local action = Action.new()
-		action._when = 400
+		action._when = 600
 		action._type = "Parry"
 		action.hitbox = Vector3.new(100, 100, 100)
 		action.name = "Radiant Kick Shared"

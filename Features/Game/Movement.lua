@@ -137,6 +137,24 @@ return LPH_NO_VIRTUALIZE(function()
 			+ moveDirection.Unit * Configuration.expectOptionValue("SpeedhackSpeed")
 	end
 
+	---Update CFrame speed hack.
+	---@param rootPart BasePart
+	---@param humanoid Humanoid
+	---@param deltaTime number
+	local function updateCFrameSpeed(rootPart, humanoid, deltaTime)
+		if Configuration.expectToggleValue("Fly") then
+			return
+		end
+
+		local moveDirection = humanoid.MoveDirection
+		if not moveDirection or moveDirection.Magnitude <= 0.001 then
+			return
+		end
+
+		local speed = Configuration.expectOptionValue("CFrameSpeedMultiplier") or 8
+		rootPart.CFrame = rootPart.CFrame + moveDirection * (speed * deltaTime)
+	end
+
 	---Update infinite jump.
 	---@param rootPart BasePart
 	local function updateInfiniteJump(rootPart)
@@ -319,6 +337,11 @@ return LPH_NO_VIRTUALIZE(function()
 
 		if Configuration.expectToggleValue("Speedhack") then
 			updateSpeedHack(rootPart, humanoid)
+		end
+
+		-- CFrame Speed is standalone and can be used independently of Speedhack.
+		if Configuration.expectToggleValue("CFrameSpeed") then
+			updateCFrameSpeed(rootPart, humanoid, dt)
 		end
 
 		if Configuration.expectToggleValue("InfiniteJump") then

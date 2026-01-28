@@ -41,7 +41,7 @@ local function updateCharisma()
 		return
 	end
 
-	if not Attributes.isNotAtCap(localPlayerCharacter, "Stat_Charisma", charismaFarmCap.Value - 1) then
+	if not Attributes.isNotAtCap(localPlayerCharacter, "Stat_Charisma", charismaFarmCap.Value) then
 		Logger.longNotify("Charisma AutoFarm is automatically stopping.")
 		return charismaFarm:SetValue(false)
 	end

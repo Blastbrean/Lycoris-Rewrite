@@ -41,7 +41,7 @@ local function updateInteligence()
 		return
 	end
 
-	if not Attributes.isNotAtCap(localPlayerCharacter, "Stat_Intelligence", inteligenceFarmCap.Value - 1) then
+	if not Attributes.isNotAtCap(localPlayerCharacter, "Stat_Intelligence", inteligenceFarmCap.Value) then
 		Logger.longNotify("Intelligence AutoFarm is automatically stopping.")
 		return inteligenceFarm:SetValue(false)
 	end
