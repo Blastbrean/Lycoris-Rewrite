@@ -59,7 +59,7 @@ return function(self, timing)
 	local action = Action.new()
 	action._when = 0
 	action._type = "Parry"
-	action.hitbox = Vector3.new(10, 10, 17.5)
+	action.hitbox = Vector3.new(10, 10, 20)
 	action.name = "Shoulder Bash Far"
 	self:action(timing, action)
 end

@@ -1,0 +1,52 @@
+{
+  "patch_id": "7a48a605-b2fe-4674-b4f4-93a2b8fdd0dd",
+  "timestamp": "2026-01-28T09:32:25.272698",
+  "author": "Kendu",
+  "diff": {
+    "animation": {
+      "rbxassetid://9422599069": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "ShoulderBash"
+          }
+        }
+      },
+      "rbxassetid://6470684331": {
+        "status": "modified",
+        "changes": {
+          "imxd": {
+            "from": 0,
+            "to": 64
+          }
+        }
+      },
+      "rbxassetid://9400896040": {
+        "status": "modified",
+        "changes": {
+          "umoa": {
+            "from": false,
+            "to": true
+          },
+          "iae": {
+            "from": false,
+            "to": true
+          },
+          "smod": {
+            "from": "N/A",
+            "to": "ShoulderBash"
+          },
+          "ieae": {
+            "from": false,
+            "to": true
+          }
+        }
+      }
+    }
+  }
+}
