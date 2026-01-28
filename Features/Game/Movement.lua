@@ -151,7 +151,7 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		local speed = Configuration.expectOptionValue("CFrameSpeedMultiplier") or 8
+		local speed = Configuration.expectOptionValue("CFrameSpeedMultiplier")
 		rootPart.CFrame = rootPart.CFrame + moveDirection * (speed * deltaTime)
 	end
 
