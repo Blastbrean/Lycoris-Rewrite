@@ -757,17 +757,8 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, started)
 		return InputClient.dodge(options)
 	end
 
-	---@note: End block is handled elsewhere.
 	if actionType == "End Block" then
 		return
-	end
-
-	if actionType == "Start Crouch" then
-		return InputClient.crouch(true)
-	end
-
-	if actionType == "End Crouch" then
-		return InputClient.crouch(false)
 	end
 
 	if actionType == "Start Slide" then
@@ -786,6 +777,14 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, started)
 		end
 
 		return serverSlideStop:FireServer(false)
+	end
+
+	if actionType == "Start Crouch" then
+		return InputClient.crouch(true)
+	end
+
+	if actionType == "End Crouch" then
+		return InputClient.crouch(false)
 	end
 
 	if actionType == "Jump" then
@@ -1044,6 +1043,243 @@ Defender.module = LPH_NO_VIRTUALIZE(function(self, timing, ...)
 	self.tmaid:mark(TaskSpawner.spawn(identifier, lf, self, timing, ...))
 end)
 
+---Activate Prediction mantra instead of parrying.
+---@param self Defender
+---@param timing Timing
+---@param action Action
+Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
+	-- Throw bypasses all counters.
+	if PP_SCRAMBLE_STR(timing.smod) == "Throw" then
+		return
+	end
+
+	-- Only use against players.
+	if not players:GetPlayerFromCharacter(self.entity) then
+		return
+	end
+
+	-- Hardcoded 100ms delay for Prediction.
+	task.wait(0.1)
+
+	-- Validate but skip failure rate (Prediction should always work).
+	local options = ValidationOptions.new(action, timing)
+	options.skipFailureRate = true
+	options.visualize = false
+	if not self:valid(options) then
+		return
+	end
+
+	-- Check if animation stopped (feint detection).
+	if self.__type == "Animation" and self.track and self:stopped(self.track, timing) then
+		return
+	end
+
+	local localPlayer = players.LocalPlayer
+	local character = localPlayer and localPlayer.Character
+	local backpack = localPlayer and localPlayer:FindFirstChild("Backpack")
+	local predictionMantra = backpack and backpack:FindFirstChild("Mantra:PredictionIntelligence{{Prediction}}")
+
+	if not character then
+		return
+	end
+
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	local effectReplicatorModule = effectReplicator and require(effectReplicator)
+
+	if not effectReplicatorModule then
+		return
+	end
+
+	-- Skip if already in IFrames (only for players).
+	local inIFrame = effectReplicatorModule:FindEffect("Immortal")
+		or effectReplicatorModule:FindEffect("DodgeFrame")
+		or effectReplicatorModule:FindEffect("ParryFrame")
+		or effectReplicatorModule:FindEffect("Ghost")
+
+	local isPlayer = self.entity and players:GetPlayerFromCharacter(self.entity)
+	if Configuration.expectToggleValue("UseIFrames") and inIFrame and isPlayer then
+		return
+	end
+
+	-- Hitbox check for AnimatorDefender.
+	if self.entity and self.__type == "Animation" then
+		local root = self.entity:FindFirstChild("HumanoidRootPart")
+		if not root then
+			return
+		end
+
+		local hoptions = HitboxOptions.new(root, timing)
+		hoptions.spredict = not timing.duih and not timing.dp
+		hoptions.ptime = self:fsecs(timing)
+		hoptions.action = action
+		hoptions.entity = self.entity
+		hoptions.visualize = false
+		hoptions:ucache()
+
+		if not self:hc(hoptions, nil) and not self:fpc(timing, hoptions) then
+			return
+		end
+	end
+
+	if not predictionMantra then
+		return
+	end
+
+	-- Check if Prediction is on cooldown.
+	local onCooldown = false
+	for _, effect in next, effectReplicatorModule.Effects do
+		if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("PredictionIntelligence") then
+			onCooldown = true
+			break
+		end
+	end
+
+	if onCooldown then
+		return
+	end
+
+	local activateMantra = character:FindFirstChild("CharacterHandler")
+		and character.CharacterHandler:FindFirstChild("Requests")
+		and character.CharacterHandler.Requests:FindFirstChild("ActivateMantra")
+
+	if not activateMantra then
+		return
+	end
+
+	activateMantra:FireServer(predictionMantra)
+	self:notify(timing, PP_SCRAMBLE_STR("Action 'Parry' replaced with 'Prediction' mantra."))
+end)
+
+---Activate Punishment mantra instead of parrying.
+---@param self Defender
+---@param timing Timing
+---@param action Action
+Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
+	-- Throw bypasses all counters.
+	if PP_SCRAMBLE_STR(timing.smod) == "Throw" then
+		return
+	end
+
+	-- Only use against players.
+	if not players:GetPlayerFromCharacter(self.entity) then
+		return
+	end
+
+	-- Hardcoded 100ms delay for Punishment.
+	task.wait(0.1)
+
+	-- Validate but skip failure rate (Punishment should always work).
+	local options = ValidationOptions.new(action, timing)
+	options.skipFailureRate = true
+	options.visualize = false
+	if not self:valid(options) then
+		return
+	end
+
+	-- Check if animation stopped (feint detection).
+	if self.__type == "Animation" and self.track and self:stopped(self.track, timing) then
+		return
+	end
+
+	local localPlayer = players.LocalPlayer
+	local character = localPlayer and localPlayer.Character
+	local backpack = localPlayer and localPlayer:FindFirstChild("Backpack")
+	local punishmentMantra = backpack and backpack:FindFirstChild("Mantra:RevengeWeaponHeavy{{Punishment}}")
+
+	if not character then
+		return
+	end
+
+	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
+	local effectReplicatorModule = effectReplicator and require(effectReplicator)
+
+	if not effectReplicatorModule then
+		return
+	end
+
+	-- Defer to Prediction if it is enabled, available, and off cooldown.
+	if Configuration.expectToggleValue("UsePrediction") then
+		local predictionMantra = backpack and backpack:FindFirstChild("Mantra:PredictionIntelligence{{Prediction}}")
+		if predictionMantra then
+			local predictionOnCooldown = false
+			for _, effect in next, effectReplicatorModule.Effects do
+				if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("PredictionIntelligence") then
+					predictionOnCooldown = true
+					break
+				end
+			end
+
+			if not predictionOnCooldown then
+				return
+			end
+		end
+	end
+
+	-- Skip if already absorbing damage from a previous Punishment.
+	if effectReplicatorModule:FindEffect("AbsorbCharge") then
+		return
+	end
+
+	-- Skip if already in IFrames (only for players).
+	local inIFrame = effectReplicatorModule:FindEffect("Immortal")
+		or effectReplicatorModule:FindEffect("DodgeFrame")
+		or effectReplicatorModule:FindEffect("ParryFrame")
+		or effectReplicatorModule:FindEffect("Ghost")
+
+	local isPlayer = self.entity and players:GetPlayerFromCharacter(self.entity)
+	if Configuration.expectToggleValue("UseIFrames") and inIFrame and isPlayer then
+		return
+	end
+
+	-- Hitbox check for AnimatorDefender.
+	if self.entity and self.__type == "Animation" then
+		local root = self.entity:FindFirstChild("HumanoidRootPart")
+		if not root then
+			return
+		end
+
+		local hoptions = HitboxOptions.new(root, timing)
+		hoptions.spredict = not timing.duih and not timing.dp
+		hoptions.ptime = self:fsecs(timing)
+		hoptions.action = action
+		hoptions.entity = self.entity
+		hoptions.visualize = false
+		hoptions:ucache()
+
+		if not self:hc(hoptions, nil) and not self:fpc(timing, hoptions) then
+			return
+		end
+	end
+
+	if not punishmentMantra then
+		return
+	end
+
+	-- Check if Punishment is on cooldown.
+	local onCooldown = false
+	for _, effect in next, effectReplicatorModule.Effects do
+		if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("RevengeWeaponHeavy") then
+			onCooldown = true
+			break
+		end
+	end
+
+	if onCooldown then
+		return
+	end
+
+	local activateMantra = character:FindFirstChild("CharacterHandler")
+		and character.CharacterHandler:FindFirstChild("Requests")
+		and character.CharacterHandler.Requests:FindFirstChild("ActivateMantra")
+
+	if not activateMantra then
+		return
+	end
+
+	activateMantra:FireServer(punishmentMantra)
+	self:notify(timing, PP_SCRAMBLE_STR("Action 'Parry' replaced with 'Punishment' mantra."))
+end)
+
 ---Handle auto feint.
 ---@param self Defender
 ---@param timing Timing
@@ -1155,6 +1391,24 @@ Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	end
 
 	self:mark(atask)
+
+	-- Check if action is Parry or Dodge for mantra replacement.
+	local actionType = PP_SCRAMBLE_STR(action._type)
+	local isParryOrDodge = actionType == "Parry" or actionType == "Dodge"
+
+	---@note: Schedule early Prediction task if enabled and action is Parry or Dodge.
+	if Configuration.expectToggleValue("UsePrediction") and isParryOrDodge then
+		self:mark(Task.new("Prediction", function()
+			return action:when() - rdelay - Latency.sdelay() - 0.2
+		end, timing.punishable, timing.after, self.prediction, self, timing, action, os.clock()))
+	end
+
+	---@note: Schedule early Punishment task if enabled and action is Parry or Dodge.
+	if Configuration.expectToggleValue("UsePunishment") and isParryOrDodge then
+		self:mark(Task.new("Punishment", function()
+			return action:when() - rdelay - Latency.sdelay() - 0.2
+		end, timing.punishable, timing.after, self.punishment, self, timing, action, os.clock()))
+	end
 
 	-- Add auto feint action.
 	if

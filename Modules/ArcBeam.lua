@@ -5,7 +5,6 @@ local PartTiming = getfenv().PartTiming
 local Action = getfenv().Action
 
 ---@type ProjectileTracker
----@diagnostic disable-next-line: unused-local
 local ProjectileTracker = getfenv().ProjectileTracker
 
 ---@module Features.Combat.Defense
@@ -24,10 +23,12 @@ return function(self, timing)
 	end
 
 	local tracker = ProjectileTracker.new(function(candidate)
-		return candidate.Name == "Spread"
+    return candidate.Name == "Spread"
+        or candidate.Name == "Projectile"
+        or candidate.Parent and candidate.Parent.Name == "Beam"
 	end)
 
-	task.wait(0.5 - Latency.rtt())
+	task.wait(math.max(0, 0.5 - Latency.rtt()))
 
 	if self:distance(self.entity) <= 20 then
 		local action = Action.new()
@@ -35,6 +36,7 @@ return function(self, timing)
 		action._when = 100
 		action.name = "Arc Beam Close Timing"
 		action.ihbc = true
+		action.fhb = true
 		return self:action(timing, action)
 	end
 
@@ -48,7 +50,7 @@ return function(self, timing)
 	pt.duih = true
 	pt.fhb = true
 	pt.name = "ArcBeamProjectile"
-	pt.hitbox = Vector3.new(20, 20, 40)
+	pt.hitbox = Vector3.new(20, 25, 40)
 	pt.actions:push(action)
 	pt.cbm = true
 

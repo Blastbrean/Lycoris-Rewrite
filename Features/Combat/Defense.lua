@@ -73,6 +73,7 @@ local autoWispLocked = false
 local lastVisualizationUpdate = os.clock()
 local lastGoldenTongueUpdate = os.clock()
 local lastHistoryUpdate = os.clock()
+local lastAutoArdourUpdate = os.clock()
 local lastAutoWispShift = nil
 local lastAutoWispUpdate = nil
 
@@ -232,6 +233,64 @@ local updateGoldenTongue = LPH_NO_VIRTUALIZE(function()
 	end
 
 	defenseMaid:mark(TaskSpawner.spawn("Defender_GoldenTongueSendAsync", rbxSystem.SendAsync, rbxSystem, "/help"))
+end)
+
+---Update auto ardour.
+local updateAutoArdour = LPH_NO_VIRTUALIZE(function()
+	-- Cooldown check (1 second between checks).
+	if os.clock() - lastAutoArdourUpdate <= 1.0 then
+		return
+	end
+	lastAutoArdourUpdate = os.clock()
+
+	if not Configuration.expectToggleValue("AutoArdour") then
+		return
+	end
+
+	local localPlayer = players.LocalPlayer
+	if not localPlayer then
+		return
+	end
+
+	-- Check if player has the Ardour talent.
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack or not backpack:FindFirstChild("Talent:Murmur: Ardour") then
+		return
+	end
+
+	local character = localPlayer.Character
+	if not character then
+		return
+	end
+
+	-- Check if we have a hand weapon.
+	local success, hasWeapon = pcall(function()
+		return workspace.Live[localPlayer.Name].RightHand.HandWeapon ~= nil
+	end)
+
+	if not success or not hasWeapon then
+		return
+	end
+
+	-- Check if Ardour is already active (pcall returns true if path exists).
+	local hasArdour = pcall(function()
+		return workspace.Live[localPlayer.Name].RightHand.HandWeapon.ArdourHum
+	end)
+
+	if hasArdour then
+		return
+	end
+
+	-- Fire the Ardour request.
+	local characterHandler = character:FindFirstChild("CharacterHandler")
+	local requests = characterHandler and characterHandler:FindFirstChild("Requests")
+	local ardourRemote = requests and requests:FindFirstChild("Ardour")
+
+	if ardourRemote then
+		pcall(function()
+			ardourRemote:FireServer()
+		end)
+	end
 end)
 
 ---Toggle visualizations.
@@ -605,6 +664,7 @@ function Defense.init()
 	defenseMaid:mark(renderStepped:connect("Defense_UpdateVisualizations", updateVisualizations))
 	defenseMaid:mark(renderStepped:connect("Defense_UpdateHistory", updateHistory))
 	defenseMaid:mark(renderStepped:connect("Defense_UpdateGoldenTongue", updateGoldenTongue))
+	defenseMaid:mark(renderStepped:connect("Defense_UpdateAutoArdour", updateAutoArdour))
 	defenseMaid:mark(postSimulation:connect("Defense_UpdateDefenders", updateDefenders))
 	defenseMaid:mark(clientEffectEvent:connect("Defense_ClientEffectEvent", onClientEffectEvent))
 	defenseMaid:mark(clientEffectLargeEvent:connect("Defense_ClientEffectEventLarge", onClientEffectEvent))

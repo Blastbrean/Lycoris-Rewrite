@@ -189,6 +189,18 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		Tooltip = "If enabled, the auto defense will change dodge actions to parry actions.",
 	})
 
+	autoDefenseDepBox:AddToggle("UsePrediction", {
+		Text = "Use Prediction",
+		Default = false,
+		Tooltip = "Use Prediction mantra instead of parry/dodge when available and off cooldown. Can be used together with Punishment (Prediction takes priority).",
+	})
+
+	autoDefenseDepBox:AddToggle("UsePunishment", {
+		Text = "Use Punishment",
+		Default = false,
+		Tooltip = "Use Punishment mantra instead of parry/dodge when available and off cooldown. Can be used together with Prediction (Prediction takes priority).",
+	})
+
 	local blatantRollToggle = autoDefenseDepBox:AddToggle("BlatantRoll", {
 		Text = "Blatant Roll",
 		Default = false,
@@ -545,6 +557,12 @@ function CombatTab.initCombatAssistance(groupbox)
 
 	amfDepBox:SetupDependencies({
 		{ amfToggle, true },
+	})
+
+	groupbox:AddToggle("AutoArdour", {
+		Text = "Auto Ardour",
+		Default = false,
+		Tooltip = "Automatically activate Ardour when you have a weapon equipped and the buff is not active. Requires the 'Murmur: Ardour' talent.",
 	})
 
 	groupbox:AddToggle("AutoFlowState", {
