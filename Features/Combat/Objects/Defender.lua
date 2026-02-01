@@ -1058,6 +1058,7 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
+	-- Windup delay.
 	task.wait(0.1)
 
 	local options = ValidationOptions.new(action, timing)
@@ -1162,6 +1163,7 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
+	-- Windup delay.
 	task.wait(0.1)
 
 	local options = ValidationOptions.new(action, timing)
