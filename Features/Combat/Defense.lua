@@ -237,7 +237,6 @@ end)
 
 ---Update auto ardour.
 local updateAutoArdour = LPH_NO_VIRTUALIZE(function()
-	-- Cooldown check (1 second between checks).
 	if os.clock() - lastAutoArdourUpdate <= 1.0 then
 		return
 	end
@@ -252,7 +251,6 @@ local updateAutoArdour = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	-- Check if player has the Ardour talent.
 	local backpack = localPlayer:FindFirstChild("Backpack")
 	if not backpack or not backpack:FindFirstChild("Talent:Murmur: Ardour") then
 		return
@@ -263,7 +261,6 @@ local updateAutoArdour = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	-- Check if we have a hand weapon.
 	local success, hasWeapon = pcall(function()
 		return workspace.Live[localPlayer.Name].RightHand.HandWeapon ~= nil
 	end)
@@ -272,7 +269,6 @@ local updateAutoArdour = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	-- Check if Ardour is already active (pcall returns true if path exists).
 	local hasArdour = pcall(function()
 		return workspace.Live[localPlayer.Name].RightHand.HandWeapon.ArdourHum
 	end)
@@ -281,7 +277,6 @@ local updateAutoArdour = LPH_NO_VIRTUALIZE(function()
 		return
 	end
 
-	-- Fire the Ardour request.
 	local characterHandler = character:FindFirstChild("CharacterHandler")
 	local requests = characterHandler and characterHandler:FindFirstChild("Requests")
 	local ardourRemote = requests and requests:FindFirstChild("Ardour")

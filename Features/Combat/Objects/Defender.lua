@@ -1058,10 +1058,8 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Hardcoded 100ms delay for Prediction.
 	task.wait(0.1)
 
-	-- Validate but skip failure rate (Prediction should always work).
 	local options = ValidationOptions.new(action, timing)
 	options.skipFailureRate = true
 	options.visualize = false
@@ -1069,7 +1067,7 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Check if animation stopped (feint detection).
+	-- Feint check.
 	if self.__type == "Animation" and self.track and self:stopped(self.track, timing) then
 		return
 	end
@@ -1090,7 +1088,7 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Skip if already in IFrames (only for players).
+	-- IFrame check.
 	local inIFrame = effectReplicatorModule:FindEffect("Immortal")
 		or effectReplicatorModule:FindEffect("DodgeFrame")
 		or effectReplicatorModule:FindEffect("ParryFrame")
@@ -1101,7 +1099,7 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Hitbox check for AnimatorDefender.
+	-- Hitbox check.
 	if self.entity and self.__type == "Animation" then
 		local root = self.entity:FindFirstChild("HumanoidRootPart")
 		if not root then
@@ -1125,7 +1123,6 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Check if Prediction is on cooldown.
 	local onCooldown = false
 	for _, effect in next, effectReplicatorModule.Effects do
 		if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("PredictionIntelligence") then
@@ -1165,10 +1162,8 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Hardcoded 100ms delay for Punishment.
 	task.wait(0.1)
 
-	-- Validate but skip failure rate (Punishment should always work).
 	local options = ValidationOptions.new(action, timing)
 	options.skipFailureRate = true
 	options.visualize = false
@@ -1176,7 +1171,7 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Check if animation stopped (feint detection).
+	-- Feint check.
 	if self.__type == "Animation" and self.track and self:stopped(self.track, timing) then
 		return
 	end
@@ -1197,7 +1192,7 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Defer to Prediction if it is enabled, available, and off cooldown.
+	-- Defer to Prediction.
 	if Configuration.expectToggleValue("UsePrediction") then
 		local predictionMantra = backpack and backpack:FindFirstChild("Mantra:PredictionIntelligence{{Prediction}}")
 		if predictionMantra then
@@ -1215,12 +1210,12 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		end
 	end
 
-	-- Skip if already absorbing damage from a previous Punishment.
+	-- Skip if already absorbing.
 	if effectReplicatorModule:FindEffect("AbsorbCharge") then
 		return
 	end
 
-	-- Skip if already in IFrames (only for players).
+	-- IFrame check.
 	local inIFrame = effectReplicatorModule:FindEffect("Immortal")
 		or effectReplicatorModule:FindEffect("DodgeFrame")
 		or effectReplicatorModule:FindEffect("ParryFrame")
@@ -1231,7 +1226,7 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Hitbox check for AnimatorDefender.
+	-- Hitbox check.
 	if self.entity and self.__type == "Animation" then
 		local root = self.entity:FindFirstChild("HumanoidRootPart")
 		if not root then
@@ -1255,7 +1250,6 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		return
 	end
 
-	-- Check if Punishment is on cooldown.
 	local onCooldown = false
 	for _, effect in next, effectReplicatorModule.Effects do
 		if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("RevengeWeaponHeavy") then
@@ -1392,7 +1386,6 @@ Defender.action = LPH_NO_VIRTUALIZE(function(self, timing, action)
 
 	self:mark(atask)
 
-	-- Check if action is Parry or Dodge for mantra replacement.
 	local actionType = PP_SCRAMBLE_STR(action._type)
 	local isParryOrDodge = actionType == "Parry" or actionType == "Dodge"
 
