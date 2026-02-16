@@ -390,7 +390,7 @@ end)
 ---@param track AnimationTrack
 ---@return boolean
 function AnimatorDefender:pvalidate(track)
-	if track.Priority == Enum.AnimationPriority.Core then
+	if track.Priority == Enum.AnimationPriority.Core or track.Priority == Enum.AnimationPriority.Idle then
 		return false
 	end
 
