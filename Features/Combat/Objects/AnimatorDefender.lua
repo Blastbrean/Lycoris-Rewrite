@@ -390,25 +390,35 @@ end)
 ---@param track AnimationTrack
 ---@return boolean
 function AnimatorDefender:pvalidate(track)
-	if track.Priority == Enum.AnimationPriority.Core then
-		return false
-	end
+	if Configuration.expectToggleValue("ValidateIncomingAnimations") then
+		if track.Priority == Enum.AnimationPriority.Core then
+			return false
+		end
 
-	local isComingFromPlayer = players:GetPlayerFromCharacter(self.entity)
+		local isComingFromPlayer = players:GetPlayerFromCharacter(self.entity)
 
-	if isComingFromPlayer and track.WeightTarget <= 0.05 then
-		return false
-	end
+		if isComingFromPlayer and track.WeightTarget <= 0.05 then
+			return false
+		end
 
-	if isComingFromPlayer and self.manimations[track.Animation.AnimationId] ~= nil then
-		Logger.warn(
-			"(%s) Animation %s is being skipped from player %s because they're likely AP breaking.",
-			self.manimations[track.Animation.AnimationId].Name,
-			track.Animation.AnimationId,
-			self.entity.Name
-		)
+		if isComingFromPlayer and self.manimations[track.Animation.AnimationId] ~= nil then
+			Logger.warn(
+				"(%s) Animation %s is being skipped from player %s because they're likely AP breaking.",
+				self.manimations[track.Animation.AnimationId].Name,
+				track.Animation.AnimationId,
+				self.entity.Name
+			)
 
-		return false
+			return false
+		end
+
+		local aid = tostring(track.Animation.AnimationId)
+
+		-- Block abnormal animation speeds to prevent AP breaker spam.
+		if track.Speed >= 1000 then
+			Logger.warn("(%s) Blocked potential AP breaker from %s (speed: %.0fx)", aid, self.entity.Name, track.Speed)
+			return
+		end
 	end
 
 	return true
@@ -447,12 +457,6 @@ AnimatorDefender.process = LPH_NO_VIRTUALIZE(function(self, track)
 
 	-- Animation ID.
 	local aid = tostring(track.Animation.AnimationId)
-
-	-- Block abnormal animation speeds to prevent AP breaker spam.
-	if track.Speed >= 1000 then
-		Logger.warn("(%s) Blocked potential AP breaker from %s (speed: %.0fx)", aid, self.entity.Name, track.Speed)
-		return
-	end
 
 	---@type AnimationTiming?
 	local timing = self:initial(self.entity, SaveManager.as, self.entity.Name, aid)
