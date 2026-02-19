@@ -4,7 +4,7 @@ Rewritten Lycoris - better logging, optimizations, error handling, faster protot
 
 Powered & inspired by parts of Serenity's framework rewritten to the new coding style.
 
-For questions, issues, pull requests, and more...
+For code related questions (not troubleshooting / tutorial on anything basic), issues, pull requests, and more...
 
 https://discord.gg/lyc
 
