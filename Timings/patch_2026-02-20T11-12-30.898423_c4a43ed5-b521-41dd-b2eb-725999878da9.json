@@ -1,0 +1,625 @@
+{
+  "patch_id": "c4a43ed5-b521-41dd-b2eb-725999878da9",
+  "timestamp": "2026-02-20T11:12:30.898423",
+  "author": "Kendu",
+  "diff": {
+    "animation": {
+      "rbxassetid://100777123071173": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 510,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "2",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 1120,
+              "ihbc": false
+            },
+            {
+              "_type": "Start Crouch",
+              "name": "3",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 1260,
+              "ihbc": false
+            },
+            {
+              "_type": "End Crouch",
+              "name": "4",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 2360,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://100777123071173",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "IceChampion3Hit",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://127741055541488": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 640,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "2",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 1340,
+              "ihbc": false
+            },
+            {
+              "_type": "Jump",
+              "name": "3",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 2040,
+              "ihbc": false
+            },
+            {
+              "_type": "Dodge",
+              "name": "4",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 3100,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://127741055541488",
+          "mat": 4000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "IceChampion4Hit",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://132499670118034": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 640,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "2",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 1210,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "3",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 2140,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "4",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 2800,
+              "ihbc": false
+            },
+            {
+              "_type": "Dodge",
+              "name": "5",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 3940,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://132499670118034",
+          "mat": 5000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "Ice Champion 5 Hit Combo",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://118860349069324": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Jump",
+              "name": "1",
+              "hitbox": {
+                "Y": 100,
+                "X": 100,
+                "Z": 100
+              },
+              "when": 2550,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://118860349069324",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "Ice Champion Dash Slam",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://133763199472108": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Dodge",
+              "name": "1",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 870,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "2",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 1520,
+              "ihbc": false
+            },
+            {
+              "_type": "Parry",
+              "name": "3",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 2100,
+              "ihbc": true
+            },
+            {
+              "_type": "Parry",
+              "name": "4",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 3210,
+              "ihbc": true
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://133763199472108",
+          "mat": 4000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "IceChampionSpike",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://80169226986818": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Jump",
+              "name": "1",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 570,
+              "ihbc": false
+            },
+            {
+              "_type": "Start Crouch",
+              "name": "2",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 780,
+              "ihbc": false
+            },
+            {
+              "_type": "End Crouch",
+              "name": "3",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 1880,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://80169226986818",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "Ice Champion Sweep",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://137620474756361": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Dodge",
+              "name": "1",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 350,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://137620474756361",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "Ice Champion Thrust",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      },
+      "rbxassetid://106268260112496": {
+        "status": "added",
+        "data": {
+          "rpd": 0,
+          "hso": 0,
+          "ieae": false,
+          "actions": [
+            {
+              "_type": "Start Block",
+              "name": "1",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 500,
+              "ihbc": false
+            },
+            {
+              "_type": "End Block",
+              "name": "2",
+              "hitbox": {
+                "Y": 21,
+                "X": 32,
+                "Z": 25
+              },
+              "when": 2000,
+              "ihbc": false
+            }
+          ],
+          "ndfb": false,
+          "nbfb": false,
+          "_id": "rbxassetid://106268260112496",
+          "mat": 2000,
+          "rpue": false,
+          "srpn": false,
+          "punishable": 0,
+          "name": "Ice Champion Windup Slash",
+          "hitbox": {
+            "Y": 0,
+            "X": 0,
+            "Z": 0
+          },
+          "fhb": true,
+          "imdd": 0,
+          "duih": false,
+          "rsd": 0,
+          "umoa": false,
+          "smod": "N/A",
+          "bfht": 0.3,
+          "pfh": false,
+          "after": 0,
+          "imb": false,
+          "dp": false,
+          "pfht": 0.15,
+          "phds": 0,
+          "phd": false,
+          "aatk": false,
+          "nvfb": false,
+          "smn": false,
+          "iae": false,
+          "ha": true,
+          "imxd": 1000,
+          "tag": "Undefined"
+        }
+      }
+    }
+  }
+}
