@@ -1,0 +1,54 @@
+{
+  "patch_id": "9a00cc83-354a-4dc5-9a7d-41c114b3543e",
+  "timestamp": "2026-02-20T11:39:29.611571",
+  "author": "Kendu",
+  "diff": {
+    "effect": {
+      "IceRise": {
+        "status": "added",
+        "data": {
+          "smod": "N/A",
+          "ename": "IceRise",
+          "_type": "Parry",
+          "name": "IceRise",
+          "tag": "Undefined",
+          "rpd": 0,
+          "hso": 0,
+          "bfht": 0.3,
+          "when": 400,
+          "rsd": 0,
+          "after": 0,
+          "punishable": 0,
+          "imxd": 204,
+          "imdd": 0,
+          "umoa": false,
+          "flp": false,
+          "ilp": false,
+          "ihbc": false,
+          "ndfb": false,
+          "duih": false,
+          "nvfb": false,
+          "rpue": false,
+          "srpn": false,
+          "aatk": false,
+          "smn": false,
+          "fhb": true,
+          "nbfb": null,
+          "actions": [
+            {
+              "_type": "Parry",
+              "name": "1",
+              "when": 350,
+              "ihbc": false,
+              "hitbox": {
+                "X": 25,
+                "Y": 28,
+                "Z": 25
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
