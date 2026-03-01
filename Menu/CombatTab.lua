@@ -183,6 +183,12 @@ function CombatTab.initAutoDefenseSection(groupbox)
 		Tooltip = "If enabled, the auto defense will ignore parry, block and dodge action if there's already an existing invincibility frame.",
 	})
 
+	autoDefenseDepBox:AddToggle("UseAutoParryFrames", {
+		Text = "Use Auto Parry Frames",
+		Default = false,
+		Tooltip = "If enabled, the auto defense will ignore parry actions if there is AP frames.",
+	})
+
 	autoDefenseDepBox:AddToggle("ValidateIncomingAnimations", {
 		Text = "Validate Incoming Animations",
 		Default = true,

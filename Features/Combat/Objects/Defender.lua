@@ -352,7 +352,7 @@ Defender.valid = LPH_NO_VIRTUALIZE(function(self, options)
 	end
 
 	if actionType == PP_SCRAMBLE_STR("Parry") then
-		if effectReplicatorModule:FindEffect("AutoParry") then
+		if effectReplicatorModule:FindEffect("AutoParry") and Configuration.expectToggleValue("UseAutoParryFrames") then
 			return internalNotifyFunction(timing, "User has auto parry frames.")
 		end
 	end
@@ -739,8 +739,10 @@ Defender.handle = LPH_NO_VIRTUALIZE(function(self, timing, action, started)
 	local inIFrame = effectReplicatorModule:FindEffect("Immortal")
 		or effectReplicatorModule:FindEffect("Dodge")
 		or effectReplicatorModule:FindEffect("Ghost")
-	
-	if (actionType == "Dodge" or actionType == "Forced Full Dodge") and Configuration.expectToggleValue("ParryOnly") then
+
+	if
+		(actionType == "Dodge" or actionType == "Forced Full Dodge") and Configuration.expectToggleValue("ParryOnly")
+	then
 		actionType = "Parry"
 		self:notify(timing, "Action 'Dodge' changed to 'Parry'")
 	end
@@ -867,7 +869,7 @@ Defender.parry = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	if timing.umoa or timing.actions:count() ~= 1 then
 		dashReplacement = false
 	end
-	
+
 	if Configuration.expectToggleValue("ParryOnly") then
 		dashReplacement = false
 	end
@@ -1126,7 +1128,12 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 
 	local onCooldown = false
 	for _, effect in next, effectReplicatorModule.Effects do
-		if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("PredictionIntelligence") then
+		if
+			effect.Class == "ToolLockCD"
+			and effect.index
+			and effect.index.Value
+			and tostring(effect.index.Value):find("PredictionIntelligence")
+		then
 			onCooldown = true
 			break
 		end
@@ -1200,7 +1207,12 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 		if predictionMantra then
 			local predictionOnCooldown = false
 			for _, effect in next, effectReplicatorModule.Effects do
-				if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("PredictionIntelligence") then
+				if
+					effect.Class == "ToolLockCD"
+					and effect.index
+					and effect.index.Value
+					and tostring(effect.index.Value):find("PredictionIntelligence")
+				then
 					predictionOnCooldown = true
 					break
 				end
@@ -1254,7 +1266,12 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 
 	local onCooldown = false
 	for _, effect in next, effectReplicatorModule.Effects do
-		if effect.Class == "ToolLockCD" and effect.index and effect.index.Value and tostring(effect.index.Value):find("RevengeWeaponHeavy") then
+		if
+			effect.Class == "ToolLockCD"
+			and effect.index
+			and effect.index.Value
+			and tostring(effect.index.Value):find("RevengeWeaponHeavy")
+		then
 			onCooldown = true
 			break
 		end
