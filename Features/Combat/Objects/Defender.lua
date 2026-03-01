@@ -1152,7 +1152,7 @@ Defender.prediction = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	end
 
 	activateMantra:FireServer(predictionMantra)
-	self:notify(timing, PP_SCRAMBLE_STR("Action 'Parry' replaced with 'Prediction' mantra."))
+	self:notify(timing, "Action 'Parry' replaced with 'Prediction' mantra.")
 end)
 
 ---Activate Punishment mantra instead of parrying.
@@ -1290,7 +1290,7 @@ Defender.punishment = LPH_NO_VIRTUALIZE(function(self, timing, action)
 	end
 
 	activateMantra:FireServer(punishmentMantra)
-	self:notify(timing, PP_SCRAMBLE_STR("Action 'Parry' replaced with 'Punishment' mantra."))
+	self:notify(timing, "Action 'Parry' replaced with 'Punishment' mantra.")
 end)
 
 ---Handle auto feint.
