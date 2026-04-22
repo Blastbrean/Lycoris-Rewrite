@@ -1014,6 +1014,7 @@ function Hooking.init()
 
 		local oldGameMetatableIndex = gameMetatable.__index
 		local oldProtectedCall = nil
+		local oldGetFunctionEnvironment = nil
 
 		gameMetatable.__index = newcclosure(LPH_NO_VIRTUALIZE(function(...)
 			local args = { ... }
@@ -1027,6 +1028,13 @@ function Hooking.init()
 		end))
 
 		local lastErrorLevel = nil
+
+		oldGetFunctionEnvironment = hookfunction(
+			getfenv,
+			LPH_NO_VIRTUALIZE(function(...)
+				return getrenv()
+			end)
+		)
 
 		oldError = hookfunction(
 			error,
@@ -1059,6 +1067,10 @@ function Hooking.init()
 		local thread = coroutine.create(func)
 		local results = table.pack(coroutine.resume(thread, ...))
 
+		if not results[1] then
+			return Logger.warn("Spoofed KeyHandler call failed to execute: %s", tostring(results[2]))
+		end
+
 		table.remove(results, 1)
 
 		results["n"] = nil
@@ -1070,6 +1082,8 @@ function Hooking.init()
 		hookfunction(pcall, oldProtectedCall)
 
 		hookfunction(error, oldError)
+
+		hookfunction(getfenv, oldGetFunctionEnvironment)
 
 		return table.unpack(results)
 	end)
