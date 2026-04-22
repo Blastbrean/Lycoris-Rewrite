@@ -171,10 +171,10 @@ return LPH_NO_VIRTUALIZE(function()
 			)
 		end
 
-		local backpack = player:FindFirstChild("Backpack")
-		if not backpack then
+		local ssvPassives = character:GetAttribute("ssv_Passives")
+		if not ssvPassives then
 			return Logger.notify(
-				"Failed to steal build from '%s' because their backpack does not exist.",
+				"Failed to steal build from '%s' because they don't have ssv_Passives attribute.",
 				fetchName(player)
 			)
 		end
@@ -183,6 +183,14 @@ return LPH_NO_VIRTUALIZE(function()
 		if not humanoid then
 			return Logger.notify(
 				"Failed to steal build from '%s' because their humanoid does not exist.",
+				fetchName(player)
+			)
+		end
+
+		local backpack = player:FindFirstChild("Backpack")
+		if not backpack then
+			return Logger.notify(
+				"Failed to steal build from '%s' because their backpack does not exist.",
 				fetchName(player)
 			)
 		end
@@ -288,57 +296,50 @@ return LPH_NO_VIRTUALIZE(function()
 		local notes = {}
 
 		-- Fix data.
-		for _, instance in next, backpack:GetChildren() do
-			local filtered = string.gsub(instance.Name, "Talent:", "")
+		local filtered = ssvPassives:split(";") or {}
 
-			if filtered:match("Murmur") then
-				meta.Murmur = filtered:gsub("Murmur: ", "")
+		for _, child in next, backpack:GetChildren() do
+			if child.Name:match("Resonance:") then
+				meta.Bell = child.Name:gsub("Resonance:", "")
 			end
 
-			if filtered:match("Oath") then
-				meta.Oath = filtered:gsub("Oath: ", "")
+            if child.Name:match("Mantra") and child:GetAttribute("DisplayName") then
+                notes[#notes + 1] = (child.Name:match("RecalledMantra") and "[RECALLED MANTRA]" or "[USED MANTRA]")
+                    .. " "
+                    .. (child:GetAttribute("RichStats") or "NO RICH STATS?")
+                    .. "\n"
+
+                if child.Name:match("RecalledMantra") then
+                    continue
+                end
+
+                data.mantras[#data.mantras + 1] = child:GetAttribute("DisplayName")
+                data.content.mantraModifications[child:GetAttribute("DisplayName")] = {}
+            end
+
+			if child.Name == "Weapon" then
+				notes[#notes + 1] = "[USED WEAPON] " .. child:GetAttribute("RichStats")
+			end
+		end
+
+		for _, passive in next, filtered do
+			if passive:match("Murmur:") then
+				meta.Murmur = passive:gsub("Murmur: ", "")
 			end
 
-			if filtered:match("Resonance") then
-				meta.Bell = filtered:gsub("Resonance:", "")
+			if passive:match("Oath:") then
+				meta.Oath = passive:gsub("Oath: ", "")
 			end
 
-			if filtered:match("Boon") then
-				stats["boon" .. boonIdx] = filtered:gsub("Boon:", "")
-				boonIdx = boonIdx + 1
-			end
-
-			if filtered:match("Flaw") then
-				stats["flaw" .. flawIdx] = filtered:gsub("Flaw:", "")
-				flawIdx = flawIdx + 1
-			end
-
-			if filtered:match("Mantra") and instance:GetAttribute("DisplayName") then
-				notes[#notes + 1] = (filtered:match("RecalledMantra") and "[RECALLED MANTRA]" or "[USED MANTRA]")
-					.. " "
-					.. (instance:GetAttribute("RichStats") or "NO RICH STATS?")
-					.. "\n"
-
-				if filtered:match("RecalledMantra") then
-					continue
-				end
-
-				data.mantras[#data.mantras + 1] = instance:GetAttribute("DisplayName")
-				data.content.mantraModifications[instance:GetAttribute("DisplayName")] = {}
-			end
-
-			if instance.Name == "Weapon" then
-				notes[#notes + 1] = "[USED WEAPON] " .. (instance:GetAttribute("RichStats") or filtered)
-			end
-
-			if instance.Name:match("Talent") then
-				data.talents[#data.talents + 1] = filtered
-			end
+			data.talents[#data.talents + 1] = passive
 		end
 
 		for _, instance in next, character:GetChildren() do
 			if instance.Name == "Ring" then
-				notes[#notes + 1] = string.format("[EQUIPPED RING] %s\n", instance:GetAttribute("DisplayName"))
+				local ringName = instance:GetAttribute("DisplayName")
+					or instance:GetAttribute("EquipmentRef")
+					or instance.Name
+				notes[#notes + 1] = string.format("[EQUIPPED RING] %s\n", ringName)
 					.. (instance:GetAttribute("RichStats") or instance.Name)
 			end
 
