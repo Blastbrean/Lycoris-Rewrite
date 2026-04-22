@@ -73,14 +73,14 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
-		local mainFrame = gestureGui:FindFirstChild("MainFrame")
-		local gestureScroll = mainFrame and mainFrame:FindFirstChild("GestureScroll")
-		if not gestureScroll then
+		local gestureFrame = gestureGui:FindFirstChild("GestureFrame")
+    	if not gestureFrame then
 			return
 		end
 
-		local starterGestureGui = starterGui:FindFirstChild("GestureGui")
-		if not starterGestureGui then
+		local mainFrame = gestureFrame:FindFirstChild("MainFrame")
+		local gestureScroll = mainFrame and mainFrame:FindFirstChild("GestureScroll")
+		if not gestureScroll then
 			return
 		end
 
@@ -100,9 +100,8 @@ return LPH_NO_VIRTUALIZE(function()
 			return
 		end
 
+		local newGestureGui = gestureGui:Clone()
 		gestureGui:Destroy()
-
-		local newGestureGui = starterGestureGui:Clone()
 		newGestureGui.Parent = playerGui
 	end
 
