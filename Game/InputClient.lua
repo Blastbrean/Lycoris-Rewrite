@@ -429,8 +429,8 @@ end)
 ---Fetch human controller.
 ---@return table?
 InputClient.getHumanController = LPH_NO_VIRTUALIZE(function()
-	---@note: Shouldn't be too many connections to PreAnimation.
-	for _, connection in next, getconnections(runService.PreAnimation) do
+	---@note: Shouldn't be too many connections to PreSimulation.
+	for _, connection in next, getconnections(runService.PreSimulation) do
 		local func = connection.Function
 		if not func then
 			continue
@@ -624,7 +624,7 @@ InputClient.dodge = LPH_NO_VIRTUALIZE(function(options)
 	if not dodge then
 		return Logger.warn("Cannot dodge without dodge remote.")
 	end
-	
+
 	local stopDodge = KeyHandling.getRemote("StopDodge")
 	if not stopDodge then
 		return Logger.warn("Cannot dodge without stop dodge remote.")
@@ -634,7 +634,7 @@ InputClient.dodge = LPH_NO_VIRTUALIZE(function(options)
 	if not inputData then
 		return Logger.warn("Cannot dodge without input data.")
 	end
-	
+
 	local effectReplicator = replicatedStorage:FindFirstChild("EffectReplicator")
 	if not effectReplicator then
 		return Logger.warn("Cannot dodge without effect replicator.")
@@ -649,7 +649,7 @@ InputClient.dodge = LPH_NO_VIRTUALIZE(function(options)
 		dodge:FireServer("roll", nil, nil, false)
 
 		-- Delay required for extra dodge frames.
-		task.wait(.15)
+		task.wait(0.15)
 
 		return stopDodge:FireServer(inputData, effectReplicatorModule:HasEffect("LightAttack"), true)
 	end

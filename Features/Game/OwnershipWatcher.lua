@@ -14,27 +14,7 @@ local function hasNetworkOwnership(part)
 		return false
 	end
 
-	if getexecutorname():match("AWP") then
-		return exploitFallback(part)
-	end
-
-	if getexecutorname():match("Volcano") then
-		return exploitFallback(part)
-	end
-
-	if not clientSuccess then
-		return exploitFallback(part)
-	end
-
-	local partSuccess, partPeerId = pcall(function()
-		return gethiddenproperty(part, "NetworkOwnerV3")
-	end)
-
-	if not partSuccess then
-		return exploitFallback(part)
-	end
-
-	return partPeerId == clientPeerId
+	return exploitFallback(part)
 end
 
 return LPH_NO_VIRTUALIZE(function()

@@ -47,6 +47,11 @@ local oldIndex = nil
 local oldPrint = nil
 local oldWarn = nil
 local oldHasEffect = nil
+local oldProtectedCall = nil
+local oldGetKey = nil
+
+-- Cached hooked function.
+local khGetKey = nil
 
 -- InputClient caching.
 local lastCallingFunction = nil
@@ -869,6 +874,13 @@ end)
 ---On to string.
 ---@return any
 local onToString = LPH_NO_VIRTUALIZE(function(...)
+	local args = { ... }
+
+	if args[1] == "EEKEWAEJIWAJDOIWAJDIOJAWDIOJAWODJOAIW" then
+		Logger.warn("Crash was attempted.")
+		return coroutine.yield()
+	end
+
 	if os.clock() - lastFunctionCacheAttempt <= 0.5 then
 		return oldToString(...)
 	end
@@ -985,6 +997,98 @@ function Hooking.init()
 
 	effectReplicatorModule.HasEffect = onHasEffect
 
+	---@note: This new addition is as a reuslt of a new roblox / exploit update which blocks .__index from being triggered for these cases.
+	--- Normally, you can hook 'pcall' or ('__index' with this direct type of hook) but they are unperformant.
+	--- So, we replace KeyHandler calls with their safe variants while the script runs.
+
+	local replicatedStorage = game:GetService("ReplicatedStorage")
+	local modules = replicatedStorage:WaitForChild("Modules")
+	local clientManager = modules:WaitForChild("ClientManager")
+	local keyHandler = clientManager:WaitForChild("KeyHandler")
+	local keyHandlerModule = require(keyHandler)
+
+	local spoofedKeyHandlerCall = LPH_NO_VIRTUALIZE(function(func, ...)
+		local gameMetatable = getrawmetatable(game)
+
+		setreadonly(gameMetatable, false)
+
+		local oldGameMetatableIndex = gameMetatable.__index
+		local oldProtectedCall = nil
+
+		gameMetatable.__index = newcclosure(LPH_NO_VIRTUALIZE(function(...)
+			local args = { ... }
+			local index = args[2]
+
+			if index == "HttpGet\000" then
+				return error("KeyHandler - Lycoris On Top")
+			end
+
+			return oldGameMetatableIndex(...)
+		end))
+
+		local lastErrorLevel = nil
+
+		oldError = hookfunction(
+			error,
+			LPH_NO_VIRTUALIZE(function(...)
+				local args = { ... }
+
+				lastErrorLevel = args[2]
+
+				return oldError(...)
+			end)
+		)
+
+		oldProtectedCall = hookfunction(
+			pcall,
+			LPH_NO_VIRTUALIZE(function(...)
+				local results = { oldProtectedCall(...) }
+
+				if lastErrorLevel == 4 then
+					return false, "KeyHandler - Lycoris On Top"
+				elseif lastErrorLevel ~= nil then
+					return false, "\000"
+				end
+
+				lastErrorLevel = nil
+
+				return table.unpack(results)
+			end)
+		)
+
+		local thread = coroutine.create(func)
+		local results = table.pack(coroutine.resume(thread, ...))
+
+		table.remove(results, 1)
+
+		results["n"] = nil
+
+		gameMetatable.__index = oldGameMetatableIndex
+
+		setreadonly(gameMetatable, true)
+
+		hookfunction(pcall, oldProtectedCall)
+
+		hookfunction(error, oldError)
+
+		return table.unpack(results)
+	end)
+
+	local keyHandlerTable = spoofedKeyHandlerCall(keyHandlerModule)
+
+	khGetKey = keyHandlerTable[1]
+
+	if typeof(keyHandlerTable) ~= "table" or typeof(khGetKey) ~= "function" then
+		return error("An internal error occurred while hooking. KeyHandler table is invalid.")
+	end
+
+	oldGetKey = hookfunction(
+		khGetKey,
+		LPH_NO_VIRTUALIZE(function(...)
+			return spoofedKeyHandlerCall(oldGetKey, ...)
+		end)
+	)
+
 	-- Okay, we're done.
 	Logger.warn("Client-side anticheat has been penetrated.")
 end
@@ -992,6 +1096,10 @@ end
 ---Hooking detach.
 function Hooking.detach()
 	local localPlayer = playersService.LocalPlayer
+
+	if khGetKey and oldGetKey then
+		hookfunction(khGetKey, oldGetKey)
+	end
 
 	if oldPrint then
 		hookfunction(print, oldPrint)
